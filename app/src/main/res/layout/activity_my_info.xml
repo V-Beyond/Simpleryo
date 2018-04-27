@@ -31,7 +31,7 @@
                 android:textSize="25px"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:text="二楼后座" />
+                android:text="------" />
 
             <View
                 android:layout_width="match_parent"
@@ -59,7 +59,7 @@
                 android:layout_alignParentRight="true"
                 android:textSize="25px"
                 android:layout_centerVertical="true"
-                android:text="男" />
+                android:text="------" />
 
             <View
                 android:layout_width="match_parent"
@@ -86,7 +86,7 @@
                 android:layout_alignParentRight="true"
                 android:textSize="25px"
                 android:layout_centerVertical="true"
-                android:text="未绑定" />
+                android:text="------" />
 
             <View
                 android:layout_width="match_parent"
@@ -114,7 +114,7 @@
                 android:layout_alignParentRight="true"
                 android:textSize="25px"
                 android:layout_centerVertical="true"
-                android:text="联系地址" />
+                android:text="------" />
 
             <View
                 android:layout_width="match_parent"
@@ -142,7 +142,7 @@
                 android:layout_alignParentRight="true"
                 android:textSize="25px"
                 android:layout_centerVertical="true"
-                android:text="天蝎座" />
+                android:text="------" />
 
             <View
                 android:layout_width="match_parent"
@@ -169,7 +169,7 @@
                 android:textSize="25px"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:text="仍然幻想有天我是你终站" />
+                android:text="------" />
 
             <View
                 android:layout_width="match_parent"
