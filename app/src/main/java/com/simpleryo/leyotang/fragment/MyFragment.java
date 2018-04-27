@@ -170,7 +170,7 @@ public class MyFragment extends XLibraryLazyFragment {
     private void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_msg:
-                SharedPreferencesUtils.saveKeyBoolean("isLogin", false);
+//                SharedPreferencesUtils.saveKeyBoolean("isLogin", false);
                 SharedPreferencesUtils.saveKeyString("token","simpleryo");
                 startActivity(new Intent(getActivity(), MyMsgActivity.class));
                 break;
