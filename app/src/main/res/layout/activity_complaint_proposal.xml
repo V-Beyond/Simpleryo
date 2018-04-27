@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#C7E9FF"
+    android:orientation="vertical">
+
+    <include layout="@layout/common_top_layout" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_ffffff"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="44px"
+            android:layout_marginTop="52px"
+            android:text="请输入您要反馈的信息"
+            android:textColor="@color/color_8c8c8c"
+            android:textSize="29px" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="401px"
+            android:layout_marginBottom="62px"
+            android:layout_marginLeft="40px"
+            android:layout_marginRight="40px"
+            android:textColor="@color/color_8c8c8c"
+            android:layout_marginTop="27px"
+            android:padding="10px"
+            android:textSize="29px"
+            android:background="@drawable/shape_complaint_proposal_edittext"
+            android:gravity="left|top" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="22px"
+        android:background="@color/color_ffffff"
+        android:orientation="horizontal">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="46px"
+            android:layout_marginLeft="30px"
+            android:layout_marginRight="30px"
+            android:layout_marginTop="42px"
+            android:choiceMode="singleChoice"
+            android:divider="@null"
+            android:fadingEdge="none"
+            android:listSelector="@android:color/transparent"
+            android:scrollbarStyle="outsideOverlay"
+            app:layoutManager="android.support.v7.widget.GridLayoutManager"
+            app:spanCount="4"
+            tools:listitem="@layout/list_item_image"></android.support.v7.widget.RecyclerView>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_commit"
+            android:layout_width="match_parent"
+            android:layout_height="83px"
+            android:layout_alignParentBottom="true"
+            android:background="#F32E59"
+            android:gravity="center"
+            android:text="提交"
+            android:textColor="@color/color_ffffff"
+            android:textSize="38px" />
+    </RelativeLayout>
+</LinearLayout>

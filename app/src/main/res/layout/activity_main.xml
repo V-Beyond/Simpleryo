@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <com.simpleryo.leyotang.view.NoScrollViewPager
+        android:id="@+id/view_pager_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/radio_group_main"></com.simpleryo.leyotang.view.NoScrollViewPager>
+
+    <RadioGroup
+        android:id="@+id/radio_group_main"
+        android:layout_width="match_parent"
+        android:layout_height="110px"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/radio_btn_home"
+            style="@style/my_but_type_style"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:button="@null"
+            android:checked="true"
+            android:drawableTop="@drawable/selector_radio_home"
+            android:gravity="center_horizontal"
+            android:text="@string/main_home"
+            android:textSize="12sp" />
+
+        <RadioButton
+            android:id="@+id/radio_btn_course"
+            style="@style/my_but_type_style"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@drawable/selector_radio_course"
+            android:gravity="center_horizontal"
+            android:text="@string/main_course"
+            android:textSize="12sp" />
+
+        <RadioButton
+            android:id="@+id/radio_btn_my"
+            style="@style/my_but_type_style"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@drawable/selector_radio_my"
+            android:gravity="center_horizontal"
+            android:text="@string/main_my"
+            android:textSize="12sp" />
+    </RadioGroup>
+
+</RelativeLayout>

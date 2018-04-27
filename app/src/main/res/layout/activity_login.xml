@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/iv_login_backgroud"
+    android:orientation="vertical"
+    android:paddingLeft="80px"
+    android:paddingRight="80px">
+
+    <TextView
+        android:layout_width="181px"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="205px"
+        android:text="Welcome"
+        android:textColor="@color/color_ffffff"
+        android:textSize="43px" />
+
+    <ImageView
+        android:layout_width="228px"
+        android:layout_height="147px"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="18px"
+        android:src="@mipmap/iv_login_top" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="48px"
+        android:text="您好，欢迎登陆新普乐优"
+        android:textColor="@color/color_ffffff"
+        android:textSize="31px" />
+
+    <LinearLayout
+        android:layout_width="490px"
+        android:layout_height="62px"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="39px"
+        android:background="@drawable/shape_edittext"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="11px"
+            android:layout_gravity="center_vertical"
+            android:src="@mipmap/iv_login_phone" />
+
+        <EditText
+            android:id="@+id/edittext_account"
+            android:layout_width="match_parent"
+            android:singleLine="true"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:hint="请输入账号"
+            android:textSize="12sp"
+            android:paddingLeft="15px" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="490px"
+        android:layout_height="62px"
+        android:layout_marginTop="39px"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/shape_edittext"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="11px"
+            android:layout_gravity="center_vertical"
+            android:src="@mipmap/iv_login_pwd" />
+
+        <EditText
+            android:id="@+id/edittext_password"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:hint="请输入密码"
+            android:singleLine="true"
+            android:paddingLeft="15px"
+            android:textSize="12sp"
+            android:inputType="textPassword" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="490px"
+        android:layout_height="100px"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="37px">
+
+        <TextView
+            android:id="@+id/tv_register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="20px"
+            android:text="@string/no_register_click"
+            android:textColor="@color/color_ffffff"
+            android:textSize="22px" />
+
+        <TextView
+            android:id="@+id/tv_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:paddingRight="46px"
+            android:paddingLeft="46px"
+            android:paddingBottom="10px"
+            android:paddingTop="10px"
+            android:layout_centerVertical="true"
+            android:background="@drawable/shape_login"
+            android:gravity="center"
+            android:textSize="31px"
+            android:text="登陆"
+            android:textColor="@color/color_ffffff" />
+    </RelativeLayout>
+</LinearLayout>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="303dp"
+        android:layout_height="500px"
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="32dp"
+        android:background="@drawable/shape_my">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:src="@mipmap/iv_shop"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="32.5dp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:text="请选择购买商品规格"
+            android:layout_alignParentBottom="true"
+            android:textSize="24sp"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <ImageView
+        android:id="@+id/iv_close"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:src="@mipmap/iv_close"
+        android:visibility="gone"
+        android:layout_marginTop="50px"
+        android:layout_height="wrap_content" />
+</LinearLayout>

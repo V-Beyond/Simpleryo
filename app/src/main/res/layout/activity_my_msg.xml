@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_ffffff"
+    android:orientation="vertical">
+
+    <include layout="@layout/common_top_layout" />
+
+    <com.github.jdsjlzx.recyclerview.LRecyclerView
+        android:id="@+id/lrecyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="33px"
+        android:layout_marginRight="33px"
+        android:layout_marginTop="24px"></com.github.jdsjlzx.recyclerview.LRecyclerView>
+
+    <include
+        android:id="@+id/empty_view"
+        layout="@layout/layout_empty"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="36px"
+            android:layout_marginRight="42px"
+            android:layout_marginTop="37px"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@mipmap/iv_msg_buy" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="36px"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Johnny Appleseed"
+                    android:textColor="#989898"
+                    android:textSize="35px" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16px"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:text="Lorem ipsum dolor sit amet,consectetur adipiscing elit,sed do siusmod tempor……"
+                    android:textColor="#989898"
+                    android:textSize="25px" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:layout_marginLeft="36px"
+            android:layout_marginRight="42px"
+            android:layout_marginTop="37px"
+            android:background="#B9B9B9" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="36px"
+            android:layout_marginRight="42px"
+            android:layout_marginTop="37px"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@mipmap/iv_msg_content" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="36px"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Johnny Appleseed"
+                    android:textColor="#989898"
+                    android:textSize="35px" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16px"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:text="Lorem ipsum dolor sit amet,consectetur adipiscing elit,sed do siusmod tempor……"
+                    android:textColor="#989898"
+                    android:textSize="25px" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:layout_marginLeft="36px"
+            android:layout_marginRight="42px"
+            android:layout_marginTop="37px"
+            android:background="#B9B9B9" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="36px"
+            android:layout_marginRight="42px"
+            android:layout_marginTop="37px"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@mipmap/iv_msg_email" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="36px"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Johnny Appleseed"
+                    android:textColor="#989898"
+                    android:textSize="35px" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16px"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:text="Lorem ipsum dolor sit amet,consectetur adipiscing elit,sed do siusmod tempor……"
+                    android:textColor="#989898"
+                    android:textSize="25px" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:layout_marginLeft="36px"
+            android:layout_marginRight="42px"
+            android:layout_marginTop="37px"
+            android:background="#B9B9B9" />
+    </LinearLayout>
+</LinearLayout>

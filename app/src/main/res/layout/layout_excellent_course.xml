@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="31px"
+    android:layout_marginRight="31px"
+    android:background="@drawable/shape_home_list"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="28px"
+        android:paddingTop="28px">
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="31px"
+            android:text="Excellent Course"
+            android:textColor="#898787"
+            android:textSize="33px" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_below="@+id/textView"
+            android:layout_marginLeft="31px"
+            android:layout_marginRight="25px"
+            android:layout_marginTop="10px"
+            android:layout_height="wrap_content">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="3px"
+                android:background="#D2D2D2"></View>
+            <View
+                android:layout_width="162px"
+                android:layout_height="3px"
+                android:background="#00ABFF"></View>
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/item_more_rihgt_more"
+            android:layout_width="200px"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="5dp"
+                android:layout_toLeftOf="@+id/ico_but_right"
+                android:background="@null"
+                android:text="More"
+                android:textColor="#898787"
+                android:textSize="23px" />
+
+            <ImageView
+                android:id="@+id/ico_but_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="45px"
+                android:src="@mipmap/iv_right_more" />
+        </RelativeLayout>
+    </RelativeLayout>
+    <com.github.jdsjlzx.recyclerview.LRecyclerView
+        android:layout_width="match_parent"
+        android:paddingTop="18px"
+        android:id="@+id/lrecyclerview"
+        android:layout_height="wrap_content">
+    </com.github.jdsjlzx.recyclerview.LRecyclerView>
+    <include
+        android:id="@+id/empty_view"
+        layout="@layout/layout_empty"
+        android:paddingTop="18px"
+        android:visibility="gone"/>
+</LinearLayout>

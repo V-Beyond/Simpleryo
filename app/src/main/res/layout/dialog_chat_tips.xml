@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="183.5dp"
+        android:layout_marginLeft="50px"
+        android:layout_marginRight="50px"
+        android:paddingLeft="50px"
+        android:paddingRight="50px"
+        android:background="@drawable/shape_my"
+        android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_marginTop="33dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="该用户设置了关注之后才可私信，是否关注？"
+                android:textSize="21sp" />
+        <TextView
+            android:id="@+id/tv_cancel"
+            android:layout_width="250px"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="50px"
+            android:background="@drawable/shape_cancel"
+            android:gravity="center"
+            android:paddingBottom="15px"
+            android:paddingTop="15px"
+            android:text="No"
+            android:textColor="@color/color_ffffff" />
+        <TextView
+            android:id="@+id/tv_sure"
+            android:layout_width="250px"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="50px"
+            android:background="@drawable/shape_register"
+            android:gravity="center"
+            android:paddingBottom="15px"
+            android:paddingTop="15px"
+            android:text="Yes"
+            android:textColor="@color/color_ffffff" />
+    </RelativeLayout>
+</LinearLayout>

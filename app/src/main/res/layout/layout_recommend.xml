@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_home_list"
+        android:orientation="vertical"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="14px"
+            android:paddingTop="14px">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="31px"
+                android:text="机构推荐"
+                android:textColor="#898787"
+                android:textSize="33px" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView"
+                android:layout_marginLeft="31px"
+                android:layout_marginRight="50px"
+                android:layout_marginTop="10px">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3px"
+                    android:background="#D2D2D2"></View>
+
+                <View
+                    android:layout_width="162px"
+                    android:layout_height="3px"
+                    android:background="#FF006C"></View>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/item_more_rihgt_more"
+                android:layout_width="200px"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:layout_toLeftOf="@+id/ico_but_right"
+                    android:background="@null"
+                    android:text="More"
+                    android:textColor="#898787"
+                    android:textSize="23px" />
+
+                <ImageView
+                    android:id="@+id/ico_but_right"
+                    android:layout_width="7px"
+                    android:layout_height="11px"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="45px"
+                    android:src="@mipmap/iv_right_more" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <com.github.jdsjlzx.recyclerview.LRecyclerView
+            android:id="@+id/lrecyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="44px"
+            android:layout_marginLeft="31px"
+            android:layout_marginRight="25px"
+            android:layout_marginTop="26px" />
+        <include
+            android:id="@+id/empty_view"
+            layout="@layout/layout_empty"
+            android:paddingTop="18px"
+            android:visibility="gone"/>
+    </LinearLayout>
+</LinearLayout>

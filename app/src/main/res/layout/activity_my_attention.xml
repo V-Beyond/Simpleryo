@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/shape_hot_course"
+        android:layout_height="match_parent">
+        <include layout="@layout/common_top_layout"/>
+
+        <com.github.jdsjlzx.recyclerview.LRecyclerView
+            android:id="@+id/lrecyclerview"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="24px"
+            android:layout_marginTop="24px"
+            android:layout_marginRight="24px"
+            android:layout_height="match_parent"></com.github.jdsjlzx.recyclerview.LRecyclerView>
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

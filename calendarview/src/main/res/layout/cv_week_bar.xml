@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_week"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:background="#FFFFFF"
+    android:minHeight="40dp"
+    android:orientation="horizontal"
+    android:paddingBottom="8dp"
+    android:paddingTop="8dp"
+    tools:ignore="HardcodedText">
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/color_ff92a9"
+        android:drawableBottom="@drawable/shape_line"
+        android:drawableLeft="@drawable/shape_vertical_line"
+        android:drawableRight="@drawable/shape_vertical_line"
+        android:drawableTop="@drawable/shape_line"
+        android:gravity="center"
+        android:text="@string/sun"
+        android:textColor="#FFFFFF"
+        android:textSize="12sp" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:drawableBottom="@drawable/shape_line"
+        android:drawableLeft="@drawable/shape_vertical_line"
+        android:drawableRight="@drawable/shape_vertical_line"
+        android:drawableTop="@drawable/shape_line"
+        android:gravity="center"
+        android:text="@string/mon"
+        android:textColor="@color/color_8c8c8c"
+        android:textSize="12sp" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:drawableBottom="@drawable/shape_line"
+        android:drawableLeft="@drawable/shape_vertical_line"
+        android:drawableRight="@drawable/shape_vertical_line"
+        android:drawableTop="@drawable/shape_line"
+        android:gravity="center"
+        android:text="@string/tue"
+        android:textColor="@color/color_8c8c8c"
+        android:textSize="12sp" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:drawableBottom="@drawable/shape_line"
+        android:drawableLeft="@drawable/shape_vertical_line"
+        android:drawableRight="@drawable/shape_vertical_line"
+        android:drawableTop="@drawable/shape_line"
+        android:gravity="center"
+        android:text="@string/wed"
+        android:textColor="@color/color_8c8c8c"
+        android:textSize="12sp" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:drawableBottom="@drawable/shape_line"
+        android:drawableLeft="@drawable/shape_vertical_line"
+        android:drawableRight="@drawable/shape_vertical_line"
+        android:drawableTop="@drawable/shape_line"
+        android:gravity="center"
+        android:text="@string/thu"
+        android:textColor="@color/color_8c8c8c"
+        android:textSize="12sp" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:drawableBottom="@drawable/shape_line"
+        android:drawableLeft="@drawable/shape_vertical_line"
+        android:drawableRight="@drawable/shape_vertical_line"
+        android:drawableTop="@drawable/shape_line"
+        android:gravity="center"
+        android:text="@string/fri"
+        android:textColor="@color/color_8c8c8c"
+        android:textSize="12sp" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/color_92deff"
+        android:drawableBottom="@drawable/shape_line"
+        android:drawableLeft="@drawable/shape_vertical_line"
+        android:drawableRight="@drawable/shape_vertical_line"
+        android:drawableTop="@drawable/shape_line"
+        android:gravity="center"
+        android:text="@string/sat"
+        android:textColor="#FFFFFF"
+        android:textSize="12sp" />
+</merge>

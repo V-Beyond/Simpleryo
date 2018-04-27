@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#C7E9FF"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:id="@+id/rl_top"
+        android:layout_width="match_parent"
+        android:layout_height="100px"
+        android:background="@color/color_000000">
+
+        <RelativeLayout
+            android:id="@+id/rl_search"
+            android:layout_width="match_parent"
+            android:layout_height="60px"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="48px"
+            android:layout_marginRight="22px"
+            android:layout_toLeftOf="@+id/iv_msg"
+            android:background="@drawable/shape_my">
+
+            <ImageView
+                android:id="@+id/iv_home_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="22px"
+                android:src="@mipmap/iv_home_search" />
+
+            <TextView
+                android:layout_width="414px"
+                android:layout_centerVertical="true"
+                android:layout_height="45px"
+                android:layout_toRightOf="@+id/iv_home_search"
+                android:layout_toLeftOf="@+id/tv_cancel"
+                android:layout_marginLeft="12px"
+                android:layout_marginRight="12px"
+                android:background="#535353" />
+
+            <TextView
+                android:id="@+id/tv_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="18px"
+                android:text="Cacel"
+                android:textSize="25px" />
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/iv_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="37px"
+            android:src="@mipmap/iv_my_course_msg" />
+    </RelativeLayout>
+
+    <com.github.jdsjlzx.recyclerview.LRecyclerView
+        android:layout_width="match_parent"
+        android:id="@+id/lrecyclerview"
+        android:layout_height="match_parent">
+    </com.github.jdsjlzx.recyclerview.LRecyclerView>
+    <include
+        android:id="@+id/empty_view"
+        layout="@layout/layout_empty"
+        android:visibility="gone"/>
+</LinearLayout>

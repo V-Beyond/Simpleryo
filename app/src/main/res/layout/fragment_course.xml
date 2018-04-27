@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_95c6e8"
+    tools:context="com.simpleryo.leyotang.activity.MainActivity"
+    tools:ignore="RtlHardcoded,HardcodedText,RtlSymmetry,SmallSp"
+    android:orientation="vertical">
+    <include layout="@layout/common_top_layout"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:scrollbars="none"
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_course_top">
+
+        <TextView
+            android:id="@+id/tv_line"
+            android:layout_width="11px"
+            android:layout_height="41px"
+            android:layout_marginLeft="63px"
+            android:layout_marginTop="62px"
+            android:background="@color/color_ffffff" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="41px"
+            android:layout_marginLeft="13px"
+            android:layout_marginTop="62px"
+            android:layout_toRightOf="@+id/tv_line"
+            android:gravity="center"
+            android:text="课程安排"
+            android:textColor="@color/color_ffffff"
+            android:textSize="34px" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="51px">
+
+            <ImageView
+                android:id="@+id/iv_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15px"
+                android:layout_toLeftOf="@+id/tv_current_date"
+                android:src="@mipmap/iv_left" />
+
+            <TextView
+                android:id="@+id/tv_current_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="77px"
+                android:background="@drawable/shape_current_date"
+                android:paddingBottom="10px"
+                android:paddingLeft="30px"
+                android:paddingRight="30px"
+                android:paddingTop="10px"
+                android:text="2018年3月"
+                android:textColor="@color/color_1f48d6" />
+
+            <ImageView
+                android:id="@+id/iv_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="33px"
+                android:src="@mipmap/iv_right" />
+        </RelativeLayout>
+        <LinearLayout
+            android:id="@+id/ll_left"
+            android:layout_width="180px"
+            android:orientation="vertical"
+            android:layout_marginBottom="58px"
+            android:layout_marginTop="100px"
+            android:background="@drawable/shape_date"
+            android:layout_below="@+id/tv_line"
+            android:layout_marginLeft="43px"
+            android:layout_height="180px">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:background="@color/color_1f48d6"
+                android:layout_marginTop="20px"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tv_current_month"
+                    android:layout_width="wrap_content"
+                    android:text="3月"
+                    android:textColor="@color/color_ffffff"
+                    android:textSize="34px"
+                    android:layout_marginLeft="19px"
+                    android:layout_marginTop="9px"
+                    android:layout_marginBottom="9px"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <TextView
+                android:id="@+id/tv_current_day"
+                android:layout_width="wrap_content"
+                android:text="12"
+                android:textSize="55px"
+                android:textColor="@color/color_1f48d6"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="15px"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_toRightOf="@+id/ll_left"
+            android:layout_marginTop="100px"
+            android:layout_marginRight="33px"
+            android:layout_marginLeft="28px"
+            android:layout_below="@+id/tv_line"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/tv_no_order"
+                android:layout_width="wrap_content"
+                android:text="暂无课程订单"
+                android:visibility="gone"
+                android:textColor="@color/color_ffffff"
+                android:layout_height="wrap_content" />
+        <com.github.jdsjlzx.recyclerview.LRecyclerView
+            android:id="@+id/lrecyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></com.github.jdsjlzx.recyclerview.LRecyclerView>
+        <include
+            android:id="@+id/empty_view"
+            layout="@layout/layout_empty"
+            android:visibility="gone"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <com.haibin.calendarview.CalendarView
+        android:id="@+id/calenar_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_fafafa"
+        app:lunar_text_size="10sp"
+        app:max_year="2020"
+        app:min_year="2004"
+        app:scheme_text="@color/color_8b8b8b"
+        app:selected_lunar_text_color="@color/color_ffffff"
+        app:selected_text_color="@color/color_ffffff"
+        app:scheme_text_color="@color/color_8b8b8b"
+        app:scheme_lunar_text_color="@color/color_8b8b8b"
+        app:current_month_lunar_text_color="@color/color_8b8b8b"
+        app:selected_theme_color="@color/color_ff92a9"
+        app:week_background="@color/color_d3d3d3"></com.haibin.calendarview.CalendarView>
+    </LinearLayout>
+    </ScrollView>
+</LinearLayout>

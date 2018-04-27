@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/iv_login_backgroud"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="606px"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="224px"
+        android:background="@drawable/shape_my"
+        android:orientation="vertical"
+        android:paddingLeft="53px"
+        android:paddingRight="62px">
+
+        <LinearLayout
+            android:layout_width="490px"
+            android:layout_height="62px"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="50px"
+            android:background="@drawable/shape_register_edittext"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="34px"
+                android:layout_height="32px"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="16px"
+                android:src="@mipmap/iv_login_phone" />
+
+            <EditText
+                android:id="@+id/edittext_email"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:hint="邮箱账号"
+                android:paddingLeft="15px"
+                android:textSize="30px" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="62px"
+            android:layout_marginTop="20px"
+            android:background="@drawable/shape_register_edittext">
+
+            <ImageView
+                android:id="@+id/iv_phone"
+                android:layout_width="34px"
+                android:layout_height="32px"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="16px"
+                android:src="@mipmap/iv_phone" />
+
+            <EditText
+                android:id="@+id/edittext_phone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@+id/iv_phone"
+                android:background="@null"
+                android:drawablePadding="15px"
+                android:inputType="number"
+                android:hint="请输入手机号"
+                android:paddingLeft="20px"
+                android:textSize="30px" />
+
+            <TextView
+                android:id="@+id/tv_get_code"
+                android:layout_width="wrap_content"
+                android:layout_height="41px"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20px"
+                android:background="@drawable/shape_get_code"
+                android:gravity="center"
+                android:paddingBottom="5px"
+                android:paddingLeft="20px"
+                android:paddingRight="20px"
+                android:paddingTop="5px"
+                android:text="获取验证码"
+                android:textColor="@color/color_ffffff"
+                android:textSize="22px" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="62px"
+            android:layout_marginTop="20px"
+            android:background="@drawable/shape_register_edittext"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="34px"
+                android:layout_height="32px"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="16px"
+                android:src="@mipmap/iv_code" />
+
+            <EditText
+                android:id="@+id/edittext_code"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:hint="输入验证码"
+                android:paddingLeft="20px"
+                android:inputType="number"
+                android:textSize="30px" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="62px"
+            android:layout_marginTop="20px"
+            android:background="@drawable/shape_register_edittext"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="34px"
+                android:layout_height="32px"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="16px"
+                android:src="@mipmap/iv_login_pwd" />
+
+            <EditText
+                android:id="@+id/edittext_password"
+                android:inputType="textPassword"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:hint="请输入密码"
+                android:paddingLeft="20px"
+                android:textSize="30px" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="62px"
+            android:layout_marginTop="20px"
+            android:background="@drawable/shape_register_edittext"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="34px"
+                android:layout_height="32px"
+                android:layout_marginLeft="16px"
+                android:layout_gravity="center_vertical"
+                android:src="@mipmap/iv_login_pwd" />
+
+            <EditText
+                android:id="@+id/edittext_comfirm_password"
+                android:layout_width="match_parent"
+                android:inputType="textPassword"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:hint="请再次输入密码"
+                android:paddingLeft="20px"
+                android:textSize="30px" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50px"
+            android:layout_marginTop="52px"
+            android:background="@drawable/shape_register"
+            android:gravity="center"
+            android:padding="20px"
+            android:textSize="33px"
+            android:text="注 册"
+            android:textColor="@color/color_ffffff" />
+    </LinearLayout>
+</LinearLayout>

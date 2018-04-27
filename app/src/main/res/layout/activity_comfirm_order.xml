@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#d8e8fd"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/top_layout"
+        layout="@layout/common_top_layout" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/ll_bottom"
+        android:layout_below="@+id/top_layout"
+        android:layout_marginBottom="38px"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="365px">
+
+                <ImageView
+                    android:id="@+id/iv_course_detail_img"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/shape_course_gradient" />
+
+                <TextView
+                    android:id="@+id/tv_course_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="56px"
+                    android:layout_marginTop="56px"
+                    android:text="Private Yoga"
+                    android:textColor="@color/color_ffffff"
+                    android:textSize="47px" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36px"
+                android:background="@color/color_ffffff"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="43px"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="10px"
+                        android:layout_height="41px"
+                        android:layout_marginLeft="56px"
+                        android:background="#F32E59" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="14px"
+                        android:text="课程详情"
+                        android:textColor="#373737"
+                        android:textSize="35px" />
+                </LinearLayout>
+
+                <WebView
+                    android:id="@+id/tv_course_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="79px"
+                    android:layout_marginRight="123px"
+                    android:layout_marginTop="25px"
+                    android:text="祥达健身，坚持每周四次，成功拥有强健体魄；祥达健身，坚持每周四次，成功拥有强健体魄"
+                    android:textColor="#373737"
+                    android:textSize="28px" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="77px"
+                    android:layout_marginRight="53px"
+                    android:layout_marginTop="44px"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="142px"
+                        android:layout_height="match_parent"
+                        android:background="#ffdca7"
+                        android:textSize="25px"
+                        android:paddingBottom="13px"
+                        android:paddingTop="13px"
+                        android:gravity="center"
+                        android:text="上课时间" />
+
+                    <TextView
+                        android:id="@+id/tv_course_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#fde5cb"
+                        android:paddingBottom="13px"
+                        android:paddingTop="13px"
+                        android:gravity="center"
+                        android:textSize="25px"
+                        android:text="------" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="77px"
+                    android:layout_marginRight="53px"
+                    android:layout_marginTop="8px"
+                    android:layout_marginBottom="53px"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="142px"
+                        android:layout_height="match_parent"
+                        android:background="#ffdca7"
+                        android:gravity="center"
+                        android:textSize="25px"
+                        android:paddingBottom="13px"
+                        android:paddingTop="13px"
+                        android:text="上课方式" />
+
+                    <TextView
+                        android:id="@+id/tv_course_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textSize="25px"
+                        android:background="#fde5cb"
+                        android:paddingLeft="20px"
+                        android:paddingRight="20px"
+                        android:gravity="center"
+                        android:paddingBottom="13px"
+                        android:paddingTop="13px"
+                        android:text="-------" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36px"
+                android:background="@color/color_ffffff"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="43px"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="10px"
+                        android:layout_height="41px"
+                        android:layout_marginLeft="56px"
+                        android:background="#F32E59" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="14px"
+                        android:text="教练信息"
+                        android:textColor="#3A3A3A"
+                        android:textSize="38px" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_coach_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="79px"
+                    android:layout_marginRight="123px"
+                    android:layout_marginTop="25px"
+                    android:text="教练姓名：------"
+                    android:textColor="#373737"
+                    android:textSize="28px" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="43px"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="10px"
+                        android:layout_height="41px"
+                        android:layout_marginLeft="56px"
+                        android:background="#F32E59" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="14px"
+                        android:text="机构信息"
+                        android:textColor="#3A3A3A"
+                        android:textSize="38px" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_store_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="64px"
+                    android:layout_marginLeft="79px"
+                    android:layout_marginRight="123px"
+                    android:layout_marginTop="25px"
+                    android:text="--------"
+                    android:textColor="#373737"
+                    android:textSize="28px" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="26px"
+                android:background="@color/color_ffffff"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="79px"
+                    android:layout_marginTop="39px"
+                    android:text="课程价格：--$"
+                    android:textColor="#3A3A3A"
+                    android:textSize="38px" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="79px"
+                    android:layout_marginTop="39px"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="购买数量："
+                        android:textColor="#3A3A3A"
+                        android:textSize="38px" />
+
+                    <ImageView
+                        android:id="@+id/iv_count_reduce"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="30px"
+                        android:src="@mipmap/iv_count_reduce" />
+
+                    <EditText
+                        android:id="@+id/et_count"
+                        android:layout_width="65px"
+                        android:layout_height="35px"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="6px"
+                        android:background="@drawable/shape_count_edittext"
+                        android:gravity="center"
+                        android:text="1"
+                        android:textColor="#9D9D9D"
+                        android:textSize="33px" />
+
+                    <ImageView
+                        android:id="@+id/iv_count_increase"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="6px"
+                        android:src="@mipmap/iv_count_increase" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_total_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="79px"
+                    android:layout_marginTop="39px"
+                    android:text="课程总额：--$"
+                    android:textColor="#F32E59"
+                    android:textSize="38px" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="51px"
+                    android:layout_marginLeft="79px"
+                    android:layout_marginTop="30px"
+                    android:orientation="vertical">
+
+                    <RadioButton
+                        android:id="@+id/radio_button_mr"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:button="@null"
+                        android:checked="true"
+                        android:drawableLeft="@drawable/selector_sex"
+                        android:drawablePadding="10px"
+                        android:text="WeChat Pay"
+                        android:textColor="#3A3A3A" />
+
+                    <RadioButton
+                        android:id="@+id/radio_button_mrs"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30px"
+                        android:background="@null"
+                        android:button="@null"
+                        android:drawableLeft="@drawable/selector_sex"
+                        android:drawablePadding="10px"
+                        android:text="Ali Pay"
+                        android:textColor="#3A3A3A" />
+                </RadioGroup>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/ll_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="95px"
+        android:layout_alignParentBottom="true"
+        android:background="@color/color_ffffff">
+
+        <RelativeLayout
+            android:id="@+id/rl_pay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10px"
+            android:background="@drawable/shape_register"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="18px"
+                android:layout_toLeftOf="@+id/tv_comfirm_pay"
+                android:src="@mipmap/ic_order_cart" />
+
+            <TextView
+                android:id="@+id/tv_comfirm_pay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="确认支付"
+                android:textColor="@color/color_ffffff"
+                android:textSize="38px" />
+        </RelativeLayout>
+    </LinearLayout>
+</RelativeLayout>

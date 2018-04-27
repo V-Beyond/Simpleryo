@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" >新普乐优</string>
+    <string name="main_home" >首页</string>
+    <string name="main_course">课程</string>
+    <string name="main_my" >我的</string>
+    <string name="useing_help" >使用帮助</string>
+    <string name="complaint_proposal" >投诉建议</string>
+    <string name="bind_account" >绑定账号</string>
+    <string name="contact_us" >联系我们</string>
+    <string name="no_register_click" ><u>未注册用户请点击</u></string>
+</resources>

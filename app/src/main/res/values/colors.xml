@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="color_ffffff">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="color_transparent">#00000000</color>
+    <color name="color_000000">#000000</color>
+    <color name="color_95c6e8">#95c6e8</color>
+    <color name="color_474747">#474747</color>
+    <color name="color_d7e9ff">#d7e9ff</color>
+    <color name="color_d93965">#d93965</color>
+    <color name="color_fafafa">#fafafa</color>
+    <color name="color_e7caff">#e7caff</color>
+    <color name="color_a1c0fff">#a1c0ff</color>
+    <color name="color_27acfe">#27acfe</color>
+    <color name="color_d5d5d5">#d5d5d5</color>
+    <color name="color_d3d3d3">#d3d3d3</color>
+    <color name="color_ff92a9">#ff92a9</color>
+    <color name="color_0678ff">#0678ff</color>
+    <color name="color_4c29ff">#4c29ff</color>
+    <color name="color_7003ff">#7003ff</color>
+    <color name="color_0aebff">#0aebff</color>
+    <color name="color_1f48d6">#1f48d6</color>
+    <color name="color_8b8b8b">#8b8b8b</color>
+    <color name="color_00a9ff">#00a9ff</color>
+    <color name="color_0b7efa">#0b7efa</color>
+    <color name="color_2453f8">#2453f8</color>
+    <color name="color_f32a59">#f32a59</color>
+    <color name="color_92dfff">#92dfff</color>
+    <color name="color_717171">#717171</color>
+    <color name="blue">#33b5e5</color>
+    <color name="text_color">#E38A7C</color>
+
+    <color name="start_color">#337E83</color>
+    <color name="end_color">#63B0A8</color>
+
+    <color name="page1_start_color">#336BB3</color>
+    <color name="page1_end_color">#61ABC0</color>
+
+    <color name="page2_start_color">#EE602C</color>
+    <color name="page2_end_color">#F2AB65</color>
+
+    <color name="page3_start_color">#75539F</color>
+    <color name="page3_end_color">#A87CB7</color>
+</resources>

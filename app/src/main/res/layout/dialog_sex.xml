@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="400px"
+        android:layout_marginRight="50px"
+        android:layout_marginLeft="50px"
+        android:background="@drawable/shape_my"
+        android:orientation="vertical">
+
+        <RadioGroup
+            android:id="@+id/radio_group_sex"
+            android:layout_width="match_parent"
+            android:layout_marginTop="50px"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/iv_boy"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:drawableTop="@drawable/selector_boy"
+                android:button="@null"
+                />
+
+            <RadioButton
+                android:id="@+id/iv_girl"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:button="@null"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/selector_girl" />
+        </RadioGroup>
+        <TextView
+            android:id="@+id/tv_cancel"
+            android:layout_width="250px"
+            android:text="确认"
+            android:background="@drawable/shape_register"
+            android:gravity="center"
+            android:paddingBottom="15px"
+            android:paddingTop="15px"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="50px"
+            android:textColor="@color/color_ffffff"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+</LinearLayout>
