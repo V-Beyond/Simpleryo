@@ -162,7 +162,6 @@ public class MyFragment extends XLibraryLazyFragment {
         }else{
             tv_nickname.setText("未登录");
             Picasso.with(getContext().getApplicationContext()).load("http://p2.so.qhmsg.com/bdr/_240_/t0118ff1cab46ddba27.jpg").transform(transformation).into(iv_avatar);
-//            Picasso.with(getContext().getApplicationContext()).load(R.mipmap.iv_my_info).into(iv_avatar);
         }
     }
 
@@ -170,7 +169,7 @@ public class MyFragment extends XLibraryLazyFragment {
     private void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_msg:
-//                SharedPreferencesUtils.saveKeyBoolean("isLogin", false);
+                SharedPreferencesUtils.saveKeyBoolean("isLogin", false);
                 SharedPreferencesUtils.saveKeyString("token","simpleryo");
                 startActivity(new Intent(getActivity(), MyMsgActivity.class));
                 break;
