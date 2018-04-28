@@ -1,7 +1,9 @@
 package com.simpleryo.leyotang.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,7 +70,7 @@ public class ComfirmOrderActivity extends BaseActivity {
     String storeId;
     String coachId;
     private ProgressDialog dialog;
-    String payType="ALIPAY";
+    String payType="WECHATPAY";
     @ViewInject(R.id.tv_course_time)
     TextView tv_course_time;
     @ViewInject(R.id.tv_course_address)
@@ -175,7 +178,13 @@ public class ComfirmOrderActivity extends BaseActivity {
                         CreateOrderBean createOrderBean = info.getRetDetail(CreateOrderBean.class);
                         if (createOrderBean.getCode().equalsIgnoreCase("0")) {
                             recordOrder(createOrderBean.getData().getId(), createOrderBean.getData().getPayAmt() + "", createOrderBean.getData().getNo(), createOrderBean.getData().getCourseName(), payType);
-                            clickAlipay(ComfirmOrderActivity.this, total_price + "", createOrderBean.getData().getId(), courseName);
+                            if (createOrderBean.getData().getPayType().equalsIgnoreCase("ALIPAY")){
+                                clickAlipay(ComfirmOrderActivity.this, total_price + "", createOrderBean.getData().getId(), courseName);
+                            }else{
+                                alertDialog();
+                            }
+                        }else{
+                            Toast.makeText(ComfirmOrderActivity.this, "下单失败", Toast.LENGTH_SHORT).show();
                         }
                     }
                     @Override
@@ -190,6 +199,36 @@ public class ComfirmOrderActivity extends BaseActivity {
     }
 
 
+    public void alertDialog(){
+        final AlertDialog.Builder normalDialog =
+                new AlertDialog.Builder(ComfirmOrderActivity.this);
+        normalDialog.setTitle("提示");
+        normalDialog.setMessage("该订单无法支付，请重新下单");
+        normalDialog.setPositiveButton("确定",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        normalDialog.setCancelable(false);
+        // 显示
+        normalDialog.show();
+    }
+
+    @Event(value = {R.id.radio_group_pay}, type = RadioGroup.OnCheckedChangeListener.class)
+    private void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+        switch (checkedId) {
+            case R.id.radio_button_wechat:
+                payType="WECHATPAY";
+                break;
+            case R.id.radio_button_alipay:
+                payType="ALIPAY";
+                break;
+            default:
+                break;
+        }
+    }
     /**
      * 记录订单
      *
@@ -232,7 +271,8 @@ public class ComfirmOrderActivity extends BaseActivity {
                 Log.w("cc", "onTransactionCompleted " + String.valueOf(latipayOrder) + (error != null ? error.getMessage() : ""));
                 dialog.dismiss();
                 if (error != null) {
-                    Toast.makeText(activity, "Latipay: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, "支付失败", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(ComfirmOrderActivity.this, MyOrderActivity.class).putExtra("status", "NEW"));
                     return;
                 }
             }

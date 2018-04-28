@@ -15,6 +15,7 @@ import com.simpleryo.leyotang.fragment.AddAddressDialogFragment;
 import com.simpleryo.leyotang.fragment.ConstellationDialogFragment;
 import com.simpleryo.leyotang.fragment.SexDialogFragment;
 import com.simpleryo.leyotang.fragment.UpdateNickNameDialogFragment;
+import com.simpleryo.leyotang.fragment.UserDesDialogFragment;
 import com.simpleryo.leyotang.network.SimpleryoNetwork;
 import com.simpleryo.leyotang.utils.SharedPreferencesUtils;
 import com.simpleryo.leyotang.utils.XActivityUtils;
@@ -59,7 +60,7 @@ public class MyInfoActivity extends BaseActivity {
     }
     String gender;
 
-    @Event(value = {R.id.iv_back,R.id.rl_sex,R.id.rl_name,R.id.rl_constellation,R.id.rl_address}, type = View.OnClickListener.class)
+    @Event(value = {R.id.iv_back,R.id.rl_sex,R.id.rl_name,R.id.rl_constellation,R.id.rl_address,R.id.rl_info}, type = View.OnClickListener.class)
     private void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
@@ -76,6 +77,13 @@ public class MyInfoActivity extends BaseActivity {
                 UpdateNickNameDialogFragment updateNickNameDialogFragment=new UpdateNickNameDialogFragment();
                 updateNickNameDialogFragment.show(getSupportFragmentManager(),"updateNickNameDialogFragment");
                 break;
+            case R.id.rl_info:
+                UserDesDialogFragment userDesDialogFragment=new UserDesDialogFragment();
+                Bundle desBundle=new Bundle();
+                desBundle.putString("des",des);
+                userDesDialogFragment.setArguments(desBundle);
+                userDesDialogFragment.show(getSupportFragmentManager(),"userDesDialogFragment");
+                break;
             case R.id.rl_constellation:
                 ConstellationDialogFragment constellationDialogFragment=new ConstellationDialogFragment();
                 Bundle mBundle=new Bundle();
@@ -87,7 +95,7 @@ public class MyInfoActivity extends BaseActivity {
                 AddAddressDialogFragment addAddressDialogFragment=new AddAddressDialogFragment();
                 Bundle bundle=new Bundle();
                 bundle.putString("gender",gender);
-                bundle.putString("name",name);
+                bundle.putString("linkman",linkman);
                 bundle.putString("phone",phone);
                 bundle.putString("myAddress",myAddress);
                 bundle.putString("housenNmber",housenNmber);
@@ -96,12 +104,14 @@ public class MyInfoActivity extends BaseActivity {
                 break;
         }
     }
-    String name;
+    String linkman;
     String phone;
     String starSign;
     String myAddress;
     String housenNmber;
     String loginName;
+    String emmail;
+    String des;
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updateSex(BusEntity bus) {
         if (bus.getType() == 84) {
@@ -111,6 +121,13 @@ public class MyInfoActivity extends BaseActivity {
         if (bus.getType() == 88) {
             starSign=bus.getContent();
             EventBus.getDefault().post(new BusEntity(86));
+        }
+        if (bus.getType() == 89) {
+            des=bus.getContent();
+            EventBus.getDefault().post(new BusEntity(86));
+        }
+        if (bus.getType() == 90) {
+            EventBus.getDefault().post(new BusEntity(87));
         }
         if (bus.getType() == 86) {
             SimpleryoNetwork.updateInfo(MyInfoActivity.this, new MyBaseProgressCallbackImpl(MyInfoActivity.this) {
@@ -124,7 +141,7 @@ public class MyInfoActivity extends BaseActivity {
                 public void onFailure(HttpInfo info)  {
                     loadingDialog.dismiss();
                 }
-            },userId,bus.getContent(),loginName,gender,starSign);
+            },userId,emmail,bus.getContent(),loginName,gender,starSign,des);
         }
         if (bus.getType()==87){
             SimpleryoNetwork.getUserInfo(MyInfoActivity.this,new MyBaseProgressCallbackImpl(){
@@ -132,34 +149,52 @@ public class MyInfoActivity extends BaseActivity {
                 public void onSuccess(HttpInfo info) {
                     super.onSuccess(info);
                     UserInfoBean userInfoBean=info.getRetDetail(UserInfoBean.class);
-                    tv_nickname.setText(userInfoBean.getData().getNickName());
-                    name=userInfoBean.getData().getName();
+                    emmail=userInfoBean.getData().getEmail();
+
                     gender=userInfoBean.getData().getGender();
                     loginName=userInfoBean.getData().getPhone();
-                    if (userInfoBean.getData().getGender().equalsIgnoreCase("1")){
-                        tv_sex.setText("男");
-                    }else if (userInfoBean.getData().getGender().equalsIgnoreCase("2")){
-                        tv_sex.setText("女");
-                    }else {
-                        tv_sex.setText("未知");
+                    des=userInfoBean.getData().getIntro();
+                    if (userInfoBean.getData().getNickName()!=null){
+                        tv_nickname.setText(userInfoBean.getData().getNickName());
+                    }else{
+                        tv_nickname.setText("暂无昵称");
                     }
-                    if (userInfoBean.getData().getStarSign()!=null){
-                        starSign=userInfoBean.getData().getStarSign();
+                    if (gender!=null){
+                        if (userInfoBean.getData().getGender().equalsIgnoreCase("1")){
+                            tv_sex.setText("男");
+                        }else if (userInfoBean.getData().getGender().equalsIgnoreCase("2")){
+                            tv_sex.setText("女");
+                        }else {
+                            tv_sex.setText("未知");
+                        }
+                    }else{
+                        tv_sex.setText("未知");
                     }
                     if (userInfoBean.getData().getEmail()!=null){
                         tv_email.setText(userInfoBean.getData().getEmail());
                     }
                     if (userInfoBean.getData().getStarSign()!=null){
+                        starSign=userInfoBean.getData().getStarSign();
                         tv_constellation.setText(userInfoBean.getData().getStarSign());
+                    }else{
+                        tv_constellation.setText("暂无星座");
                     }
                     if (userInfoBean.getData().getIntro()!=null){
                         tv_intro.setText(userInfoBean.getData().getIntro());
+                    }else{
+                        tv_intro.setText("暂无个人简介");
                     }
                     if (userInfoBean.getData().getShipToAddr()!=null){
+                        linkman=userInfoBean.getData().getShipToAddr().get(0).getLinkman();
                         phone=userInfoBean.getData().getShipToAddr().get(0).getPhone();
                         myAddress=userInfoBean.getData().getShipToAddr().get(0).getProvice()+userInfoBean.getData().getShipToAddr().get(0).getCity()+userInfoBean.getData().getShipToAddr().get(0).getDistrict();
                         housenNmber=userInfoBean.getData().getShipToAddr().get(0).getDetail();
                         tv_address.setText(myAddress+housenNmber);
+                    }else{
+                        phone=null;
+                        myAddress=null;
+                        housenNmber=null;
+                        tv_address.setText("暂无地址");
                     }
                 }
             },userId);

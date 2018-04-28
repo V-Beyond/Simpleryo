@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="600px"
+        android:layout_marginLeft="50px"
+        android:layout_marginRight="50px"
+        android:background="@drawable/shape_my"
+        android:orientation="vertical"
+        android:paddingLeft="50px"
+        android:paddingRight="50px">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="45px"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="个人简介"
+                android:textColor="#515050"
+                android:textSize="50px" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="300px"
+                android:layout_marginTop="50px">
+
+                <EditText
+                    android:id="@+id/et_nickname"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/shape_register_edittext"
+                    android:hint="请输入您的简介"
+                    android:paddingBottom="20px"
+                    android:paddingLeft="20px"
+                    android:gravity="top|left"
+                    android:paddingTop="20px"
+                    android:paddingRight="20px"
+                    android:textColor="#a9a9a9"
+                    android:maxLength="60"
+                    android:textColorHint="#a9a9a9"
+                    android:textSize="28px" />
+                <TextView
+                    android:id="@+id/tv_edittext_count"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_margin="20px"
+                    android:layout_width="wrap_content"
+                    android:text="0/60"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_cancel"
+            android:layout_width="250px"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="50px"
+            android:background="@drawable/shape_cancel"
+            android:gravity="center"
+            android:paddingBottom="15px"
+            android:paddingTop="15px"
+            android:text="取消"
+            android:textColor="@color/color_ffffff" />
+
+        <TextView
+            android:id="@+id/tv_sure"
+            android:layout_width="250px"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="50px"
+            android:background="@drawable/shape_register"
+            android:gravity="center"
+            android:paddingBottom="15px"
+            android:paddingTop="15px"
+            android:text="确定"
+            android:textColor="@color/color_ffffff" />
+    </RelativeLayout>
+</LinearLayout>

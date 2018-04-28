@@ -42,10 +42,12 @@ public class SexDialogFragment extends BaseDialogFragment {
             x.view().inject(this, mMainView);
             EventBus.getDefault().register(this);
             gender=getArguments().getString("gender");
-            if (gender.equalsIgnoreCase("1")){
-                iv_boy.setChecked(true);
-            }else if(gender.equalsIgnoreCase("2")){
-                iv_girl.setChecked(true);
+            if (gender!=null){
+                if (gender.equalsIgnoreCase("1")){
+                    iv_boy.setChecked(true);
+                }else if(gender.equalsIgnoreCase("2")){
+                    iv_girl.setChecked(true);
+                }
             }
         }
         ViewGroup parent = (ViewGroup) mMainView.getParent();

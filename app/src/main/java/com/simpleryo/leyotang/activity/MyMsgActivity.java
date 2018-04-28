@@ -1,5 +1,6 @@
 package com.simpleryo.leyotang.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
+import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
@@ -56,7 +58,7 @@ public class MyMsgActivity extends BaseActivity {
                 .setHeight(50f)
                 .setColorResource(R.color.color_transparent)
                 .build();
-        lrecyclerview.addItemDecoration(divider);
+//        lrecyclerview.addItemDecoration(divider);
         lrecyclerview.setLayoutManager(new LinearLayoutManager(this));
         messageAdapter = new MessageAdapter(MyMsgActivity.this);
         lRecyclerViewAdapter = new LRecyclerViewAdapter(messageAdapter);
@@ -65,6 +67,12 @@ public class MyMsgActivity extends BaseActivity {
         lrecyclerview.setPullRefreshEnabled(true);
         lrecyclerview.setOnRefreshListener(onRefreshListener);
         getMessageList();
+        lRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                startActivity(new Intent(MyMsgActivity.this,MyNoticeActivity.class));
+            }
+        });
     }
     public void getMessageList(){
         SimpleryoNetwork.getMessageList(MyMsgActivity.this,new MyBaseProgressCallbackImpl(MyMsgActivity.this){

@@ -160,9 +160,9 @@ public class SimpleryoNetwork {
         }
         Log.w("cc", "订单json：" + jsonObject.toString());
         doHttpAsync(context,HttpInfo.Builder()
-                .setUrl(httpUrl  + "o/orders")
+                .setUrl(httpUrl  + "o/orders?token="+getToken())
                 .setRequestType(RequestType.POST)//设置请求方式
-                .addParam("token",getToken())//添加接口参数
+//                .addParam("token",getToken())//添加接口参数
                 .addParamJson(jsonObject.toString())
                 .build(),callback);
     }
@@ -223,17 +223,17 @@ public class SimpleryoNetwork {
      * @param userId
      * @param name
      */
-    public static void updateInfo(Context context, MyBaseProgressCallbackImpl callback,String userId,  String name,String loginName,String gender,String starSign) {
+    public static void updateInfo(Context context, MyBaseProgressCallbackImpl callback,String userId, String email,String name,String loginName,String gender,String starSign,String des) {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("id",userId);
-            jsonObject.put("email",loginName);
+            jsonObject.put("email",email);
             jsonObject.put("loginName",loginName);
-            jsonObject.put("name", name);
-            jsonObject.put("nickName", "早班火车");
+//            jsonObject.put("name", name);
+            jsonObject.put("nickName", name);
             jsonObject.put("gender",gender);
             jsonObject.put("avatarUrl","https://ps.ssl.qhmsg.com/bdr/_240_/t01df569e66fbb4f34f.jpg");
-            jsonObject.put("intro","测试个人简介");
+            jsonObject.put("intro",des);
             jsonObject.put("starSign",starSign);
             jsonObject.put("role","NORMAL");
         } catch (JSONException e) {
@@ -247,6 +247,25 @@ public class SimpleryoNetwork {
                 .addParamJson(jsonObject.toString())//添加接口参数
                 .build(),callback);
     }
+
+    /**
+     * 根据课程状态查询购买课程列表
+     * @param context
+     * @param callback
+     */
+    public static void getBuyAllCourse(Context context, MyBaseProgressCallbackImpl callback,String userId,String status,int offset,int limit) {
+        doHttpAsync(context,HttpInfo.Builder()
+                .setUrl(httpUrl  + "p/courses/buy")
+                .setRequestType(RequestType.GET)//设置请求方式
+                .addParam("token",getToken())//添加接口参数
+                .addParam("userId",userId)
+                .addParam("status",status)
+                .addParam("offset",offset+"")
+                .addParam("limit",limit+"")
+                .build(),callback);
+    }
+
+
 
     /**
      * 查询课程详情

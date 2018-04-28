@@ -16,6 +16,7 @@ import com.simpleryo.leyotang.R;
 import com.simpleryo.leyotang.base.BaseDialogFragment;
 import com.simpleryo.leyotang.base.MyBaseProgressCallbackImpl;
 import com.simpleryo.leyotang.bean.BusEntity;
+import com.simpleryo.leyotang.bean.CodeBean;
 import com.simpleryo.leyotang.network.SimpleryoNetwork;
 import com.simpleryo.leyotang.utils.SharedPreferencesUtils;
 
@@ -55,11 +56,12 @@ public class AddAddressDialogFragment extends BaseDialogFragment {
     @ViewInject(R.id.edittext_house_number)
     EditText edittext_house_number;
     String gender;
-    String name;
+    String linkman;
     String phone;
     String myAddress;
     String housenNmber;
     String userId;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (mMainView == null) {
@@ -73,23 +75,33 @@ public class AddAddressDialogFragment extends BaseDialogFragment {
 //            tv_phone.setText(AlignedTextUtils.formatText("电　　　话"));
 //            tv_address.setText(AlignedTextUtils.formatText("地　　　址"));
 //            tv_door_number.setText(AlignedTextUtils.formatText("门　牌　号"));
-            userId= SharedPreferencesUtils.getKeyString("userId");
+            userId = SharedPreferencesUtils.getKeyString("userId");
             Bundle bundle = getArguments();
             gender = bundle.getString("gender");
-            name = bundle.getString("name");
+            linkman = bundle.getString("linkman");
             phone = bundle.getString("phone");
             myAddress = bundle.getString("myAddress");
             housenNmber = bundle.getString("housenNmber");
-            if (gender.equalsIgnoreCase("1")) {
-                radio_button_mr.setChecked(true);
-            } else if (gender.equalsIgnoreCase("2")) {
-                radio_button_mrs.setChecked(true);
+            if (gender != null) {
+                if (gender.equalsIgnoreCase("1")) {
+                    radio_button_mr.setChecked(true);
+                } else if (gender.equalsIgnoreCase("2")) {
+                    radio_button_mrs.setChecked(true);
+                }
             }
-            et_nickname.setText(name);
-            et_nickname.setSelection(name.length());
-            ed_phone.setText(phone);
-            edittext_address.setText(myAddress);
-            edittext_house_number.setText(housenNmber);
+            if (linkman != null) {
+                et_nickname.setText(linkman);
+                et_nickname.setSelection(linkman.length());
+            }
+            if (phone != null) {
+                ed_phone.setText(phone);
+            }
+            if (myAddress != null) {
+                edittext_address.setText(myAddress);
+            }
+            if (housenNmber != null) {
+                edittext_house_number.setText(housenNmber);
+            }
         }
         ViewGroup parent = (ViewGroup) mMainView.getParent();
         if (parent != null) {
@@ -127,23 +139,31 @@ public class AddAddressDialogFragment extends BaseDialogFragment {
                 dismiss();
                 break;
             case R.id.tv_sure:
-                name=et_nickname.getText().toString().trim();
-                phone=ed_phone.getText().toString().trim();
-                housenNmber=edittext_house_number.getText().toString().trim();
-                SimpleryoNetwork.addUserAddress(getActivity(),new MyBaseProgressCallbackImpl(getActivity()){
+                linkman = et_nickname.getText().toString().trim();
+                phone = ed_phone.getText().toString().trim();
+                housenNmber = edittext_house_number.getText().toString().trim();
+                SimpleryoNetwork.addUserAddress(getActivity(), new MyBaseProgressCallbackImpl(getActivity()) {
                     @Override
                     public void onSuccess(HttpInfo info) {
                         super.onSuccess(info);
                         loadingDialog.dismiss();
-                        dismiss();
+                        CodeBean codeBean = info.getRetDetail(CodeBean.class);
+                        if (codeBean.getCode().equalsIgnoreCase("0")) {
+                            EventBus.getDefault().post(new BusEntity(90));
+                            Toast.makeText(getActivity(), "添加成功", Toast.LENGTH_SHORT).show();
+                            dismiss();
+                        } else {
+                            Toast.makeText(getActivity(), codeBean.getData().getValue(), Toast.LENGTH_SHORT).show();
+                        }
                     }
+
                     @Override
                     public void onFailure(HttpInfo info) {
                         super.onFailure(info);
                         loadingDialog.dismiss();
-                        Toast.makeText(getActivity(),"数据一不小心走丢了，请稍后回来",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "数据一不小心走丢了，请稍后回来", Toast.LENGTH_SHORT).show();
                     }
-                },userId,name,phone,"上海","上海市","静安区",housenNmber);
+                }, userId, linkman, phone, "上海", "上海市", "静安区", housenNmber);
                 break;
             default:
                 break;

@@ -72,6 +72,7 @@
                             android:id="@+id/radio_group_sex"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:visibility="gone"
                             android:layout_marginLeft="10.5dp"
                             android:layout_marginTop="18.5dp"
                             android:orientation="horizontal">

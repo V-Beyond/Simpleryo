@@ -23,7 +23,8 @@
 
             <TextView
                 android:id="@+id/tv_title"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_marginTop="16px"
                 android:layout_height="wrap_content"
                 android:text="Johnny Appleseed"
                 android:textColor="#989898"
@@ -42,7 +43,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="2px"
-        android:layout_marginTop="37px"
+        android:layout_height="1px"
+        android:layout_marginTop="16px"
         android:background="#B9B9B9" />
 </LinearLayout>

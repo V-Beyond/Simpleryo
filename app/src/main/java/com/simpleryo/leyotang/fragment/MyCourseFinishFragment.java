@@ -19,9 +19,10 @@ import com.simpleryo.leyotang.activity.MyCourseDetailActivity;
 import com.simpleryo.leyotang.adapter.MyFinishCourseAdapter;
 import com.simpleryo.leyotang.base.MyBaseProgressCallbackImpl;
 import com.simpleryo.leyotang.base.XLibraryLazyFragment;
+import com.simpleryo.leyotang.bean.BuyedCouseListBean;
 import com.simpleryo.leyotang.bean.MultipleItem;
-import com.simpleryo.leyotang.bean.OrderListBean;
 import com.simpleryo.leyotang.network.SimpleryoNetwork;
+import com.simpleryo.leyotang.utils.SharedPreferencesUtils;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -37,7 +38,7 @@ import java.util.ArrayList;
 
 public class MyCourseFinishFragment extends XLibraryLazyFragment {
 
-    ArrayList<OrderListBean.DataBean> orderListBeans=new ArrayList<>();
+    ArrayList<BuyedCouseListBean.DataBeanX> orderListBeans=new ArrayList<>();
     @ViewInject(R.id.lrecyclerview)
     LRecyclerView lrecyclerview;
     LRecyclerViewAdapter lRecyclerViewAdapter;
@@ -47,6 +48,7 @@ public class MyCourseFinishFragment extends XLibraryLazyFragment {
     String status;
     int offset=0;
     int limit=9;
+    String userId;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (mMainView == null) {
@@ -55,6 +57,7 @@ public class MyCourseFinishFragment extends XLibraryLazyFragment {
             x.view().inject(this, mMainView);
             isPrepared = true;
             status=getArguments().getString("status");
+            userId= SharedPreferencesUtils.getKeyString("userId");
             lazyLoad();
         }
         ViewGroup parent = (ViewGroup) mMainView.getParent();
@@ -86,7 +89,7 @@ public class MyCourseFinishFragment extends XLibraryLazyFragment {
         lRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                startActivity(new Intent(getActivity(), MyCourseDetailActivity.class).putExtra("id",orderListBeans.get(position).getId()));
+                startActivity(new Intent(getActivity(), MyCourseDetailActivity.class).putExtra("id",orderListBeans.get(position).getOrderId()));
             }
         });
 
@@ -112,16 +115,16 @@ public class MyCourseFinishFragment extends XLibraryLazyFragment {
     };
 
     public void initExcellentCourse() {
-        SimpleryoNetwork.getOrders(getActivity(),new MyBaseProgressCallbackImpl(){
+        SimpleryoNetwork.getBuyAllCourse(getActivity(),new MyBaseProgressCallbackImpl(){
             @Override
             public void onSuccess(HttpInfo info) {
                 super.onSuccess(info);
                 mHasLoadedOnce=true;
                 MultipleItem item;
-                OrderListBean orderListBean=info.getRetDetail(OrderListBean.class);
-                if (orderListBean.getCode().equalsIgnoreCase("0")){
-                    if(orderListBean.getData()!=null&&orderListBean.getData().size()>0){
-                        orderListBeans.addAll(orderListBean.getData());
+                BuyedCouseListBean buyedCouseListBean=info.getRetDetail(BuyedCouseListBean.class);
+                if (buyedCouseListBean.getCode().equalsIgnoreCase("0")){
+                    if(buyedCouseListBean.getData()!=null&&buyedCouseListBean.getData().size()>0){
+                        orderListBeans.addAll(buyedCouseListBean.getData());
                         myFinishCourseAdapter.setDataList(orderListBeans);
                     }else{
                         if (orderListBeans.size()>0){
@@ -139,7 +142,7 @@ public class MyCourseFinishFragment extends XLibraryLazyFragment {
                 loadingDialog.dismiss();
                 lrecyclerview.setEmptyView(mEmptyView);//设置在setAdapter之前才能生效
             }
-        },"RECEIVED",offset,limit);
+        },userId,status,offset,limit);
         lrecyclerview.setFocusable(false);
     }
 }

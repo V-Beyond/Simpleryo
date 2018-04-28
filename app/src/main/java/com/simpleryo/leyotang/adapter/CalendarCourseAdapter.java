@@ -51,6 +51,7 @@ public class CalendarCourseAdapter extends BaseAdapter<CalendarListBean.DataBean
                 @Override
                 public void onClick(View view) {
                     mContext.startActivity(new Intent(mContext, MyCourseDetailActivity.class).putExtra("id", bean.getOrderId()));
+//                    mContext.startActivity(new Intent(mContext, MyCourseActivity.class));
                 }
             });
         }else  if (position ==7) {

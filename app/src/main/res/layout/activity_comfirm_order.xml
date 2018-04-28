@@ -304,6 +304,7 @@
                     android:textSize="38px" />
 
                 <RadioGroup
+                    android:id="@+id/radio_group_pay"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="51px"
@@ -312,7 +313,7 @@
                     android:orientation="vertical">
 
                     <RadioButton
-                        android:id="@+id/radio_button_mr"
+                        android:id="@+id/radio_button_wechat"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:background="@null"
@@ -324,7 +325,7 @@
                         android:textColor="#3A3A3A" />
 
                     <RadioButton
-                        android:id="@+id/radio_button_mrs"
+                        android:id="@+id/radio_button_alipay"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="30px"

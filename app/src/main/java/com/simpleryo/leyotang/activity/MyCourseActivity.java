@@ -41,11 +41,11 @@ public class MyCourseActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         tv_name.setText("我的课程");
         Bundle bundle=new Bundle();
-        bundle.putString("status","");
+        bundle.putString("status","ALL");
         MyCourseFragment myCourseFragment=new MyCourseFragment();
         myCourseFragment.setArguments(bundle);
         Bundle bundle1=new Bundle();
-        bundle1.putString("status","RECEIVED");
+        bundle1.putString("status","PENDING");
         MyCourseStartedFragment myCourseStartedFragment=new MyCourseStartedFragment();
         myCourseStartedFragment.setArguments(bundle1);
         Bundle bundle2=new Bundle();

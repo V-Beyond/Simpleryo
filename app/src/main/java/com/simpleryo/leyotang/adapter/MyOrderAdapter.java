@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import com.makeramen.roundedimageview.RoundedTransformationBuilder;
 import com.simpleryo.leyotang.R;
 import com.simpleryo.leyotang.activity.BusinessHomeActivty;
+import com.simpleryo.leyotang.activity.OrderDetailActivity;
 import com.simpleryo.leyotang.activity.RemarkCourseActivity;
 import com.simpleryo.leyotang.bean.BusEntity;
 import com.simpleryo.leyotang.bean.CollectionListBean;
@@ -68,7 +69,7 @@ public class MyOrderAdapter extends BaseMultiAdapter<MultipleItem> {
         if (holder instanceof MyOrderViewHolder) {//我的订单
             final OrderListBean.DataBean dataBean = bean.getOrderListBean();
             if (dataBean.getImageUrl()!=null){
-                Picasso.with(context).load("http://p3.so.qhimgs1.com/bdr/_240_/t01144f848052b04663.jpg").transform(transformation).into(((MyOrderViewHolder) holder).iv_order_img);
+                Picasso.with(context).load(dataBean.getImageUrl()).into(((MyOrderViewHolder) holder).iv_order_img);
             }else{
                 Picasso.with(mContext).load("http://p3.so.qhimgs1.com/bdr/_240_/t01144f848052b04663.jpg").transform(transformation).into(((MyOrderViewHolder) holder).iv_order_img);
             }
@@ -119,6 +120,12 @@ public class MyOrderAdapter extends BaseMultiAdapter<MultipleItem> {
                 ((MyOrderViewHolder) holder).tv_state.setText("已支付");
                 ((MyOrderViewHolder) holder).tv_order_remark.setVisibility(View.INVISIBLE);
                 ((MyOrderViewHolder) holder).tv_detail.setVisibility(View.VISIBLE);
+                ((MyOrderViewHolder) holder).tv_detail.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mContext.startActivity(new Intent(mContext, OrderDetailActivity.class).putExtra("orderId", dataBean.getId()));
+                    }
+                });
             }
         } else if (holder instanceof MyAttentionViewHolder) {//我的关注
             if (bean.getStoreDataBean()!=null){

@@ -1,19 +1,31 @@
 package com.simpleryo.leyotang.fragment;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.content.FileProvider;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.sdk.android.oss.ClientConfiguration;
+import com.alibaba.sdk.android.oss.ClientException;
+import com.alibaba.sdk.android.oss.OSS;
+import com.alibaba.sdk.android.oss.OSSClient;
+import com.alibaba.sdk.android.oss.ServiceException;
+import com.alibaba.sdk.android.oss.callback.OSSCompletedCallback;
+import com.alibaba.sdk.android.oss.callback.OSSProgressCallback;
+import com.alibaba.sdk.android.oss.common.auth.OSSCredentialProvider;
+import com.alibaba.sdk.android.oss.common.auth.OSSStsTokenCredentialProvider;
+import com.alibaba.sdk.android.oss.model.PutObjectRequest;
+import com.alibaba.sdk.android.oss.model.PutObjectResult;
 import com.makeramen.roundedimageview.RoundedTransformationBuilder;
 import com.okhttplib.HttpInfo;
 import com.simpleryo.leyotang.R;
@@ -66,9 +78,9 @@ public class MyFragment extends XLibraryLazyFragment {
     @ViewInject(R.id.iv_back)
     ImageView iv_back;
     @ViewInject(R.id.tv_collection)
-    TextView  tv_collection;
+    TextView tv_collection;
     @ViewInject(R.id.tv_attention)
-    TextView  tv_attention;
+    TextView tv_attention;
     @ViewInject(R.id.tv_nickname)
     TextView tv_nickname;
     private static final int CODE_GALLERY_REQUEST = 0xa0;
@@ -109,68 +121,120 @@ public class MyFragment extends XLibraryLazyFragment {
         return Environment.getExternalStorageDirectory().getPath();
     }
 
+    OSS oss;
+
     @Override
     protected void lazyLoad() {
         if (!isPrepared || !isVisible || mHasLoadedOnce) {
             return;
         }
+        String endpoint = "oss-cn-hangzhou.aliyuncs.com";
+        // 在移动端建议使用STS的方式初始化OSSClient，更多信息参考：[访问控制]
+        OSSCredentialProvider credentialProvider = new OSSStsTokenCredentialProvider("LTAIdS9LK729tPQy", "JYWixbcdtFYUjonwoxyJTGFpbCQ=", "eyJleHBpcmF0aW9uIjoiMjAxOC0wNC0yOFQwOTo1NToyMS40NzBaIiwiY29uZGl0aW9ucyI6W1siY29udGVudC1sZW5ndGgtcmFuZ2UiLDAsMTA0ODU3NjAwMF0sWyJzdGFydHMtd2l0aCIsIiRrZXkiLCJmaWxlIl1dfQ==");
+        //该配置类如果不设置，会有默认配置，具体可看该类
+        ClientConfiguration conf = new ClientConfiguration();
+        conf.setConnectionTimeout(15 * 1000); // 连接超时，默认15秒
+        conf.setSocketTimeout(15 * 1000); // socket超时，默认15秒
+        conf.setMaxConcurrentRequest(5); // 最大并发请求数，默认5个
+        conf.setMaxErrorRetry(2); // 失败后最大重试次数，默认2次
+        oss = new OSSClient(getActivity().getApplicationContext(), endpoint, credentialProvider, conf);
     }
-    String mPageName="MyFragment";
+
+
+    public void uploadImg(String filePath) {
+        // 构造上传请求
+        PutObjectRequest put = new PutObjectRequest("simpleryo-china", "avatar", filePath);
+        // 异步上传时可以设置进度回调
+        put.setProgressCallback(new OSSProgressCallback<PutObjectRequest>() {
+            @Override
+            public void onProgress(PutObjectRequest request, long currentSize, long totalSize) {
+                Log.d("PutObject", "currentSize: " + currentSize + " totalSize: " + totalSize);
+            }
+        });
+        oss.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
+            @Override
+            public void onSuccess(PutObjectRequest request, PutObjectResult result) {
+                Log.d("PutObject", "UploadSuccess");
+                Log.d("ETag", result.getETag());
+                Log.d("RequestId", result.getRequestId());
+            }
+
+            @Override
+            public void onFailure(PutObjectRequest request, ClientException clientExcepion, ServiceException serviceException) {
+                // 请求异常
+                if (clientExcepion != null) {
+                    // 本地异常如网络异常等
+                    clientExcepion.printStackTrace();
+                }
+                if (serviceException != null) {
+                    // 服务异常
+                    Log.e("ErrorCode", serviceException.getErrorCode());
+                    Log.e("RequestId", serviceException.getRequestId());
+                    Log.e("HostId", serviceException.getHostId());
+                    Log.e("RawMessage", serviceException.getRawMessage());
+                }
+            }
+        });
+    }
+
+    String mPageName = "MyFragment";
+
     @Override
     public void onPause() {
         super.onPause();
         MobclickAgent.onPageEnd(mPageName);
     }
 
-    public  String userId;
+    public String userId;
+
     @Override
     public void onResume() {
         super.onResume();
         MobclickAgent.onPageStart(mPageName);
         isLogin = SharedPreferencesUtils.getKeyBoolean("isLogin");//获取用户登录状态
-        userId= SharedPreferencesUtils.getKeyString("userId");
+        userId = SharedPreferencesUtils.getKeyString("userId");
         if (isLogin) {
-            SimpleryoNetwork.getUserInfo(getActivity(),new MyBaseProgressCallbackImpl(){
+            SimpleryoNetwork.getUserInfo(getActivity(), new MyBaseProgressCallbackImpl() {
                 @Override
                 public void onSuccess(HttpInfo info) {
                     super.onSuccess(info);
-                    mHasLoadedOnce=true;
-                    UserInfoBean userInfoBean=info.getRetDetail(UserInfoBean.class);
-                    if (userInfoBean.getData().getAvatarUrl()!=null){
+                    mHasLoadedOnce = true;
+                    UserInfoBean userInfoBean = info.getRetDetail(UserInfoBean.class);
+                    if (userInfoBean.getData().getAvatarUrl() != null) {
                         Picasso.with(getContext().getApplicationContext()).load(userInfoBean.getData().getAvatarUrl()).transform(transformation).into(iv_avatar);
-                    }else{
+                    } else {
                         Picasso.with(getContext().getApplicationContext()).load(R.mipmap.iv_my_info).into(iv_avatar);
                     }
-                    if (userInfoBean.getData().getCollectCount()!=null){
-                        tv_collection.setText(userInfoBean.getData().getCollectCount()+"");
-                    }else{
+                    if (userInfoBean.getData().getCollectCount() != null) {
+                        tv_collection.setText(userInfoBean.getData().getCollectCount() + "");
+                    } else {
                         tv_collection.setText("0");
                     }
-                    if (userInfoBean.getData().getFollowCount()!=null){
-                        tv_attention.setText(userInfoBean.getData().getFollowCount()+"");
-                    }else{
+                    if (userInfoBean.getData().getFollowCount() != null) {
+                        tv_attention.setText(userInfoBean.getData().getFollowCount() + "");
+                    } else {
                         tv_attention.setText("0");
                     }
-                    if (userInfoBean.getData().getNickName()!=null){
+                    if (userInfoBean.getData().getNickName() != null) {
                         tv_nickname.setText(userInfoBean.getData().getNickName());
-                    }else{
+                    } else {
                         tv_nickname.setText("暂无昵称");
                     }
 
                 }
-            },userId);
-        }else{
+            }, userId);
+        } else {
             tv_nickname.setText("未登录");
             Picasso.with(getContext().getApplicationContext()).load("http://p2.so.qhmsg.com/bdr/_240_/t0118ff1cab46ddba27.jpg").transform(transformation).into(iv_avatar);
         }
     }
 
-    @Event(value = {R.id.iv_msg,R.id.ll_login, R.id.ll_use_help,R.id.ll_wait_pay,R.id.ll_comprehensive_evaluation, R.id.ll_contact_us, R.id.ll_my_course, R.id.iv_avatar, R.id.ll_my_info, R.id.ll_bind_account, R.id.ll_complaint, R.id.ll_my_attention, R.id.ll_collection}, type = View.OnClickListener.class)
+    @Event(value = {R.id.iv_msg, R.id.ll_login, R.id.ll_use_help, R.id.ll_wait_pay, R.id.ll_comprehensive_evaluation, R.id.ll_contact_us, R.id.ll_my_course, R.id.iv_avatar, R.id.ll_my_info, R.id.ll_bind_account, R.id.ll_complaint, R.id.ll_my_attention, R.id.ll_collection}, type = View.OnClickListener.class)
     private void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_msg:
                 SharedPreferencesUtils.saveKeyBoolean("isLogin", false);
-                SharedPreferencesUtils.saveKeyString("token","simpleryo");
+                SharedPreferencesUtils.saveKeyString("token", "simpleryo");
                 startActivity(new Intent(getActivity(), MyMsgActivity.class));
                 break;
             case R.id.ll_use_help:
@@ -181,28 +245,28 @@ public class MyFragment extends XLibraryLazyFragment {
                 break;
             case R.id.ll_wait_pay:
                 if (isLogin) {
-                    startActivity(new Intent(getActivity(), MyOrderActivity.class).putExtra("status","NEW"));
+                    startActivity(new Intent(getActivity(), MyOrderActivity.class).putExtra("status", "NEW"));
                 } else {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                 }
                 break;
             case R.id.ll_comprehensive_evaluation:
                 if (isLogin) {
-                    startActivity(new Intent(getActivity(), MyOrderActivity.class).putExtra("status","RECEIVED"));
+                    startActivity(new Intent(getActivity(), MyOrderActivity.class).putExtra("status", "RECEIVED"));
                 } else {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                 }
                 break;
             case R.id.ll_my_course:
                 if (isLogin) {
-                    startActivity(new Intent(getActivity(), MyOrderActivity.class).putExtra("status","COMPLETED"));
+                    startActivity(new Intent(getActivity(), MyOrderActivity.class).putExtra("status", "COMPLETED"));
                 } else {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                 }
                 break;
             case R.id.ll_my_info:
                 if (isLogin) {
-                    startActivity(new Intent(getActivity(), MyInfoActivity.class).putExtra("userId",userId));
+                    startActivity(new Intent(getActivity(), MyInfoActivity.class).putExtra("userId", userId));
                 } else {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                 }
@@ -234,7 +298,12 @@ public class MyFragment extends XLibraryLazyFragment {
                 break;
             case R.id.iv_avatar:
                 if (isLogin) {
-                    PhotoUtils.openPic(getActivity(), CODE_GALLERY_REQUEST);
+//                    PhotoUtils.openPic(getActivity(), CODE_GALLERY_REQUEST);
+                    Intent i = new Intent(
+                            Intent.ACTION_PICK,
+                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+                    startActivityForResult(i, CODE_GALLERY_REQUEST);
 //                    imageUri = Uri.fromFile(fileUri);
 //                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
 //                        imageUri = FileProvider.getUriForFile(getActivity(), "com.simpleryo.nz.fileprovider", fileUri);//通过FileProvider创建一个content类型的Uri
@@ -252,23 +321,42 @@ public class MyFragment extends XLibraryLazyFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode==RESULT_OK){
+        if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 //相机返回
                 case CODE_CAMERA_REQUEST:
                     cropImageUri = Uri.fromFile(fileCropUri);
 //                Picasso.with(getContext().getApplicationContext()).load("http://p0.so.qhmsg.com/bdr/_240_/t01eb2a6c6319b04655.jpg").transform(transformation).into(iv_avatar);
 //                 PhotoUtils.cropImageUri(getActivity(), imageUri, cropImageUri, 1, 1, OUTPUT_X, OUTPUT_Y, CODE_RESULT_REQUEST);
+
                     Picasso.with(getContext().getApplicationContext()).load(cropImageUri).transform(transformation).into(iv_avatar);
                     break;
                 //相册返回
                 case CODE_GALLERY_REQUEST:
-                    cropImageUri = Uri.fromFile(fileCropUri);
-                    Uri newUri = Uri.parse(PhotoUtils.getPath(getActivity(), data.getData()));
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        newUri = FileProvider.getUriForFile(getActivity(), "com.simpleryo.nz.fileprovider", new File(newUri.getPath()));
-                    }
-                    Picasso.with(getContext().getApplicationContext()).load(newUri).transform(transformation).into(iv_avatar);
+//                    cropImageUri = Uri.fromFile(fileCropUri);
+//                    Uri newUri = Uri.parse(PhotoUtils.getPath(getActivity(), data.getData()));
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//                        newUri = FileProvider.getUriForFile(getActivity(), "com.simpleryo.nz.fileprovider", new File(newUri.getPath()));
+//                    }
+//                    String filePath=PhotoUtils.getPath(getActivity(), data.getData());
+//                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
+//                    Cursor cursor = getActivity().getContentResolver().query(newUri,
+//                            filePathColumn, null, null, null);
+//                    cursor.moveToFirst();
+//                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+//                    String  picturePath = cursor.getString(columnIndex);
+                    Uri selectedImage = data.getData();
+                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
+
+                    Cursor cursor = getActivity().getContentResolver().query(selectedImage,
+                            filePathColumn, null, null, null);
+                    cursor.moveToFirst();
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    String filePath = cursor.getString(columnIndex);
+                    cursor.close();
+                    Log.w("cc", "filePath:" + filePath);
+                    uploadImg(filePath);
+//                    Picasso.with(getContext().getApplicationContext()).load(newUri).transform(transformation).into(iv_avatar);
                     break;
                 //裁剪返回
                 case CODE_RESULT_REQUEST:

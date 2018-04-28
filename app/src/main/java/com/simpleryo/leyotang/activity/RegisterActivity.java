@@ -1,6 +1,5 @@
 package com.simpleryo.leyotang.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -110,7 +109,8 @@ public class RegisterActivity extends BaseActivity {
                         loadingDialog.dismiss();
                         RegisterBean registerBean = info.getRetDetail(RegisterBean.class);
                         if (registerBean.getCode().equalsIgnoreCase("0")){
-                            startActivity(new Intent(RegisterActivity.this,LoginActivity.class));
+                            Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
+//                            startActivity(new Intent(RegisterActivity.this,LoginActivity.class));
                             XActivityUtils.getInstance().popActivity(RegisterActivity.this);
                         }else{
                             Toast.makeText(RegisterActivity.this, registerBean.getMsg(), Toast.LENGTH_SHORT).show();
@@ -119,7 +119,7 @@ public class RegisterActivity extends BaseActivity {
 
                     @Override
                     public void onFailure(HttpInfo info)   {
-
+                        loadingDialog.dismiss();
                     }
                 }, email, phone, code, password);
                 break;
