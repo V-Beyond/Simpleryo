@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +18,20 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.sdk.android.oss.ClientConfiguration;
+import com.alibaba.sdk.android.oss.ClientException;
+import com.alibaba.sdk.android.oss.OSS;
+import com.alibaba.sdk.android.oss.OSSClient;
+import com.alibaba.sdk.android.oss.ServiceException;
+import com.alibaba.sdk.android.oss.callback.OSSCompletedCallback;
+import com.alibaba.sdk.android.oss.callback.OSSProgressCallback;
+import com.alibaba.sdk.android.oss.common.auth.OSSCredentialProvider;
+import com.alibaba.sdk.android.oss.common.auth.OSSCustomSignerCredentialProvider;
+import com.alibaba.sdk.android.oss.common.utils.OSSUtils;
+import com.alibaba.sdk.android.oss.model.PutObjectRequest;
+import com.alibaba.sdk.android.oss.model.PutObjectResult;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
@@ -29,20 +44,26 @@ import com.simpleryo.leyotang.adapter.ImagePickerAdapter;
 import com.simpleryo.leyotang.base.BaseActivity;
 import com.simpleryo.leyotang.base.MyBaseProgressCallbackImpl;
 import com.simpleryo.leyotang.bean.BaseResult;
+import com.simpleryo.leyotang.bean.BusEntity;
+import com.simpleryo.leyotang.bean.ImageItemBean;
 import com.simpleryo.leyotang.bean.OrderDetailBean;
-import com.simpleryo.leyotang.bean.QiNiuTokenDataBean;
 import com.simpleryo.leyotang.imageloader.GlideImageLoader;
 import com.simpleryo.leyotang.network.SimpleryoNetwork;
 import com.simpleryo.leyotang.utils.XActivityUtils;
+import com.simpleryo.leyotang.utils.XStringPars;
 import com.simpleryo.leyotang.view.SelectDialog;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,21 +100,40 @@ public class RemarkCourseActivity extends BaseActivity implements ImagePickerAda
             .build();
     String token;
     String corseId;
+    OSS oss;
+    JsonArray json=new JsonArray();
+    ArrayList<ImageItemBean> imageItemBeans = new ArrayList<>();
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         tv_name.setText("晒单评价");
+        EventBus.getDefault().register(this);
+                String endpoint = "oss-cn-hangzhou.aliyuncs.com";
+//        String endpoint = "oss-cn-shanghai.aliyuncs.com";
+        // 在移动端建议使用STS的方式初始化OSSClient，更多信息参考：[访问控制]
+        OSSCredentialProvider credentialProvider = new OSSCustomSignerCredentialProvider() {
+            @Override
+            public String signContent(String content) {
+                // 您需要在这里依照OSS规定的签名算法，实现加签一串字符内容，并把得到的签名传拼接上AccessKeyId后返回
+                // 一般实现是，将字符内容post到您的业务服务器，然后返回签名
+                // 如果因为某种原因加签失败，描述error信息后，返回nil
+                // 以下是用本地算法进行的演示
+//                String token= OSSUtils.sign("LTAIbjVuAOZS2Wq7","tL17dGzj2l2VAqTOLxpRKEPmh4s4Mq",content);
+                String token = OSSUtils.sign("LTAIdS9LK729tPQy", "n1BLiLsioXbPcigywAADDgEOdv5XO4", content);
+                Log.w("cc", "OSS签名token:" + token);
+                return token;
+            }
+        };
+        //该配置类如果不设置，会有默认配置，具体可看该类
+        ClientConfiguration conf = new ClientConfiguration();
+        conf.setConnectionTimeout(15 * 1000); // 连接超时，默认15秒
+        conf.setSocketTimeout(15 * 1000); // socket超时，默认15秒
+        conf.setMaxConcurrentRequest(5); // 最大并发请求数，默认5个
+        conf.setMaxErrorRetry(2); // 失败后最大重试次数，默认2次
+        oss = new OSSClient(RemarkCourseActivity.this, endpoint, credentialProvider, conf);
         //最好放到 Application oncreate执行
         initImagePicker();
         initWidget();
-        SimpleryoNetwork.getQiNiuToken(RemarkCourseActivity.this,new MyBaseProgressCallbackImpl(){
-            @Override
-            public void onSuccess(HttpInfo info) {
-                super.onSuccess(info);
-                QiNiuTokenDataBean qiNiuTokenDataBean=info.getRetDetail(QiNiuTokenDataBean.class);
-                token=qiNiuTokenDataBean.getToken();
-            }
-        });
         orderId=getIntent().getStringExtra("orderId");
         SimpleryoNetwork.getOrderDetail(RemarkCourseActivity.this,new MyBaseProgressCallbackImpl(RemarkCourseActivity.this){
             @Override
@@ -118,7 +158,17 @@ public class RemarkCourseActivity extends BaseActivity implements ImagePickerAda
                 XActivityUtils.getInstance().popActivity(RemarkCourseActivity.this);
                 break;
             case R.id.tv_commit:
+                int count = imageItemBeans.size();
+                for (int i = 0; i < count; i++) {
+                    JsonObject jsonObject=new JsonObject();
+                    jsonObject.addProperty("value", imageItemBeans.get(i).getValue());
+                    json.add(jsonObject);
+                }
                 comment=edittext_comment.getText().toString().trim();
+                if (TextUtils.isEmpty(comment)){
+                    Toast.makeText(RemarkCourseActivity.this,"请留下你的课程感想",Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 SimpleryoNetwork.reviewCourse(RemarkCourseActivity.this,new MyBaseProgressCallbackImpl(RemarkCourseActivity.this){
                     @Override
                     public void onSuccess(HttpInfo info) {
@@ -132,14 +182,13 @@ public class RemarkCourseActivity extends BaseActivity implements ImagePickerAda
                             Toast.makeText(RemarkCourseActivity.this,baseResult.getMsg(),Toast.LENGTH_SHORT).show();
                         }
                     }
-
                     @Override
                     public void onFailure(HttpInfo info) {
                         super.onFailure(info);
                         loadingDialog.dismiss();
                         Toast.makeText(RemarkCourseActivity.this,"数据一不小心走丢了，请稍后回来",Toast.LENGTH_SHORT).show();
                     }
-                },orderId,comment,System.currentTimeMillis()+"",rating_bar.getRating()+"");
+                },orderId,comment,System.currentTimeMillis()+"",rating_bar.getRating()+"",json);
                 break;
         }
     }
@@ -245,9 +294,7 @@ public class RemarkCourseActivity extends BaseActivity implements ImagePickerAda
                 if (images != null) {
                     selImageList.addAll(images);
                     adapter.setImages(selImageList);
-                    for (ImageItem imageItem:images){
-                        uploadPic(token,bitmapToString(imageItem.path));
-                    }
+                    EventBus.getDefault().post(new BusEntity(405));
                 }
             }
         } else if (resultCode == ImagePicker.RESULT_CODE_BACK) {
@@ -258,27 +305,90 @@ public class RemarkCourseActivity extends BaseActivity implements ImagePickerAda
                     selImageList.clear();
                     selImageList.addAll(images);
                     adapter.setImages(selImageList);
+                    EventBus.getDefault().post(new BusEntity(405));
                 }
             }
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void updateSex(BusEntity bus) {
+        if (bus.getType()==405) {
+            uploadImages(selImageList);
+        }
+    }
+    public void uploadImages(ArrayList<ImageItem> imageItems){
+        if (null == imageItems || imageItems.size() == 0) {
+            return;
+        } // 上传文件
+        uploadImg(imageItems);
+    }
+    String uploadAvataPath;
 
+    public void uploadImg(final ArrayList<ImageItem> imageItems) {
+        final String fileName = "file/" + XStringPars.md5("simpleryo_android_" + System.currentTimeMillis());
+        if (imageItems.size() <= 0) {
+            // 文件全部上传完毕，这里编写上传结束的逻辑，如果要在主线程操作，最好用Handler或runOnUiThead做对应逻辑
+            return;// 这个return必须有，否则下面报越界异常，原因自己思考下哈
+        }
+        final ImageItem imageItem = imageItems.get(0);
+        if (TextUtils.isEmpty(imageItem.path)) {
+            imageItems.remove(0);
+            // url为空就没必要上传了，这里做的是跳过它继续上传的逻辑。
+            uploadImg(imageItems);
+            return;
+        }
 
-    public void uploadPic(String key,String localFile){
-        SimpleryoNetwork.uploadPicToQiNiu(RemarkCourseActivity.this,new MyBaseProgressCallbackImpl(RemarkCourseActivity.this){
+        File file = new File(imageItem.path);
+        if (null == file || !file.exists()) {
+            imageItems.remove(0);
+            // 文件为空或不存在就没必要上传了，这里做的是跳过它继续上传的逻辑。
+            uploadImg(imageItems);
+            return;
+        }
+        // 构造上传请求
+        PutObjectRequest put = new PutObjectRequest("simpleryo-china", fileName, imageItem.path);
+        // 异步上传时可以设置进度回调
+        put.setProgressCallback(new OSSProgressCallback<PutObjectRequest>() {
             @Override
-            public void onSuccess(HttpInfo info) {
-                super.onSuccess(info);
-                loadingDialog.dismiss();
+            public void onProgress(PutObjectRequest request, long currentSize, long totalSize) {
+            }
+        });
+        oss.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
+            @Override
+            public void onSuccess(PutObjectRequest request, PutObjectResult result) {
+                imageItems.remove(0);
+                uploadImg(imageItems);// 递归同步效果
+                uploadAvataPath = SimpleryoNetwork.imgUrl + fileName;
+                ImageItemBean imageItemBean = new ImageItemBean();
+                imageItemBean.setValue(uploadAvataPath);
+                imageItemBeans.add(imageItemBean);
+                Log.w("cc", "UploadSuccess");
+                Log.w("cc", result.getETag());
+                Log.d("cc", result.getRequestId());
             }
 
             @Override
-            public void onFailure(HttpInfo info) {
-                super.onFailure(info);
-                loadingDialog.dismiss();
+            public void onFailure(PutObjectRequest request, ClientException clientExcepion, ServiceException serviceException) {
+                // 请求异常
+                if (clientExcepion != null) {
+                    // 本地异常如网络异常等
+                    clientExcepion.printStackTrace();
+                }
+                if (serviceException != null) {
+                    // 服务异常
+                    Log.w("cc", serviceException.getErrorCode());
+                    Log.w("cc", serviceException.getRequestId());
+                    Log.w("cc", serviceException.getHostId());
+                    Log.w("cc", serviceException.getRawMessage());
+                }
             }
-        },key,localFile);
+        });
     }
     //把bitmap转换成String
     public static String bitmapToString(String filePath) {

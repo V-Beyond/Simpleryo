@@ -27,6 +27,7 @@ import com.alibaba.sdk.android.oss.callback.OSSProgressCallback;
 import com.alibaba.sdk.android.oss.common.auth.OSSCredentialProvider;
 import com.alibaba.sdk.android.oss.common.auth.OSSCustomSignerCredentialProvider;
 import com.alibaba.sdk.android.oss.common.utils.OSSUtils;
+import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
 import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectResult;
 import com.makeramen.roundedimageview.RoundedTransformationBuilder;
@@ -50,6 +51,7 @@ import com.simpleryo.leyotang.network.SimpleryoNetwork;
 import com.simpleryo.leyotang.utils.PhotoUtils;
 import com.simpleryo.leyotang.utils.SharedPreferencesUtils;
 import com.simpleryo.leyotang.utils.XStringPars;
+import com.simpleryo.leyotang.view.LoadingDialog;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 import com.umeng.analytics.MobclickAgent;
@@ -170,6 +172,7 @@ public class MyFragment extends XLibraryLazyFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updateSex(BusEntity bus) {
         if (bus.getType()==402){
+            Log.w("cc","uploadAvataPath:"+uploadAvataPath);
             SimpleryoNetwork.updateInfo(getActivity(), new MyBaseProgressCallbackImpl(getActivity()) {
                 @Override
                 public void onSuccess(HttpInfo info)  {
@@ -228,6 +231,18 @@ public class MyFragment extends XLibraryLazyFragment {
                 Picasso.with(getContext().getApplicationContext()).load("http://p2.so.qhmsg.com/bdr/_240_/t0118ff1cab46ddba27.jpg").transform(transformation).into(iv_avatar);
             }
         }
+        if (bus.getType()==403){
+//            dialog = ProgressDialog.show(getActivity(), null, "上传中，请稍后", false, true);
+            if (loadingDialog == null) {
+                loadingDialog = new LoadingDialog(getActivity());
+                //点击空白处Dialog不消失
+                loadingDialog.setCanceledOnTouchOutside(false);
+                loadingDialog.showDialog();
+            }
+        }
+        if (bus.getType()==404){
+
+        }
     }
     @Override
     public void onDestroy() {
@@ -235,6 +250,7 @@ public class MyFragment extends XLibraryLazyFragment {
         EventBus.getDefault().unregister(this);
     }
     String uploadAvataPath;
+    public LoadingDialog loadingDialog;//加载提示框
     public void uploadImg(String filePath) {
         final String fileName = "file/" + XStringPars.md5("simpleryo_android_" + System.currentTimeMillis());
         // 构造上传请求
@@ -243,24 +259,25 @@ public class MyFragment extends XLibraryLazyFragment {
         put.setProgressCallback(new OSSProgressCallback<PutObjectRequest>() {
             @Override
             public void onProgress(PutObjectRequest request, long currentSize, long totalSize) {
-                dialog = ProgressDialog.show(getActivity(), null, "上传中，请稍后", false, true);
+//                EventBus.getDefault().post(new BusEntity(403));
+                Log.w("cc","上传进度:"+currentSize+"/"+totalSize);
             }
         });
-        oss.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
+    OSSAsyncTask ossAsyncTask= oss.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
             @Override
             public void onSuccess(PutObjectRequest request, PutObjectResult result) {
-                dialog.dismiss();
-                Toast.makeText(getActivity(), "上传成功", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "上传成功", Toast.LENGTH_SHORT).show();
                 uploadAvataPath=SimpleryoNetwork.imgUrl+fileName;
+//                loadingDialog.dismiss();
                 EventBus.getDefault().post(new BusEntity(402));
-                Log.w("PutObject", "UploadSuccess");
-                Log.w("ETag", result.getETag());
-                Log.d("RequestId", result.getRequestId());
+                Log.w("cc", "UploadSuccess");
+                Log.w("cc", result.getETag());
+                Log.d("cc", result.getRequestId());
             }
 
             @Override
             public void onFailure(PutObjectRequest request, ClientException clientExcepion, ServiceException serviceException) {
-                dialog.dismiss();
+                loadingDialog.dismiss();
                 // 请求异常
                 if (clientExcepion != null) {
                     // 本地异常如网络异常等
@@ -268,13 +285,14 @@ public class MyFragment extends XLibraryLazyFragment {
                 }
                 if (serviceException != null) {
                     // 服务异常
-                    Log.w("ErrorCode", serviceException.getErrorCode());
-                    Log.w("RequestId", serviceException.getRequestId());
-                    Log.w("HostId", serviceException.getHostId());
-                    Log.w("RawMessage", serviceException.getRawMessage());
+                    Log.w("cc", serviceException.getErrorCode());
+                    Log.w("cc", serviceException.getRequestId());
+                    Log.w("cc", serviceException.getHostId());
+                    Log.w("cc", serviceException.getRawMessage());
                 }
             }
         });
+        ossAsyncTask.waitUntilFinished();
     }
 
     String mPageName = "MyFragment";

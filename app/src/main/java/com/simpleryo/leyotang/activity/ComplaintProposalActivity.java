@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,6 +25,8 @@ import com.alibaba.sdk.android.oss.common.auth.OSSCustomSignerCredentialProvider
 import com.alibaba.sdk.android.oss.common.utils.OSSUtils;
 import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectResult;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
@@ -35,6 +38,7 @@ import com.simpleryo.leyotang.adapter.ImagePickerAdapter;
 import com.simpleryo.leyotang.base.BaseActivity;
 import com.simpleryo.leyotang.base.MyBaseProgressCallbackImpl;
 import com.simpleryo.leyotang.bean.BusEntity;
+import com.simpleryo.leyotang.bean.ComplaintBean;
 import com.simpleryo.leyotang.bean.ImageItemBean;
 import com.simpleryo.leyotang.imageloader.GlideImageLoader;
 import com.simpleryo.leyotang.network.SimpleryoNetwork;
@@ -43,14 +47,14 @@ import com.simpleryo.leyotang.utils.XStringPars;
 import com.simpleryo.leyotang.view.SelectDialog;
 
 import org.greenrobot.eventbus.EventBus;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,18 +78,19 @@ public class ComplaintProposalActivity extends BaseActivity implements ImagePick
     private ArrayList<ImageItem> selImageList; //当前选择的所有图片
     private int maxImgCount = 9;               //允许选择图片最大数
     ArrayList<ImageItemBean> imageItemBeans = new ArrayList<>();
-    JSONArray jsonArray = new JSONArray();
-    JSONObject jsonObject = new JSONObject();
-    JSONObject tmpObj = null;
     OSS oss;
+    JsonArray json=new JsonArray();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         x.view().inject(this);
         XActivityUtils.getInstance().pushActivity(this);
+        EventBus.getDefault().register(this);
         tv_name.setText("投诉建议");
         String endpoint = "oss-cn-hangzhou.aliyuncs.com";
+//        String endpoint = "oss-cn-shanghai.aliyuncs.com";
+
         // 在移动端建议使用STS的方式初始化OSSClient，更多信息参考：[访问控制]
         OSSCredentialProvider credentialProvider = new OSSCustomSignerCredentialProvider() {
             @Override
@@ -120,30 +125,36 @@ public class ComplaintProposalActivity extends BaseActivity implements ImagePick
                 XActivityUtils.getInstance().popActivity(ComplaintProposalActivity.this);
                 break;
             case R.id.tv_commit:
+                String content=edittext_complaint.getText().toString().trim();
+                if (TextUtils.isEmpty(content)){
+                    Toast.makeText(ComplaintProposalActivity.this,"请输入反馈信息",Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 int count = imageItemBeans.size();
                 for (int i = 0; i < count; i++) {
-                    tmpObj = new JSONObject();
-                    try {
-                        tmpObj.put("value", imageItemBeans.get(i).getValue());
-                        jsonArray.put(tmpObj);
-                        tmpObj = null;
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    JsonObject jsonObject=new JsonObject();
+                    jsonObject.addProperty("value", imageItemBeans.get(i).getValue());
+                    json.add(jsonObject);
                 }
                 SimpleryoNetwork.addComplaint(ComplaintProposalActivity.this, new MyBaseProgressCallbackImpl(ComplaintProposalActivity.this) {
                     @Override
                     public void onSuccess(HttpInfo info) {
                         super.onSuccess(info);
                         loadingDialog.dismiss();
+                        ComplaintBean complaintBean=info.getRetDetail(ComplaintBean.class);
+                        if (complaintBean.getCode().equalsIgnoreCase("0")){
+                            Toast.makeText(ComplaintProposalActivity.this,"提交成功",Toast.LENGTH_SHORT).show();
+                            XActivityUtils.getInstance().popActivity(ComplaintProposalActivity.this);
+                        }
                     }
-
                     @Override
                     public void onFailure(HttpInfo info) {
                         super.onFailure(info);
                         loadingDialog.dismiss();
+                        Toast.makeText(ComplaintProposalActivity.this,"数据一不小心走丢了，请稍后回来",Toast.LENGTH_SHORT).show();
                     }
-                }, edittext_complaint.getText().toString().trim(), jsonArray.toString());
+                }, edittext_complaint.getText().toString().trim(), json);
+
                 break;
         }
     }
@@ -249,10 +260,8 @@ public class ComplaintProposalActivity extends BaseActivity implements ImagePick
                 images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
                 if (images != null) {
                     selImageList.addAll(images);
-                    for (ImageItem imageItem:selImageList){
-                        Log.w("cc","选择图片地址:"+imageItem.path);
-                    }
                     adapter.setImages(selImageList);
+                    EventBus.getDefault().post(new BusEntity(405));
                 }
             }
         } else if (resultCode == ImagePicker.RESULT_CODE_BACK) {
@@ -263,44 +272,79 @@ public class ComplaintProposalActivity extends BaseActivity implements ImagePick
                     selImageList.clear();
                     selImageList.addAll(images);
                     adapter.setImages(selImageList);
+                    EventBus.getDefault().post(new BusEntity(405));
                 }
             }
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void updateSex(BusEntity bus) {
+        if (bus.getType()==405) {
+            uploadImages(selImageList);
+        }
+    }
 
+
+    public void uploadImages(ArrayList<ImageItem> imageItems){
+        if (null == imageItems || imageItems.size() == 0) {
+            return;
+        } // 上传文件
+        uploadImg(imageItems);
+    }
     String uploadAvataPath;
     ProgressDialog dialog;
 
-    public void uploadImg(String filePath) {
+    public void uploadImg(final ArrayList<ImageItem> imageItems) {
         final String fileName = "file/" + XStringPars.md5("simpleryo_android_" + System.currentTimeMillis());
+        if (imageItems.size() <= 0) {
+            // 文件全部上传完毕，这里编写上传结束的逻辑，如果要在主线程操作，最好用Handler或runOnUiThead做对应逻辑
+            return;// 这个return必须有，否则下面报越界异常，原因自己思考下哈
+        }
+        final ImageItem imageItem = imageItems.get(0);
+        if (TextUtils.isEmpty(imageItem.path)) {
+            imageItems.remove(0);
+            // url为空就没必要上传了，这里做的是跳过它继续上传的逻辑。
+            uploadImg(imageItems);
+            return;
+        }
+
+        File file = new File(imageItem.path);
+        if (null == file || !file.exists()) {
+            imageItems.remove(0);
+            // 文件为空或不存在就没必要上传了，这里做的是跳过它继续上传的逻辑。
+            uploadImg(imageItems);
+            return;
+        }
         // 构造上传请求
-        PutObjectRequest put = new PutObjectRequest("simpleryo-china", fileName, filePath);
+        PutObjectRequest put = new PutObjectRequest("simpleryo-china", fileName, imageItem.path);
         // 异步上传时可以设置进度回调
         put.setProgressCallback(new OSSProgressCallback<PutObjectRequest>() {
             @Override
             public void onProgress(PutObjectRequest request, long currentSize, long totalSize) {
-                dialog = ProgressDialog.show(ComplaintProposalActivity.this, null, "上传中，请稍后", false, true);
             }
         });
         oss.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
             @Override
             public void onSuccess(PutObjectRequest request, PutObjectResult result) {
-                dialog.dismiss();
-                Toast.makeText(ComplaintProposalActivity.this, "上传成功", Toast.LENGTH_SHORT).show();
+                imageItems.remove(0);
+                uploadImg(imageItems);// 递归同步效果
                 uploadAvataPath = SimpleryoNetwork.imgUrl + fileName;
                 ImageItemBean imageItemBean = new ImageItemBean();
                 imageItemBean.setValue(uploadAvataPath);
                 imageItemBeans.add(imageItemBean);
-                EventBus.getDefault().post(new BusEntity(402));
-                Log.w("PutObject", "UploadSuccess");
-                Log.w("ETag", result.getETag());
-                Log.d("RequestId", result.getRequestId());
+                Log.w("cc", "UploadSuccess");
+                Log.w("cc", result.getETag());
+                Log.d("cc", result.getRequestId());
             }
 
             @Override
             public void onFailure(PutObjectRequest request, ClientException clientExcepion, ServiceException serviceException) {
-                dialog.dismiss();
                 // 请求异常
                 if (clientExcepion != null) {
                     // 本地异常如网络异常等
@@ -308,10 +352,10 @@ public class ComplaintProposalActivity extends BaseActivity implements ImagePick
                 }
                 if (serviceException != null) {
                     // 服务异常
-                    Log.w("ErrorCode", serviceException.getErrorCode());
-                    Log.w("RequestId", serviceException.getRequestId());
-                    Log.w("HostId", serviceException.getHostId());
-                    Log.w("RawMessage", serviceException.getRawMessage());
+                    Log.w("cc", serviceException.getErrorCode());
+                    Log.w("cc", serviceException.getRequestId());
+                    Log.w("cc", serviceException.getHostId());
+                    Log.w("cc", serviceException.getRawMessage());
                 }
             }
         });

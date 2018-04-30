@@ -141,7 +141,6 @@ public class RegisterActivity extends BaseActivity {
                         CodeBean codeBean = info.getRetDetail(CodeBean.class);
                         if (codeBean.getCode().equalsIgnoreCase("0")) {
                             Toast.makeText(RegisterActivity.this, "验证码发送成功，请注意查收", Toast.LENGTH_SHORT).show();
-                            edittext_code.setText(codeBean.getData().getValue());
                         }else{
                             Toast.makeText(RegisterActivity.this, codeBean.getMsg(),Toast.LENGTH_SHORT).show();
                         }
