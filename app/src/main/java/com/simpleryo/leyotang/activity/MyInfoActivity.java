@@ -112,6 +112,7 @@ public class MyInfoActivity extends BaseActivity {
     String loginName;
     String emmail;
     String des;
+    String avatarUrl;
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updateSex(BusEntity bus) {
         if (bus.getType() == 84) {
@@ -141,7 +142,7 @@ public class MyInfoActivity extends BaseActivity {
                 public void onFailure(HttpInfo info)  {
                     loadingDialog.dismiss();
                 }
-            },userId,emmail,bus.getContent(),loginName,gender,starSign,des);
+            },userId,emmail,bus.getContent(),loginName,gender,starSign,des,avatarUrl);
         }
         if (bus.getType()==87){
             SimpleryoNetwork.getUserInfo(MyInfoActivity.this,new MyBaseProgressCallbackImpl(){
@@ -150,7 +151,7 @@ public class MyInfoActivity extends BaseActivity {
                     super.onSuccess(info);
                     UserInfoBean userInfoBean=info.getRetDetail(UserInfoBean.class);
                     emmail=userInfoBean.getData().getEmail();
-
+                    avatarUrl=userInfoBean.getData().getAvatarUrl();
                     gender=userInfoBean.getData().getGender();
                     loginName=userInfoBean.getData().getPhone();
                     des=userInfoBean.getData().getIntro();

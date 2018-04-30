@@ -1,5 +1,6 @@
 package com.simpleryo.leyotang.fragment;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.sdk.android.oss.ClientConfiguration;
 import com.alibaba.sdk.android.oss.ClientException;
@@ -23,7 +25,8 @@ import com.alibaba.sdk.android.oss.ServiceException;
 import com.alibaba.sdk.android.oss.callback.OSSCompletedCallback;
 import com.alibaba.sdk.android.oss.callback.OSSProgressCallback;
 import com.alibaba.sdk.android.oss.common.auth.OSSCredentialProvider;
-import com.alibaba.sdk.android.oss.common.auth.OSSStsTokenCredentialProvider;
+import com.alibaba.sdk.android.oss.common.auth.OSSCustomSignerCredentialProvider;
+import com.alibaba.sdk.android.oss.common.utils.OSSUtils;
 import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectResult;
 import com.makeramen.roundedimageview.RoundedTransformationBuilder;
@@ -41,14 +44,19 @@ import com.simpleryo.leyotang.activity.MyOrderActivity;
 import com.simpleryo.leyotang.activity.UseHelpActivity;
 import com.simpleryo.leyotang.base.MyBaseProgressCallbackImpl;
 import com.simpleryo.leyotang.base.XLibraryLazyFragment;
+import com.simpleryo.leyotang.bean.BusEntity;
 import com.simpleryo.leyotang.bean.UserInfoBean;
 import com.simpleryo.leyotang.network.SimpleryoNetwork;
 import com.simpleryo.leyotang.utils.PhotoUtils;
 import com.simpleryo.leyotang.utils.SharedPreferencesUtils;
+import com.simpleryo.leyotang.utils.XStringPars;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 import com.umeng.analytics.MobclickAgent;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -100,6 +108,7 @@ public class MyFragment extends XLibraryLazyFragment {
             mMainView = inflater
                     .inflate(R.layout.fragment_my, container, false);
             x.view().inject(this, mMainView);
+            EventBus.getDefault().register(this);
             isPrepared = true;
             iv_back.setVisibility(View.GONE);
             tv_name.setText("个人中心");
@@ -130,7 +139,19 @@ public class MyFragment extends XLibraryLazyFragment {
         }
         String endpoint = "oss-cn-hangzhou.aliyuncs.com";
         // 在移动端建议使用STS的方式初始化OSSClient，更多信息参考：[访问控制]
-        OSSCredentialProvider credentialProvider = new OSSStsTokenCredentialProvider("LTAIdS9LK729tPQy", "JYWixbcdtFYUjonwoxyJTGFpbCQ=", "eyJleHBpcmF0aW9uIjoiMjAxOC0wNC0yOFQwOTo1NToyMS40NzBaIiwiY29uZGl0aW9ucyI6W1siY29udGVudC1sZW5ndGgtcmFuZ2UiLDAsMTA0ODU3NjAwMF0sWyJzdGFydHMtd2l0aCIsIiRrZXkiLCJmaWxlIl1dfQ==");
+        OSSCredentialProvider credentialProvider = new OSSCustomSignerCredentialProvider() {
+            @Override
+            public String signContent(String content) {
+                // 您需要在这里依照OSS规定的签名算法，实现加签一串字符内容，并把得到的签名传拼接上AccessKeyId后返回
+                // 一般实现是，将字符内容post到您的业务服务器，然后返回签名
+                // 如果因为某种原因加签失败，描述error信息后，返回nil
+                // 以下是用本地算法进行的演示
+//                String token=OSSUtils.sign("LTAIbjVuAOZS2Wq7","tL17dGzj2l2VAqTOLxpRKEPmh4s4Mq",content);
+                String token = OSSUtils.sign("LTAIdS9LK729tPQy", "n1BLiLsioXbPcigywAADDgEOdv5XO4", content);
+                Log.w("cc", "OSS签名token:" + token);
+                return token;
+            }
+        };
         //该配置类如果不设置，会有默认配置，具体可看该类
         ClientConfiguration conf = new ClientConfiguration();
         conf.setConnectionTimeout(15 * 1000); // 连接超时，默认15秒
@@ -140,27 +161,106 @@ public class MyFragment extends XLibraryLazyFragment {
         oss = new OSSClient(getActivity().getApplicationContext(), endpoint, credentialProvider, conf);
     }
 
+    ProgressDialog dialog;
+    String emmail;
+    String loginName;
+    String gender;
+    String starSign;
+    String des;
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void updateSex(BusEntity bus) {
+        if (bus.getType()==402){
+            SimpleryoNetwork.updateInfo(getActivity(), new MyBaseProgressCallbackImpl(getActivity()) {
+                @Override
+                public void onSuccess(HttpInfo info)  {
+                    loadingDialog.dismiss();
+                    Toast.makeText(getActivity(),"修改成功",Toast.LENGTH_SHORT).show();
+                    EventBus.getDefault().post(new BusEntity(401));
+                }
+                @Override
+                public void onFailure(HttpInfo info)  {
+                    loadingDialog.dismiss();
+                }
+            },userId,emmail,bus.getContent(),loginName,gender,starSign,des,uploadAvataPath);
+        }
+        if (bus.getType()==401){
+            isLogin = SharedPreferencesUtils.getKeyBoolean("isLogin");//获取用户登录状态
+            userId = SharedPreferencesUtils.getKeyString("userId");
+            if (isLogin) {
+                SimpleryoNetwork.getUserInfo(getActivity(), new MyBaseProgressCallbackImpl() {
+                    @Override
+                    public void onSuccess(HttpInfo info) {
+                        super.onSuccess(info);
+                        mHasLoadedOnce = true;
+                        UserInfoBean userInfoBean = info.getRetDetail(UserInfoBean.class);
+                        if (userInfoBean.getCode().equalsIgnoreCase("0")){
+                            emmail=userInfoBean.getData().getEmail();
+                            gender=userInfoBean.getData().getGender();
+                            loginName=userInfoBean.getData().getPhone();
+                            starSign=userInfoBean.getData().getStarSign();
+                            des=userInfoBean.getData().getIntro();
+                            if (userInfoBean.getData().getAvatarUrl() != null) {
+                                Picasso.with(getContext().getApplicationContext()).load(userInfoBean.getData().getAvatarUrl()).transform(transformation).into(iv_avatar);
+                            } else {
+                                Picasso.with(getContext().getApplicationContext()).load(R.mipmap.iv_my_info).into(iv_avatar);
+                            }
+                            if (userInfoBean.getData().getCollectCount() != null) {
+                                tv_collection.setText(userInfoBean.getData().getCollectCount() + "");
+                            } else {
+                                tv_collection.setText("0");
+                            }
+                            if (userInfoBean.getData().getFollowCount() != null) {
+                                tv_attention.setText(userInfoBean.getData().getFollowCount() + "");
+                            } else {
+                                tv_attention.setText("0");
+                            }
+                            if (userInfoBean.getData().getNickName() != null) {
+                                tv_nickname.setText(userInfoBean.getData().getNickName());
+                            } else {
+                                tv_nickname.setText("暂无昵称");
+                            }
+                        }
 
+                    }
+                }, userId);
+            } else {
+                tv_nickname.setText("未登录");
+                Picasso.with(getContext().getApplicationContext()).load("http://p2.so.qhmsg.com/bdr/_240_/t0118ff1cab46ddba27.jpg").transform(transformation).into(iv_avatar);
+            }
+        }
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+    String uploadAvataPath;
     public void uploadImg(String filePath) {
+        final String fileName = "file/" + XStringPars.md5("simpleryo_android_" + System.currentTimeMillis());
         // 构造上传请求
-        PutObjectRequest put = new PutObjectRequest("simpleryo-china", "avatar", filePath);
+        PutObjectRequest put = new PutObjectRequest("simpleryo-china", fileName, filePath);
         // 异步上传时可以设置进度回调
         put.setProgressCallback(new OSSProgressCallback<PutObjectRequest>() {
             @Override
             public void onProgress(PutObjectRequest request, long currentSize, long totalSize) {
-                Log.d("PutObject", "currentSize: " + currentSize + " totalSize: " + totalSize);
+                dialog = ProgressDialog.show(getActivity(), null, "上传中，请稍后", false, true);
             }
         });
         oss.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
             @Override
             public void onSuccess(PutObjectRequest request, PutObjectResult result) {
-                Log.d("PutObject", "UploadSuccess");
-                Log.d("ETag", result.getETag());
+                dialog.dismiss();
+                Toast.makeText(getActivity(), "上传成功", Toast.LENGTH_SHORT).show();
+                uploadAvataPath=SimpleryoNetwork.imgUrl+fileName;
+                EventBus.getDefault().post(new BusEntity(402));
+                Log.w("PutObject", "UploadSuccess");
+                Log.w("ETag", result.getETag());
                 Log.d("RequestId", result.getRequestId());
             }
 
             @Override
             public void onFailure(PutObjectRequest request, ClientException clientExcepion, ServiceException serviceException) {
+                dialog.dismiss();
                 // 请求异常
                 if (clientExcepion != null) {
                     // 本地异常如网络异常等
@@ -168,10 +268,10 @@ public class MyFragment extends XLibraryLazyFragment {
                 }
                 if (serviceException != null) {
                     // 服务异常
-                    Log.e("ErrorCode", serviceException.getErrorCode());
-                    Log.e("RequestId", serviceException.getRequestId());
-                    Log.e("HostId", serviceException.getHostId());
-                    Log.e("RawMessage", serviceException.getRawMessage());
+                    Log.w("ErrorCode", serviceException.getErrorCode());
+                    Log.w("RequestId", serviceException.getRequestId());
+                    Log.w("HostId", serviceException.getHostId());
+                    Log.w("RawMessage", serviceException.getRawMessage());
                 }
             }
         });
@@ -191,42 +291,7 @@ public class MyFragment extends XLibraryLazyFragment {
     public void onResume() {
         super.onResume();
         MobclickAgent.onPageStart(mPageName);
-        isLogin = SharedPreferencesUtils.getKeyBoolean("isLogin");//获取用户登录状态
-        userId = SharedPreferencesUtils.getKeyString("userId");
-        if (isLogin) {
-            SimpleryoNetwork.getUserInfo(getActivity(), new MyBaseProgressCallbackImpl() {
-                @Override
-                public void onSuccess(HttpInfo info) {
-                    super.onSuccess(info);
-                    mHasLoadedOnce = true;
-                    UserInfoBean userInfoBean = info.getRetDetail(UserInfoBean.class);
-                    if (userInfoBean.getData().getAvatarUrl() != null) {
-                        Picasso.with(getContext().getApplicationContext()).load(userInfoBean.getData().getAvatarUrl()).transform(transformation).into(iv_avatar);
-                    } else {
-                        Picasso.with(getContext().getApplicationContext()).load(R.mipmap.iv_my_info).into(iv_avatar);
-                    }
-                    if (userInfoBean.getData().getCollectCount() != null) {
-                        tv_collection.setText(userInfoBean.getData().getCollectCount() + "");
-                    } else {
-                        tv_collection.setText("0");
-                    }
-                    if (userInfoBean.getData().getFollowCount() != null) {
-                        tv_attention.setText(userInfoBean.getData().getFollowCount() + "");
-                    } else {
-                        tv_attention.setText("0");
-                    }
-                    if (userInfoBean.getData().getNickName() != null) {
-                        tv_nickname.setText(userInfoBean.getData().getNickName());
-                    } else {
-                        tv_nickname.setText("暂无昵称");
-                    }
-
-                }
-            }, userId);
-        } else {
-            tv_nickname.setText("未登录");
-            Picasso.with(getContext().getApplicationContext()).load("http://p2.so.qhmsg.com/bdr/_240_/t0118ff1cab46ddba27.jpg").transform(transformation).into(iv_avatar);
-        }
+        EventBus.getDefault().post(new BusEntity(401));
     }
 
     @Event(value = {R.id.iv_msg, R.id.ll_login, R.id.ll_use_help, R.id.ll_wait_pay, R.id.ll_comprehensive_evaluation, R.id.ll_contact_us, R.id.ll_my_course, R.id.iv_avatar, R.id.ll_my_info, R.id.ll_bind_account, R.id.ll_complaint, R.id.ll_my_attention, R.id.ll_collection}, type = View.OnClickListener.class)

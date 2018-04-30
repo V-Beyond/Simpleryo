@@ -25,7 +25,9 @@ import java.io.IOException;
  */
 
 public class SimpleryoNetwork {
-    public static final String httpUrl = "https://api.simpleryo.com/";
+    public static final String httpUrl = "https://api.simpleryo.com/";//接口域名
+//    public static final String imgUrl="https://p.simpleryo.com/";//阿里云图片自定义域名
+    public static final String imgUrl="https://simpleryo-china.oss-cn-hangzhou.aliyuncs.com/";//阿里云Bucket自带图片域名
 
     /**
      * 获取token
@@ -223,7 +225,7 @@ public class SimpleryoNetwork {
      * @param userId
      * @param name
      */
-    public static void updateInfo(Context context, MyBaseProgressCallbackImpl callback,String userId, String email,String name,String loginName,String gender,String starSign,String des) {
+    public static void updateInfo(Context context, MyBaseProgressCallbackImpl callback,String userId, String email,String name,String loginName,String gender,String starSign,String des,String avatarUrl) {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("id",userId);
@@ -232,7 +234,7 @@ public class SimpleryoNetwork {
 //            jsonObject.put("name", name);
             jsonObject.put("nickName", name);
             jsonObject.put("gender",gender);
-            jsonObject.put("avatarUrl","https://ps.ssl.qhmsg.com/bdr/_240_/t01df569e66fbb4f34f.jpg");
+            jsonObject.put("avatarUrl",avatarUrl);
             jsonObject.put("intro",des);
             jsonObject.put("starSign",starSign);
             jsonObject.put("role","NORMAL");
@@ -560,6 +562,32 @@ public class SimpleryoNetwork {
                 .addParamJson(jsonObject.toString())
                 .build(),callback);
     }
+
+    /**
+     * 投诉建议
+     * @param context
+     * @param callback
+     * @param body
+     * @param imageUrls
+     */
+    public static void addComplaint(Context context, MyBaseProgressCallbackImpl callback, String body, String imageUrls) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("title","新普乐android端投诉建议");
+            jsonObject.put("body",body);
+            jsonObject.put("imageUrls",imageUrls);
+            jsonObject.put("typeCode", "COMPLAINT");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.w("cc","json:"+jsonObject.toString());
+        doHttpAsync(context,HttpInfo.Builder()
+                .setUrl(httpUrl  + "/s/contents?token="+getToken())
+                .setRequestType(RequestType.POST)//设置请求方式
+                .addParamJson(jsonObject.toString())
+                .build(),callback);
+    }
+
 
 
     /**

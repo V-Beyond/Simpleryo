@@ -27,6 +27,7 @@
             android:textSize="29px" />
 
         <EditText
+            android:id="@+id/edittext_complaint"
             android:layout_width="match_parent"
             android:layout_height="401px"
             android:layout_marginBottom="62px"
