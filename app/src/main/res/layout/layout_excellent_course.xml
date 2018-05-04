@@ -68,7 +68,8 @@
     <com.github.jdsjlzx.recyclerview.LRecyclerView
         android:layout_width="match_parent"
         android:paddingTop="18px"
-        android:id="@+id/lrecyclerview"
+        android:id="@+id/lrecyclerview"   android:layout_marginLeft="31px"
+        android:layout_marginRight="25px"
         android:layout_height="wrap_content">
     </com.github.jdsjlzx.recyclerview.LRecyclerView>
     <include

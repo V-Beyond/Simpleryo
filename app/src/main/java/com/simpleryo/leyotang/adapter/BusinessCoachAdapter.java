@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.ViewGroup;
 
 import com.simpleryo.leyotang.R;
-import com.simpleryo.leyotang.bean.CourseListBean;
+import com.simpleryo.leyotang.bean.CoachListBean;
 import com.simpleryo.leyotang.viewholder.CoachItemViewHolder;
 import com.simpleryo.leyotang.viewholder.SuperViewHolder;
 import com.squareup.picasso.Picasso;
@@ -19,7 +19,7 @@ import com.squareup.picasso.Picasso;
  * @date 2017/11/10 18:55
  */
 
-public class BusinessCoachAdapter extends BaseAdapter<CourseListBean.DataBeanX> {
+public class BusinessCoachAdapter extends BaseAdapter<CoachListBean.DataBean> {
 
     public BusinessCoachAdapter(Context context) {
         super(context);
@@ -37,24 +37,20 @@ public class BusinessCoachAdapter extends BaseAdapter<CourseListBean.DataBeanX> 
 
     @Override
     public void onBindItemHolder(SuperViewHolder holder, int position) {
-        final CourseListBean.DataBeanX bean = listData.get(position);
-        if (bean.getCoach()!=null){
-//            ((CoachItemViewHolder) holder).tv_introduce.setBackgroundColor(0); // 设置背景色
-//            ((CoachItemViewHolder) holder).tv_introduce.getBackground().setAlpha(0); // 设置填充透明度 范围：0-255
-            if (bean.getCoach().getIntro()!=null){
-                ((CoachItemViewHolder) holder).tv_introduce.setText(bean.getCoach().getIntro());
+        final CoachListBean.DataBean bean = listData.get(position);
+            if (bean.getIntro()!=null){
+                ((CoachItemViewHolder) holder).tv_introduce.setText(bean.getIntro());
             }else{
                 ((CoachItemViewHolder) holder).tv_introduce.setText("暂无介绍");
             }
-            if (bean.getCoverUrl()!=null){
-                Picasso.with(mContext).load(bean.getCoverUrl()).into(((CoachItemViewHolder) holder).iv_coach_img);
+            if (bean.getAvatarUrl()!=null){
+                Picasso.with(mContext).load(bean.getAvatarUrl()).into(((CoachItemViewHolder) holder).iv_coach_img);
             }
-            if (bean.getCoach().getNickName()!=null){
-                ((CoachItemViewHolder) holder).tv_name.setText(bean.getCoach().getNickName());
+            if (bean.getNickName()!=null){
+                ((CoachItemViewHolder) holder).tv_name.setText(bean.getNickName());
             }else{
                 ((CoachItemViewHolder) holder).tv_name.setText("暂无昵称");
             }
-        }
     }
     @Override
     public int getItemCount() {

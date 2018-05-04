@@ -136,7 +136,7 @@ public class HotCourseFragment extends XLibraryLazyFragment {
                     lrecyclerview.refreshComplete(hotCourseList.size());
                 }
             }
-        }, "", "", "", "5ad8a12851183106cd04a782");
+        }, "", "", "", "HOT");
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void BusMain(BusEntity bus) {

@@ -58,6 +58,7 @@ public class HomeFragment extends XLibraryLazyFragment {
     List<HomeDataBean.DataBeanX.CoursesBeanX> introductoryListBeans = new ArrayList<>();
     @ViewInject(R.id.empty_view)
     View empty_view;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (mMainView == null) {
@@ -86,6 +87,7 @@ public class HomeFragment extends XLibraryLazyFragment {
         if (!isPrepared || !isVisible || mHasLoadedOnce) {
             return;
         }
+        simpleryoNetwork = new SimpleryoNetwork();
         //是否允许嵌套滑动
         lrecyclerview.setNestedScrollingEnabled(false);
         homeAdapter = new HomeAdapter(getActivity());
@@ -105,6 +107,8 @@ public class HomeFragment extends XLibraryLazyFragment {
         lrecyclerview.forceToRefresh();
     }
 
+    SimpleryoNetwork simpleryoNetwork;
+
     private OnRefreshListener onRefreshListener = new OnRefreshListener() {
         @Override
         public void onRefresh() {
@@ -114,7 +118,7 @@ public class HomeFragment extends XLibraryLazyFragment {
 
 
     public void getCourseType() {
-        SimpleryoNetwork.getHomeCourse(getActivity(), new MyBaseProgressCallbackImpl() {
+        simpleryoNetwork.getHomeCourse(getActivity(), new MyBaseProgressCallbackImpl() {
             @Override
             public void onSuccess(HttpInfo info) {
                 super.onSuccess(info);
@@ -159,26 +163,29 @@ public class HomeFragment extends XLibraryLazyFragment {
                             excellentListBeans.clear();
                         }
                         for (HomeDataBean.DataBeanX.CoursesBeanX coursesBeanList : homeDataBean.getData().getCourses()) {
-                            if (coursesBeanList.getTag().getName().equalsIgnoreCase("入门课程")) {
-                                item = new MultipleItem(MultipleItem.HOMEINTRODUCTORYCOURSE);
-                                mItemModels.add(item);
-                                introductoryListBeans.add(coursesBeanList);
-                                homeAdapter.setIntroductoryListBeans(coursesBeanList);
-                            } else if (coursesBeanList.getTag().getName().equalsIgnoreCase("热门课程")) {
+                            if (coursesBeanList.getTag().getId().equalsIgnoreCase("HOT")) {
                                 item = new MultipleItem(MultipleItem.HOMEHOTCOURSE);
                                 mItemModels.add(item);
                                 hotCourseList.add(coursesBeanList);
                                 homeAdapter.setOrderListBeans(coursesBeanList);
-                            } else if (coursesBeanList.getTag().getName().equalsIgnoreCase("推荐课程")) {
+                            }
+                            if (coursesBeanList.getTag().getId().equalsIgnoreCase("EXCELLENT")) {
                                 item = new MultipleItem(MultipleItem.HOMEEXCELLENT);
                                 mItemModels.add(item);
                                 excellentListBeans.add(coursesBeanList);
                                 homeAdapter.setExcellentListBeans(coursesBeanList);
                             }
+                            if (coursesBeanList.getTag().getId().equalsIgnoreCase("OFFCIAL")) {
+                                item = new MultipleItem(MultipleItem.HOMEINTRODUCTORYCOURSE);
+                                mItemModels.add(item);
+                                introductoryListBeans.add(coursesBeanList);
+                                homeAdapter.setIntroductoryListBeans(coursesBeanList);
+                            }
                         }
                     }
                     homeAdapter.setDataList(mItemModels);
                 } else if (homeDataBean.getCode().equalsIgnoreCase("401")) {
+                    lrecyclerview.forceToRefresh();
                     SharedPreferencesUtils.saveKeyString("token", "simpleryo");
                 }
                 lrecyclerview.refreshComplete(mItemModels.size());
@@ -188,7 +195,7 @@ public class HomeFragment extends XLibraryLazyFragment {
             public void onFailure(HttpInfo info) {
                 super.onFailure(info);
                 lrecyclerview.setEmptyView(empty_view);
-                Toast.makeText(getActivity(),info.getRetDetail(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), info.getRetDetail(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -200,10 +207,10 @@ public class HomeFragment extends XLibraryLazyFragment {
             lrecyclerview.refreshComplete(mItemModels.size());
             lRecyclerViewAdapter.notifyDataSetChanged();
         }
-        if (bus.getType() ==122) {
-            if (isLogin){
-                HomeDataBean.DataBeanX.CoursesBeanX.CoursesBean coursesBean=bus.getCoursesBean();
-                if (coursesBean.isHasCollect()){
+        if (bus.getType() == 122) {
+            if (isLogin) {
+                HomeDataBean.DataBeanX.CoursesBeanX.CoursesBean coursesBean = bus.getCoursesBean();
+                if (coursesBean.isHasCollect()) {
                     SimpleryoNetwork.disCollectCourse(getActivity(), new MyBaseProgressCallbackImpl(getActivity()) {
                         @Override
                         public void onSuccess(HttpInfo info) {
@@ -213,17 +220,18 @@ public class HomeFragment extends XLibraryLazyFragment {
                             if (createOrderBean.getCode().equalsIgnoreCase("0")) {
                                 lrecyclerview.forceToRefresh();
                                 Toast.makeText(getActivity(), "取消收藏成功", Toast.LENGTH_SHORT).show();
-                            }else{
+                            } else {
                                 Toast.makeText(getActivity(), createOrderBean.getMsg(), Toast.LENGTH_SHORT).show();
                             }
                         }
+
                         @Override
                         public void onFailure(HttpInfo info) {
                             super.onFailure(info);
                             loadingDialog.dismiss();
                         }
                     }, coursesBean.getId());
-                }else{
+                } else {
                     SimpleryoNetwork.collectCourse(getActivity(), new MyBaseProgressCallbackImpl(getActivity()) {
                         @Override
                         public void onSuccess(HttpInfo info) {
@@ -233,17 +241,18 @@ public class HomeFragment extends XLibraryLazyFragment {
                             if (createOrderBean.getCode().equalsIgnoreCase("0")) {
                                 lrecyclerview.forceToRefresh();
                                 Toast.makeText(getActivity(), "收藏成功", Toast.LENGTH_SHORT).show();
-                            }else{
+                            } else {
                                 Toast.makeText(getActivity(), createOrderBean.getMsg(), Toast.LENGTH_SHORT).show();
                             }
                         }
+
                         @Override
                         public void onFailure(HttpInfo info) {
                             super.onFailure(info);
                         }
                     }, coursesBean.getId());
                 }
-            }else{
+            } else {
                 startActivity(new Intent(getActivity(), LoginActivity.class));
             }
 

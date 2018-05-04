@@ -28,9 +28,18 @@ import java.io.IOException;
 
 public class SimpleryoNetwork {
     public static final String httpUrl = "https://api.simpleryo.com/";//接口域名
-        public static final String imgUrl="http://p.simpleryo.com/";//阿里云图片自定义域名
+    public static final String imgUrl = "http://p.simpleryo.com/";//阿里云图片自定义域名
 //    public static final String imgUrl="https://simpleryo-china.oss-cn-hangzhou.aliyuncs.com/";//阿里云Bucket自带图片域名
 //    public static final String imgUrl = "https://wongleoi.oss-cn-shanghai.aliyuncs.com/";//阿里云Bucket自带图片域名（黄磊自己的阿里云账号）
+
+    public static final SimpleryoNetwork simpleryoNetwork = new SimpleryoNetwork();
+
+    public SimpleryoNetwork() {
+    }
+
+    public SimpleryoNetwork getInstance() {
+        return simpleryoNetwork;
+    }
 
     /**
      * 获取token
@@ -304,10 +313,26 @@ public class SimpleryoNetwork {
      */
     public static void getRecommendStores(Context context, MyBaseProgressCallbackImpl callback) {
         doHttpAsync(context, HttpInfo.Builder()
-                .setUrl(httpUrl + "/u/stores")
+                .setUrl(httpUrl + "u/stores")
                 .setRequestType(RequestType.GET)//设置请求方式
                 .addParam("token", getToken())//添加接口参数
                 .addParam("isRecommend", "true")
+                .build(), callback);
+    }
+
+    /**
+     * 根据机构id查询教练
+     *
+     * @param context
+     * @param callback
+     * @param storeId
+     */
+    public static void getCoachesByStoreId(Context context, MyBaseProgressCallbackImpl callback, String storeId) {
+        doHttpAsync(context, HttpInfo.Builder()
+                .setUrl(httpUrl + "u/coaches")
+                .setRequestType(RequestType.GET)//设置请求方式
+                .addParam("token", getToken())//添加接口参数
+                .addParam("storeId", storeId)
                 .build(), callback);
     }
 
@@ -588,7 +613,7 @@ public class SimpleryoNetwork {
      * @param creationTime
      * @param point
      */
-    public static void reviewCourse(Context context, MyBaseProgressCallbackImpl callback, String resourceId, String comment, String creationTime, String point,JsonArray imageUrls) {
+    public static void reviewCourse(Context context, MyBaseProgressCallbackImpl callback, String resourceId, String comment, String creationTime, String point, JsonArray imageUrls) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("comment", comment);
         jsonObject.addProperty("creationTime", creationTime);

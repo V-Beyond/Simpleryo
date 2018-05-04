@@ -113,7 +113,14 @@ public class CourseFragment extends XLibraryLazyFragment implements CalendarView
                 if (calendarListBean.getCode().equalsIgnoreCase("0")) {
                     for (CalendarListBean.DataBean dataBean : calendarListBean.getData()) {
                         String date = dataBean.getDateStr().split("-")[2];
-                        if (String.valueOf(calenar_view.getCurDay()).equalsIgnoreCase(date)) {
+                        int day = calenar_view.getCurDay();
+                        String currentDay;
+                        if (day >= 1 && day <= 9) {
+                            currentDay = "0" + day;
+                        } else {
+                            currentDay = String.valueOf(day);
+                        }
+                        if (currentDay.equalsIgnoreCase(date)) {
                             if (dataBean.getCourses() != null && dataBean.getCourses().size() > 0) {
                                 schemes.add(getSchemeCalendar(year, month, Integer.parseInt(date), 0, dataBean.getCourses().size() + ""));
                                 calenar_view.setSchemeDate(schemes);
@@ -130,6 +137,7 @@ public class CourseFragment extends XLibraryLazyFragment implements CalendarView
                                 lrecyclerview.setLoadMoreEnabled(false);
                                 lrecyclerview.setPullRefreshEnabled(false);
                             } else {
+                                lrecyclerview.setVisibility(View.GONE);
                                 tv_no_order.setVisibility(View.VISIBLE);
                             }
                         } else {

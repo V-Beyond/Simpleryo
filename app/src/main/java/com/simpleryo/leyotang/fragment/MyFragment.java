@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -64,6 +65,11 @@ import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -161,6 +167,7 @@ public class MyFragment extends XLibraryLazyFragment {
         conf.setMaxConcurrentRequest(5); // 最大并发请求数，默认5个
         conf.setMaxErrorRetry(2); // 失败后最大重试次数，默认2次
         oss = new OSSClient(getActivity().getApplicationContext(), endpoint, credentialProvider, conf);
+//       EventBus.getDefault().post(new BusEntity(2222));
     }
 
     ProgressDialog dialog;
@@ -171,6 +178,10 @@ public class MyFragment extends XLibraryLazyFragment {
     String des;
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updateSex(BusEntity bus) {
+//        if (bus.getType()==2222){
+//            Bitmap bitmap=returnBitMap("http://p2.so.qhmsg.com/bdr/_240_/t0118ff1cab46ddba27.jpg");
+//            iv_avatar.setImageBitmap(bitmap);
+//        }
         if (bus.getType()==402){
             Log.w("cc","uploadAvataPath:"+uploadAvataPath);
             SimpleryoNetwork.updateInfo(getActivity(), new MyBaseProgressCallbackImpl(getActivity()) {
@@ -244,6 +255,32 @@ public class MyFragment extends XLibraryLazyFragment {
 
         }
     }
+    /*
+   *    get image from network
+   *    @param [String]imageURL
+   *    @return [BitMap]image
+   */
+    public Bitmap returnBitMap(String url){
+        URL myFileUrl = null;
+        Bitmap bitmap = null;
+        try {
+            myFileUrl = new URL(url);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        try {
+            HttpURLConnection conn = (HttpURLConnection) myFileUrl.openConnection();
+            conn.setDoInput(true);
+            conn.connect();
+            InputStream is = conn.getInputStream();
+            bitmap = BitmapFactory.decodeStream(is);
+            is.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bitmap;
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();

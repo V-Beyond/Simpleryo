@@ -2,6 +2,8 @@ package com.simpleryo.leyotang.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.simpleryo.leyotang.R;
@@ -22,10 +24,16 @@ import org.xutils.view.annotation.ViewInject;
 public class AboutUsActivity extends BaseActivity {
     @ViewInject(R.id.tv_name)
     TextView tv_name;
+    @ViewInject(R.id.web_view)
+    WebView web_view;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         tv_name.setText("联系我们");
+        //启用支持javascript
+        WebSettings settings = web_view.getSettings();
+        settings.setJavaScriptEnabled(true);
+        web_view.loadUrl("http://wx.simpleryo.com/Main/ContactUs");
     }
     @Event(value = {R.id.iv_back}, type = View.OnClickListener.class)
     private void onClick(View view) {

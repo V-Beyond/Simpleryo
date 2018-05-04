@@ -10,17 +10,16 @@ import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.okhttplib.HttpInfo;
-import com.okhttplib.callback.Callback;
 import com.simpleryo.leyotang.R;
 import com.simpleryo.leyotang.adapter.BusinessCoachAdapter;
+import com.simpleryo.leyotang.base.MyBaseProgressCallbackImpl;
 import com.simpleryo.leyotang.base.XLibraryLazyFragment;
-import com.simpleryo.leyotang.bean.CourseListBean;
+import com.simpleryo.leyotang.bean.CoachListBean;
 import com.simpleryo.leyotang.network.SimpleryoNetwork;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +33,7 @@ import java.util.List;
 
 public class BusinessCoachFragment extends XLibraryLazyFragment {
 
-    List<CourseListBean.DataBeanX> excellentListBeans = new ArrayList<>();
+    List<CoachListBean.DataBean> excellentListBeans = new ArrayList<>();
     @ViewInject(R.id.lrecyclerview)
     LRecyclerView lrecyclerview;
     @ViewInject(R.id.empty_view)
@@ -83,13 +82,13 @@ public class BusinessCoachFragment extends XLibraryLazyFragment {
         mHasLoadedOnce=true;
     }
     public void initExcellentCourse() {
-        SimpleryoNetwork.getCourse(getActivity(), new Callback() {
+        SimpleryoNetwork.getCoachesByStoreId(getActivity(), new MyBaseProgressCallbackImpl() {
             @Override
-            public void onSuccess(HttpInfo info) throws IOException {
-                CourseListBean courseListBean=info.getRetDetail(CourseListBean.class);
-                if (courseListBean.getCode().equalsIgnoreCase("0")){
-                    if (courseListBean.getData()!=null&&courseListBean.getData().size()>0){
-                        excellentListBeans.addAll(courseListBean.getData());
+            public void onSuccess(HttpInfo info)  {
+                CoachListBean coachListBean=info.getRetDetail(CoachListBean.class);
+                if (coachListBean.getCode().equalsIgnoreCase("0")){
+                    if (coachListBean.getData()!=null&&coachListBean.getData().size()>0){
+                        excellentListBeans.addAll(coachListBean.getData());
                         businessCoachAdapter.setDataList(excellentListBeans);
                     }else{
                         lrecyclerview.setEmptyView(empty_view);
@@ -97,10 +96,10 @@ public class BusinessCoachFragment extends XLibraryLazyFragment {
                 }
             }
             @Override
-            public void onFailure(HttpInfo info) throws IOException {
+            public void onFailure(HttpInfo info)   {
 
             }
-        },storeId,"","","");
+        },storeId);
         lrecyclerview.setFocusable(false);
     }
 }
