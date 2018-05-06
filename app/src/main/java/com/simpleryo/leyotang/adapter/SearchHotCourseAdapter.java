@@ -54,7 +54,7 @@ public class SearchHotCourseAdapter extends BaseAdapter<CourseListBean.DataBeanX
             Picasso.with(mContext).load("http://p0.so.qhmsg.com/bdr/_240_/t01eb2a6c6319b04655.jpg").into(((HotCourseItemViewHolder) holder).iv_collection_img);
         }
         ((HotCourseItemViewHolder) holder).tv_collection_name.setText(bean.getName());
-        ((HotCourseItemViewHolder) holder).tv_price.setText(bean.getPrice()+"$/hour");
+        ((HotCourseItemViewHolder) holder).tv_price.setText(Integer.valueOf(bean.getPrice())/100+"$/hour");
         ((HotCourseItemViewHolder) holder).tv_popular.setText(bean.getClassCount()+" people");
         if (bean.isHasCollect()){
             ((HotCourseItemViewHolder) holder).iv_collection_star.setImageResource(R.mipmap.iv_collection_star);

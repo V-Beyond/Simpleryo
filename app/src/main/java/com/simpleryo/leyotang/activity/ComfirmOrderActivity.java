@@ -22,13 +22,15 @@ import com.simpleryo.leyotang.base.MyBaseProgressCallbackImpl;
 import com.simpleryo.leyotang.bean.CourdeDetailBean;
 import com.simpleryo.leyotang.bean.CreateOrderBean;
 import com.simpleryo.leyotang.network.SimpleryoNetwork;
+import com.simpleryo.leyotang.push.NotificationBroadcast;
 import com.simpleryo.leyotang.utils.XActivityUtils;
 import com.squareup.picasso.Picasso;
 
-import net.latipay.mobile.AlipayOrderAndPaymentListener;
 import net.latipay.mobile.AlipayRequest;
 import net.latipay.mobile.LatipayAPI;
+import net.latipay.mobile.LatipayListener;
 import net.latipay.mobile.PaymentStatus;
+import net.latipay.mobile.WechatpayRequest;
 
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
@@ -70,12 +72,13 @@ public class ComfirmOrderActivity extends BaseActivity {
     String storeId;
     String coachId;
     private ProgressDialog dialog;
-    String payType="WECHATPAY";
+    String payType = "WECHATPAY";
     @ViewInject(R.id.tv_course_time)
     TextView tv_course_time;
     @ViewInject(R.id.tv_course_address)
     TextView tv_course_address;
     public final static String CSS_STYLE = "<style>* {font-size:14px;line-height:20px;}p {color:##373737;font-size:12px}</style>";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,16 +94,18 @@ public class ComfirmOrderActivity extends BaseActivity {
                 Picasso.with(ComfirmOrderActivity.this).load(courdeDetailBean.getData().getCoverUrl()).into(iv_course_detail_img);
                 courseName = courdeDetailBean.getData().getName();
                 if (courdeDetailBean.getData().getIntro() != null) {
-                    tv_course_detail.loadDataWithBaseURL(null, CSS_STYLE+courdeDetailBean.getData().getIntro(), "text/html", "utf-8", null);
+                    tv_course_detail.loadDataWithBaseURL(null, CSS_STYLE + courdeDetailBean.getData().getIntro(), "text/html", "utf-8", null);
                 } else {
-                    tv_course_detail.loadDataWithBaseURL(null, CSS_STYLE+"暂无详情", "text/html", "utf-8", null);
+                    tv_course_detail.loadDataWithBaseURL(null, CSS_STYLE + "暂无详情", "text/html", "utf-8", null);
                 }
-                if (courdeDetailBean.getData().getDurations().getData()!=null&&courdeDetailBean.getData().getDurations().getData().size()>0){
+                if (courdeDetailBean.getData().getDurations().getData() != null && courdeDetailBean.getData().getDurations().getData().size() > 0) {
                     StringBuilder durations = new StringBuilder();
-                    for (int i=0;i<courdeDetailBean.getData().getDurations().getData().size();i++){
-                        CourdeDetailBean.DataBeanX.DurationsBean.DataBean dataBean=courdeDetailBean.getData().getDurations().getData().get(i);
-                        durations.append(dataBean.getWeek()+"   "+dataBean.getStartTime()+"-"+dataBean.getEndTime());
-                        if (i<courdeDetailBean.getData().getDurations().getData().size()-1){
+                    durations.append(courdeDetailBean.getData().getDurations().getStartDate() + "至" + courdeDetailBean.getData().getDurations().getEndDate());
+                    durations.append("\n");
+                    for (int i = 0; i < courdeDetailBean.getData().getDurations().getData().size(); i++) {
+                        CourdeDetailBean.DataBeanX.DurationsBean.DataBean dataBean = courdeDetailBean.getData().getDurations().getData().get(i);
+                        durations.append(dataBean.getWeek() + "   " + dataBean.getStartTime() + "-" + dataBean.getEndTime());
+                        if (i < courdeDetailBean.getData().getDurations().getData().size() - 1) {
                             durations.append("\n");
                         }
                     }
@@ -130,8 +135,8 @@ public class ComfirmOrderActivity extends BaseActivity {
                     price = 2;
                 }
                 total_price = count * price;
-                tv_price.setText("课程价格：" + price + "$");
-                tv_total_price.setText("课程总额：" + total_price + "$");
+                tv_price.setText("课程价格：" + price/100 + "$");
+                tv_total_price.setText("课程总额：" + total_price/100 + "$");
                 if (courdeDetailBean.getData().getStoreName() != null) {
                     tv_store_name.setText(courdeDetailBean.getData().getStoreName());
                 } else {
@@ -161,13 +166,13 @@ public class ComfirmOrderActivity extends BaseActivity {
                     Toast.makeText(ComfirmOrderActivity.this, "订单数量不能小于1", Toast.LENGTH_SHORT).show();
                 }
                 total_price = count * price;
-                tv_total_price.setText("课程总额：" + total_price * 1 + "$");
+                tv_total_price.setText("课程总额：" + (total_price * 1)/100 + "$");
                 break;
             case R.id.iv_count_increase:
                 count += 1;
                 et_count.setText(count + "");
                 total_price = count * price;
-                tv_total_price.setText("课程总额：" + total_price * 1 + "$");
+                tv_total_price.setText("课程总额：" + (total_price * 1)/100+ "$");
                 break;
             case R.id.rl_pay:
                 SimpleryoNetwork.createOrder(ComfirmOrderActivity.this, new MyBaseProgressCallbackImpl(ComfirmOrderActivity.this) {
@@ -178,15 +183,23 @@ public class ComfirmOrderActivity extends BaseActivity {
                         CreateOrderBean createOrderBean = info.getRetDetail(CreateOrderBean.class);
                         if (createOrderBean.getCode().equalsIgnoreCase("0")) {
                             recordOrder(createOrderBean.getData().getId(), createOrderBean.getData().getPayAmt() + "", createOrderBean.getData().getNo(), createOrderBean.getData().getCourseName(), payType);
-                            if (createOrderBean.getData().getPayType().equalsIgnoreCase("ALIPAY")){
-                                clickAlipay(ComfirmOrderActivity.this, total_price + "", createOrderBean.getData().getId(), courseName);
-                            }else{
-                                alertDialog();
+                            if (createOrderBean.getData().getPayType().equalsIgnoreCase("ALIPAY")) {
+                                clickAlipay(ComfirmOrderActivity.this, total_price + "", createOrderBean.getData().getNo(), courseName);
+                            } else {
+                                clickWechat(ComfirmOrderActivity.this, total_price + "", createOrderBean.getData().getNo(), courseName);
+//                                alertDialog();
                             }
-                        }else{
-                            Toast.makeText(ComfirmOrderActivity.this, "下单失败", Toast.LENGTH_SHORT).show();
+                        } else if (createOrderBean.getCode().equalsIgnoreCase("401")) {
+                            Intent intent = new Intent();
+                            intent.setClass(context, NotificationBroadcast.class);
+                            intent.putExtra(NotificationBroadcast.EXTRA_KEY_ACTION,
+                                    NotificationBroadcast.ACTION_REFRESHTOKEN);
+                            sendBroadcast(intent);
+                        } else {
+                            Toast.makeText(ComfirmOrderActivity.this, createOrderBean.getMsg(), Toast.LENGTH_SHORT).show();
                         }
                     }
+
                     @Override
                     public void onFailure(HttpInfo info) {
                         super.onFailure(info);
@@ -199,7 +212,7 @@ public class ComfirmOrderActivity extends BaseActivity {
     }
 
 
-    public void alertDialog(){
+    public void alertDialog() {
         final AlertDialog.Builder normalDialog =
                 new AlertDialog.Builder(ComfirmOrderActivity.this);
         normalDialog.setTitle("提示");
@@ -220,15 +233,16 @@ public class ComfirmOrderActivity extends BaseActivity {
     private void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
         switch (checkedId) {
             case R.id.radio_button_wechat:
-                payType="WECHATPAY";
+                payType = "WECHATPAY";
                 break;
             case R.id.radio_button_alipay:
-                payType="ALIPAY";
+                payType = "ALIPAY";
                 break;
             default:
                 break;
         }
     }
+
     /**
      * 记录订单
      *
@@ -248,6 +262,54 @@ public class ComfirmOrderActivity extends BaseActivity {
     }
 
     /**
+     * 微信支付
+     *
+     * @param activity
+     * @param amount
+     * @param merchantReference
+     * @param productName
+     */
+    private void clickWechat(final Activity activity, String amount, String merchantReference, String productName) {
+        dialog = ProgressDialog.show(activity, null, "Loading", false, true);
+        WechatpayRequest req = new WechatpayRequest(activity);
+        req.amount = "0.1";
+        req.merchantReference = merchantReference;
+
+        req.productName = productName;
+        req.callbackUrl = "https://api.simpleryo.com/o/orders/callback/url";
+
+        req.setListener(new LatipayListener() {
+
+            @Override
+            public void onTransactionCompleted(HashMap<String, String> latipayOrder, Error error) {
+                Log.w("cc", "onTransactionCompleted " + String.valueOf(latipayOrder) + (error != null ? error.getMessage() : ""));
+                dialog.dismiss();
+
+                if (error != null) {
+                    Toast.makeText(activity, "Latipay: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                Toast.makeText(activity, "Go to Wechat", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onPaymentCompleted(int result) {
+                if (result == PaymentStatus.PAID) {
+                    Toast.makeText(activity, "WechatPay: paid", Toast.LENGTH_LONG).show();
+                } else if (result == PaymentStatus.UNPAID) {
+                    Toast.makeText(activity, "WechatPay: unpaid", Toast.LENGTH_LONG).show();
+                } else { //PaymentStatus.UNKNOWN
+
+                    //search payment status from your own server
+                }
+            }
+        });
+
+        LatipayAPI.sendRequest(req);
+    }
+
+    /**
      * 支付
      *
      * @param activity
@@ -264,10 +326,10 @@ public class ComfirmOrderActivity extends BaseActivity {
         req.callbackUrl = "https://api.simpleryo.com/o/orders/callback/url";
 
 
-        req.setListener(new AlipayOrderAndPaymentListener() {
+        req.setListener(new LatipayListener() {
 
             @Override
-            public void onOrderCompleted(HashMap<String, String> latipayOrder, Error error) {
+            public void onTransactionCompleted(HashMap<String, String> latipayOrder, Error error) {
                 Log.w("cc", "onTransactionCompleted " + String.valueOf(latipayOrder) + (error != null ? error.getMessage() : ""));
                 dialog.dismiss();
                 if (error != null) {
@@ -276,6 +338,7 @@ public class ComfirmOrderActivity extends BaseActivity {
                     return;
                 }
             }
+
             @Override
             public void onPaymentCompleted(int result) {
                 if (result == PaymentStatus.PAID) {

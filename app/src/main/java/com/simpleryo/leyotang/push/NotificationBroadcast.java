@@ -5,6 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.okhttplib.HttpInfo;
+import com.simpleryo.leyotang.activity.MyNoticeActivity;
+import com.simpleryo.leyotang.base.MyBaseProgressCallbackImpl;
+import com.simpleryo.leyotang.bean.LoginBean;
+import com.simpleryo.leyotang.network.SimpleryoNetwork;
+import com.simpleryo.leyotang.utils.SharedPreferencesUtils;
 import com.umeng.message.UTrack;
 import com.umeng.message.entity.UMessage;
 
@@ -16,9 +22,9 @@ public class NotificationBroadcast extends BroadcastReceiver {
     public static final String EXTRA_KEY_MSG = "MSG";
     public static final int ACTION_CLICK = 10;
     public static final int ACTION_DISMISS = 11;
+    public static final int ACTION_REFRESHTOKEN = 12;
     public static final int EXTRA_ACTION_NOT_EXIST = -1;
     private static final String TAG = NotificationBroadcast.class.getName();
-
     @Override
     public void onReceive(Context context, Intent intent) {
         String message = intent.getStringExtra(EXTRA_KEY_MSG);
@@ -35,9 +41,32 @@ public class NotificationBroadcast extends BroadcastReceiver {
                     break;
                 case ACTION_CLICK:
                     Log.i(TAG, "click notification");
+                    Intent myMsgIntent = new Intent(context, MyNoticeActivity.class);
+                    myMsgIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(myMsgIntent);
                     UTrack.getInstance(context).setClearPrevMessage(true);
                     MyNotificationService.oldMessage = null;
                     UTrack.getInstance(context).trackMsgClick(msg);
+                    break;
+                case ACTION_REFRESHTOKEN:
+                    String refreshToken= SharedPreferencesUtils.getKeyString("refreshToken");
+                    Log.w("cc","refreshToken:"+refreshToken);
+                    SimpleryoNetwork.refreshToken(context,new MyBaseProgressCallbackImpl(){
+                        @Override
+                        public void onSuccess(HttpInfo info) {
+                            super.onSuccess(info);
+                            LoginBean loginBean = info.getRetDetail(LoginBean.class);
+                            if (loginBean.getCode().equalsIgnoreCase("0")) {
+                                SharedPreferencesUtils.saveKeyString("refreshToken",loginBean.getData().getRefreshToken());
+                                SharedPreferencesUtils.saveKeyString("token",loginBean.getData().getToken());
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(HttpInfo info) {
+                            super.onFailure(info);
+                        }
+                    },refreshToken);
                     break;
             }
             //

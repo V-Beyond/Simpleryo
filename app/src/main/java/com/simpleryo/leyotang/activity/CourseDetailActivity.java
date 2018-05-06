@@ -1,7 +1,9 @@
 package com.simpleryo.leyotang.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
@@ -24,6 +26,12 @@ import com.simpleryo.leyotang.utils.SharedPreferencesUtils;
 import com.simpleryo.leyotang.utils.XActivityUtils;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -42,6 +50,10 @@ import org.xutils.view.annotation.ViewInject;
 public class CourseDetailActivity extends BaseActivity {
     @ViewInject(R.id.tv_name)
     TextView tv_name;
+    @ViewInject(R.id.tv_share)
+    TextView tv_share;
+    @ViewInject(R.id.iv_msg)
+    ImageView iv_msg;
     @ViewInject(R.id.iv_course_detail_img)
     ImageView iv_course_detail_img;
     @ViewInject(R.id.iv_business_course_img)
@@ -62,7 +74,7 @@ public class CourseDetailActivity extends BaseActivity {
     TextView tv_popular;
     @ViewInject(R.id.tv_course_detail)
     WebView tv_course_detail;
-    String courseId = "5ad2fb208fa1ca12c74ef7c1";
+    String courseId;
     @ViewInject(R.id.iv_coach_img)
     public ImageView iv_coach_img;
     @ViewInject(R.id.tv_address)
@@ -76,24 +88,28 @@ public class CourseDetailActivity extends BaseActivity {
     @ViewInject(R.id.tv_store_status)
     TextView tv_store_status;
     @ViewInject(R.id.rating_bar)
-    RatingBar  rating_bar;
+    RatingBar rating_bar;
     @ViewInject(R.id.tv_studentCount)
     TextView tv_studentCount;
     @ViewInject(R.id.tv_point)
     TextView tv_point;
     @ViewInject(R.id.tv_collection)
-            TextView tv_collection;
+    TextView tv_collection;
     boolean hasCollect;
     public Transformation transformation = new RoundedTransformationBuilder()
             .cornerRadius(10)
             .oval(false)
             .build();
-    public final static String CSS_STYLE = "<style>* {font-size:14px;line-height:20px;}p {color:##373737;font-size:12px}</style>";
+    public final static String CSS_STYLE = "<style>* {font-size:14px;line-height:20px;}p {color:#373737;font-size:12px}</style>";
+    UMShareAPI umShareAPI;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         tv_name.setText("课程详情");
+        iv_msg.setVisibility(View.GONE);
+        tv_share.setVisibility(View.VISIBLE);
+        umShareAPI = UMShareAPI.get(this);
 //        WebSettings webSettings=tv_course_detail.getSettings();
 //        webSettings.setSupportZoom(true);
 //        webSettings.setTextSize(WebSettings.TextSize.SMALLER);
@@ -109,12 +125,64 @@ public class CourseDetailActivity extends BaseActivity {
         isLogin = SharedPreferencesUtils.getKeyBoolean("isLogin");//获取用户登录状态
     }
 
+    public void share(SHARE_MEDIA shareMedia) {
+//        UMImage imagelocal = new UMImage(this, coverUrl);
+//        new ShareAction(CourseDetailActivity.this).withText(courseName)
+//                .withMedia(imagelocal)
+//                .setPlatform(shareMedia)
+//                .setCallback(shareListener).share();
+        UMWeb web = new UMWeb("https://www.baidu.com/");
+        web.setTitle(courseName);//标题
+        web.setThumb(new UMImage(this, coverUrl));  //缩略图
+        web.setDescription("我在乐友堂推荐你一个课程");//描述
+        new ShareAction(CourseDetailActivity.this)
+                .withMedia(web)
+                .setPlatform(shareMedia)
+                .setCallback(shareListener)
+                .share();
+    }
+
+    public void shareFaceBook(SHARE_MEDIA shareMedia) {
+        UMImage imagelocal = new UMImage(this, coverUrl);
+        new ShareAction(CourseDetailActivity.this).withText(courseName)
+                .withMedia(imagelocal)
+                .setPlatform(shareMedia)
+                .setCallback(shareListener).share();
+    }
+
+    String courseName;
+    String coverUrl;
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updateCollect(BusEntity bus) {
+        if (bus.getType() == 701) {
+            if (umShareAPI.isInstall(CourseDetailActivity.this, SHARE_MEDIA.WEIXIN)) {
+                share(SHARE_MEDIA.WEIXIN);
+            } else {
+                Toast.makeText(CourseDetailActivity.this, "请安装微信客户端", Toast.LENGTH_SHORT).show();
+            }
+        }
+        if (bus.getType() == 702) {
+            if (umShareAPI.isInstall(CourseDetailActivity.this, SHARE_MEDIA.WEIXIN)) {
+                share(SHARE_MEDIA.WEIXIN_CIRCLE);
+            } else {
+                Toast.makeText(CourseDetailActivity.this, "请安装微信客户端", Toast.LENGTH_SHORT).show();
+            }
+        }
+        if (bus.getType() == 703) {
+            share(SHARE_MEDIA.ALIPAY);
+        }
+        if (bus.getType() == 704) {
+//            if (umShareAPI.isInstall(CourseDetailActivity.this,SHARE_MEDIA.FACEBOOK)){
+            shareFaceBook(SHARE_MEDIA.FACEBOOK);
+//            }else{
+//                Toast.makeText(CourseDetailActivity.this,"请安装FACEBOOK客户端",Toast.LENGTH_SHORT).show();
+//            }
+        }
         if (bus.getType() == 222) {
             getStoreDetail(storeId);
         }
-        if(bus.getType()==113){
+        if (bus.getType() == 113) {
             SimpleryoNetwork.getCourseDetail(CourseDetailActivity.this, new MyBaseProgressCallbackImpl(CourseDetailActivity.this) {
                 @Override
                 public void onSuccess(HttpInfo info) {
@@ -124,30 +192,34 @@ public class CourseDetailActivity extends BaseActivity {
                     if (courdeDetailBean.getCode().equalsIgnoreCase("0")) {
                         storeId = courdeDetailBean.getData().getStoreId();
                         if (courdeDetailBean.getData().getTagId1() != null) {
-                            tv_course_category.setText(courdeDetailBean.getData().getName());
+                            courseName = courdeDetailBean.getData().getName();
+                            tv_course_category.setText(courseName);
                         }
                         if (courdeDetailBean.getData().getCoverUrl() == null) {
                             Picasso.with(CourseDetailActivity.this).load("http://p0.so.qhmsg.com/bdr/_240_/t01eb2a6c6319b04655.jpg").into(iv_course_detail_img);
                         } else {
-                            Picasso.with(CourseDetailActivity.this).load(courdeDetailBean.getData().getCoverUrl()).into(iv_course_detail_img);
+                            coverUrl = courdeDetailBean.getData().getCoverUrl();
+                            Picasso.with(CourseDetailActivity.this).load(coverUrl).into(iv_course_detail_img);
                         }
-                        hasCollect=courdeDetailBean.getData().isHasCollect();
-                        if (hasCollect){
+                        hasCollect = courdeDetailBean.getData().isHasCollect();
+                        if (hasCollect) {
                             tv_collection.setText("已收藏");
-                        }else{
+                        } else {
                             tv_collection.setText("收藏");
                         }
                         tv_coach_name.setText(courdeDetailBean.getData().getCoach().getNickName());
-                        tv_price.setText(courdeDetailBean.getData().getPrice() + "$");
+                        tv_price.setText(Integer.valueOf(courdeDetailBean.getData().getPrice())/100 + "$");
                         tv_join_count.setText("已有" + courdeDetailBean.getData().getClassCount() + "人参加");
                         tv_popular.setText(courdeDetailBean.getData().getClassCount() + "个人正在学习");
                         tv_goodreviewrate.setText("好评率：" + courdeDetailBean.getData().getGoodReviewRate() + "%");
-                        if (courdeDetailBean.getData().getDurations().getData()!=null&&courdeDetailBean.getData().getDurations().getData().size()>0){
+                        if (courdeDetailBean.getData().getDurations().getData() != null && courdeDetailBean.getData().getDurations().getData().size() > 0) {
                             StringBuilder durations = new StringBuilder();
-                            for (int i=0;i<courdeDetailBean.getData().getDurations().getData().size();i++){
-                                CourdeDetailBean.DataBeanX.DurationsBean.DataBean dataBean=courdeDetailBean.getData().getDurations().getData().get(i);
-                                durations.append(dataBean.getWeek()+"   "+dataBean.getStartTime()+"-"+dataBean.getEndTime());
-                                if (i<courdeDetailBean.getData().getDurations().getData().size()-1){
+                            durations.append(courdeDetailBean.getData().getDurations().getStartDate() + "至" + courdeDetailBean.getData().getDurations().getEndDate());
+                            durations.append("\n");
+                            for (int i = 0; i < courdeDetailBean.getData().getDurations().getData().size(); i++) {
+                                CourdeDetailBean.DataBeanX.DurationsBean.DataBean dataBean = courdeDetailBean.getData().getDurations().getData().get(i);
+                                durations.append(dataBean.getWeek() + "   " + dataBean.getStartTime() + "-" + dataBean.getEndTime());
+                                if (i < courdeDetailBean.getData().getDurations().getData().size() - 1) {
                                     durations.append("\n");
                                 }
                             }
@@ -158,16 +230,16 @@ public class CourseDetailActivity extends BaseActivity {
 //                        skills.append("\n" + skillsBean.getValue());
 //                    }
                         if (courdeDetailBean.getData().getIntro() != null) {
-                            tv_course_detail.loadDataWithBaseURL("about:blank", CSS_STYLE+courdeDetailBean.getData().getIntro(), "text/html", "utf-8", null);
+                            tv_course_detail.loadDataWithBaseURL("about:blank", CSS_STYLE + courdeDetailBean.getData().getIntro(), "text/html", "utf-8", null);
                         } else {
-                            tv_course_detail.loadDataWithBaseURL("about:blank", CSS_STYLE+"<p>暂无详情</p>", "text/html", "utf-8", null);
+                            tv_course_detail.loadDataWithBaseURL("about:blank", CSS_STYLE + "<p>暂无详情</p>", "text/html", "utf-8", null);
                         }
                         tv_coach_intro.setBackgroundColor(0);
-                        CourdeDetailBean.DataBeanX.CoachBean coachBean=courdeDetailBean.getData().getCoach();
+                        CourdeDetailBean.DataBeanX.CoachBean coachBean = courdeDetailBean.getData().getCoach();
                         if (coachBean != null) {
-                            tv_studentCount.setText(coachBean.getStudentCount()+"");
+                            tv_studentCount.setText(coachBean.getStudentCount() + "");
                             rating_bar.setRating(coachBean.getPoint());
-                            tv_point.setText(coachBean.getPoint()+"");
+                            tv_point.setText(coachBean.getPoint() + "");
                             Picasso.with(CourseDetailActivity.this).load(coachBean.getAvatarUrl()).into(iv_coach_img);
                             tv_coach_intro.setText(coachBean.getIntro());
                         } else {
@@ -188,11 +260,13 @@ public class CourseDetailActivity extends BaseActivity {
                 public void onFailure(HttpInfo info) {
                     super.onFailure(info);
                     loadingDialog.dismiss();
-                    Toast.makeText(CourseDetailActivity.this,"数据一不小心走丢了，请稍后回来",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CourseDetailActivity.this, "数据一不小心走丢了，请稍后回来", Toast.LENGTH_SHORT).show();
                 }
             }, courseId);
         }
     }
+
+    boolean isFollow;
 
     public void getStoreDetail(String storeId) {
         SimpleryoNetwork.getStoreDetail(CourseDetailActivity.this, new MyBaseProgressCallbackImpl() {
@@ -200,23 +274,26 @@ public class CourseDetailActivity extends BaseActivity {
             public void onSuccess(HttpInfo info) {
                 super.onSuccess(info);
                 StoreDetailBean storeDetailBean = info.getRetDetail(StoreDetailBean.class);
-                if (storeDetailBean.getData().getStoreInfo().getStatus().equalsIgnoreCase("AUDIT_OK")) {
-                    tv_store_status.setText("已认证");
-                } else if (storeDetailBean.getData().getStoreInfo().getStatus().equalsIgnoreCase("AUDITING")) {
-                    tv_store_status.setText("待审核");
-                } else if (storeDetailBean.getData().getStoreInfo().getStatus().equalsIgnoreCase("AUDIT_FAIL")) {
-                    tv_store_status.setText("未通过");
-                }
-                if (storeDetailBean.getData().getStoreInfo().getAddress() != null) {
-                    tv_address.setText(storeDetailBean.getData().getStoreInfo().getAddress().getDetail());
-                } else {
-                    tv_address.setText("暂无地址");
-                }
-                if (storeDetailBean.getData().getStoreInfo().getCoverUrl() != null) {
-                    Picasso.with(CourseDetailActivity.this).load(storeDetailBean.getData().getStoreInfo().getCoverUrl()).into(iv_business_course_img);
-                }
-                if (storeDetailBean.getData().getStoreInfo().getLicenceUrl() != null) {
-                    Picasso.with(CourseDetailActivity.this).load(storeDetailBean.getData().getStoreInfo().getLicenceUrl()).into(iv_qualification_certificate_img);
+                if (storeDetailBean.getCode().equalsIgnoreCase("0")) {
+                    isFollow = storeDetailBean.getData().isHasFollow();
+                    if (storeDetailBean.getData().getStoreInfo().getStatus().equalsIgnoreCase("AUDIT_OK")) {
+                        tv_store_status.setText("已认证");
+                    } else if (storeDetailBean.getData().getStoreInfo().getStatus().equalsIgnoreCase("AUDITING")) {
+                        tv_store_status.setText("待审核");
+                    } else if (storeDetailBean.getData().getStoreInfo().getStatus().equalsIgnoreCase("AUDIT_FAIL")) {
+                        tv_store_status.setText("未通过");
+                    }
+                    if (storeDetailBean.getData().getStoreInfo().getAddress() != null) {
+                        tv_address.setText(storeDetailBean.getData().getStoreInfo().getAddress().getDetail());
+                    } else {
+                        tv_address.setText("暂无地址");
+                    }
+                    if (storeDetailBean.getData().getStoreInfo().getCoverUrl() != null) {
+                        Picasso.with(CourseDetailActivity.this).load(storeDetailBean.getData().getStoreInfo().getCoverUrl()).into(iv_business_course_img);
+                    }
+                    if (storeDetailBean.getData().getStoreInfo().getLicenceUrl() != null) {
+                        Picasso.with(CourseDetailActivity.this).load(storeDetailBean.getData().getStoreInfo().getLicenceUrl()).into(iv_qualification_certificate_img);
+                    }
                 }
             }
 
@@ -236,7 +313,7 @@ public class CourseDetailActivity extends BaseActivity {
     boolean isLogin;
     String storeId;
 
-    @Event(value = {R.id.iv_back, R.id.tv_reservations, R.id.iv_msg, R.id.tv_business_home, R.id.ll_collection, R.id.tv_to_home, R.id.tv_to_use_help}, type = View.OnClickListener.class)
+    @Event(value = {R.id.iv_back, R.id.tv_reservations, R.id.tv_share, R.id.tv_business_home, R.id.ll_collection, R.id.tv_to_home, R.id.tv_to_use_help}, type = View.OnClickListener.class)
     private void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
@@ -247,12 +324,57 @@ public class CourseDetailActivity extends BaseActivity {
                 startActivity(intent2);
                 break;
             case R.id.tv_to_use_help:
-                Intent intent1 = new Intent(CourseDetailActivity.this, UseHelpActivity.class);
-                startActivity(intent1);
+                if (isLogin) {
+                    if (isFollow) {
+                        SimpleryoNetwork.disfollowStore(CourseDetailActivity.this, new MyBaseProgressCallbackImpl(CourseDetailActivity.this) {
+                            @Override
+                            public void onSuccess(HttpInfo info) {
+                                super.onSuccess(info);
+                                loadingDialog.dismiss();
+                                CodeBean createOrderBean = info.getRetDetail(CodeBean.class);
+                                if (createOrderBean.getCode().equalsIgnoreCase("0")) {
+                                    EventBus.getDefault().post(new BusEntity(113));
+                                    Toast.makeText(CourseDetailActivity.this, "取消关注成功", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(CourseDetailActivity.this, createOrderBean.getMsg(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            @Override
+                            public void onFailure(HttpInfo info) {
+                                super.onFailure(info);
+                                loadingDialog.dismiss();
+                            }
+                        }, storeId);
+                    } else {
+                        SimpleryoNetwork.followStore(CourseDetailActivity.this, new MyBaseProgressCallbackImpl(CourseDetailActivity.this) {
+                            @Override
+                            public void onSuccess(HttpInfo info) {
+                                super.onSuccess(info);
+                                loadingDialog.dismiss();
+                                CodeBean createOrderBean = info.getRetDetail(CodeBean.class);
+                                if (createOrderBean.getCode().equalsIgnoreCase("0")) {
+                                    EventBus.getDefault().post(new BusEntity(113));
+                                    Toast.makeText(CourseDetailActivity.this, "关注成功", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(CourseDetailActivity.this, createOrderBean.getMsg(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(HttpInfo info) {
+                                super.onFailure(info);
+                                loadingDialog.dismiss();
+                            }
+                        }, storeId);
+                    }
+                } else {
+                    Intent intent = new Intent(CourseDetailActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
                 break;
             case R.id.ll_collection:
                 if (isLogin) {
-                    if (hasCollect){
+                    if (hasCollect) {
                         SimpleryoNetwork.collectCourse(CourseDetailActivity.this, new MyBaseProgressCallbackImpl(CourseDetailActivity.this) {
                             @Override
                             public void onSuccess(HttpInfo info) {
@@ -262,12 +384,12 @@ public class CourseDetailActivity extends BaseActivity {
                                 if (createOrderBean.getCode().equalsIgnoreCase("0")) {
                                     EventBus.getDefault().post(new BusEntity(113));
                                     Toast.makeText(CourseDetailActivity.this, "收藏成功", Toast.LENGTH_SHORT).show();
-                                }else{
+                                } else {
                                     Toast.makeText(CourseDetailActivity.this, createOrderBean.getMsg(), Toast.LENGTH_SHORT).show();
                                 }
                             }
                         }, courseId);
-                    }else{
+                    } else {
                         SimpleryoNetwork.disCollectCourse(CourseDetailActivity.this, new MyBaseProgressCallbackImpl(CourseDetailActivity.this) {
                             @Override
                             public void onSuccess(HttpInfo info) {
@@ -277,10 +399,11 @@ public class CourseDetailActivity extends BaseActivity {
                                 if (createOrderBean.getCode().equalsIgnoreCase("0")) {
                                     EventBus.getDefault().post(new BusEntity(113));
                                     Toast.makeText(CourseDetailActivity.this, "取消收藏成功", Toast.LENGTH_SHORT).show();
-                                }else{
+                                } else {
                                     Toast.makeText(CourseDetailActivity.this, createOrderBean.getMsg(), Toast.LENGTH_SHORT).show();
                                 }
                             }
+
                             @Override
                             public void onFailure(HttpInfo info) {
                                 super.onFailure(info);
@@ -310,10 +433,61 @@ public class CourseDetailActivity extends BaseActivity {
                 businessIntent.putExtra("storeId", storeId);
                 startActivity(businessIntent);
                 break;
-            case R.id.iv_msg:
+            case R.id.tv_share:
                 ShareDialogFragment shareDialogFragment = new ShareDialogFragment();
                 shareDialogFragment.show(getSupportFragmentManager(), "shareDialogFragment");
                 break;
         }
+    }
+
+    private ProgressDialog dialog;
+
+    private UMShareListener shareListener = new UMShareListener() {
+        /**
+         * @descrption 分享开始的回调
+         * @param platform 平台类型
+         */
+        @Override
+        public void onStart(SHARE_MEDIA platform) {
+            dialog = ProgressDialog.show(CourseDetailActivity.this, null, "Loading", false, true);
+        }
+
+        /**
+         * @descrption 分享成功的回调
+         * @param platform 平台类型
+         */
+        @Override
+        public void onResult(SHARE_MEDIA platform) {
+            dialog.dismiss();
+            Toast.makeText(CourseDetailActivity.this, "分享成功", Toast.LENGTH_LONG).show();
+        }
+
+        /**
+         * @descrption 分享失败的回调
+         * @param platform 平台类型
+         * @param t 错误原因
+         */
+        @Override
+        public void onError(SHARE_MEDIA platform, Throwable t) {
+            dialog.dismiss();
+            Log.w("cc", "onError:" + t.getMessage());
+            Toast.makeText(CourseDetailActivity.this, "分享失败", Toast.LENGTH_LONG).show();
+        }
+
+        /**
+         * @descrption 分享取消的回调
+         * @param platform 平台类型
+         */
+        @Override
+        public void onCancel(SHARE_MEDIA platform) {
+            dialog.dismiss();
+            Toast.makeText(CourseDetailActivity.this, "分享取消", Toast.LENGTH_LONG).show();
+        }
+    };
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 }

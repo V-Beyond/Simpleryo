@@ -44,7 +44,7 @@ public class HotCourseAdapter extends BaseAdapter<HomeDataBean.DataBeanX.Courses
         final HomeDataBean.DataBeanX.CoursesBeanX.CoursesBean bean = listData.get(position);
         Picasso.with(mContext).load(bean.getCoverUrl()).into(((HotCourseItemViewHolder) holder).iv_collection_img);
         ((HotCourseItemViewHolder) holder).tv_collection_name.setText(bean.getName());
-        ((HotCourseItemViewHolder) holder).tv_price.setText(bean.getPrice()+"$/hour");
+        ((HotCourseItemViewHolder) holder).tv_price.setText(Integer.valueOf(bean.getPrice())/100+"$/hour");
         ((HotCourseItemViewHolder) holder).tv_popular.setText(bean.getClassCount()+" people");
         if (bean.isHasCollect()){
             ((HotCourseItemViewHolder) holder).iv_collection_star.setImageResource(R.mipmap.iv_collection_star);

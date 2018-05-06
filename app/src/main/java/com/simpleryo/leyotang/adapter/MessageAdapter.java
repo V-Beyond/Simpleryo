@@ -5,6 +5,7 @@ import android.view.ViewGroup;
 
 import com.simpleryo.leyotang.R;
 import com.simpleryo.leyotang.bean.MessageListBean;
+import com.simpleryo.leyotang.utils.XStringPars;
 import com.simpleryo.leyotang.viewholder.MessageViewHolder;
 import com.simpleryo.leyotang.viewholder.SuperViewHolder;
 
@@ -39,11 +40,12 @@ public class MessageAdapter extends BaseAdapter<MessageListBean.DataBean> {
          MessageListBean.DataBean  dataBean= listData.get(position);
          if (holder instanceof  MessageViewHolder){
              ((MessageViewHolder) holder).tv_title.setText(dataBean.getTitle());
-             if (dataBean.getBody() != null) {
-                 ((MessageViewHolder) holder).tv_content.loadDataWithBaseURL("about:blank", CSS_STYLE+dataBean.getBody() , "text/html", "utf-8", null);
-             } else {
-                 ((MessageViewHolder) holder).tv_content.loadDataWithBaseURL("about:blank", CSS_STYLE+"<p>暂无详情</p>", "text/html", "utf-8", null);
-             }
+            ((MessageViewHolder) holder).tv_time.setText(XStringPars.getStrTime(dataBean.getCreationTime()));
+//             if (dataBean.getBody() != null) {
+//                 ((MessageViewHolder) holder).tv_content.loadDataWithBaseURL("about:blank", CSS_STYLE+dataBean.getBody() , "text/html", "utf-8", null);
+//             } else {
+//                 ((MessageViewHolder) holder).tv_content.loadDataWithBaseURL("about:blank", CSS_STYLE+"<p>暂无详情</p>", "text/html", "utf-8", null);
+//             }
 
          }
     }

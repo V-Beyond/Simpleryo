@@ -44,7 +44,7 @@ public class ExcellentCourseAdapter extends BaseAdapter<HomeDataBean.DataBeanX.C
         final HomeDataBean.DataBeanX.CoursesBeanX.CoursesBean bean = listData.get(position);
         Picasso.with(mContext).load(bean.getCoverUrl()).into(((ExcellentCourseItemViewHolder) holder).iv_collection_img);
         ((ExcellentCourseItemViewHolder) holder).tv_collection_name.setText(bean.getName());
-        ((ExcellentCourseItemViewHolder) holder).tv_price.setText(bean.getPrice()+"$/hour");
+        ((ExcellentCourseItemViewHolder) holder).tv_price.setText(Integer.valueOf(bean.getPrice())/100+"$/hour");
         ((ExcellentCourseItemViewHolder) holder).tv_popular.setText(bean.getClassCount()+" people");
         if (bean.isHasCollect()){
             ((ExcellentCourseItemViewHolder) holder).iv_collection_star.setImageResource(R.mipmap.iv_collection_star);

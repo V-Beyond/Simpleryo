@@ -27,10 +27,11 @@ import com.simpleryo.leyotang.bean.MultipleItem;
 import com.simpleryo.leyotang.bean.OrderListBean;
 import com.simpleryo.leyotang.network.SimpleryoNetwork;
 
-import net.latipay.mobile.AlipayOrderAndPaymentListener;
 import net.latipay.mobile.AlipayRequest;
 import net.latipay.mobile.LatipayAPI;
+import net.latipay.mobile.LatipayListener;
 import net.latipay.mobile.PaymentStatus;
+import net.latipay.mobile.WechatpayRequest;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -117,10 +118,58 @@ public class OrderNewFragment extends XLibraryLazyFragment {
         req.callbackUrl = "https://api.simpleryo.com/o/orders/callback/url";//回调地址
 
 
-        req.setListener(new AlipayOrderAndPaymentListener() {
+        req.setListener(new LatipayListener() {
 
             @Override
-            public void onOrderCompleted(HashMap<String, String> latipayOrder, Error error) {
+            public void onTransactionCompleted(HashMap<String, String> latipayOrder, Error error) {
+                Log.w("cc", "onTransactionCompleted " + String.valueOf(latipayOrder) + (error != null ? error.getMessage() : ""));
+                dialog.dismiss();
+
+                if (error != null) {
+                    Log.w("cc", "onOrderCompleted:" + error.getMessage());
+                    Toast.makeText(activity, "Latipay: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
+
+            @Override
+            public void onPaymentCompleted(int result) {
+                if (result == PaymentStatus.PAID) {
+                    Toast.makeText(activity, "支付成功", Toast.LENGTH_SHORT).show();
+                } else if (result == PaymentStatus.UNPAID) {
+                    Toast.makeText(activity, "支付取消", Toast.LENGTH_SHORT).show();
+                } else { //PaymentStatus.UNKNOWN
+                    //search payment status from your own server
+                    Toast.makeText(activity, "支付异常", Toast.LENGTH_SHORT).show();
+                }
+                lrecyclerview.forceToRefresh();
+            }
+
+        });
+        LatipayAPI.sendRequest(req);
+    }
+    /**
+     * 支付
+     *
+     * @param activity
+     * @param amount
+     * @param merchantReference
+     * @param productName
+     */
+    public void orderWechat(final Activity activity, String amount, String merchantReference, String productName) {
+        dialog = ProgressDialog.show(activity, null, "Loading", false, true);
+        WechatpayRequest req = new WechatpayRequest(activity);
+        req.amount = "0.1";//支付金额
+        req.merchantReference = merchantReference;//订单号
+        req.productName = productName;//商品名称
+//        req.productName = "test produce of Simpleryo";
+        req.callbackUrl = "https://api.simpleryo.com/o/orders/callback/url";//回调地址
+
+
+        req.setListener(new LatipayListener() {
+
+            @Override
+            public void onTransactionCompleted(HashMap<String, String> latipayOrder, Error error) {
                 Log.w("cc", "onTransactionCompleted " + String.valueOf(latipayOrder) + (error != null ? error.getMessage() : ""));
                 dialog.dismiss();
 
@@ -232,11 +281,11 @@ public class OrderNewFragment extends XLibraryLazyFragment {
     public void updateCollect(BusEntity bus) {
         if (bus.getType() == 111) {
             orderDataBean = bus.getOrderDataBean();
+            recordOrder(orderDataBean.getId(), orderDataBean.getPayAmt() + "", orderDataBean.getNo(), orderDataBean.getCourseName(), orderDataBean.getPayType());
             if (orderDataBean.getPayType().equalsIgnoreCase("ALIPAY")){
-                recordOrder(orderDataBean.getId(), orderDataBean.getPayAmt() + "", orderDataBean.getNo(), orderDataBean.getCourseName(), orderDataBean.getPayType());
                 orderAlipay(getActivity(), orderDataBean.getPayAmt() + "", orderDataBean.getNo(), orderDataBean.getCourseName());
             }else{
-                alertDialog();
+                orderWechat(getActivity(), orderDataBean.getPayAmt() + "", orderDataBean.getNo(), orderDataBean.getCourseName());
             }
         }
         if (bus.getType() == 112) {

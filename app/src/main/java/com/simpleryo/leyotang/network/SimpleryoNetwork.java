@@ -28,6 +28,7 @@ import java.io.IOException;
 
 public class SimpleryoNetwork {
     public static final String httpUrl = "https://api.simpleryo.com/";//接口域名
+    public static final String h5Url = "http://wx.simpleryo.com/";//H5接口域名
     public static final String imgUrl = "http://p.simpleryo.com/";//阿里云图片自定义域名
 //    public static final String imgUrl="https://simpleryo-china.oss-cn-hangzhou.aliyuncs.com/";//阿里云Bucket自带图片域名
 //    public static final String imgUrl = "https://wongleoi.oss-cn-shanghai.aliyuncs.com/";//阿里云Bucket自带图片域名（黄磊自己的阿里云账号）
@@ -51,6 +52,20 @@ public class SimpleryoNetwork {
         }
         Log.w("cc", "token值：" + token);
         return token;
+    }
+
+    /**
+     * 使用refreshToken
+     * @param context
+     * @param callback
+     * @param refreshToken
+     */
+    public static void refreshToken(Context context, Callback callback, String refreshToken) {
+        doHttpAsync(context, HttpInfo.Builder()
+                .setUrl(httpUrl + "u/token/refresh")
+                .setRequestType(RequestType.PUT)//设置请求方式
+                .addParam("refreshToken",refreshToken)//添加接口参数
+                .build(), callback);
     }
 
     /**
@@ -363,6 +378,35 @@ public class SimpleryoNetwork {
                 .addParam("token", getToken())//添加接口参数
                 .addParam("offset", offset + "")
                 .addParam("limit", limit + "")
+                .build(), callback);
+    }
+    /**
+     * 关注门店
+     *
+     * @param context
+     * @param callback
+     * @param storeId
+     */
+    public static void followStore(Context context, MyBaseProgressCallbackImpl callback, String storeId) {
+        doHttpAsync(context, HttpInfo.Builder()
+                .setUrl(httpUrl + "u/link/resources/" + storeId)
+                .setRequestType(RequestType.POST)//设置请求方式
+                .addParam("token", getToken())//添加接口参数
+                .addParam("typeCode", "FOLLOW")
+                .build(), callback);
+    }
+
+    /**
+     * 取消关注门店
+     *
+     * @param context
+     * @param callback
+     * @param storeId
+     */
+    public static void disfollowStore(Context context, MyBaseProgressCallbackImpl callback, String storeId) {
+        doHttpAsync(context, HttpInfo.Builder()
+                .setUrl(httpUrl + "u/link/resources/" + storeId + "?token=" + getToken() + "&typeCode=FOLLOW")
+                .setRequestType(RequestType.DELETE)//设置请求方式
                 .build(), callback);
     }
 

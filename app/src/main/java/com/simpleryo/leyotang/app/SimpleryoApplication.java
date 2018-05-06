@@ -19,6 +19,8 @@ import com.umeng.message.UTrack;
 import com.umeng.message.UmengMessageHandler;
 import com.umeng.message.UmengNotificationClickHandler;
 import com.umeng.message.entity.UMessage;
+import com.umeng.message.inapp.InAppMessageManager;
+import com.umeng.socialize.PlatformConfig;
 
 import net.latipay.mobile.LatipayAPI;
 
@@ -36,7 +38,7 @@ public class SimpleryoApplication extends MultiDexApplication {
     private static final String TAG = SimpleryoApplication.class.getName();
     public static final String UPDATE_STATUS_ACTION = "com.simpleryo.nz.action.UPDATE_STATUS";
     private Handler handler;
-    public static  String GOOGLEAPIKEY="AIzaSyD-9vX_TpuLt0Mz2cM6CAJe6i8OEbfWbGE";
+    public static String GOOGLEAPIKEY = "AIzaSyD-9vX_TpuLt0Mz2cM6CAJe6i8OEbfWbGE";
 
     @Override
     public void onCreate() {
@@ -50,8 +52,10 @@ public class SimpleryoApplication extends MultiDexApplication {
         //初始化组件化基础库, 统计SDK/推送SDK/分享SDK都必须调用此初始化接口
         UMConfigure.init(this, "5ad84bdd8f4a9d5761000069", "Simpleryo", UMConfigure.DEVICE_TYPE_PHONE,
                 "195cd57308d0d88adb1c6578b25f5345");
+        InAppMessageManager.getInstance(this).setInAppMsgDebugMode(true);
         initUpush();
     }
+
     private void initUpush() {
         PushAgent mPushAgent = PushAgent.getInstance(this);
         mPushAgent.setPushCheck(true);
@@ -69,7 +73,7 @@ public class SimpleryoApplication extends MultiDexApplication {
             public void dealWithNotificationMessage(Context context, UMessage msg) {
                 //调用super，会展示通知，不调用super，则不展示通知。
                 super.dealWithNotificationMessage(context, msg);
-                Log.w("cc","msg:"+msg.title);
+                Log.w("cc", "dealWithNotificationMessage:" + msg.title);
             }
 
             /**
@@ -77,7 +81,7 @@ public class SimpleryoApplication extends MultiDexApplication {
              */
             @Override
             public void dealWithCustomMessage(final Context context, final UMessage msg) {
-
+                Log.w("cc", "dealWithNotificationMessage:" + msg.title);
                 handler.post(new Runnable() {
 
                     @Override
@@ -150,8 +154,8 @@ public class SimpleryoApplication extends MultiDexApplication {
 
             @Override
             public void dealWithCustomAction(Context context, UMessage msg) {
-                Log.w("cc","推送消息："+msg.toString());
-                Intent intent=new Intent(context, MyMsgActivity.class);
+                Log.w("cc", "推送消息：" + msg.toString());
+                Intent intent = new Intent(context, MyMsgActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 Toast.makeText(context, msg.custom, Toast.LENGTH_LONG).show();
@@ -164,13 +168,13 @@ public class SimpleryoApplication extends MultiDexApplication {
         mPushAgent.register(new IUmengRegisterCallback() {
             @Override
             public void onSuccess(String deviceToken) {
-                Log.i(TAG, "device token: " + deviceToken);
+                Log.w("cc", "device token: " + deviceToken);
                 sendBroadcast(new Intent(UPDATE_STATUS_ACTION));
             }
 
             @Override
             public void onFailure(String s, String s1) {
-                Log.i(TAG, "register failed: " + s + " " + s1);
+                Log.w("cc", "register failed: " + s + " " + s1);
                 sendBroadcast(new Intent(UPDATE_STATUS_ACTION));
             }
         });
@@ -184,5 +188,9 @@ public class SimpleryoApplication extends MultiDexApplication {
         //HuaWeiRegister.register(this);
         //魅族通道
         //MeizuRegister.register(this, MEIZU_APPID, MEIZU_APPKEY);
+    }
+    {
+        PlatformConfig.setWeixin("wx82b6fbe46e0289fc", "59eacc215322d41ea6f939c706ea81f3");
+        PlatformConfig.setAlipay("2018050202618831");
     }
 }

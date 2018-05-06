@@ -75,7 +75,7 @@ public class MyOrderAdapter extends BaseMultiAdapter<MultipleItem> {
             }
             ((MyOrderViewHolder) holder).tv_order_name.setText(dataBean.getCourseName());
             ((MyOrderViewHolder) holder).tv_time.setText(XStringPars.getStrTime(dataBean.getCreationTime()));
-            ((MyOrderViewHolder) holder).tv_price.setText(dataBean.getUnitPrice()+"$");
+            ((MyOrderViewHolder) holder).tv_price.setText(Integer.valueOf(dataBean.getUnitPrice())/100+"$");
             ((MyOrderViewHolder) holder).tv_count.setText("x"+dataBean.getQuantity());
             if (dataBean.getStatus().equalsIgnoreCase("COMPLETED")) {
                 ((MyOrderViewHolder) holder).tv_state.setText("交易成功");

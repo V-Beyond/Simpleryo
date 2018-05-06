@@ -6,5 +6,9 @@
     android:orientation="vertical">
 
     <include layout="@layout/common_top_layout" />
-
+    <WebView
+        android:id="@+id/web_view"
+        android:scrollbars="none"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></WebView>
 </LinearLayout>

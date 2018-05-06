@@ -14,16 +14,25 @@
         android:paddingTop="40px"
         android:orientation="horizontal">
         <ImageView
+            android:id="@+id/iv_wechat"
             android:layout_width="match_parent"
             android:layout_weight="1"
             android:src="@mipmap/iv_share_wechat"
             android:layout_height="match_parent" />
         <ImageView
+            android:id="@+id/iv_wechat_circle"
             android:layout_width="match_parent"
             android:layout_weight="1"
-            android:src="@mipmap/iv_share_qq"
+            android:src="@mipmap/iv_wechat_circle"
             android:layout_height="match_parent" />
         <ImageView
+            android:id="@+id/iv_alipay"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:src="@mipmap/iv_alipay"
+            android:layout_height="match_parent" />
+        <ImageView
+            android:id="@+id/iv_facebook"
             android:layout_width="match_parent"
             android:layout_weight="1"
             android:src="@mipmap/iv_share_facebook"
@@ -33,7 +42,7 @@
     <TextView
         android:id="@+id/tv_cancel"
         android:layout_width="match_parent"
-        android:layout_height="65px"
+        android:layout_height="95px"
         android:background="#FF91A9"
         android:gravity="center"
         android:text="取 消"

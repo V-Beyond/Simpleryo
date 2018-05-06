@@ -30,9 +30,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * @author huanglei
  * @ClassNname：MyCourse.java
  * @Describe 我的订单页面
- * @author huanglei
  * @time 2018/3/19 13:28
  */
 @ContentView(R.layout.activity_my_msg)
@@ -48,6 +48,7 @@ public class MyMsgActivity extends BaseActivity {
     List<MessageListBean.DataBean> messageList = new ArrayList<>();
     @ViewInject(R.id.empty_view)
     private View mEmptyView;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,34 +67,46 @@ public class MyMsgActivity extends BaseActivity {
         lrecyclerview.setLoadMoreEnabled(false);
         lrecyclerview.setPullRefreshEnabled(true);
         lrecyclerview.setOnRefreshListener(onRefreshListener);
-        getMessageList();
+        lrecyclerview.forceToRefresh();
         lRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                startActivity(new Intent(MyMsgActivity.this,MyNoticeActivity.class));
+                MessageListBean.DataBean dataBean = messageList.get(position);
+                if (dataBean.getSecondTypeCode().equalsIgnoreCase("SYSTEM_NOTICE")) {
+                    startActivity(new Intent(MyMsgActivity.this, MyNoticeActivity.class).putExtra("msg_id", dataBean.getLinkId()));
+                }
+                if (dataBean.getSecondTypeCode().equalsIgnoreCase("PAY_SUCCESS")) {
+                    startActivity(new Intent(MyMsgActivity.this, OrderDetailActivity.class).putExtra("orderId", dataBean.getLinkId()));
+                }
+                if (dataBean.getSecondTypeCode().equalsIgnoreCase("COURSE_ALERT")) {
+                    startActivity(new Intent(MyMsgActivity.this, MyCourseDetailActivity.class).putExtra("id", dataBean.getLinkId()));
+                }
             }
         });
     }
-    public void getMessageList(){
-        SimpleryoNetwork.getMessageList(MyMsgActivity.this,new MyBaseProgressCallbackImpl(MyMsgActivity.this){
+
+    public void getMessageList() {
+        SimpleryoNetwork.getMessageList(MyMsgActivity.this, new MyBaseProgressCallbackImpl() {
             @Override
             public void onSuccess(HttpInfo info) {
                 super.onSuccess(info);
-                loadingDialog.dismiss();
-                MessageListBean messageListBean=info.getRetDetail(MessageListBean.class);
-                if (messageListBean.getCode().equalsIgnoreCase("0")){
-                    if (messageListBean.getData()!=null&&messageListBean.getData().size()>0){
+                MessageListBean messageListBean = info.getRetDetail(MessageListBean.class);
+                if (messageListBean.getCode().equalsIgnoreCase("0")) {
+                    if (messageListBean.getData() != null && messageListBean.getData().size() > 0) {
                         messageList.addAll(messageListBean.getData());
                         messageAdapter.setDataList(messageList);
+                    } else {
+                        lrecyclerview.setEmptyView(mEmptyView);
                     }
                 }
+                lrecyclerview.refreshComplete(messageList.size());
             }
 
             @Override
             public void onFailure(HttpInfo info) {
                 super.onFailure(info);
-                loadingDialog.dismiss();
-                Toast.makeText(MyMsgActivity.this,"数据一不小心走丢了，请稍后回来",Toast.LENGTH_SHORT).show();
+                lrecyclerview.setEmptyView(mEmptyView);
+                Toast.makeText(MyMsgActivity.this, "数据一不小心走丢了，请稍后回来", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -104,6 +117,7 @@ public class MyMsgActivity extends BaseActivity {
             getMessageList();
         }
     };
+
     @Event(value = {R.id.iv_back}, type = View.OnClickListener.class)
     private void onClick(View view) {
         switch (view.getId()) {

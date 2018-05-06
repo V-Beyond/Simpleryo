@@ -64,7 +64,16 @@ public class LoginActivity extends BaseActivity {
                         LoginBean loginBean = info.getRetDetail(LoginBean.class);
                         loadingDialog.dismiss();
                         if (loginBean.getCode().equalsIgnoreCase("0")) {
+//                            PushAgent mPushAgent = PushAgent.getInstance(LoginActivity.this);
+//                            mPushAgent.setPushCheck(true);
+//                            mPushAgent.setAlias(loginBean.getData().getUserId(), "leyotang", new UTrack.ICallBack() {
+//                                @Override
+//                                public void onMessage(boolean isSuccess, String message) {
+//
+//                                }
+//                            });
                             Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
+                            SharedPreferencesUtils.saveKeyString("refreshToken",loginBean.getData().getRefreshToken());
                             SharedPreferencesUtils.saveKeyBoolean("isLogin", true);
                             SharedPreferencesUtils.saveKeyString("token",loginBean.getData().getToken());
                             SharedPreferencesUtils.saveKeyString("userId", loginBean.getData().getUserId());

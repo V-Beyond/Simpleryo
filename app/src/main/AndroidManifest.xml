@@ -63,9 +63,9 @@
     <application
         android:name="com.simpleryo.leyotang.app.SimpleryoApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/iv_app_logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/iv_app_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
@@ -369,6 +369,39 @@
         <service android:name="com.simpleryo.leyotang.push.MyNotificationService" />
         <service android:name="com.simpleryo.leyotang.push.UmengNotificationService" />
         <receiver android:name="com.simpleryo.leyotang.push.NotificationBroadcast" />
+
+        <activity
+            android:name="net.latipay.mobile.WXPayEntryActivity"
+            android:configChanges="orientation|keyboardHidden|navigation|screenSize"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name=".apshare.ShareEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <!-- facebook -->
+        <activity
+            android:name="com.umeng.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <!--1104087112943046-->
+        <provider
+            android:name="com.umeng.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider2121752104719489"
+            android:exported="true" />
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"
+            />
     </application>
 
 </manifest>

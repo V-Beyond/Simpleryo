@@ -25,6 +25,7 @@ import com.simpleryo.leyotang.bean.CodeBean;
 import com.simpleryo.leyotang.bean.HomeDataBean;
 import com.simpleryo.leyotang.bean.MultipleItem;
 import com.simpleryo.leyotang.network.SimpleryoNetwork;
+import com.simpleryo.leyotang.push.NotificationBroadcast;
 import com.simpleryo.leyotang.utils.SharedPreferencesUtils;
 import com.umeng.analytics.MobclickAgent;
 
@@ -185,8 +186,14 @@ public class HomeFragment extends XLibraryLazyFragment {
                     }
                     homeAdapter.setDataList(mItemModels);
                 } else if (homeDataBean.getCode().equalsIgnoreCase("401")) {
+                    Intent intent=new Intent();
+                    intent.setClass(context, NotificationBroadcast.class);
+                    intent.putExtra(NotificationBroadcast.EXTRA_KEY_ACTION,
+                            NotificationBroadcast.ACTION_REFRESHTOKEN);
+                    getActivity().sendBroadcast(intent);
+//                    SharedPreferencesUtils.saveKeyString("token", "simpleryo");
+
                     lrecyclerview.forceToRefresh();
-                    SharedPreferencesUtils.saveKeyString("token", "simpleryo");
                 }
                 lrecyclerview.refreshComplete(mItemModels.size());
             }
@@ -194,7 +201,12 @@ public class HomeFragment extends XLibraryLazyFragment {
             @Override
             public void onFailure(HttpInfo info) {
                 super.onFailure(info);
-                lrecyclerview.setEmptyView(empty_view);
+                if (mItemModels!=null&&mItemModels.size()>0){
+                    lrecyclerview.refreshComplete(mItemModels.size());
+                    lrecyclerview.setEmptyView(empty_view);
+                }else {
+                    lrecyclerview.setEmptyView(empty_view);
+                }
                 Toast.makeText(getActivity(), info.getRetDetail(), Toast.LENGTH_SHORT).show();
             }
         });

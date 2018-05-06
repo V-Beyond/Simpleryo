@@ -32,11 +32,19 @@ public class LoginBean extends BaseResult {
          * name : null
          * role : null
          */
-
+        private  String refreshToken;
         private String token;
         private String userId;
         private String name;
         private String role;
+
+        public String getRefreshToken() {
+            return refreshToken;
+        }
+
+        public void setRefreshToken(String refreshToken) {
+            this.refreshToken = refreshToken;
+        }
 
         public String getToken() {
             return token;

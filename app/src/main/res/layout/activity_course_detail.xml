@@ -14,7 +14,6 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/rl_bottom"
         android:layout_below="@+id/top_layout"
-        android:layout_marginBottom="55px"
         android:scrollbars="none">
 
         <LinearLayout
@@ -595,7 +594,7 @@
                 android:drawableTop="@mipmap/iv_recbubble"
                 android:gravity="center"
                 android:paddingTop="10px"
-                android:text="咨询"
+                android:text="关注"
                 android:textColor="#595757"
                 android:textSize="14px" />
         </LinearLayout>

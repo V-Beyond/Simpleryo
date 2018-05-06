@@ -50,10 +50,26 @@ public class ShareDialogFragment extends BaseDialogFragment {
         EventBus.getDefault().unregister(this);
     }
 
-    @Event(value = {R.id.tv_cancel}, type = View.OnClickListener.class)
+    @Event(value = {R.id.tv_cancel,R.id.iv_wechat,R.id.iv_wechat_circle,R.id.iv_alipay,R.id.iv_facebook}, type = View.OnClickListener.class)
     private void Click(View v) {
         switch (v.getId()) {
             case R.id.tv_cancel:
+                dismiss();
+                break;
+            case R.id.iv_wechat:
+                EventBus.getDefault().post(new BusEntity(701));
+                dismiss();
+                break;
+            case R.id.iv_wechat_circle:
+                EventBus.getDefault().post(new BusEntity(702));
+                dismiss();
+                break;
+            case R.id.iv_alipay:
+                EventBus.getDefault().post(new BusEntity(703));
+                dismiss();
+                break;
+            case R.id.iv_facebook:
+                EventBus.getDefault().post(new BusEntity(704));
                 dismiss();
                 break;
             default:

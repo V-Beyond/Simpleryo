@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.os.IBinder;
 
 import com.simpleryo.leyotang.R;
-import com.simpleryo.leyotang.activity.MyMsgActivity;
 import com.umeng.message.UTrack;
 import com.umeng.message.entity.UMessage;
 
@@ -57,7 +56,7 @@ public class MyNotificationService extends Service {
                 .setContentText(msg.text)
                 .setTicker(msg.ticker)
                 .setWhen(System.currentTimeMillis())
-                .setSmallIcon(R.drawable.umeng_push_notification_default_small_icon)
+                .setSmallIcon(R.mipmap.iv_app_logo)
                 .setAutoCancel(true);
         Notification notification = mBuilder.getNotification();
         PendingIntent clickPendingIntent = getClickPendingIntent(this, msg);
@@ -68,18 +67,18 @@ public class MyNotificationService extends Service {
     }
 
     public PendingIntent getClickPendingIntent(Context context, UMessage msg) {
-//        Intent clickIntent = new Intent();
-//        clickIntent.setClass(context, NotificationBroadcast.class);
-//        clickIntent.putExtra(NotificationBroadcast.EXTRA_KEY_MSG,
-//                msg.getRaw().toString());
-//        clickIntent.putExtra(NotificationBroadcast.EXTRA_KEY_ACTION,
-//                NotificationBroadcast.ACTION_CLICK);
-        Intent intent=new Intent(context, MyMsgActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+        Intent clickIntent = new Intent();
+        clickIntent.setClass(context, NotificationBroadcast.class);
+        clickIntent.putExtra(NotificationBroadcast.EXTRA_KEY_MSG,
+                msg.getRaw().toString());
+        clickIntent.putExtra(NotificationBroadcast.EXTRA_KEY_ACTION,
+                NotificationBroadcast.ACTION_CLICK);
+//        Intent intent=new Intent(context, MyMsgActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        startActivity(intent);
         PendingIntent clickPendingIntent = PendingIntent.getBroadcast(context,
                 (int) (System.currentTimeMillis()),
-                intent, PendingIntent.FLAG_CANCEL_CURRENT);
+                clickIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         return clickPendingIntent;
     }

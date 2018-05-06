@@ -18,6 +18,8 @@ public class MessageViewHolder extends SuperViewHolder {
     public TextView tv_title;
     @ViewInject(R.id.tv_content)
     public WebView tv_content;
+    @ViewInject(R.id.tv_time)
+    public  TextView tv_time;
     public MessageViewHolder(View itemView) {
         super(itemView);
         x.view().inject(this, itemView);

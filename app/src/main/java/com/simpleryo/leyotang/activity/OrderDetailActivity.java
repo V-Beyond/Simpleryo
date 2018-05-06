@@ -84,8 +84,8 @@ public class OrderDetailActivity extends BaseActivity {
 
                 tv_course_name.setText("课程名称："+orderDetailBean.getData().getCourseName());
                 tv_order_course_name.setText(orderDetailBean.getData().getCourseName());
-                tv_total_price.setText(orderDetailBean.getData().getTotalAmt()+"$");
-                tv_shop_price.setText(orderDetailBean.getData().getUnitPrice()+"$");
+                tv_total_price.setText(Integer.valueOf(orderDetailBean.getData().getTotalAmt())/100+"$");
+                tv_shop_price.setText(Integer.valueOf(orderDetailBean.getData().getUnitPrice())/100+"$");
                 tv_count.setText("X"+orderDetailBean.getData().getQuantity());
                 tv_order_number.setText("订单号："+orderDetailBean.getData().getNo());
                 tv_coach_name.setText("授课教练："+orderDetailBean.getData().getCoach().getName());

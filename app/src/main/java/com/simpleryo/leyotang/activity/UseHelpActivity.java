@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.simpleryo.leyotang.R;
 import com.simpleryo.leyotang.base.BaseActivity;
+import com.simpleryo.leyotang.network.SimpleryoNetwork;
 import com.simpleryo.leyotang.utils.XActivityUtils;
 
 import org.xutils.view.annotation.ContentView;
@@ -33,7 +34,7 @@ public class UseHelpActivity extends BaseActivity {
         //启用支持javascript
         WebSettings settings = web_view.getSettings();
         settings.setJavaScriptEnabled(true);
-        web_view.loadUrl("http://wx.simpleryo.com/Main/UseHelp");
+        web_view.loadUrl(SimpleryoNetwork.h5Url+"Main/UseHelp");
     }
     @Event(value = {R.id.iv_back}, type = View.OnClickListener.class)
     private void onClick(View view) {

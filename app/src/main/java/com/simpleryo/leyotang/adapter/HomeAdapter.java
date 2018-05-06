@@ -18,7 +18,7 @@ import com.simpleryo.leyotang.activity.BusinessHomeActivty;
 import com.simpleryo.leyotang.activity.CourseDetailActivity;
 import com.simpleryo.leyotang.activity.CourseListActivity;
 import com.simpleryo.leyotang.activity.CourseTypeActivity;
-import com.simpleryo.leyotang.activity.MyMsgActivity;
+import com.simpleryo.leyotang.activity.MyNoticeActivity;
 import com.simpleryo.leyotang.bean.BusEntity;
 import com.simpleryo.leyotang.bean.HomeDataBean;
 import com.simpleryo.leyotang.bean.MultipleItem;
@@ -300,7 +300,7 @@ public class HomeAdapter extends BaseMultiAdapter<MultipleItem> {
                         mContext.startActivity(new Intent(mContext, CourseDetailActivity.class).putExtra("courseId",data.getRefId()));
                     }
                     else if(data.getCod().equalsIgnoreCase("NOTICE")){
-                        mContext.startActivity(new Intent(mContext, MyMsgActivity.class));
+                        mContext.startActivity(new Intent(mContext, MyNoticeActivity.class).putExtra("msg_id",data.getRefId()));
                     }
                 }
             });

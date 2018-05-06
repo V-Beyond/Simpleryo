@@ -68,8 +68,7 @@ dependencies {
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.3.2'
     //java8不能使用apt
     compile 'com.github.jdsjlzx:LRecyclerView:1.5.0'
-    compile 'com.umeng.sdk:common:latest.integration'
-    compile 'com.umeng.sdk:analytics:latest.integration'
+
     compile 'com.github.pinguo-zhouwei:MZBannerView:v2.0.0'
     compile 'com.android.support:design:26.+'
     compile 'com.github.sd6352051:android-image-picker:v1.0.2'
@@ -79,11 +78,16 @@ dependencies {
     compile 'com.google.android.gms:play-services-maps:12.0.1'
     //谷歌地图
     compile 'com.google.android.gms:play-services:12.0.1'
-    compile 'com.umeng.sdk:common:1.5.0'
-    compile 'com.umeng.sdk:analytics:7.5.0'
     implementation project(':latipay')
-    //阿里云OSS上传图片
+    //阿里云OSS上传图片x
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
     compile 'com.squareup.okio:okio:1.9.0'
     compile 'com.aliyun.dpa:oss-android-sdk:+'
+    //友盟
+    compile 'com.umeng.sdk:common:latest.integration'
+    compile 'com.umeng.sdk:analytics:latest.integration'
+    compile 'com.umeng.sdk:share-core:latest.integration'
+    compile 'com.umeng.sdk:share-wechat:latest.integration'
+
+
 }
