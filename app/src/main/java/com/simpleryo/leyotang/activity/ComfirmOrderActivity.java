@@ -24,6 +24,7 @@ import com.simpleryo.leyotang.bean.CreateOrderBean;
 import com.simpleryo.leyotang.network.SimpleryoNetwork;
 import com.simpleryo.leyotang.push.NotificationBroadcast;
 import com.simpleryo.leyotang.utils.XActivityUtils;
+import com.simpleryo.leyotang.utils.XStringPars;
 import com.squareup.picasso.Picasso;
 
 import net.latipay.mobile.AlipayRequest;
@@ -72,7 +73,7 @@ public class ComfirmOrderActivity extends BaseActivity {
     String storeId;
     String coachId;
     private ProgressDialog dialog;
-    String payType = "WECHATPAY";
+    String payType = "WECHATPAY";//支付方式，默认为微信支付
     @ViewInject(R.id.tv_course_time)
     TextView tv_course_time;
     @ViewInject(R.id.tv_course_address)
@@ -85,64 +86,73 @@ public class ComfirmOrderActivity extends BaseActivity {
         tv_name.setText("确认订单");
         count = Integer.parseInt(et_count.getText().toString().trim());
         courseId = getIntent().getStringExtra("courseId");
+        getCourseDetail();
+    }
+
+    /**
+     * 获取课程详情
+     */
+    public void getCourseDetail() {
         SimpleryoNetwork.getCourseDetail(ComfirmOrderActivity.this, new MyBaseProgressCallbackImpl(ComfirmOrderActivity.this) {
             @Override
             public void onSuccess(HttpInfo info) {
                 super.onSuccess(info);
                 loadingDialog.dismiss();
                 CourdeDetailBean courdeDetailBean = info.getRetDetail(CourdeDetailBean.class);
-                Picasso.with(ComfirmOrderActivity.this).load(courdeDetailBean.getData().getCoverUrl()).into(iv_course_detail_img);
-                courseName = courdeDetailBean.getData().getName();
-                if (courdeDetailBean.getData().getIntro() != null) {
-                    tv_course_detail.loadDataWithBaseURL(null, CSS_STYLE + courdeDetailBean.getData().getIntro(), "text/html", "utf-8", null);
-                } else {
-                    tv_course_detail.loadDataWithBaseURL(null, CSS_STYLE + "暂无详情", "text/html", "utf-8", null);
-                }
-                if (courdeDetailBean.getData().getDurations().getData() != null && courdeDetailBean.getData().getDurations().getData().size() > 0) {
-                    StringBuilder durations = new StringBuilder();
-                    durations.append(courdeDetailBean.getData().getDurations().getStartDate() + "至" + courdeDetailBean.getData().getDurations().getEndDate());
-                    durations.append("\n");
-                    for (int i = 0; i < courdeDetailBean.getData().getDurations().getData().size(); i++) {
-                        CourdeDetailBean.DataBeanX.DurationsBean.DataBean dataBean = courdeDetailBean.getData().getDurations().getData().get(i);
-                        durations.append(dataBean.getWeek() + "   " + dataBean.getStartTime() + "-" + dataBean.getEndTime());
-                        if (i < courdeDetailBean.getData().getDurations().getData().size() - 1) {
-                            durations.append("\n");
-                        }
+                if (courdeDetailBean.getCode().equalsIgnoreCase("0")) {
+                    Picasso.with(ComfirmOrderActivity.this).load(courdeDetailBean.getData().getCoverUrl()).into(iv_course_detail_img);
+                    courseName = courdeDetailBean.getData().getName();
+                    if (courdeDetailBean.getData().getIntro() != null) {
+                        tv_course_detail.loadDataWithBaseURL(null, CSS_STYLE + courdeDetailBean.getData().getIntro(), "text/html", "utf-8", null);
+                    } else {
+                        tv_course_detail.loadDataWithBaseURL(null, CSS_STYLE + "暂无详情", "text/html", "utf-8", null);
                     }
-                    tv_course_time.setText(durations);
-                }
-                CourdeDetailBean.DataBeanX.AddressBean addressBean = courdeDetailBean.getData().getAddress();
-                if (addressBean != null) {
+                    //上课时间
+                    if (courdeDetailBean.getData().getDurations().getData() != null && courdeDetailBean.getData().getDurations().getData().size() > 0) {
+                        StringBuilder durations = new StringBuilder();
+                        durations.append(courdeDetailBean.getData().getDurations().getStartDate() + "至" + courdeDetailBean.getData().getDurations().getEndDate());
+                        durations.append("\n");
+                        for (int i = 0; i < courdeDetailBean.getData().getDurations().getData().size(); i++) {
+                            CourdeDetailBean.DataBeanX.DurationsBean.DataBean dataBean = courdeDetailBean.getData().getDurations().getData().get(i);
+                            durations.append(dataBean.getWeek() + "   " + dataBean.getStartTime() + "-" + dataBean.getEndTime());
+                            if (i < courdeDetailBean.getData().getDurations().getData().size() - 1) {
+                                durations.append("\n");
+                            }
+                        }
+                        tv_course_time.setText(durations);
+                    }
+                    CourdeDetailBean.DataBeanX.AddressBean addressBean = courdeDetailBean.getData().getAddress();
+                    if (addressBean != null) {
 //                    String address=addressBean.getProvice()+addressBean.getCity()+addressBean.getDistrict()+addressBean.getDetail();
-                    String address = addressBean.getDetail();
-                    tv_course_address.setText("线下授课，授课地点：" + address);
-                }
-                if (courdeDetailBean.getData().getCoach() != null) {
-                    coachId = courdeDetailBean.getData().getCoach().getId();
-                }
-                if (courdeDetailBean.getData().getStoreId() != null) {
-                    storeId = courdeDetailBean.getData().getStoreId();
-                }
-                if (courseName != null) {
-                    tv_course_category.setText(courseName);
-                }
-                if (courdeDetailBean.getData().getCoach() != null) {
-                    tv_coach_name.setText("教练姓名：" + courdeDetailBean.getData().getCoach().getNickName() + "   " + courdeDetailBean.getData().getCoach().getWorkLife() + "年教龄");
+                        String address = addressBean.getDetail();
+                        tv_course_address.setText("线下授课，授课地点：" + address);
+                    }
+                    if (courdeDetailBean.getData().getCoach() != null) {
+                        coachId = courdeDetailBean.getData().getCoach().getId();
+                    }
+                    if (courdeDetailBean.getData().getStoreId() != null) {
+                        storeId = courdeDetailBean.getData().getStoreId();
+                    }
+                    if (courseName != null) {
+                        tv_course_category.setText(courseName);
+                    }
+                    if (courdeDetailBean.getData().getCoach() != null) {
+                        tv_coach_name.setText("教练姓名：" + courdeDetailBean.getData().getCoach().getNickName() + "   " + courdeDetailBean.getData().getCoach().getWorkLife() + "年教龄");
 
+                    }
+                    price = courdeDetailBean.getData().getPrice();
+                    if (price == 0) {
+                        price = 2;
+                    }
+                    total_price = count * price;
+                    tv_price.setText("课程价格：" + XStringPars.foramtPrice(total_price) + "$");
+                    tv_total_price.setText("课程总额：" + XStringPars.foramtPrice(total_price) + "$");
+                    if (courdeDetailBean.getData().getStoreName() != null) {
+                        tv_store_name.setText(courdeDetailBean.getData().getStoreName());
+                    } else {
+                        tv_store_name.setText("暂无机构名称");
+                    }
                 }
-                price = courdeDetailBean.getData().getPrice();
-                if (price == 0) {
-                    price = 2;
-                }
-                total_price = count * price;
-                tv_price.setText("课程价格：" + price/100 + "$");
-                tv_total_price.setText("课程总额：" + total_price/100 + "$");
-                if (courdeDetailBean.getData().getStoreName() != null) {
-                    tv_store_name.setText(courdeDetailBean.getData().getStoreName());
-                } else {
-                    tv_store_name.setText("暂无机构名称");
-                }
-
             }
 
             @Override
@@ -158,7 +168,7 @@ public class ComfirmOrderActivity extends BaseActivity {
             case R.id.iv_back:
                 XActivityUtils.getInstance().popActivity(ComfirmOrderActivity.this);
                 break;
-            case R.id.iv_count_reduce:
+            case R.id.iv_count_reduce://减少
                 if (count > 1) {
                     count -= 1;
                     et_count.setText(count + "");
@@ -166,15 +176,15 @@ public class ComfirmOrderActivity extends BaseActivity {
                     Toast.makeText(ComfirmOrderActivity.this, "订单数量不能小于1", Toast.LENGTH_SHORT).show();
                 }
                 total_price = count * price;
-                tv_total_price.setText("课程总额：" + (total_price * 1)/100 + "$");
+                tv_total_price.setText("课程总额：" + XStringPars.foramtPrice(total_price * 1) + "$");
                 break;
-            case R.id.iv_count_increase:
+            case R.id.iv_count_increase://增加
                 count += 1;
                 et_count.setText(count + "");
                 total_price = count * price;
-                tv_total_price.setText("课程总额：" + (total_price * 1)/100+ "$");
+                tv_total_price.setText("课程总额：" + XStringPars.foramtPrice(total_price * 1) + "$");
                 break;
-            case R.id.rl_pay:
+            case R.id.rl_pay://支付
                 SimpleryoNetwork.createOrder(ComfirmOrderActivity.this, new MyBaseProgressCallbackImpl(ComfirmOrderActivity.this) {
                     @Override
                     public void onSuccess(HttpInfo info) {
@@ -183,9 +193,9 @@ public class ComfirmOrderActivity extends BaseActivity {
                         CreateOrderBean createOrderBean = info.getRetDetail(CreateOrderBean.class);
                         if (createOrderBean.getCode().equalsIgnoreCase("0")) {
                             recordOrder(createOrderBean.getData().getId(), createOrderBean.getData().getPayAmt() + "", createOrderBean.getData().getNo(), createOrderBean.getData().getCourseName(), payType);
-                            if (createOrderBean.getData().getPayType().equalsIgnoreCase("ALIPAY")) {
+                            if (createOrderBean.getData().getPayType().equalsIgnoreCase("ALIPAY")) {//支付宝支付
                                 clickAlipay(ComfirmOrderActivity.this, total_price + "", createOrderBean.getData().getNo(), courseName);
-                            } else {
+                            } else {//微信支付
                                 clickWechat(ComfirmOrderActivity.this, total_price + "", createOrderBean.getData().getNo(), courseName);
 //                                alertDialog();
                             }
@@ -211,7 +221,9 @@ public class ComfirmOrderActivity extends BaseActivity {
         }
     }
 
-
+    /**
+     * 支付提示
+     */
     public void alertDialog() {
         final AlertDialog.Builder normalDialog =
                 new AlertDialog.Builder(ComfirmOrderActivity.this);
@@ -272,11 +284,10 @@ public class ComfirmOrderActivity extends BaseActivity {
     private void clickWechat(final Activity activity, String amount, String merchantReference, String productName) {
         dialog = ProgressDialog.show(activity, null, "Loading", false, true);
         WechatpayRequest req = new WechatpayRequest(activity);
-        req.amount = "0.1";
-        req.merchantReference = merchantReference;
-
-        req.productName = productName;
-        req.callbackUrl = "https://api.simpleryo.com/o/orders/callback/url";
+        req.amount = "0.1";//支付金额
+        req.merchantReference = merchantReference;//订单号
+        req.productName = productName;//商品名称
+        req.callbackUrl = "https://api.simpleryo.com/o/orders/callback/url";//支付回调地址
 
         req.setListener(new LatipayListener() {
 
@@ -296,12 +307,15 @@ public class ComfirmOrderActivity extends BaseActivity {
             @Override
             public void onPaymentCompleted(int result) {
                 if (result == PaymentStatus.PAID) {
-                    Toast.makeText(activity, "WechatPay: paid", Toast.LENGTH_LONG).show();
+                    Toast.makeText(activity, "支付成功", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(ComfirmOrderActivity.this, MyOrderActivity.class).putExtra("status", "PAYED"));
                 } else if (result == PaymentStatus.UNPAID) {
-                    Toast.makeText(activity, "WechatPay: unpaid", Toast.LENGTH_LONG).show();
+                    Toast.makeText(activity, "支付取消", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(ComfirmOrderActivity.this, MyOrderActivity.class).putExtra("status", "NEW"));
                 } else { //PaymentStatus.UNKNOWN
-
                     //search payment status from your own server
+                    Toast.makeText(activity, "支付异常", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(ComfirmOrderActivity.this, MyOrderActivity.class).putExtra("status", "NEW"));
                 }
             }
         });
@@ -310,7 +324,7 @@ public class ComfirmOrderActivity extends BaseActivity {
     }
 
     /**
-     * 支付
+     * 支付宝支付
      *
      * @param activity
      * @param amount
@@ -322,8 +336,8 @@ public class ComfirmOrderActivity extends BaseActivity {
         AlipayRequest req = new AlipayRequest(activity);
         req.amount = "0.1";//支付金额
         req.merchantReference = merchantReference;//订单号
-        req.productName = productName;
-        req.callbackUrl = "https://api.simpleryo.com/o/orders/callback/url";
+        req.productName = productName;//商品名称
+        req.callbackUrl = "https://api.simpleryo.com/o/orders/callback/url";//支付回调地址
 
 
         req.setListener(new LatipayListener() {

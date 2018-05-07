@@ -149,7 +149,7 @@ public class OrderNewFragment extends XLibraryLazyFragment {
         LatipayAPI.sendRequest(req);
     }
     /**
-     * 支付
+     * 微信支付
      *
      * @param activity
      * @param amount

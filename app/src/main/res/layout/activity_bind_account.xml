@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-<include layout="@layout/common_top_layout"/>
+
+    <include layout="@layout/common_top_layout" />
 
 
     <LinearLayout
@@ -14,7 +15,7 @@
         android:paddingRight="30px">
 
         <RelativeLayout
-            android:id="@+id/rl_name"
+            android:id="@+id/rl_wechat"
             android:layout_width="match_parent"
             android:layout_height="140px">
 
@@ -28,11 +29,11 @@
                 android:id="@+id/tv_nickname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawablePadding="15px"
-                android:drawableRight="@mipmap/iv_right_more"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:text="已绑定" />
+                android:drawablePadding="15px"
+                android:drawableRight="@mipmap/iv_right_more"
+                android:text="未绑定" />
 
             <View
                 android:layout_width="match_parent"
@@ -44,7 +45,8 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/rl_sex"
+            android:id="@+id/rl_alipay"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="140px">
 
@@ -58,11 +60,11 @@
                 android:id="@+id/tv_sex"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawablePadding="15px"
-                android:drawableRight="@mipmap/iv_right_more"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:text="已绑定" />
+                android:drawablePadding="15px"
+                android:drawableRight="@mipmap/iv_right_more"
+                android:text="未绑定" />
 
             <View
                 android:layout_width="match_parent"
@@ -85,9 +87,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"  android:drawablePadding="15px"
-                android:drawableRight="@mipmap/iv_right_more"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:drawablePadding="15px"
+                android:drawableRight="@mipmap/iv_right_more"
                 android:text="未绑定" />
 
             <View
@@ -100,7 +103,8 @@
         <RelativeLayout
             android:id="@+id/rl_address"
             android:layout_width="match_parent"
-            android:layout_height="140px">
+            android:layout_height="140px"
+            android:visibility="gone">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -112,7 +116,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"  android:drawablePadding="15px"
+                android:layout_centerVertical="true"
+                android:drawablePadding="15px"
                 android:drawableRight="@mipmap/iv_right_more"
                 android:text="已绑定" />
 
@@ -126,7 +131,8 @@
         <RelativeLayout
             android:id="@+id/rl_constellation"
             android:layout_width="match_parent"
-            android:layout_height="140px">
+            android:layout_height="140px"
+            android:visibility="gone">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -138,7 +144,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"  android:drawablePadding="15px"
+                android:layout_centerVertical="true"
+                android:drawablePadding="15px"
                 android:drawableRight="@mipmap/iv_right_more"
                 android:text="已绑定" />
 
@@ -151,7 +158,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="140px">
+            android:layout_height="140px"
+            android:visibility="gone">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -163,7 +171,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"  android:drawablePadding="15px"
+                android:layout_centerVertical="true"
+                android:drawablePadding="15px"
                 android:drawableRight="@mipmap/iv_right_more"
                 android:text="已绑定" />
 
@@ -176,7 +185,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="140px">
+            android:layout_height="140px"
+            android:visibility="gone">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -188,9 +198,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
                 android:drawablePadding="15px"
                 android:drawableRight="@mipmap/iv_right_more"
-                android:layout_centerVertical="true"
                 android:text="已绑定" />
 
             <View

@@ -8,6 +8,7 @@ import com.makeramen.roundedimageview.RoundedTransformationBuilder;
 import com.simpleryo.leyotang.R;
 import com.simpleryo.leyotang.bean.BusEntity;
 import com.simpleryo.leyotang.bean.MultipleItem;
+import com.simpleryo.leyotang.utils.XStringPars;
 import com.simpleryo.leyotang.viewholder.EmptyViewHolder;
 import com.simpleryo.leyotang.viewholder.ExcellentCourseItemViewHolder;
 import com.simpleryo.leyotang.viewholder.HotCourseItemViewHolder;
@@ -67,7 +68,7 @@ public class CourseListTypeAdapter extends BaseMultiAdapter<MultipleItem> {
         if (holder instanceof HotCourseItemViewHolder){
             Picasso.with(mContext).load(bean.getCourseListBean().getCoverUrl()).into(((HotCourseItemViewHolder) holder).iv_collection_img);
             ((HotCourseItemViewHolder) holder).tv_collection_name.setText(bean.getCourseListBean().getName());
-            ((HotCourseItemViewHolder) holder).tv_price.setText(Integer.valueOf(bean.getCourseListBean().getPrice())/100+"$/hour");
+            ((HotCourseItemViewHolder) holder).tv_price.setText(XStringPars.foramtPrice(Integer.valueOf(bean.getCourseListBean().getPrice()))+"$/hour");
             ((HotCourseItemViewHolder) holder).tv_popular.setText(bean.getCourseListBean().getClassCount()+" people");
             if (bean.getCourseListBean().isHasCollect()){
                 ((HotCourseItemViewHolder) holder).iv_collection_star.setImageResource(R.mipmap.iv_collection_star);
@@ -84,7 +85,7 @@ public class CourseListTypeAdapter extends BaseMultiAdapter<MultipleItem> {
         if (holder instanceof ExcellentCourseItemViewHolder){
             Picasso.with(mContext).load(bean.getCourseListBean().getCoverUrl()).into(((ExcellentCourseItemViewHolder) holder).iv_collection_img);
             ((ExcellentCourseItemViewHolder) holder).tv_collection_name.setText(bean.getCourseListBean().getName());
-            ((ExcellentCourseItemViewHolder) holder).tv_price.setText(Integer.valueOf(bean.getCourseListBean().getPrice())/100+"$/hour");
+            ((ExcellentCourseItemViewHolder) holder).tv_price.setText(XStringPars.foramtPrice(Integer.valueOf(bean.getCourseListBean().getPrice()))+"$/hour");
             ((ExcellentCourseItemViewHolder) holder).tv_popular.setText(bean.getCourseListBean().getClassCount()+" people");
             if (bean.getCourseListBean().isHasCollect()){
                 ((ExcellentCourseItemViewHolder) holder).iv_collection_star.setImageResource(R.mipmap.iv_collection_star);
@@ -101,7 +102,7 @@ public class CourseListTypeAdapter extends BaseMultiAdapter<MultipleItem> {
         if (holder instanceof IntroductoryCourseItemViewHolder){
             Picasso.with(mContext).load(bean.getCourseListBean().getCoverUrl()).into(((IntroductoryCourseItemViewHolder) holder).iv_collection_img);
             ((IntroductoryCourseItemViewHolder) holder).tv_collection_name.setText(bean.getCourseListBean().getName());
-            ((IntroductoryCourseItemViewHolder) holder).tv_price.setText(Integer.valueOf(bean.getCourseListBean().getPrice())/100+"$/hour");
+            ((IntroductoryCourseItemViewHolder) holder).tv_price.setText(XStringPars.foramtPrice(Integer.valueOf(bean.getCourseListBean().getPrice()))+"$/hour");
             ((IntroductoryCourseItemViewHolder) holder).tv_popular.setText(bean.getCourseListBean().getClassCount()+" people");
             if (bean.getCourseListBean().isHasCollect()){
                 ((IntroductoryCourseItemViewHolder) holder).iv_collection_star.setImageResource(R.mipmap.iv_collection_star);

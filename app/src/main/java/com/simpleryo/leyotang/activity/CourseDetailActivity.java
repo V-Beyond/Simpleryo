@@ -24,6 +24,7 @@ import com.simpleryo.leyotang.fragment.ShareDialogFragment;
 import com.simpleryo.leyotang.network.SimpleryoNetwork;
 import com.simpleryo.leyotang.utils.SharedPreferencesUtils;
 import com.simpleryo.leyotang.utils.XActivityUtils;
+import com.simpleryo.leyotang.utils.XStringPars;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 import com.umeng.socialize.ShareAction;
@@ -95,13 +96,13 @@ public class CourseDetailActivity extends BaseActivity {
     TextView tv_point;
     @ViewInject(R.id.tv_collection)
     TextView tv_collection;
-    boolean hasCollect;
+    boolean hasCollect;//是否收藏
     public Transformation transformation = new RoundedTransformationBuilder()
             .cornerRadius(10)
             .oval(false)
             .build();
     public final static String CSS_STYLE = "<style>* {font-size:14px;line-height:20px;}p {color:#373737;font-size:12px}</style>";
-    UMShareAPI umShareAPI;
+    UMShareAPI umShareAPI;//友盟分享
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -110,10 +111,7 @@ public class CourseDetailActivity extends BaseActivity {
         iv_msg.setVisibility(View.GONE);
         tv_share.setVisibility(View.VISIBLE);
         umShareAPI = UMShareAPI.get(this);
-//        WebSettings webSettings=tv_course_detail.getSettings();
-//        webSettings.setSupportZoom(true);
-//        webSettings.setTextSize(WebSettings.TextSize.SMALLER);
-        EventBus.getDefault().register(this);
+        EventBus.getDefault().register(this);//注册EventBus
         courseId = getIntent().getStringExtra("courseId");
         isLogin = SharedPreferencesUtils.getKeyBoolean("isLogin");
         EventBus.getDefault().post(new BusEntity(113));
@@ -125,12 +123,11 @@ public class CourseDetailActivity extends BaseActivity {
         isLogin = SharedPreferencesUtils.getKeyBoolean("isLogin");//获取用户登录状态
     }
 
+    /**
+     * 国内平台分享
+     * @param shareMedia
+     */
     public void share(SHARE_MEDIA shareMedia) {
-//        UMImage imagelocal = new UMImage(this, coverUrl);
-//        new ShareAction(CourseDetailActivity.this).withText(courseName)
-//                .withMedia(imagelocal)
-//                .setPlatform(shareMedia)
-//                .setCallback(shareListener).share();
         UMWeb web = new UMWeb("https://www.baidu.com/");
         web.setTitle(courseName);//标题
         web.setThumb(new UMImage(this, coverUrl));  //缩略图
@@ -142,6 +139,10 @@ public class CourseDetailActivity extends BaseActivity {
                 .share();
     }
 
+    /**
+     * Facebook分享
+     * @param shareMedia
+     */
     public void shareFaceBook(SHARE_MEDIA shareMedia) {
         UMImage imagelocal = new UMImage(this, coverUrl);
         new ShareAction(CourseDetailActivity.this).withText(courseName)
@@ -155,34 +156,30 @@ public class CourseDetailActivity extends BaseActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updateCollect(BusEntity bus) {
-        if (bus.getType() == 701) {
+        if (bus.getType() == 701) {//微信
             if (umShareAPI.isInstall(CourseDetailActivity.this, SHARE_MEDIA.WEIXIN)) {
                 share(SHARE_MEDIA.WEIXIN);
             } else {
                 Toast.makeText(CourseDetailActivity.this, "请安装微信客户端", Toast.LENGTH_SHORT).show();
             }
         }
-        if (bus.getType() == 702) {
+        if (bus.getType() == 702) {//朋友圈
             if (umShareAPI.isInstall(CourseDetailActivity.this, SHARE_MEDIA.WEIXIN)) {
                 share(SHARE_MEDIA.WEIXIN_CIRCLE);
             } else {
                 Toast.makeText(CourseDetailActivity.this, "请安装微信客户端", Toast.LENGTH_SHORT).show();
             }
         }
-        if (bus.getType() == 703) {
+        if (bus.getType() == 703) {//支付宝
             share(SHARE_MEDIA.ALIPAY);
         }
-        if (bus.getType() == 704) {
-//            if (umShareAPI.isInstall(CourseDetailActivity.this,SHARE_MEDIA.FACEBOOK)){
+        if (bus.getType() == 704) {//Facebook
             shareFaceBook(SHARE_MEDIA.FACEBOOK);
-//            }else{
-//                Toast.makeText(CourseDetailActivity.this,"请安装FACEBOOK客户端",Toast.LENGTH_SHORT).show();
-//            }
         }
         if (bus.getType() == 222) {
             getStoreDetail(storeId);
         }
-        if (bus.getType() == 113) {
+        if (bus.getType() == 113) {//获取课程详情
             SimpleryoNetwork.getCourseDetail(CourseDetailActivity.this, new MyBaseProgressCallbackImpl(CourseDetailActivity.this) {
                 @Override
                 public void onSuccess(HttpInfo info) {
@@ -208,10 +205,11 @@ public class CourseDetailActivity extends BaseActivity {
                             tv_collection.setText("收藏");
                         }
                         tv_coach_name.setText(courdeDetailBean.getData().getCoach().getNickName());
-                        tv_price.setText(Integer.valueOf(courdeDetailBean.getData().getPrice())/100 + "$");
+                        tv_price.setText(XStringPars.foramtPrice(Integer.valueOf(courdeDetailBean.getData().getPrice())) + "$");
                         tv_join_count.setText("已有" + courdeDetailBean.getData().getClassCount() + "人参加");
                         tv_popular.setText(courdeDetailBean.getData().getClassCount() + "个人正在学习");
                         tv_goodreviewrate.setText("好评率：" + courdeDetailBean.getData().getGoodReviewRate() + "%");
+                        //上课时间
                         if (courdeDetailBean.getData().getDurations().getData() != null && courdeDetailBean.getData().getDurations().getData().size() > 0) {
                             StringBuilder durations = new StringBuilder();
                             durations.append(courdeDetailBean.getData().getDurations().getStartDate() + "至" + courdeDetailBean.getData().getDurations().getEndDate());
@@ -225,10 +223,6 @@ public class CourseDetailActivity extends BaseActivity {
                             }
                             tv_course_time.setText(durations);
                         }
-//                    StringBuilder skills = new StringBuilder();
-//                    for (CourdeDetailBean.DataBeanX.CoachBean.SkillsBean skillsBean : courdeDetailBean.getData().getCoach().getSkills()) {
-//                        skills.append("\n" + skillsBean.getValue());
-//                    }
                         if (courdeDetailBean.getData().getIntro() != null) {
                             tv_course_detail.loadDataWithBaseURL("about:blank", CSS_STYLE + courdeDetailBean.getData().getIntro(), "text/html", "utf-8", null);
                         } else {
@@ -266,8 +260,12 @@ public class CourseDetailActivity extends BaseActivity {
         }
     }
 
-    boolean isFollow;
+    boolean isFollow;//商家是否关注
 
+    /**
+     * 获取商家详情
+     * @param storeId
+     */
     public void getStoreDetail(String storeId) {
         SimpleryoNetwork.getStoreDetail(CourseDetailActivity.this, new MyBaseProgressCallbackImpl() {
             @Override
@@ -323,9 +321,9 @@ public class CourseDetailActivity extends BaseActivity {
                 Intent intent2 = new Intent(CourseDetailActivity.this, MainActivity.class);
                 startActivity(intent2);
                 break;
-            case R.id.tv_to_use_help:
+            case R.id.tv_to_use_help://关注与取消关注商家
                 if (isLogin) {
-                    if (isFollow) {
+                    if (isFollow) {//取消关注
                         SimpleryoNetwork.disfollowStore(CourseDetailActivity.this, new MyBaseProgressCallbackImpl(CourseDetailActivity.this) {
                             @Override
                             public void onSuccess(HttpInfo info) {
@@ -345,7 +343,7 @@ public class CourseDetailActivity extends BaseActivity {
                                 loadingDialog.dismiss();
                             }
                         }, storeId);
-                    } else {
+                    } else {//关注
                         SimpleryoNetwork.followStore(CourseDetailActivity.this, new MyBaseProgressCallbackImpl(CourseDetailActivity.this) {
                             @Override
                             public void onSuccess(HttpInfo info) {
@@ -372,9 +370,9 @@ public class CourseDetailActivity extends BaseActivity {
                     startActivity(intent);
                 }
                 break;
-            case R.id.ll_collection:
+            case R.id.ll_collection://收藏与取消收藏课程
                 if (isLogin) {
-                    if (hasCollect) {
+                    if (hasCollect) {//收藏
                         SimpleryoNetwork.collectCourse(CourseDetailActivity.this, new MyBaseProgressCallbackImpl(CourseDetailActivity.this) {
                             @Override
                             public void onSuccess(HttpInfo info) {
@@ -389,7 +387,7 @@ public class CourseDetailActivity extends BaseActivity {
                                 }
                             }
                         }, courseId);
-                    } else {
+                    } else {//取消收藏
                         SimpleryoNetwork.disCollectCourse(CourseDetailActivity.this, new MyBaseProgressCallbackImpl(CourseDetailActivity.this) {
                             @Override
                             public void onSuccess(HttpInfo info) {
@@ -411,14 +409,12 @@ public class CourseDetailActivity extends BaseActivity {
                             }
                         }, courseId);
                     }
-
                 } else {
                     Intent intent = new Intent(CourseDetailActivity.this, LoginActivity.class);
                     startActivity(intent);
                 }
-
                 break;
-            case R.id.tv_reservations:
+            case R.id.tv_reservations://确定订单
                 if (isLogin) {
                     Intent intent = new Intent(CourseDetailActivity.this, ComfirmOrderActivity.class);
                     intent.putExtra("courseId", courseId);
@@ -433,7 +429,7 @@ public class CourseDetailActivity extends BaseActivity {
                 businessIntent.putExtra("storeId", storeId);
                 startActivity(businessIntent);
                 break;
-            case R.id.tv_share:
+            case R.id.tv_share://分享
                 ShareDialogFragment shareDialogFragment = new ShareDialogFragment();
                 shareDialogFragment.show(getSupportFragmentManager(), "shareDialogFragment");
                 break;
@@ -441,7 +437,9 @@ public class CourseDetailActivity extends BaseActivity {
     }
 
     private ProgressDialog dialog;
-
+    /**
+     * 分享回调
+     */
     private UMShareListener shareListener = new UMShareListener() {
         /**
          * @descrption 分享开始的回调

@@ -66,32 +66,32 @@ public class MyInfoActivity extends BaseActivity {
             case R.id.iv_back:
                 XActivityUtils.getInstance().popActivity(this);
                 break;
-            case R.id.rl_sex:
+            case R.id.rl_sex://性别
                 SexDialogFragment sexDialogFragment=new SexDialogFragment();
                 Bundle sexBundle=new Bundle();
                 sexBundle.putString("gender",gender);
                 sexDialogFragment.setArguments(sexBundle);
                 sexDialogFragment.show(getSupportFragmentManager(),"sexDialogFragment");
                 break;
-            case R.id.rl_name:
+            case R.id.rl_name://修改昵称
                 UpdateNickNameDialogFragment updateNickNameDialogFragment=new UpdateNickNameDialogFragment();
                 updateNickNameDialogFragment.show(getSupportFragmentManager(),"updateNickNameDialogFragment");
                 break;
-            case R.id.rl_info:
+            case R.id.rl_info://个人简介
                 UserDesDialogFragment userDesDialogFragment=new UserDesDialogFragment();
                 Bundle desBundle=new Bundle();
                 desBundle.putString("des",des);
                 userDesDialogFragment.setArguments(desBundle);
                 userDesDialogFragment.show(getSupportFragmentManager(),"userDesDialogFragment");
                 break;
-            case R.id.rl_constellation:
+            case R.id.rl_constellation://星座
                 ConstellationDialogFragment constellationDialogFragment=new ConstellationDialogFragment();
                 Bundle mBundle=new Bundle();
                 mBundle.putString("starSign",starSign);
                 constellationDialogFragment.setArguments(mBundle);
                 constellationDialogFragment.show(getSupportFragmentManager(),"constellationDialogFragment");
                 break;
-            case R.id.rl_address:
+            case R.id.rl_address://地址
                 AddAddressDialogFragment addAddressDialogFragment=new AddAddressDialogFragment();
                 Bundle bundle=new Bundle();
                 bundle.putString("gender",gender);
@@ -130,7 +130,7 @@ public class MyInfoActivity extends BaseActivity {
         if (bus.getType() == 90) {
             EventBus.getDefault().post(new BusEntity(87));
         }
-        if (bus.getType() == 86) {
+        if (bus.getType() == 86) {//修改个人信息
             SimpleryoNetwork.updateInfo(MyInfoActivity.this, new MyBaseProgressCallbackImpl(MyInfoActivity.this) {
                 @Override
                 public void onSuccess(HttpInfo info)  {
@@ -144,7 +144,7 @@ public class MyInfoActivity extends BaseActivity {
                 }
             },userId,emmail,bus.getContent(),loginName,gender,starSign,des,avatarUrl);
         }
-        if (bus.getType()==87){
+        if (bus.getType()==87){//获取用户信息
             SimpleryoNetwork.getUserInfo(MyInfoActivity.this,new MyBaseProgressCallbackImpl(){
                 @Override
                 public void onSuccess(HttpInfo info) {

@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * @author huanglei
  * @ClassNname：MyCourse.java
- * @Describe 我的订单页面
+ * @Describe 我的订单分类页面
  * @time 2018/3/19 13:28
  */
 @ContentView(R.layout.activity_order_layout)
@@ -64,35 +64,35 @@ public class MyOrderActivity extends BaseActivity {
         mAdapter = new FragMentAdapter<XLibraryLazyFragment>(
                 getSupportFragmentManager(), fragments);
         view_pager_main.setAdapter(mAdapter);
-        if (status.equalsIgnoreCase("NEW")) {
+        if (status.equalsIgnoreCase("NEW")) {//待支付
             radio_btn_my_wait_pay.setChecked(true);
             radio_btn_payed.setChecked(false);
             radio_btn_wait_remark.setChecked(false);
             radio_btn_complete.setChecked(false);
             radio_btn_cancel.setChecked(false);
             view_pager_main.setCurrentItem(0);
-        } else if (status.equalsIgnoreCase("PAYED")) {
+        } else if (status.equalsIgnoreCase("PAYED")) {//已支付
             radio_btn_my_wait_pay.setChecked(false);
             radio_btn_payed.setChecked(true);
             radio_btn_wait_remark.setChecked(false);
             radio_btn_complete.setChecked(false);
             radio_btn_cancel.setChecked(false);
             view_pager_main.setCurrentItem(1);
-        } else if (status.equalsIgnoreCase("RECEIVED")) {
+        } else if (status.equalsIgnoreCase("RECEIVED")) {//待评价
             radio_btn_my_wait_pay.setChecked(false);
             radio_btn_payed.setChecked(false);
             radio_btn_wait_remark.setChecked(true);
             radio_btn_complete.setChecked(false);
             radio_btn_cancel.setChecked(false);
             view_pager_main.setCurrentItem(2);
-        } else if (status.equalsIgnoreCase("COMPLETED")) {
+        } else if (status.equalsIgnoreCase("COMPLETED")) {//已完成
             radio_btn_my_wait_pay.setChecked(false);
             radio_btn_payed.setChecked(false);
             radio_btn_wait_remark.setChecked(false);
             radio_btn_complete.setChecked(true);
             radio_btn_cancel.setChecked(false);
             view_pager_main.setCurrentItem(3);
-        } else if (status.equalsIgnoreCase("CANCALLED")) {
+        } else if (status.equalsIgnoreCase("CANCALLED")) {//已取消
             radio_btn_my_wait_pay.setChecked(false);
             radio_btn_payed.setChecked(false);
             radio_btn_wait_remark.setChecked(false);

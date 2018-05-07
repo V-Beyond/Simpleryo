@@ -187,9 +187,8 @@ public class HomeFragment extends XLibraryLazyFragment {
                     homeAdapter.setDataList(mItemModels);
                 } else if (homeDataBean.getCode().equalsIgnoreCase("401")) {
                     Intent intent=new Intent();
-                    intent.setClass(context, NotificationBroadcast.class);
-                    intent.putExtra(NotificationBroadcast.EXTRA_KEY_ACTION,
-                            NotificationBroadcast.ACTION_REFRESHTOKEN);
+                    intent.setClass(getActivity(), NotificationBroadcast.class);
+                    intent.setAction(NotificationBroadcast.ACTION_REFRESHTOKEN);
                     getActivity().sendBroadcast(intent);
 //                    SharedPreferencesUtils.saveKeyString("token", "simpleryo");
 

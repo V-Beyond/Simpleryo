@@ -68,8 +68,11 @@ public class MyAttentionActivity extends BaseActivity {
 //        });
         initData();
     }
+
+    /**
+     * 获取我的关注列表
+     */
     public void initData() {
-        MultipleItem item;
         SimpleryoNetwork.getStoresList(MyAttentionActivity.this,new MyBaseProgressCallbackImpl(){
             @Override
             public void onSuccess(HttpInfo info) {

@@ -71,7 +71,9 @@ public class BusinessHomeActivty extends BaseActivity {
         getStoreDetail();
     }
 
-
+    /**
+     * 获取商家详情
+     */
     public void getStoreDetail(){
         SimpleryoNetwork.getStoreDetail(BusinessHomeActivty.this,new MyBaseProgressCallbackImpl(BusinessHomeActivty.this){
             @Override

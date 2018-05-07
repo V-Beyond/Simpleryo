@@ -5,6 +5,7 @@ import android.view.ViewGroup;
 
 import com.simpleryo.leyotang.R;
 import com.simpleryo.leyotang.bean.CourseListBean;
+import com.simpleryo.leyotang.utils.XStringPars;
 import com.simpleryo.leyotang.viewholder.ExcellentCourseItemViewHolder;
 import com.simpleryo.leyotang.viewholder.SuperViewHolder;
 import com.squareup.picasso.Picasso;
@@ -48,7 +49,7 @@ public class BusinessCourseAdapter extends BaseAdapter<CourseListBean.DataBeanX>
         }else{
             ((ExcellentCourseItemViewHolder) holder).tv_collection_name.setText("暂无课程名称");
         }
-        ((ExcellentCourseItemViewHolder) holder).tv_price.setText(bean.getPrice()+"$/hour");
+        ((ExcellentCourseItemViewHolder) holder).tv_price.setText(XStringPars.foramtPrice(Integer.valueOf(bean.getPrice()))+"$/hour");
         ((ExcellentCourseItemViewHolder) holder).tv_popular.setText(bean.getClassCount()+" people");
 
     }

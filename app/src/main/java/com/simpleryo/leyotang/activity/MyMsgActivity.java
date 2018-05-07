@@ -8,7 +8,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
@@ -32,7 +31,7 @@ import java.util.List;
 /**
  * @author huanglei
  * @ClassNname：MyCourse.java
- * @Describe 我的订单页面
+ * @Describe 我的消息页面
  * @time 2018/3/19 13:28
  */
 @ContentView(R.layout.activity_my_msg)
@@ -54,12 +53,6 @@ public class MyMsgActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         tv_name.setText("我的消息");
         iv_msg.setVisibility(View.GONE);
-
-        DividerDecoration divider = new DividerDecoration.Builder(this)
-                .setHeight(50f)
-                .setColorResource(R.color.color_transparent)
-                .build();
-//        lrecyclerview.addItemDecoration(divider);
         lrecyclerview.setLayoutManager(new LinearLayoutManager(this));
         messageAdapter = new MessageAdapter(MyMsgActivity.this);
         lRecyclerViewAdapter = new LRecyclerViewAdapter(messageAdapter);
@@ -72,19 +65,22 @@ public class MyMsgActivity extends BaseActivity {
             @Override
             public void onItemClick(View view, int position) {
                 MessageListBean.DataBean dataBean = messageList.get(position);
-                if (dataBean.getSecondTypeCode().equalsIgnoreCase("SYSTEM_NOTICE")) {
+                if (dataBean.getSecondTypeCode().equalsIgnoreCase("SYSTEM_NOTICE")) {//公告
                     startActivity(new Intent(MyMsgActivity.this, MyNoticeActivity.class).putExtra("msg_id", dataBean.getLinkId()));
                 }
-                if (dataBean.getSecondTypeCode().equalsIgnoreCase("PAY_SUCCESS")) {
+                if (dataBean.getSecondTypeCode().equalsIgnoreCase("PAY_SUCCESS")) {//支付消息
                     startActivity(new Intent(MyMsgActivity.this, OrderDetailActivity.class).putExtra("orderId", dataBean.getLinkId()));
                 }
-                if (dataBean.getSecondTypeCode().equalsIgnoreCase("COURSE_ALERT")) {
+                if (dataBean.getSecondTypeCode().equalsIgnoreCase("COURSE_ALERT")) {//课程提醒
                     startActivity(new Intent(MyMsgActivity.this, MyCourseDetailActivity.class).putExtra("id", dataBean.getLinkId()));
                 }
             }
         });
     }
 
+    /**
+     * 获取消息列表
+     */
     public void getMessageList() {
         SimpleryoNetwork.getMessageList(MyMsgActivity.this, new MyBaseProgressCallbackImpl() {
             @Override

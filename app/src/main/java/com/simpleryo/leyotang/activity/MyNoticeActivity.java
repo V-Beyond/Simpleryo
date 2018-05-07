@@ -18,7 +18,7 @@ import org.xutils.view.annotation.ViewInject;
 
 /**
  * @ClassNname：MyCourse.java
- * @Describe 我的订单页面
+ * @Describe 公告页面
  * @author huanglei
  * @time 2018/3/19 13:28
  */

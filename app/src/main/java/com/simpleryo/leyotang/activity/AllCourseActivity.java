@@ -69,7 +69,7 @@ public class AllCourseActivity extends BaseActivity {
             }
         });
     }
-
+    //获取课程分类
     public void getCourseType(){
         SimpleryoNetwork.getHomeCourse(AllCourseActivity.this,new MyBaseProgressCallbackImpl(AllCourseActivity.this){
             @Override

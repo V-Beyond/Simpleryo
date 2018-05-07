@@ -9,6 +9,7 @@ import android.provider.Settings.Secure;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Matcher;
@@ -60,6 +61,18 @@ public class XStringPars {
                 .compile("^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,12}$");
         Matcher m = p.matcher(pwd);
         return m.matches();
+    }
+
+    /**
+     * 价格保留两位小数
+     * @param price
+     * @return
+     */
+    public static  String foramtPrice(int price){
+        float distanceValue = Math.round((price))/100f;
+        DecimalFormat decimalFormat =new DecimalFormat("0.00");//构造方法的字符格式这里如果小数不足2位,会以0补足.
+        String formatPrice = decimalFormat.format(distanceValue);//format 返回的是字符串
+        return formatPrice;
     }
 
     public static boolean check(String str, String regex) {

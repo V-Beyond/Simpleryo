@@ -52,7 +52,7 @@ import org.xutils.view.annotation.ViewInject;
 /**
  * @author huanglei
  * @ClassNname：MyCourse.java
- * @Describe 课程详情页面
+ * @Describe 我的订单课程详情页面
  * @time 2018/3/19 13:28
  */
 @ContentView(R.layout.activity_my_course_detail)
@@ -81,8 +81,10 @@ public class MyCourseDetailActivity extends BaseActivity implements OnMapReadyCa
             .oval(true)
             .build();
     String id;
+    //谷歌地图
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
+    //经纬度
     double lat;
     double lng;
 
@@ -91,6 +93,13 @@ public class MyCourseDetailActivity extends BaseActivity implements OnMapReadyCa
         super.onCreate(savedInstanceState);
         tv_name.setText("课程详情");
         id = getIntent().getStringExtra("id");
+        initData();
+    }
+
+    /**
+     * 获取订单详情
+     */
+    public void initData(){
         SimpleryoNetwork.getOrderDetail(MyCourseDetailActivity.this, new MyBaseProgressCallbackImpl(MyCourseDetailActivity.this) {
             @Override
             public void onSuccess(HttpInfo info) {
@@ -104,9 +113,15 @@ public class MyCourseDetailActivity extends BaseActivity implements OnMapReadyCa
                     } else {
                         Picasso.with(MyCourseDetailActivity.this).load("http://p3.so.qhimgs1.com/bdr/_240_/t01144f848052b04663.jpg").into(iv_my_course_detail_img);
                     }
-                    if (orderDetailBean.getData().getCoach().getAvatarUrl() != null) {
-                        Picasso.with(MyCourseDetailActivity.this).load(orderDetailBean.getData().getCoach().getAvatarUrl()).transform(transformation).into(iv_coach_img);
-                    } else {
+                    if (orderDetailBean.getData().getCoach() != null) {
+                        if (orderDetailBean.getData().getCoach().getAvatarUrl() != null) {
+                            Picasso.with(MyCourseDetailActivity.this).load(orderDetailBean.getData().getCoach().getAvatarUrl()).transform(transformation).into(iv_coach_img);
+                        } else {
+                            Picasso.with(MyCourseDetailActivity.this).load("http://p3.so.qhimgs1.com/bdr/_240_/t01144f848052b04663.jpg").transform(transformation).into(iv_coach_img);
+                        }
+                        tv_coach_name.setText("授课教练：" + orderDetailBean.getData().getCoach().getName());
+                    }else{
+                        tv_coach_name.setText("授课教练：无");
                         Picasso.with(MyCourseDetailActivity.this).load("http://p3.so.qhimgs1.com/bdr/_240_/t01144f848052b04663.jpg").transform(transformation).into(iv_coach_img);
                     }
                     if (orderDetailBean.getData().getCourseName() != null) {
@@ -114,21 +129,11 @@ public class MyCourseDetailActivity extends BaseActivity implements OnMapReadyCa
                     } else {
                         tv_order_course_name.setText("课程名称：无");
                     }
-                    tv_coach_name.setText("授课教练：" + orderDetailBean.getData().getCoach().getName());
                     tv_store_name.setText("机构：" + orderDetailBean.getData().getStore().getName());
                     tv_course_duration.setText("上课时间：" + orderDetailBean.getData().getCourse().getDurations().getStartDate() + "至" + orderDetailBean.getData().getCourse().getDurations().getEndDate());
                     tv_course_address.setText("上课方式：线下授课，授课地点：" + orderDetailBean.getData().getStore().getAddress().getDetail());
                     lat = orderDetailBean.getData().getStore().getAddress().getLat();
                     lng = orderDetailBean.getData().getStore().getAddress().getLng();
-//                    Geocoder gc = new Geocoder(MyCourseDetailActivity.this, Locale.TRADITIONAL_CHINESE);
-//                    List<Address> lstAddress = null;
-//                    try {
-//                        lstAddress = gc.getFromLocation(lat, lng, 1);
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//                    String returnAddress=lstAddress.get(0).getAddressLine(0);
-//                    Log.w("cc","address:"+address);
                 }
             }
 
@@ -152,7 +157,6 @@ public class MyCourseDetailActivity extends BaseActivity implements OnMapReadyCa
         mGoogleApiClient.connect();
         // Construct a FusedLocationProviderClient.
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-
     }
 
 
@@ -208,22 +212,23 @@ public class MyCourseDetailActivity extends BaseActivity implements OnMapReadyCa
 //                        mMap.getUiSettings().setMyLocationButtonEnabled(false);
 //                        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in ShangHai"));
 //                    }
-                    if (mLastKnownLocation!=null){
+                    if (mLastKnownLocation != null) {
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                 new LatLng(mLastKnownLocation.getLatitude(),
                                         mLastKnownLocation.getLongitude()), 15));
-                        SimpleryoNetwork.getAddressInfo(MyCourseDetailActivity.this,new MyBaseProgressCallbackImpl(){
+                        //获取当前位置信息
+                        SimpleryoNetwork.getAddressInfo(MyCourseDetailActivity.this, new MyBaseProgressCallbackImpl() {
                             @Override
                             public void onSuccess(HttpInfo info) {
                                 super.onSuccess(info);
-                                CurrentAddressInfo currentAddressInfo=info.getRetDetail(CurrentAddressInfo.class);
-                                if (currentAddressInfo.getStatus().equalsIgnoreCase("OK")){
+                                CurrentAddressInfo currentAddressInfo = info.getRetDetail(CurrentAddressInfo.class);
+                                if (currentAddressInfo.getStatus().equalsIgnoreCase("OK")) {
                                     mMap.addMarker(new MarkerOptions().position(new LatLng(mLastKnownLocation.getLatitude(),
                                             mLastKnownLocation.getLongitude())).title(currentAddressInfo.getResults().get(0).getFormatted_address().split(" ")[0]));
                                 }
                             }
-                        },mLastKnownLocation.getLatitude(),mLastKnownLocation.getLongitude());
-                    }else{
+                        }, mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude());
+                    } else {
                         mMap.moveCamera(CameraUpdateFactory
                                 .newLatLngZoom(sydney, 15));
                         mMap.getUiSettings().setMyLocationButtonEnabled(false);
@@ -330,9 +335,6 @@ public class MyCourseDetailActivity extends BaseActivity implements OnMapReadyCa
     public void onConnectionSuspended(int i) {
 
     }
-
-
-
 
 
 }

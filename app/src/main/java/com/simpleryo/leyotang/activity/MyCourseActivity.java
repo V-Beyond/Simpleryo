@@ -24,7 +24,7 @@ import java.util.List;
 
 /**
  * @ClassNname：MyCourse.java
- * @Describe 我的订单页面
+ * @Describe 我的订单课程分类页面
  * @author huanglei
  * @time 2018/3/19 13:28
  */
@@ -42,15 +42,15 @@ public class MyCourseActivity extends BaseActivity {
         tv_name.setText("我的课程");
         Bundle bundle=new Bundle();
         bundle.putString("status","ALL");
-        MyCourseFragment myCourseFragment=new MyCourseFragment();
+        MyCourseFragment myCourseFragment=new MyCourseFragment();//所有课程
         myCourseFragment.setArguments(bundle);
         Bundle bundle1=new Bundle();
         bundle1.putString("status","PENDING");
-        MyCourseStartedFragment myCourseStartedFragment=new MyCourseStartedFragment();
+        MyCourseStartedFragment myCourseStartedFragment=new MyCourseStartedFragment();//已开始课程
         myCourseStartedFragment.setArguments(bundle1);
         Bundle bundle2=new Bundle();
         bundle2.putString("status","COMPLETED");
-        MyCourseFinishFragment myCourseFinishFragment=new MyCourseFinishFragment();
+        MyCourseFinishFragment myCourseFinishFragment=new MyCourseFinishFragment();//已结束课程
         myCourseFinishFragment.setArguments(bundle2);
         fragments.add(myCourseFragment);
         fragments.add(myCourseStartedFragment);

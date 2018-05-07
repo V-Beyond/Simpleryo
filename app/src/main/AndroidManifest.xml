@@ -368,7 +368,11 @@
         <!-- 使用完全自定义消息来开启应用的服务进程的示例服务配置 -->
         <service android:name="com.simpleryo.leyotang.push.MyNotificationService" />
         <service android:name="com.simpleryo.leyotang.push.UmengNotificationService" />
-        <receiver android:name="com.simpleryo.leyotang.push.NotificationBroadcast" />
+        <receiver android:name="com.simpleryo.leyotang.push.NotificationBroadcast">
+            <intent-filter>
+                <action android:name="com.simpleryo.token"></action>
+            </intent-filter>
+        </receiver>
 
         <activity
             android:name="net.latipay.mobile.WXPayEntryActivity"

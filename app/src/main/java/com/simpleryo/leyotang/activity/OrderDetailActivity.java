@@ -14,6 +14,7 @@ import com.simpleryo.leyotang.base.MyBaseProgressCallbackImpl;
 import com.simpleryo.leyotang.bean.OrderDetailBean;
 import com.simpleryo.leyotang.network.SimpleryoNetwork;
 import com.simpleryo.leyotang.utils.XActivityUtils;
+import com.simpleryo.leyotang.utils.XStringPars;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
@@ -59,7 +60,8 @@ public class OrderDetailActivity extends BaseActivity {
     TextView tv_course_name;
     @ViewInject(R.id.tv_order_course_name)
     TextView tv_order_course_name;
-
+    @ViewInject(R.id.tv_time)
+    TextView tv_time;
     String orderId;
 
     @Override
@@ -75,21 +77,24 @@ public class OrderDetailActivity extends BaseActivity {
                 loadingDialog.dismiss();
                 OrderDetailBean orderDetailBean=info.getRetDetail(OrderDetailBean.class);
                 if (orderDetailBean.getData().getImageUrl()!=null){
-                    Picasso.with(OrderDetailActivity.this).load(orderDetailBean.getData().getImageUrl()).transform(transformation).into(iv_coach_img);
                     Picasso.with(OrderDetailActivity.this).load(orderDetailBean.getData().getImageUrl()).into(iv_order_img);
                 }else{
-
-                    Picasso.with(OrderDetailActivity.this).load("http://p0.so.qhmsg.com/bdr/_240_/t01eb2a6c6319b04655.jpg").into(iv_order_img);
+                    Picasso.with(OrderDetailActivity.this).load("http://p3.so.qhimgs1.com/bdr/_240_/t01144f848052b04663.jpg").into(iv_order_img);
                 }
-
                 tv_course_name.setText("课程名称："+orderDetailBean.getData().getCourseName());
                 tv_order_course_name.setText(orderDetailBean.getData().getCourseName());
-                tv_total_price.setText(Integer.valueOf(orderDetailBean.getData().getTotalAmt())/100+"$");
-                tv_shop_price.setText(Integer.valueOf(orderDetailBean.getData().getUnitPrice())/100+"$");
+                tv_total_price.setText(XStringPars.foramtPrice(orderDetailBean.getData().getTotalAmt())+"$");
+                tv_shop_price.setText(XStringPars.foramtPrice(orderDetailBean.getData().getUnitPrice())+"$");
                 tv_count.setText("X"+orderDetailBean.getData().getQuantity());
                 tv_order_number.setText("订单号："+orderDetailBean.getData().getNo());
-                tv_coach_name.setText("授课教练："+orderDetailBean.getData().getCoach().getName());
-                Picasso.with(OrderDetailActivity.this).load(orderDetailBean.getData().getCoach().getAvatarUrl()).transform(transformation).into(iv_coach_img);
+                if (orderDetailBean.getData().getCoach()!=null){
+                    tv_coach_name.setText("授课教练："+orderDetailBean.getData().getCoach().getName());
+                    Picasso.with(OrderDetailActivity.this).load(orderDetailBean.getData().getCoach().getAvatarUrl()).transform(transformation).into(iv_coach_img);
+                }else{
+                    tv_coach_name.setText("授课教练：无");
+                    Picasso.with(OrderDetailActivity.this).load("http://p3.so.qhimgs1.com/bdr/_240_/t01144f848052b04663.jpg").transform(transformation).into(iv_coach_img);
+                }
+                tv_time.setText("上课时间：" + orderDetailBean.getData().getCourse().getDurations().getStartDate() + "至" + orderDetailBean.getData().getCourse().getDurations().getEndDate());
                 tv_store_name.setText("所在机构："+orderDetailBean.getData().getStore().getName());
                 tv_address.setText("授课地点："+orderDetailBean.getData().getStore().getAddress().getDetail());
             }

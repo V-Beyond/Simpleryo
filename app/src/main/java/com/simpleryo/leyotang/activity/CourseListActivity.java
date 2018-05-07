@@ -91,7 +91,6 @@ public class CourseListActivity extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updateCollect(BusEntity bus) {
         String courseId = bus.getContent();
-
         if (bus.getType() == 33) {
             if (isLogin) {
                 SimpleryoNetwork.collectCourse(CourseListActivity.this, new MyBaseProgressCallbackImpl(CourseListActivity.this) {

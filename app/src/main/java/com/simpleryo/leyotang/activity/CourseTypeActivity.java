@@ -25,7 +25,7 @@ import java.util.List;
 
 /**
  * @ClassNname：MyCourse.java
- * @Describe 我的订单页面
+ * @Describe 课程分类页面
  * @author huanglei
  * @time 2018/3/19 13:28
  */
@@ -55,17 +55,17 @@ public class CourseTypeActivity extends BaseActivity {
         mAdapter = new FragMentAdapter<XLibraryLazyFragment>(
                 getSupportFragmentManager(), fragments);
         view_pager_main.setAdapter(mAdapter);
-        if (type.equalsIgnoreCase("hot")){
+        if (type.equalsIgnoreCase("hot")){//热门
             radio_btn_my_course.setChecked(true);
             radio_btn_course.setChecked(false);
             radio_btn_coach.setChecked(false);
             view_pager_main.setCurrentItem(0);
-        }else if(type.equalsIgnoreCase("excellent")){
+        }else if(type.equalsIgnoreCase("excellent")){//精选
             radio_btn_my_course.setChecked(false);
             radio_btn_course.setChecked(true);
             radio_btn_coach.setChecked(false);
             view_pager_main.setCurrentItem(1);
-        }else if(type.equalsIgnoreCase("introductory")){
+        }else if(type.equalsIgnoreCase("introductory")){//推荐
             radio_btn_my_course.setChecked(false);
             radio_btn_course.setChecked(false);
             radio_btn_coach.setChecked(true);

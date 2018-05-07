@@ -75,7 +75,7 @@ public class MyOrderAdapter extends BaseMultiAdapter<MultipleItem> {
             }
             ((MyOrderViewHolder) holder).tv_order_name.setText(dataBean.getCourseName());
             ((MyOrderViewHolder) holder).tv_time.setText(XStringPars.getStrTime(dataBean.getCreationTime()));
-            ((MyOrderViewHolder) holder).tv_price.setText(Integer.valueOf(dataBean.getUnitPrice())/100+"$");
+            ((MyOrderViewHolder) holder).tv_price.setText(XStringPars.foramtPrice(Integer.valueOf(dataBean.getUnitPrice()))+"$");
             ((MyOrderViewHolder) holder).tv_count.setText("x"+dataBean.getQuantity());
             if (dataBean.getStatus().equalsIgnoreCase("COMPLETED")) {
                 ((MyOrderViewHolder) holder).tv_state.setText("交易成功");
@@ -145,7 +145,7 @@ public class MyOrderAdapter extends BaseMultiAdapter<MultipleItem> {
                     Picasso.with(context).load(dataBean.getCoverUrl()).transform(transformation).into(((MyCollectionViewHolder) holder).iv_collection_img);
                 }
                 ((MyCollectionViewHolder) holder).tv_collection_name.setText(dataBean.getName());
-                ((MyCollectionViewHolder) holder).tv_price.setText(dataBean.getPrice()+"$/hour");
+                ((MyCollectionViewHolder) holder).tv_price.setText(XStringPars.foramtPrice(dataBean.getPrice())+"$/hour");
                 ((MyCollectionViewHolder) holder).tv_collection_count.setText(dataBean.getCollectCount()+"  people");
                 ((MyCollectionViewHolder) holder).rl_collect.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -156,4 +156,7 @@ public class MyOrderAdapter extends BaseMultiAdapter<MultipleItem> {
             }
         }
     }
+
+
+
 }

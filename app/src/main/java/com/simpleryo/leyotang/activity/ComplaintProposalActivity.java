@@ -70,15 +70,16 @@ public class ComplaintProposalActivity extends BaseActivity implements ImagePick
     TextView tv_name;
     @ViewInject(R.id.edittext_complaint)
     EditText edittext_complaint;
-    public static final int IMAGE_ITEM_ADD = -1;
-    public static final int REQUEST_CODE_SELECT = 100;
-    public static final int REQUEST_CODE_PREVIEW = 101;
+    public static final int IMAGE_ITEM_ADD = -1;//添加
+    public static final int REQUEST_CODE_SELECT = 100;//选择
+    public static final int REQUEST_CODE_PREVIEW = 101;//预览
 
-    private ImagePickerAdapter adapter;
+    private ImagePickerAdapter adapter;//图片选择适配器
     private ArrayList<ImageItem> selImageList; //当前选择的所有图片
     private int maxImgCount = 9;               //允许选择图片最大数
     ArrayList<ImageItemBean> imageItemBeans = new ArrayList<>();
-    OSS oss;
+    OSS oss;//阿里云OSS
+    //选择上传图片的json数组
     JsonArray json=new JsonArray();
 
     @Override
@@ -90,7 +91,6 @@ public class ComplaintProposalActivity extends BaseActivity implements ImagePick
         tv_name.setText("投诉建议");
         String endpoint = "oss-cn-hangzhou.aliyuncs.com";
 //        String endpoint = "oss-cn-shanghai.aliyuncs.com";
-
         // 在移动端建议使用STS的方式初始化OSSClient，更多信息参考：[访问控制]
         OSSCredentialProvider credentialProvider = new OSSCustomSignerCredentialProvider() {
             @Override
@@ -112,7 +112,6 @@ public class ComplaintProposalActivity extends BaseActivity implements ImagePick
         conf.setMaxConcurrentRequest(5); // 最大并发请求数，默认5个
         conf.setMaxErrorRetry(2); // 失败后最大重试次数，默认2次
         oss = new OSSClient(ComplaintProposalActivity.this, endpoint, credentialProvider, conf);
-
         //最好放到 Application oncreate执行
         initImagePicker();
         initWidget();
@@ -290,16 +289,23 @@ public class ComplaintProposalActivity extends BaseActivity implements ImagePick
         }
     }
 
-
+    /**
+     * 批量上传图片
+     * @param imageItems
+     */
     public void uploadImages(ArrayList<ImageItem> imageItems){
         if (null == imageItems || imageItems.size() == 0) {
             return;
         } // 上传文件
         uploadImg(imageItems);
     }
-    String uploadAvataPath;
+    String uploadAvataPath;//上传图片的地址
     ProgressDialog dialog;
 
+    /**
+     * 上传图片
+     * @param imageItems
+     */
     public void uploadImg(final ArrayList<ImageItem> imageItems) {
         final String fileName = "file/" + XStringPars.md5("simpleryo_android_" + System.currentTimeMillis());
         if (imageItems.size() <= 0) {

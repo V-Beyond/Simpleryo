@@ -93,7 +93,7 @@ public class MyCollectionActivity extends BaseActivity {
             }
             offset=0;
             limit=9;
-            initData();
+            initCollectList();
         }
     };
     private OnLoadMoreListener onLoadMoreListener=new OnLoadMoreListener() {
@@ -101,7 +101,7 @@ public class MyCollectionActivity extends BaseActivity {
         public void onLoadMore() {
             offset=limit+1;
             limit+=10;
-            initData();
+            initCollectList();
         }
     };
 
@@ -111,7 +111,10 @@ public class MyCollectionActivity extends BaseActivity {
         EventBus.getDefault().unregister(this);
     }
 
-    public void initData() {
+    /**
+     * 获取收藏列表
+     */
+    public void initCollectList() {
         SimpleryoNetwork.geCollectList(MyCollectionActivity.this, new MyBaseProgressCallbackImpl(MyCollectionActivity.this) {
             @Override
             public void onSuccess(HttpInfo info) {
@@ -159,7 +162,7 @@ public class MyCollectionActivity extends BaseActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updateCollect(BusEntity bus) {
-        if (bus.getType() == 001) {
+        if (bus.getType() == 001) {//取消收率
             final CollectionListBean.DataBean dataBean = bus.getDataBean();
             final int position = Integer.parseInt(bus.getContent());
             SimpleryoNetwork.disCollectCourse(MyCollectionActivity.this, new MyBaseProgressCallbackImpl(MyCollectionActivity.this) {
@@ -184,7 +187,7 @@ public class MyCollectionActivity extends BaseActivity {
             }, dataBean.getId());
         }
         if (bus.getType() == 002) {
-            initData();
+            initCollectList();
         }
     }
 

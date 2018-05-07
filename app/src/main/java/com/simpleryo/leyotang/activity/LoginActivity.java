@@ -43,10 +43,10 @@ public class LoginActivity extends BaseActivity {
     @Event(value = {R.id.tv_register, R.id.tv_login}, type = View.OnClickListener.class)
     private void onClick(View view) {
         switch (view.getId()) {
-            case R.id.tv_register:
+            case R.id.tv_register://注册
                 startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
                 break;
-            case R.id.tv_login:
+            case R.id.tv_login://登录
                 account = edittext_account.getText().toString().trim();
                 passWord = edittext_password.getText().toString().trim();
                 if (account.isEmpty()) {
@@ -64,6 +64,7 @@ public class LoginActivity extends BaseActivity {
                         LoginBean loginBean = info.getRetDetail(LoginBean.class);
                         loadingDialog.dismiss();
                         if (loginBean.getCode().equalsIgnoreCase("0")) {
+                            //设置推送Alias
 //                            PushAgent mPushAgent = PushAgent.getInstance(LoginActivity.this);
 //                            mPushAgent.setPushCheck(true);
 //                            mPushAgent.setAlias(loginBean.getData().getUserId(), "leyotang", new UTrack.ICallBack() {
@@ -78,7 +79,6 @@ public class LoginActivity extends BaseActivity {
                             SharedPreferencesUtils.saveKeyString("token",loginBean.getData().getToken());
                             SharedPreferencesUtils.saveKeyString("userId", loginBean.getData().getUserId());
                             XActivityUtils.getInstance().popActivity(LoginActivity.this);
-//                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         } else {
                             Toast.makeText(LoginActivity.this, loginBean.getMsg(), Toast.LENGTH_SHORT).show();
                         }

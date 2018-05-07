@@ -22,7 +22,7 @@ public class NotificationBroadcast extends BroadcastReceiver {
     public static final String EXTRA_KEY_MSG = "MSG";
     public static final int ACTION_CLICK = 10;
     public static final int ACTION_DISMISS = 11;
-    public static final int ACTION_REFRESHTOKEN = 12;
+    public static final String ACTION_REFRESHTOKEN = "com.simpleryo.token";
     public static final int EXTRA_ACTION_NOT_EXIST = -1;
     private static final String TAG = NotificationBroadcast.class.getName();
     @Override
@@ -31,8 +31,8 @@ public class NotificationBroadcast extends BroadcastReceiver {
         int action = intent.getIntExtra(EXTRA_KEY_ACTION,
                 EXTRA_ACTION_NOT_EXIST);
         try {
-            UMessage msg = (UMessage) new UMessage(new JSONObject(message));
-
+            Log.w("cc","onReceive："+message);
+            UMessage msg = new UMessage(new JSONObject(message));
             switch (action) {
                 case ACTION_DISMISS:
                     Log.i(TAG, "dismiss notification");
@@ -48,26 +48,6 @@ public class NotificationBroadcast extends BroadcastReceiver {
                     MyNotificationService.oldMessage = null;
                     UTrack.getInstance(context).trackMsgClick(msg);
                     break;
-                case ACTION_REFRESHTOKEN:
-                    String refreshToken= SharedPreferencesUtils.getKeyString("refreshToken");
-                    Log.w("cc","refreshToken:"+refreshToken);
-                    SimpleryoNetwork.refreshToken(context,new MyBaseProgressCallbackImpl(){
-                        @Override
-                        public void onSuccess(HttpInfo info) {
-                            super.onSuccess(info);
-                            LoginBean loginBean = info.getRetDetail(LoginBean.class);
-                            if (loginBean.getCode().equalsIgnoreCase("0")) {
-                                SharedPreferencesUtils.saveKeyString("refreshToken",loginBean.getData().getRefreshToken());
-                                SharedPreferencesUtils.saveKeyString("token",loginBean.getData().getToken());
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(HttpInfo info) {
-                            super.onFailure(info);
-                        }
-                    },refreshToken);
-                    break;
             }
             //
         } catch (JSONException e) {
@@ -75,5 +55,27 @@ public class NotificationBroadcast extends BroadcastReceiver {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        String tokenAction=intent.getAction();
+        if (tokenAction.equalsIgnoreCase(ACTION_REFRESHTOKEN)){
+            String refreshToken= SharedPreferencesUtils.getKeyString("refreshToken");
+            Log.w("cc","refreshToken:"+refreshToken);
+            SimpleryoNetwork.refreshToken(context,new MyBaseProgressCallbackImpl(){
+                @Override
+                public void onSuccess(HttpInfo info) {
+                    super.onSuccess(info);
+                    LoginBean loginBean = info.getRetDetail(LoginBean.class);
+                    if (loginBean.getCode().equalsIgnoreCase("0")) {
+                        SharedPreferencesUtils.saveKeyString("refreshToken",loginBean.getData().getRefreshToken());
+                        SharedPreferencesUtils.saveKeyString("token",loginBean.getData().getToken());
+                    }
+                }
+
+                @Override
+                public void onFailure(HttpInfo info) {
+                    super.onFailure(info);
+                }
+            },refreshToken);
+        }
     }
+
 }

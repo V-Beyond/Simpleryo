@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import com.simpleryo.leyotang.R;
 import com.simpleryo.leyotang.bean.BusEntity;
 import com.simpleryo.leyotang.bean.HomeDataBean;
+import com.simpleryo.leyotang.utils.XStringPars;
 import com.simpleryo.leyotang.viewholder.IntroductoryCourseItemViewHolder;
 import com.simpleryo.leyotang.viewholder.SuperViewHolder;
 import com.squareup.picasso.Picasso;
@@ -50,7 +51,7 @@ public class IntroductoryCourseAdapter extends BaseAdapter<HomeDataBean.DataBean
         final HomeDataBean.DataBeanX.CoursesBeanX.CoursesBean bean = listData.get(position);
         Picasso.with(mContext).load(bean.getCoverUrl()).into(((IntroductoryCourseItemViewHolder) holder).iv_collection_img);
         ((IntroductoryCourseItemViewHolder) holder).tv_collection_name.setText(bean.getName());
-        ((IntroductoryCourseItemViewHolder) holder).tv_price.setText(Integer.valueOf(bean.getPrice())/100+"$/hour");
+        ((IntroductoryCourseItemViewHolder) holder).tv_price.setText(XStringPars.foramtPrice(Integer.valueOf(bean.getPrice()))+"$/hour");
         ((IntroductoryCourseItemViewHolder) holder).tv_popular.setText(bean.getClassCount()+" people");
         if (bean.isHasCollect()){
             ((IntroductoryCourseItemViewHolder) holder).iv_collection_star.setImageResource(R.mipmap.iv_collection_star);
