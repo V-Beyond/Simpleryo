@@ -130,7 +130,7 @@ public class HomeFragment extends XLibraryLazyFragment {
                     if (mItemModels != null && mItemModels.size() > 0) {
                         mItemModels.clear();
                     }
-                    if (homeDataBean.getData().getBanners() != null) {
+                    if (homeDataBean.getData().getBanners() != null&&homeDataBean.getData().getBanners().size()>0) {
                         if (bannerListBeans != null && bannerListBeans.size() > 0) {
                             bannerListBeans.clear();
                         }
@@ -140,7 +140,7 @@ public class HomeFragment extends XLibraryLazyFragment {
                         homeAdapter.setImages(bannerListBeans);//设置banner
 
                     }
-                    if (homeDataBean.getData().getCourseTypes() != null) {
+                    if (homeDataBean.getData().getCourseTypes() != null&&homeDataBean.getData().getCourseTypes().size()>0) {
                         if (courseTypetBeans != null && courseTypetBeans.size() > 0) {
                             courseTypetBeans.clear();
                         }

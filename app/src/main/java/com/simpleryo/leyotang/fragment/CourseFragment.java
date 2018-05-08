@@ -151,6 +151,13 @@ public class CourseFragment extends XLibraryLazyFragment implements CalendarView
 
                 }
             }
+
+            @Override
+            public void onFailure(HttpInfo info) {
+                super.onFailure(info);
+                lrecyclerview.setVisibility(View.GONE);
+                tv_no_order.setVisibility(View.VISIBLE);
+            }
         }, calenar_view.getCurYear(), calenar_view.getCurMonth());
 
 //        CalendarEventUtils.addCalendarEvent(getActivity(),"新普乐优日程提醒","",System.currentTimeMillis());

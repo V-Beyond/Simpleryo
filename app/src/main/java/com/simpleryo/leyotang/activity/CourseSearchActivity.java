@@ -24,7 +24,6 @@ import com.simpleryo.leyotang.base.MyBaseProgressCallbackImpl;
 import com.simpleryo.leyotang.base.XLibraryLazyFragment;
 import com.simpleryo.leyotang.bean.BusEntity;
 import com.simpleryo.leyotang.bean.CodeBean;
-import com.simpleryo.leyotang.bean.CourseListBean;
 import com.simpleryo.leyotang.bean.MultipleItem;
 import com.simpleryo.leyotang.bean.RecommendStoresBean;
 import com.simpleryo.leyotang.fragment.SearchCourseFragment;
@@ -63,6 +62,8 @@ public class CourseSearchActivity extends BaseActivity {
     LinearLayout ll_search_main;
     @ViewInject(R.id.view_pager_main)
     ViewPager view_pager_main;
+    @ViewInject(R.id.empty_view)
+    private View mEmptyView;
     FragMentAdapter<XLibraryLazyFragment> mAdapter;
     List<XLibraryLazyFragment> fragments = new ArrayList<XLibraryLazyFragment>();
     ArrayList<RecommendStoresBean.DataBean> recommendList = new ArrayList<>();
@@ -106,7 +107,6 @@ public class CourseSearchActivity extends BaseActivity {
                     course_lrecyclerview.setVisibility(View.VISIBLE);
                     ll_search_main.setVisibility(View.GONE);
                 }
-//                searchCourse(charSequence.toString().trim());
             }
 
             @Override
@@ -114,6 +114,7 @@ public class CourseSearchActivity extends BaseActivity {
 
             }
         });
+        //获取推荐门店
         SimpleryoNetwork.getRecommendStores(CourseSearchActivity.this, new MyBaseProgressCallbackImpl() {
             @Override
             public void onSuccess(HttpInfo info) {
@@ -194,7 +195,6 @@ public class CourseSearchActivity extends BaseActivity {
     }
 
     private List<MultipleItem> mItemModels = new ArrayList<>();
-    List<CourseListBean.DataBeanX> hotCourseList = new ArrayList<>();
 
     public void searchCourse(String name) {
         SimpleryoNetwork.getCourse(CourseSearchActivity.this, new MyBaseProgressCallbackImpl(CourseSearchActivity.this) {
@@ -208,19 +208,15 @@ public class CourseSearchActivity extends BaseActivity {
                     mItemModels.clear();
                 }
                 mItemModels.add(item);
-//                CourseListBean courseListBean=info.getRetDetail(CourseListBean.class);
-//                if (courseListBean.getCode().equalsIgnoreCase("0")){
-//                    item = new MultipleItem(MultipleItem.HOMEHOTCOURSE);
-//                    mItemModels.add(item);
-//                    if (courseListBean.getData()!=null){
-//                        if (hotCourseList!=null&&hotCourseList.size()>0){
-//                            hotCourseList.clear();
-//                        }
-//                        hotCourseList.addAll(courseListBean.getData());
-//                        searchCourseAdapter.setOrderListBeans(hotCourseList);
-//                    }
-//                }
                 searchCourseAdapter.setDataList(mItemModels);
+            }
+
+            @Override
+            public void onFailure(HttpInfo info) {
+                super.onFailure(info);
+                TextView textView=mEmptyView.findViewById(R.id.tv_tips);
+                textView.setText("数据一不小心走丢了，请稍后回来");
+                course_lrecyclerview.setEmptyView(mEmptyView);
             }
         }, "", name, "", "");
     }

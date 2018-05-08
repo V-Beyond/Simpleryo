@@ -44,7 +44,7 @@ import java.util.List;
 /**
  * @author huanglei
  * @ClassNname：CourseFragment.java
- * @Describe 课程fragment
+ * @Describe 搜索课程fragment
  * @time 2018/3/19 11:10
  */
 
@@ -96,6 +96,7 @@ public class SearchCourseFragment extends XLibraryLazyFragment {
                 startActivity(new Intent(getActivity(), CourseDetailActivity.class).putExtra("courseId", hotCourseList.get(position).getId()));
             }
         });
+        //监听输入框搜索事件
         CourseSearchActivity.edittext_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -147,6 +148,10 @@ public class SearchCourseFragment extends XLibraryLazyFragment {
         }
     };
 
+    /**
+     * 搜索课程
+     * @param name
+     */
     public void searchCourse(String name) {
         if (!name.isEmpty()) {
             SimpleryoNetwork.getCourse(getActivity(), new MyBaseProgressCallbackImpl() {
@@ -190,6 +195,10 @@ public class SearchCourseFragment extends XLibraryLazyFragment {
         }
     }
 
+    /**
+     * 收藏与取消收藏课程
+     * @param bus
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updateCollect(BusEntity bus) {
         String courseId = bus.getContent();

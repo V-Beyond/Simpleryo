@@ -73,7 +73,10 @@
                 android:id="@+id/course_lrecyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"></com.github.jdsjlzx.recyclerview.LRecyclerView>
-
+            <include
+                android:id="@+id/empty_view"
+                layout="@layout/layout_empty"
+                android:visibility="gone" />
             <LinearLayout
                 android:id="@+id/ll_search_main"
                 android:layout_width="match_parent"

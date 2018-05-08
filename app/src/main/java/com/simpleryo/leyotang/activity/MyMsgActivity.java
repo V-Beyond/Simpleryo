@@ -6,7 +6,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
@@ -66,13 +65,13 @@ public class MyMsgActivity extends BaseActivity {
             public void onItemClick(View view, int position) {
                 MessageListBean.DataBean dataBean = messageList.get(position);
                 if (dataBean.getSecondTypeCode().equalsIgnoreCase("SYSTEM_NOTICE")) {//公告
-                    startActivity(new Intent(MyMsgActivity.this, MyNoticeActivity.class).putExtra("msg_id", dataBean.getLinkId()));
+                    startActivity(new Intent(MyMsgActivity.this, MyNoticeActivity.class).putExtra("msg_id", dataBean.getId()));
                 }
                 if (dataBean.getSecondTypeCode().equalsIgnoreCase("PAY_SUCCESS")) {//支付消息
-                    startActivity(new Intent(MyMsgActivity.this, OrderDetailActivity.class).putExtra("orderId", dataBean.getLinkId()));
+                    startActivity(new Intent(MyMsgActivity.this, OrderDetailActivity.class).putExtra("orderId", dataBean.getId()));
                 }
                 if (dataBean.getSecondTypeCode().equalsIgnoreCase("COURSE_ALERT")) {//课程提醒
-                    startActivity(new Intent(MyMsgActivity.this, MyCourseDetailActivity.class).putExtra("id", dataBean.getLinkId()));
+                    startActivity(new Intent(MyMsgActivity.this, MyCourseDetailActivity.class).putExtra("id", dataBean.getId()));
                 }
             }
         });
@@ -101,8 +100,9 @@ public class MyMsgActivity extends BaseActivity {
             @Override
             public void onFailure(HttpInfo info) {
                 super.onFailure(info);
+                TextView textView=mEmptyView.findViewById(R.id.tv_tips);
+                textView.setText("数据一不小心走丢了，请稍后回来");
                 lrecyclerview.setEmptyView(mEmptyView);
-                Toast.makeText(MyMsgActivity.this, "数据一不小心走丢了，请稍后回来", Toast.LENGTH_SHORT).show();
             }
         });
     }

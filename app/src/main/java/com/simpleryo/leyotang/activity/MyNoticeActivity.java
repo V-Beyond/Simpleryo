@@ -1,6 +1,7 @@
 package com.simpleryo.leyotang.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -38,7 +39,9 @@ public class MyNoticeActivity extends BaseActivity {
         //启用支持javascript
         WebSettings settings = web_view.getSettings();
         settings.setJavaScriptEnabled(true);
-        web_view.loadUrl(SimpleryoNetwork.h5Url+"Main/MyNewsDetail??id="+getIntent().getStringExtra("msg_id"));
+        String url=SimpleryoNetwork.h5Url+"Main/MyNewsDetail??id="+getIntent().getStringExtra("msg_id");
+        web_view.loadUrl(url);
+        Log.w("cc","网址:"+url);
 
     }
     @Event(value = {R.id.iv_back}, type = View.OnClickListener.class)

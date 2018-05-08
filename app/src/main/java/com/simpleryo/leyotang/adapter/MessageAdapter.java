@@ -11,12 +11,10 @@ import com.simpleryo.leyotang.viewholder.SuperViewHolder;
 
 
 /**
+ * @ClassNname：MessageAdapter.java
+ * @Describe 消息列表item适配器
  * @author huanglei
- * @version V1.0
- * @Title: JingXuanAdapter
- * @Package com.hpkj.kexue.adapter
- * @Description: 精选推荐item适配器
- * @date 2017/11/10 18:55
+ * @time 2018/5/8 11:29
  */
 
 public class MessageAdapter extends BaseAdapter<MessageListBean.DataBean> {
@@ -24,12 +22,10 @@ public class MessageAdapter extends BaseAdapter<MessageListBean.DataBean> {
     public MessageAdapter(Context context) {
         super(context);
     }
-    public final static String CSS_STYLE = "<style>* {font-size:14px;line-height:20px;}p {color:#989898;font-size:12px}</style>";
     @Override
     public SuperViewHolder onCreateViewHolder(ViewGroup parent, int position) {
         return new MessageViewHolder(layoutInflater.inflate(R.layout.layout_message_item, parent, false));
     }
-
     @Override
     public int getLayoutId() {
         return 0;
@@ -39,14 +35,16 @@ public class MessageAdapter extends BaseAdapter<MessageListBean.DataBean> {
     public void onBindItemHolder(SuperViewHolder holder, int position) {
          MessageListBean.DataBean  dataBean= listData.get(position);
          if (holder instanceof  MessageViewHolder){
+             String secondTypeCode=dataBean.getSecondTypeCode();
+             if (secondTypeCode.equalsIgnoreCase("SYSTEM_NOTICE")){
+                ((MessageViewHolder) holder).iv_msg_category.setImageResource(R.mipmap.iv_msg_buy);
+             }else if(secondTypeCode.equalsIgnoreCase("COURSE_ALERT")){
+                 ((MessageViewHolder) holder).iv_msg_category.setImageResource(R.mipmap.iv_msg_email);
+             }else if(secondTypeCode.equalsIgnoreCase("PAY_SUCCESS")){
+                 ((MessageViewHolder) holder).iv_msg_category.setImageResource(R.mipmap.iv_msg_content);
+             }
              ((MessageViewHolder) holder).tv_title.setText(dataBean.getTitle());
             ((MessageViewHolder) holder).tv_time.setText(XStringPars.getStrTime(dataBean.getCreationTime()));
-//             if (dataBean.getBody() != null) {
-//                 ((MessageViewHolder) holder).tv_content.loadDataWithBaseURL("about:blank", CSS_STYLE+dataBean.getBody() , "text/html", "utf-8", null);
-//             } else {
-//                 ((MessageViewHolder) holder).tv_content.loadDataWithBaseURL("about:blank", CSS_STYLE+"<p>暂无详情</p>", "text/html", "utf-8", null);
-//             }
-
          }
     }
     @Override

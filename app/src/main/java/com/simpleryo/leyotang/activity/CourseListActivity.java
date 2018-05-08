@@ -176,7 +176,9 @@ public class CourseListActivity extends BaseActivity {
             @Override
             public void onFailure(HttpInfo info) {
                 super.onFailure(info);
-                Toast.makeText(CourseListActivity.this,"数据一不小心走丢了，请稍后回来",Toast.LENGTH_SHORT).show();
+                TextView textView=mEmptyView.findViewById(R.id.tv_tips);
+                textView.setText("数据一不小心走丢了，请稍后回来");
+                lrecyclerview.setEmptyView(mEmptyView);
             }
         }, "", "", tagId1, "");
     }

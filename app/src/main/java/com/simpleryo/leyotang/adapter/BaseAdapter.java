@@ -39,6 +39,12 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<SuperViewHolde
         mContext = context;
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
+
+    /**
+     * 时间格式化
+     * @param time
+     * @return
+     */
     public static String getFormatTime(String time) {
         SimpleDateFormat sdr = new SimpleDateFormat("MM-dd  HH:mm");
         @SuppressWarnings("unused")
