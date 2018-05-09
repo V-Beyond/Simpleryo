@@ -8,12 +8,16 @@ import android.util.Log;
 import com.okhttplib.HttpInfo;
 import com.simpleryo.leyotang.activity.MyNoticeActivity;
 import com.simpleryo.leyotang.base.MyBaseProgressCallbackImpl;
+import com.simpleryo.leyotang.bean.BusEntity;
 import com.simpleryo.leyotang.bean.LoginBean;
 import com.simpleryo.leyotang.network.SimpleryoNetwork;
 import com.simpleryo.leyotang.utils.SharedPreferencesUtils;
 import com.umeng.message.UTrack;
 import com.umeng.message.entity.UMessage;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,6 +31,7 @@ public class NotificationBroadcast extends BroadcastReceiver {
     private static final String TAG = NotificationBroadcast.class.getName();
     @Override
     public void onReceive(Context context, Intent intent) {
+        EventBus.getDefault().register(this);
         String message = intent.getStringExtra(EXTRA_KEY_MSG);
         int action = intent.getIntExtra(EXTRA_KEY_ACTION,
                 EXTRA_ACTION_NOT_EXIST);
@@ -67,9 +72,9 @@ public class NotificationBroadcast extends BroadcastReceiver {
                     if (loginBean.getCode().equalsIgnoreCase("0")) {
                         SharedPreferencesUtils.saveKeyString("refreshToken",loginBean.getData().getRefreshToken());
                         SharedPreferencesUtils.saveKeyString("token",loginBean.getData().getToken());
+                        EventBus.getDefault().post(new BusEntity(021));
                     }
                 }
-
                 @Override
                 public void onFailure(HttpInfo info) {
                     super.onFailure(info);
@@ -78,4 +83,8 @@ public class NotificationBroadcast extends BroadcastReceiver {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void BusMain(BusEntity bus) {
+
+    }
 }

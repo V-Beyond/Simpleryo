@@ -26,8 +26,8 @@ import java.util.List;
 
 /**
  * @author huanglei
- * @ClassNname：MyFragment.java
- * @Describe 个人中心fragment
+ * @ClassNname：BusinessCourseFragment.java
+ * @Describe 商家课程fragment
  * @time 2018/3/19 11:10
  */
 
@@ -78,9 +78,14 @@ public class BusinessCourseFragment extends XLibraryLazyFragment {
        lrecyclerview.removeItemDecoration(divider);
        lrecyclerview.addItemDecoration(divider);
        lrecyclerview.setHasFixedSize(false);
-        initExcellentCourse();
-
+       if (storeId!=null){
+           initExcellentCourse();
+       }
     }
+
+    /**
+     * 根据商家id获取课程
+     */
     public void initExcellentCourse() {
         SimpleryoNetwork.getCourse(getActivity(), new MyBaseProgressCallbackImpl() {
             @Override

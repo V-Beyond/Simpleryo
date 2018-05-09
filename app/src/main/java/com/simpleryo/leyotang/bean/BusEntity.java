@@ -14,6 +14,7 @@ public class BusEntity {
     OrderListBean.DataBean orderDataBean;
     HomeDataBean.DataBeanX.CoursesBeanX.CoursesBean coursesBean;
     CourseListBean.DataBeanX courseListBean;
+    boolean isCollect;
     public BusEntity() {
     }
 
@@ -31,6 +32,12 @@ public class BusEntity {
     public BusEntity(int type, String content) {
         this.type = type;
         this.content = content;
+    }
+
+    public BusEntity(int type, String content, boolean isCollect) {
+        this.type = type;
+        this.content = content;
+        this.isCollect = isCollect;
     }
 
     public BusEntity(int type, String content, CollectionListBean.DataBean dataBean) {
@@ -51,6 +58,14 @@ public class BusEntity {
     public BusEntity(int type, CourseListBean.DataBeanX courseListBean) {
         this.type = type;
         this.courseListBean = courseListBean;
+    }
+
+    public boolean isCollect() {
+        return isCollect;
+    }
+
+    public void setCollect(boolean collect) {
+        isCollect = collect;
     }
 
     public String getContent() {

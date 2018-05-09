@@ -46,7 +46,7 @@ public class SimpleryoApplication extends MultiDexApplication {
         x.Ext.init(SimpleryoApplication.this);
         x.Ext.setDebug(BuildConfig.DEBUG);//是否输出debug日志，开启debug会影响性能。
         //TODO: setup apiKey, userId, walletId first
-        LatipayAPI.setup("126vzmg8M7", "U000000348", "W000000384");
+        LatipayAPI.setup("126vzmg8M7", "U000000348", "W000000381");
         //设置LOG开关，默认为false
         UMConfigure.setLogEnabled(true);
         //初始化组件化基础库, 统计SDK/推送SDK/分享SDK都必须调用此初始化接口

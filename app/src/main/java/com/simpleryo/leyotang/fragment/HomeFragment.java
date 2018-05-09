@@ -107,7 +107,6 @@ public class HomeFragment extends XLibraryLazyFragment {
         lrecyclerview.setOnRefreshListener(onRefreshListener);
         lrecyclerview.forceToRefresh();
     }
-
     SimpleryoNetwork simpleryoNetwork;
 
     private OnRefreshListener onRefreshListener = new OnRefreshListener() {
@@ -191,8 +190,7 @@ public class HomeFragment extends XLibraryLazyFragment {
                     intent.setAction(NotificationBroadcast.ACTION_REFRESHTOKEN);
                     getActivity().sendBroadcast(intent);
 //                    SharedPreferencesUtils.saveKeyString("token", "simpleryo");
-
-                    lrecyclerview.forceToRefresh();
+//                    lrecyclerview.forceToRefresh();
                 }
                 lrecyclerview.refreshComplete(mItemModels.size());
             }
@@ -217,6 +215,9 @@ public class HomeFragment extends XLibraryLazyFragment {
         if (bus.getType() == 999) {
             lrecyclerview.refreshComplete(mItemModels.size());
             lRecyclerViewAdapter.notifyDataSetChanged();
+        }
+        if (bus.getType() == 021) {
+            getCourseType();
         }
         if (bus.getType() == 122) {
             if (isLogin) {

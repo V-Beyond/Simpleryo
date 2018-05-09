@@ -90,7 +90,7 @@ public class SimpleryoNetwork {
         }
         Log.w("cc", "注册json：" + jsonObject.toString());
         doHttpAsync(context, HttpInfo.Builder()
-                .setUrl(httpUrl + "u/users")
+                .setUrl(httpUrl + "u/users?token="+getToken())
                 .setRequestType(RequestType.POST)//设置请求方式
                 .addParamJson(jsonObject.toString())//添加接口参数
                 .build(), callback);

@@ -128,7 +128,7 @@ public class CourseDetailActivity extends BaseActivity {
      * @param shareMedia
      */
     public void share(SHARE_MEDIA shareMedia) {
-        UMWeb web = new UMWeb("https://www.baidu.com/");
+        UMWeb web = new UMWeb(SimpleryoNetwork.h5Url+"Main/CourseDetail?id="+courseId);
         web.setTitle(courseName);//标题
         web.setThumb(new UMImage(this, coverUrl));  //缩略图
         web.setDescription("我在乐友堂推荐你一个课程");//描述

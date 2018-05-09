@@ -120,6 +120,7 @@ public class RegisterActivity extends BaseActivity {
                     @Override
                     public void onFailure(HttpInfo info)   {
                         loadingDialog.dismiss();
+                        Toast.makeText(RegisterActivity.this, "注册失败", Toast.LENGTH_SHORT).show();
                     }
                 }, email, phone, code, password);
                 break;

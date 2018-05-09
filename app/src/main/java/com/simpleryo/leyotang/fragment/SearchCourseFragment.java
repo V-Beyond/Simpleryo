@@ -201,50 +201,49 @@ public class SearchCourseFragment extends XLibraryLazyFragment {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updateCollect(BusEntity bus) {
-        String courseId = bus.getContent();
         if (bus.getType() == 33) {
             if (isLogin) {
-                SimpleryoNetwork.collectCourse(getActivity(), new MyBaseProgressCallbackImpl(getActivity()) {
-                    @Override
-                    public void onSuccess(HttpInfo info) {
-                        super.onSuccess(info);
-                        loadingDialog.dismiss();
-                        CodeBean createOrderBean = info.getRetDetail(CodeBean.class);
-                        if (createOrderBean.getCode().equalsIgnoreCase("0")) {
-                            lrecyclerview.forceToRefresh();
-                            Toast.makeText(getActivity(), "收藏成功", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getActivity(), createOrderBean.getMsg(), Toast.LENGTH_SHORT).show();
+                String courseId = bus.getContent();
+                boolean isCollect = bus.isCollect();
+                if (isCollect) {//取消收藏
+                    SimpleryoNetwork.disCollectCourse(getActivity(), new MyBaseProgressCallbackImpl(getActivity()) {
+                        @Override
+                        public void onSuccess(HttpInfo info) {
+                            super.onSuccess(info);
+                            loadingDialog.dismiss();
+                            CodeBean createOrderBean = info.getRetDetail(CodeBean.class);
+                            if (createOrderBean.getCode().equalsIgnoreCase("0")) {
+                                lrecyclerview.forceToRefresh();
+                                Toast.makeText(getActivity(), "取消收藏成功", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getActivity(), createOrderBean.getMsg(), Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    }
-                }, courseId);
-            } else {
-                startActivity(new Intent(getActivity(), LoginActivity.class));
-            }
 
-        }
-        if (bus.getType() == 34) {
-            if (isLogin){
-                SimpleryoNetwork.disCollectCourse(getActivity(), new MyBaseProgressCallbackImpl(getActivity()) {
-                    @Override
-                    public void onSuccess(HttpInfo info) {
-                        super.onSuccess(info);
-                        loadingDialog.dismiss();
-                        CodeBean createOrderBean = info.getRetDetail(CodeBean.class);
-                        if (createOrderBean.getCode().equalsIgnoreCase("0")) {
-                            lrecyclerview.forceToRefresh();
-                            Toast.makeText(getActivity(), "取消收藏成功", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getActivity(), createOrderBean.getMsg(), Toast.LENGTH_SHORT).show();
+                        @Override
+                        public void onFailure(HttpInfo info) {
+                            super.onFailure(info);
+                            loadingDialog.dismiss();
                         }
-                    }
-                    @Override
-                    public void onFailure(HttpInfo info) {
-                        super.onFailure(info);
-                        loadingDialog.dismiss();
-                    }
-                }, courseId);
-            }else{
+                    }, courseId);
+                } else {//收藏
+                    SimpleryoNetwork.collectCourse(getActivity(), new MyBaseProgressCallbackImpl(getActivity()) {
+                        @Override
+                        public void onSuccess(HttpInfo info) {
+                            super.onSuccess(info);
+                            loadingDialog.dismiss();
+                            CodeBean createOrderBean = info.getRetDetail(CodeBean.class);
+                            if (createOrderBean.getCode().equalsIgnoreCase("0")) {
+                                lrecyclerview.forceToRefresh();
+                                Toast.makeText(getActivity(), "收藏成功", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getActivity(), createOrderBean.getMsg(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }, courseId);
+                }
+
+            } else {
                 startActivity(new Intent(getActivity(), LoginActivity.class));
             }
 
