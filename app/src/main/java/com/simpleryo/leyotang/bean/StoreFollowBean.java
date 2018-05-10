@@ -41,6 +41,7 @@ public class StoreFollowBean extends BaseResult {
         private String idNumber;
         private String name;
         private String licenceUrl;
+        private  String followCount;
         private String coverUrl;
         private String linkman;
         private String phone;
@@ -56,6 +57,14 @@ public class StoreFollowBean extends BaseResult {
         private AddressBean address;
         private String authorities;
         private String notifiers;
+
+        public String getFollowCount() {
+            return followCount;
+        }
+
+        public void setFollowCount(String followCount) {
+            this.followCount = followCount;
+        }
 
         public String getId() {
             return id;

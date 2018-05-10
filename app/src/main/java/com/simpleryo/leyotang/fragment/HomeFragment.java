@@ -106,6 +106,7 @@ public class HomeFragment extends XLibraryLazyFragment {
         lrecyclerview.setLoadMoreEnabled(false);
         lrecyclerview.setOnRefreshListener(onRefreshListener);
         lrecyclerview.forceToRefresh();
+//        getCourseType();
     }
     SimpleryoNetwork simpleryoNetwork;
 
@@ -122,7 +123,7 @@ public class HomeFragment extends XLibraryLazyFragment {
             @Override
             public void onSuccess(HttpInfo info) {
                 super.onSuccess(info);
-                mHasLoadedOnce = true;
+                mHasLoadedOnce=true;
                 HomeDataBean homeDataBean = info.getRetDetail(HomeDataBean.class);
                 if (homeDataBean.getCode().equalsIgnoreCase("0")) {
                     MultipleItem item;
@@ -193,6 +194,8 @@ public class HomeFragment extends XLibraryLazyFragment {
 //                    lrecyclerview.forceToRefresh();
                 }
                 lrecyclerview.refreshComplete(mItemModels.size());
+                homeAdapter.notifyDataSetChanged();
+                lRecyclerViewAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -230,6 +233,7 @@ public class HomeFragment extends XLibraryLazyFragment {
                             loadingDialog.dismiss();
                             CodeBean createOrderBean = info.getRetDetail(CodeBean.class);
                             if (createOrderBean.getCode().equalsIgnoreCase("0")) {
+//                                getCourseType();
                                 lrecyclerview.forceToRefresh();
                                 Toast.makeText(getActivity(), "取消收藏成功", Toast.LENGTH_SHORT).show();
                             } else {
@@ -251,6 +255,7 @@ public class HomeFragment extends XLibraryLazyFragment {
                             loadingDialog.dismiss();
                             CodeBean createOrderBean = info.getRetDetail(CodeBean.class);
                             if (createOrderBean.getCode().equalsIgnoreCase("0")) {
+//                                getCourseType();
                                 lrecyclerview.forceToRefresh();
                                 Toast.makeText(getActivity(), "收藏成功", Toast.LENGTH_SHORT).show();
                             } else {
@@ -261,6 +266,7 @@ public class HomeFragment extends XLibraryLazyFragment {
                         @Override
                         public void onFailure(HttpInfo info) {
                             super.onFailure(info);
+                            loadingDialog.dismiss();
                         }
                     }, coursesBean.getId());
                 }

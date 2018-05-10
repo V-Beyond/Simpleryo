@@ -367,6 +367,7 @@
                         android:layout_gravity="center_vertical"
                         android:singleLine="true"
                         android:padding="10px"
+                        android:gravity="top|left"
                         android:textSize="32px"
                         android:layout_marginRight="79px"
                         android:background="@drawable/shape_rectangle_edittext"

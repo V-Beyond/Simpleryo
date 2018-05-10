@@ -27,6 +27,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.text.NumberFormat;
+
 /**
  * Created by 77429 on 2018/3/25.
  */
@@ -137,6 +139,24 @@ public class MyOrderAdapter extends BaseMultiAdapter<MultipleItem> {
             if (bean.getStoreDataBean()!=null){
                 Picasso.with(context).load(bean.getStoreDataBean().getCoverUrl()).transform(transformation).into(((MyAttentionViewHolder) holder).iv_attention_img);
                 ((MyAttentionViewHolder) holder).tv_my_attentoin_name.setText(bean.getStoreDataBean().getName());
+                int followCount= Integer.parseInt(bean.getStoreDataBean().getFollowCount());
+                ((MyAttentionViewHolder) holder).tv_store_follow_count.setText(followCount+" people");
+                // 创建一个数值格式化对象
+                NumberFormat numberFormat = NumberFormat.getInstance();
+                // 设置精确到小数点后2位
+                numberFormat.setMaximumFractionDigits(2);
+                int totalCount=100;
+                if (followCount>=1&&followCount<=99){
+                    totalCount=100;
+                }
+                if (followCount>=100&&followCount<=999){
+                    totalCount=1000;
+                }
+                if (followCount>=1000&&followCount<=9999){
+                    totalCount=1000;
+                }
+                float percent= (float)followCount / (float) totalCount * 100;
+                ((MyAttentionViewHolder) holder).horizontal_progressbar.setProgress((int) percent);
                 ((MyAttentionViewHolder) holder).tv_to_store_detail.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -152,7 +172,25 @@ public class MyOrderAdapter extends BaseMultiAdapter<MultipleItem> {
                 }
                 ((MyCollectionViewHolder) holder).tv_collection_name.setText(dataBean.getName());
                 ((MyCollectionViewHolder) holder).tv_price.setText(XStringPars.foramtPrice(dataBean.getPrice())+"$/hour");
-                ((MyCollectionViewHolder) holder).tv_collection_count.setText(dataBean.getCollectCount()+"  people");
+
+                int collectCount= Integer.parseInt(dataBean.getCollectCount());
+                // 创建一个数值格式化对象
+                NumberFormat numberFormat = NumberFormat.getInstance();
+                // 设置精确到小数点后2位
+                numberFormat.setMaximumFractionDigits(2);
+                int totalCount=100;
+                if (collectCount>=1&&collectCount<=99){
+                    totalCount=100;
+                }
+                if (collectCount>=100&&collectCount<=999){
+                    totalCount=1000;
+                }
+                if (collectCount>=1000&&collectCount<=9999){
+                    totalCount=1000;
+                }
+                float percent= (float)collectCount / (float) totalCount * 100;
+                ((MyCollectionViewHolder) holder).horizontal_progressbar.setProgress((int) percent);
+                ((MyCollectionViewHolder) holder).tv_collection_count.setText(collectCount+"  people");
                 ((MyCollectionViewHolder) holder).rl_collect.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

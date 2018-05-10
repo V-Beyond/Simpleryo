@@ -188,9 +188,9 @@ public class SimpleryoNetwork {
             jsonObject.put("totalAmt", totalAmt);
             jsonObject.put("unitPrice", unitPrice);
             jsonObject.put("payAmt", payAmt);
-//            jsonObject.put("payAmt", name);
-//            jsonObject.put("payAmt", phone);
-//            jsonObject.put("remark", remark);
+            jsonObject.put("userPhone", name);
+            jsonObject.put("userName", phone);
+            jsonObject.put("userRemark", remark);
         } catch (JSONException e) {
             e.printStackTrace();
         }
