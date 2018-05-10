@@ -179,11 +179,14 @@ public class CourseListActivity extends BaseActivity {
         }, "", "", tagId1, "");
     }
 
-    @Event(value = {R.id.iv_back}, type = View.OnClickListener.class)
+    @Event(value = {R.id.iv_back,R.id.iv_msg}, type = View.OnClickListener.class)
     private void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
                 XActivityUtils.getInstance().popActivity(CourseListActivity.this);
+                break;
+            case R.id.iv_msg:
+                startActivity(new Intent(CourseListActivity.this,MyMsgActivity.class));
                 break;
         }
     }

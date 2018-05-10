@@ -3,11 +3,7 @@ package com.haibin.calendarview;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
-
-import java.util.List;
 
 /**
  * 默认高仿魅族日历布局
@@ -63,14 +59,9 @@ public class DefaultMonthView extends MonthView {
     protected void onDrawScheme(Canvas canvas, Calendar calendar, int x, int y) {
         mSchemeBasicPaint.setColor(calendar.getSchemeColor());
         canvas.drawCircle(x + mItemWidth -mPadding*3+10 , y + mPadding + mRadio, mRadio, mSchemeBasicPaint);
-        canvas.drawText(calendar.getScheme(), x + mItemWidth -mPadding*3+10 , y + mPadding + mSchemeBaseLine, mTextPaint);
-    }
-    String singleCourse="";
-    public  void setCourseData(List<String> courseData){
-        for (String course:courseData){
-            singleCourse=course;
+        if (!calendar.getScheme().equalsIgnoreCase("")){
+            canvas.drawText(calendar.getScheme(), x + mItemWidth -mPadding*3+10 , y + mPadding + mSchemeBaseLine, mTextPaint);
         }
-        postInvalidate();
     }
 
     @Override
@@ -82,15 +73,21 @@ public class DefaultMonthView extends MonthView {
                     mSelectTextPaint);
             canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + y + mItemHeight / 10, mSelectedLunarTextPaint);
         } else if (hasScheme) {
-            canvas.drawText(String.valueOf(calendar.getDay()), cx, mTextBaseLine + top,
-                            calendar.isCurrentMonth() ? mSchemeTextPaint : mOtherMonthTextPaint);
-            canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + y + mItemHeight / 10, mSchemeLunarTextPaint);  mCurMonthTextPaint.setStyle(Paint.Style.STROKE);
+            if (calendar.isCurrentDay()){
+                canvas.drawText(String.valueOf(calendar.getDay()), cx, mTextBaseLine + top,
+                        calendar.isCurrentMonth() ? redPaint : mOtherMonthTextPaint);
+                canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + y + mItemHeight / 10, redPaint);
+            }else{
+                canvas.drawText(String.valueOf(calendar.getDay()), cx, mTextBaseLine + top,
+                        calendar.isCurrentMonth() ? mSchemeTextPaint : mOtherMonthTextPaint);
+                canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + y + mItemHeight / 10, mSchemeLunarTextPaint);
+            }
+            mCurMonthTextPaint.setStyle(Paint.Style.STROKE);
             Paint paint=new Paint();
             paint.setStyle(Paint.Style.STROKE);
             paint.setStrokeWidth(4);
             paint.setColor(0xff949494);
             canvas.drawRect(x , y , x + mItemWidth , y + mItemHeight , paint);
-
         } else {
             canvas.drawText(String.valueOf(calendar.getDay()), cx, mTextBaseLine + top,
                     calendar.isCurrentDay() ? mCurDayTextPaint :
@@ -104,6 +101,5 @@ public class DefaultMonthView extends MonthView {
             paint.setColor(0xff949494);
             canvas.drawRect(x , y , x + mItemWidth , y + mItemHeight , paint);
         }
-
     }
 }

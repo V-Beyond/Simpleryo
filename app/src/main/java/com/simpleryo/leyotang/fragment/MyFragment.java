@@ -91,6 +91,8 @@ public class MyFragment extends XLibraryLazyFragment {
             .build();
     @ViewInject(R.id.tv_name)
     TextView tv_name;
+    @ViewInject(R.id.tv_exit)
+    TextView tv_exit;
     @ViewInject(R.id.iv_back)
     ImageView iv_back;
     @ViewInject(R.id.tv_collection)
@@ -178,10 +180,11 @@ public class MyFragment extends XLibraryLazyFragment {
     String des;
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updateSex(BusEntity bus) {
-//        if (bus.getType()==2222){
-//            Bitmap bitmap=returnBitMap("http://p2.so.qhmsg.com/bdr/_240_/t0118ff1cab46ddba27.jpg");
-//            iv_avatar.setImageBitmap(bitmap);
-//        }
+        if (bus.getType()==1001){
+            SharedPreferencesUtils.saveKeyBoolean("isLogin", false);
+            SharedPreferencesUtils.saveKeyString("token","simpleryo");
+            startActivity(new Intent(getActivity(),LoginActivity.class));
+        }
         if (bus.getType()==402){
             Log.w("cc","uploadAvataPath:"+uploadAvataPath);
             SimpleryoNetwork.updateInfo(getActivity(), new MyBaseProgressCallbackImpl(getActivity()) {
@@ -201,6 +204,7 @@ public class MyFragment extends XLibraryLazyFragment {
             isLogin = SharedPreferencesUtils.getKeyBoolean("isLogin");//获取用户登录状态
             userId = SharedPreferencesUtils.getKeyString("userId");
             if (isLogin) {
+                tv_exit.setVisibility(View.VISIBLE);
                 SimpleryoNetwork.getUserInfo(getActivity(), new MyBaseProgressCallbackImpl() {
                     @Override
                     public void onSuccess(HttpInfo info) {
@@ -238,6 +242,7 @@ public class MyFragment extends XLibraryLazyFragment {
                     }
                 }, userId);
             } else {
+                tv_exit.setVisibility(View.GONE);
                 tv_nickname.setText("未登录");
                 Picasso.with(getContext().getApplicationContext()).load("http://p2.so.qhmsg.com/bdr/_240_/t0118ff1cab46ddba27.jpg").transform(transformation).into(iv_avatar);
             }
@@ -349,12 +354,14 @@ public class MyFragment extends XLibraryLazyFragment {
         EventBus.getDefault().post(new BusEntity(401));
     }
 
-    @Event(value = {R.id.iv_msg, R.id.ll_login, R.id.ll_use_help, R.id.ll_wait_pay, R.id.ll_comprehensive_evaluation, R.id.ll_contact_us, R.id.ll_my_course, R.id.iv_avatar, R.id.ll_my_info, R.id.ll_bind_account, R.id.ll_complaint, R.id.ll_my_attention, R.id.ll_collection}, type = View.OnClickListener.class)
+    @Event(value = {R.id.iv_msg,R.id.tv_exit, R.id.ll_login, R.id.ll_use_help, R.id.ll_wait_pay, R.id.ll_comprehensive_evaluation, R.id.ll_contact_us, R.id.ll_my_course, R.id.iv_avatar, R.id.ll_my_info, R.id.ll_bind_account, R.id.ll_complaint, R.id.ll_my_attention, R.id.ll_collection}, type = View.OnClickListener.class)
     private void onClick(View view) {
         switch (view.getId()) {
+            case R.id.tv_exit:
+                ExitDialogFragment exitDialogFragment=new ExitDialogFragment();
+                exitDialogFragment.show(getFragmentManager(),"exitDialogFragment");
+                break;
             case R.id.iv_msg:
-                SharedPreferencesUtils.saveKeyBoolean("isLogin", false);
-                SharedPreferencesUtils.saveKeyString("token", "simpleryo");
                 startActivity(new Intent(getActivity(), MyMsgActivity.class));
                 break;
             case R.id.ll_use_help:

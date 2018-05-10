@@ -90,6 +90,7 @@ public abstract class BaseView extends View implements View.OnClickListener, Vie
      * 当前日期文本颜色画笔
      */
     protected Paint mCurDayTextPaint = new Paint();
+    protected  Paint redPaint=new Paint();
 
     /**
      * 当前日期文本颜色画笔
@@ -206,11 +207,19 @@ public abstract class BaseView extends View implements View.OnClickListener, Vie
         mCurDayTextPaint.setFakeBoldText(true);
         mCurDayTextPaint.setTextSize(Util.dipToPx(context, TEXT_SIZE));
 
+
+
         mCurDayLunarTextPaint.setAntiAlias(true);
         mCurDayLunarTextPaint.setTextAlign(Paint.Align.CENTER);
         mCurDayLunarTextPaint.setColor(Color.RED);
         mCurDayLunarTextPaint.setFakeBoldText(true);
         mCurDayLunarTextPaint.setTextSize(Util.dipToPx(context, TEXT_SIZE));
+
+        mCurDayLunarTextPaint.setAntiAlias(true);
+        redPaint.setTextAlign(Paint.Align.CENTER);
+        redPaint.setColor(Color.RED);
+        redPaint.setFakeBoldText(true);
+        redPaint.setTextSize(Util.dipToPx(context, TEXT_SIZE));
 
         mSelectedPaint.setAntiAlias(true);
         mSelectedPaint.setStyle(Paint.Style.FILL);

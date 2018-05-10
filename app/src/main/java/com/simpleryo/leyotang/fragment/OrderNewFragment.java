@@ -26,6 +26,7 @@ import com.simpleryo.leyotang.bean.BusEntity;
 import com.simpleryo.leyotang.bean.MultipleItem;
 import com.simpleryo.leyotang.bean.OrderListBean;
 import com.simpleryo.leyotang.network.SimpleryoNetwork;
+import com.simpleryo.leyotang.utils.XStringPars;
 
 import net.latipay.mobile.AlipayRequest;
 import net.latipay.mobile.LatipayAPI;
@@ -84,6 +85,10 @@ public class OrderNewFragment extends XLibraryLazyFragment {
         if (!isPrepared || !isVisible || mHasLoadedOnce) {
             return;
         }
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
         DividerDecoration divider = new DividerDecoration.Builder(getActivity())
                 .setHeight(50f)
                 .setColorResource(R.color.color_transparent)
@@ -111,7 +116,7 @@ public class OrderNewFragment extends XLibraryLazyFragment {
     public void orderAlipay(final Activity activity, String amount, String merchantReference, String productName) {
         dialog = ProgressDialog.show(activity, null, "Loading", false, true);
         AlipayRequest req = new AlipayRequest(activity);
-        req.amount = "0.1";//支付金额
+        req.amount = amount;//支付金额
         req.merchantReference = merchantReference;//订单号
         req.productName = productName;//商品名称
 //        req.productName = "test produce of Simpleryo";
@@ -159,7 +164,7 @@ public class OrderNewFragment extends XLibraryLazyFragment {
     public void orderWechat(final Activity activity, String amount, String merchantReference, String productName) {
         dialog = ProgressDialog.show(activity, null, "Loading", false, true);
         WechatpayRequest req = new WechatpayRequest(activity);
-        req.amount = "0.1";//支付金额
+        req.amount = amount;//支付金额
         req.merchantReference = merchantReference;//订单号
         req.productName = productName;//商品名称
 //        req.productName = "test produce of Simpleryo";
@@ -283,9 +288,9 @@ public class OrderNewFragment extends XLibraryLazyFragment {
             orderDataBean = bus.getOrderDataBean();
             recordOrder(orderDataBean.getId(), orderDataBean.getPayAmt() + "", orderDataBean.getNo(), orderDataBean.getCourseName(), orderDataBean.getPayType());
             if (orderDataBean.getPayType().equalsIgnoreCase("ALIPAY")){
-                orderAlipay(getActivity(), orderDataBean.getPayAmt() + "", orderDataBean.getNo(), orderDataBean.getCourseName());
+                orderAlipay(getActivity(), XStringPars.foramtPrice(orderDataBean.getPayAmt()), orderDataBean.getNo(), orderDataBean.getCourseName());
             }else{
-                orderWechat(getActivity(), orderDataBean.getPayAmt() + "", orderDataBean.getNo(), orderDataBean.getCourseName());
+                orderWechat(getActivity(), XStringPars.foramtPrice(orderDataBean.getPayAmt()), orderDataBean.getNo(), orderDataBean.getCourseName());
             }
         }
         if (bus.getType() == 112) {

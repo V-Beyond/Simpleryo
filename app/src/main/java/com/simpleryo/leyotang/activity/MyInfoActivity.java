@@ -1,5 +1,6 @@
 package com.simpleryo.leyotang.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -60,11 +61,14 @@ public class MyInfoActivity extends BaseActivity {
     }
     String gender;
 
-    @Event(value = {R.id.iv_back,R.id.rl_sex,R.id.rl_name,R.id.rl_constellation,R.id.rl_address,R.id.rl_info}, type = View.OnClickListener.class)
+    @Event(value = {R.id.iv_back,R.id.iv_msg,R.id.rl_sex,R.id.rl_name,R.id.rl_constellation,R.id.rl_address,R.id.rl_info}, type = View.OnClickListener.class)
     private void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
                 XActivityUtils.getInstance().popActivity(this);
+                break;
+            case R.id.iv_msg:
+                startActivity(new Intent(MyInfoActivity.this,MyMsgActivity.class));
                 break;
             case R.id.rl_sex://性别
                 SexDialogFragment sexDialogFragment=new SexDialogFragment();

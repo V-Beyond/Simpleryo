@@ -2,6 +2,7 @@ package com.simpleryo.leyotang.viewholder;
 
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.simpleryo.leyotang.R;
@@ -32,6 +33,8 @@ public class MyOrderViewHolder extends SuperViewHolder {
     public TextView tv_time;
     @ViewInject(R.id.iv_delete)
     public ImageView iv_delete;
+    @ViewInject(R.id.ll_order_item)
+    public LinearLayout ll_order_item;
     public MyOrderViewHolder(View itemView) {
         super(itemView);
         x.view().inject(this,itemView);

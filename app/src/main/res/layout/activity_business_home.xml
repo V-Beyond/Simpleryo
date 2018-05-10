@@ -21,11 +21,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-            <ImageView
+            <com.simpleryo.leyotang.view.ArcViewCover
+                android:id="@+id/arc_headerview"
                 android:layout_width="match_parent"
+                android:background="#eae8fe"
                 android:layout_height="382px"
-                android:scaleType="fitXY"
-                android:src="@mipmap/iv_business_top" />
+                />
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="270px"

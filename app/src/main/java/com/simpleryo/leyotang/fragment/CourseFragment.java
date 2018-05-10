@@ -86,9 +86,6 @@ public class CourseFragment extends XLibraryLazyFragment implements CalendarView
         }
         iv_back.setVisibility(View.GONE);
         tv_name.setText("课程");
-        calenar_view.setOnMonthChangeListener(this);
-        calenar_view.setOnYearChangeListener(this);
-        calenar_view.setOnDateSelectedListener(this);
         tv_current_date.setText(calenar_view.getCurYear() + "年" + calenar_view.getCurMonth() + "月");
         tv_current_day.setText(calenar_view.getCurDay() + "");
         tv_current_month.setText(calenar_view.getCurMonth() + "月");
@@ -96,6 +93,9 @@ public class CourseFragment extends XLibraryLazyFragment implements CalendarView
         calendarCourseAdapter = new CalendarCourseAdapter(getActivity());
         lRecyclerViewAdapter = new LRecyclerViewAdapter(calendarCourseAdapter);
         initData();
+        calenar_view.setOnMonthChangeListener(this);
+        calenar_view.setOnYearChangeListener(this);
+        calenar_view.setOnDateSelectedListener(this);
     }
 
     CalendarListBean calendarListBean;
@@ -108,7 +108,6 @@ public class CourseFragment extends XLibraryLazyFragment implements CalendarView
             @Override
             public void onSuccess(HttpInfo info) {
                 super.onSuccess(info);
-                mHasLoadedOnce = true;
                 calendarListBean = info.getRetDetail(CalendarListBean.class);
                 if (calendarListBean.getCode().equalsIgnoreCase("0")) {
                     for (CalendarListBean.DataBean dataBean : calendarListBean.getData()) {

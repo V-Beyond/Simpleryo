@@ -1,5 +1,6 @@
 package com.simpleryo.leyotang.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -76,11 +77,14 @@ public class MyCourseActivity extends BaseActivity {
                 break;
         }
     }
-    @Event(value = {R.id.iv_back}, type = View.OnClickListener.class)
+    @Event(value = {R.id.iv_back,R.id.iv_msg}, type = View.OnClickListener.class)
     private void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
                 XActivityUtils.getInstance().popActivity(MyCourseActivity.this);
+                break;
+            case R.id.iv_msg:
+                startActivity(new Intent(MyCourseActivity.this,MyMsgActivity.class));
                 break;
         }
     }

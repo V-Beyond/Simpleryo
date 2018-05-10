@@ -175,7 +175,7 @@ public class SimpleryoNetwork {
      * @param quantity
      * @param totalAmt
      */
-    public static void createOrder(Context context, Callback callback, String coachId, String storeId, String courseId, String courseName, String payType, int quantity, int unitPrice, int totalAmt, int payAmt) {
+    public static void createOrder(Context context, Callback callback, String coachId, String storeId, String courseId, String courseName, String payType, int quantity, int unitPrice, int totalAmt, int payAmt,String name,String phone,String remark) {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("coachId", coachId);
@@ -188,6 +188,9 @@ public class SimpleryoNetwork {
             jsonObject.put("totalAmt", totalAmt);
             jsonObject.put("unitPrice", unitPrice);
             jsonObject.put("payAmt", payAmt);
+//            jsonObject.put("payAmt", name);
+//            jsonObject.put("payAmt", phone);
+//            jsonObject.put("remark", remark);
         } catch (JSONException e) {
             e.printStackTrace();
         }

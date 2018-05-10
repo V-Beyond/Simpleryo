@@ -127,6 +127,12 @@ public class MyOrderAdapter extends BaseMultiAdapter<MultipleItem> {
                     }
                 });
             }
+            ((MyOrderViewHolder) holder).ll_order_item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mContext.startActivity(new Intent(mContext, OrderDetailActivity.class).putExtra("orderId", dataBean.getId()));
+                }
+            });
         } else if (holder instanceof MyAttentionViewHolder) {//我的关注
             if (bean.getStoreDataBean()!=null){
                 Picasso.with(context).load(bean.getStoreDataBean().getCoverUrl()).transform(transformation).into(((MyAttentionViewHolder) holder).iv_attention_img);
@@ -153,6 +159,15 @@ public class MyOrderAdapter extends BaseMultiAdapter<MultipleItem> {
                         EventBus.getDefault().post(new BusEntity(001,position+"",dataBean));
                     }
                 });
+                if (dataBean.getRecommends().get(0).getValue().equalsIgnoreCase("HOT")){
+                    ((MyCollectionViewHolder) holder).rl_collect.setBackgroundResource(R.mipmap.iv_collection_bg);
+                }
+                else if (dataBean.getRecommends().get(0).getValue().equalsIgnoreCase("EXCELLENT")){
+                    ((MyCollectionViewHolder) holder).rl_collect.setBackgroundResource(R.mipmap.iv_collection_blue);
+                }
+                else if (dataBean.getRecommends().get(0).getValue().equalsIgnoreCase("OFFCIAL")){
+                    ((MyCollectionViewHolder) holder).rl_collect.setBackgroundResource(R.mipmap.iv_collection_ping);
+                }
             }
         }
     }

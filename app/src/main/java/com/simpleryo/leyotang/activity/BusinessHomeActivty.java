@@ -1,5 +1,6 @@
 package com.simpleryo.leyotang.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.simpleryo.leyotang.fragment.BusinessCoachFragment;
 import com.simpleryo.leyotang.fragment.BusinessCourseFragment;
 import com.simpleryo.leyotang.network.SimpleryoNetwork;
 import com.simpleryo.leyotang.utils.XActivityUtils;
+import com.simpleryo.leyotang.view.ArcViewCover;
 import com.squareup.picasso.Picasso;
 
 import org.xutils.view.annotation.ContentView;
@@ -51,6 +53,8 @@ public class BusinessHomeActivty extends BaseActivity {
     ImageView iv_licence;
     @ViewInject(R.id.tv_followCount)
     TextView tv_followCount;
+    @ViewInject(R.id.arc_headerview)
+    ArcViewCover arc_headerview;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,7 +86,7 @@ public class BusinessHomeActivty extends BaseActivity {
                 loadingDialog.dismiss();
                 StoreDetailBean storeDetailBean=info.getRetDetail(StoreDetailBean.class);
                 if (storeDetailBean.getCode().equalsIgnoreCase("0")){
-                    tv_store_name.setText("商家名称"+storeDetailBean.getData().getStoreInfo().getName());
+                    tv_store_name.setText(storeDetailBean.getData().getStoreInfo().getName());
                     if (storeDetailBean.getData().getStoreInfo().getStatus().equalsIgnoreCase("AUDIT_OK")){
                         tv_store_status.setText("已认证");
                     }else if(storeDetailBean.getData().getStoreInfo().getStatus().equalsIgnoreCase("AUDITING")){
@@ -94,6 +98,10 @@ public class BusinessHomeActivty extends BaseActivity {
                     if (storeDetailBean.getData().getStoreInfo().getLicenceUrl()!=null){
                         Picasso.with(BusinessHomeActivty.this).load(storeDetailBean.getData().getStoreInfo().getLicenceUrl()).into(iv_licence);
                     }
+                    if (storeDetailBean.getData().getStoreInfo().getCoverUrl()!=null){
+                        Picasso.with(BusinessHomeActivty.this).load(storeDetailBean.getData().getStoreInfo().getCoverUrl()).into( arc_headerview.imageView);
+                    }
+
                     tv_followCount.setText(storeDetailBean.getData().getFollowCount()+"");
                 }
             }
@@ -120,11 +128,14 @@ public class BusinessHomeActivty extends BaseActivity {
         }
     }
 
-    @Event(value = {R.id.iv_back}, type = View.OnClickListener.class)
+    @Event(value = {R.id.iv_back,R.id.iv_msg}, type = View.OnClickListener.class)
     private void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
                 XActivityUtils.getInstance().popActivity(this);
+                break;
+            case R.id.iv_msg:
+                startActivity(new Intent(BusinessHomeActivty.this,MyMsgActivity.class));
                 break;
         }
     }

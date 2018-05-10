@@ -291,7 +291,87 @@
                         android:layout_marginLeft="6px"
                         android:src="@mipmap/iv_count_increase" />
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="80px"
+                    android:layout_marginTop="30px"
+                    android:background="@color/color_ffffff"
+                    android:orientation="horizontal">
 
+                    <TextView
+                        android:layout_width="130px"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:textSize="32px"
+                        android:layout_marginLeft="79px"
+                        android:text="预订人：" />
+
+                    <EditText
+                        android:id="@+id/edittext_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:textSize="32px"
+                        android:singleLine="true"
+                        android:padding="10px"
+                        android:layout_marginRight="79px"
+                        android:background="@drawable/shape_rectangle_edittext"
+                        android:hint="必填，姓名" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="80px"
+                    android:layout_marginTop="30px"
+                    android:background="@color/color_ffffff"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="130px"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="79px"
+                        android:textSize="32px"
+                        android:text="手机号：" />
+
+                    <EditText
+                        android:id="@+id/edittext_phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:singleLine="true"
+                        android:padding="10px"
+                        android:textSize="32px"
+                        android:layout_marginRight="79px"
+                        android:background="@drawable/shape_rectangle_edittext"
+                        android:hint="必填，便于商家联系" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30px"
+                    android:background="@color/color_ffffff"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="130px"
+                        android:layout_height="wrap_content"
+                        android:textSize="32px"
+                        android:layout_marginLeft="79px"
+                        android:text="备注：" />
+
+                    <EditText
+                        android:id="@+id/edittext_remark"
+                        android:layout_width="match_parent"
+                        android:layout_height="300px"
+                        android:layout_gravity="center_vertical"
+                        android:singleLine="true"
+                        android:padding="10px"
+                        android:textSize="32px"
+                        android:layout_marginRight="79px"
+                        android:background="@drawable/shape_rectangle_edittext"
+                        android:hint="" />
+                </LinearLayout>
                 <TextView
                     android:id="@+id/tv_total_price"
                     android:layout_width="wrap_content"
@@ -308,6 +388,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="79px"
+                    android:layout_marginBottom="30px"
                     android:layout_marginTop="30px"
                     android:orientation="vertical">
 
@@ -335,63 +416,6 @@
                         android:text="Ali Pay"
                         android:textColor="#3A3A3A" />
                 </RadioGroup>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="80px"
-                    android:layout_marginTop="30px"
-                    android:background="@color/color_ffffff"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="79px"
-                        android:text="联系人姓名：" />
-
-                    <EditText
-                        android:id="@+id/edittext_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:textSize="32px"
-                        android:singleLine="true"
-                        android:layout_marginLeft="20px"
-                        android:padding="10px"
-                        android:layout_marginRight="79px"
-                        android:background="@drawable/shape_register_edittext"
-                        android:hint="请输入姓名" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="80px"
-                    android:layout_marginBottom="30px"
-                    android:layout_marginTop="30px"
-                    android:background="@color/color_ffffff"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="79px"
-                        android:text="联系人电话：" />
-
-                    <EditText
-                        android:id="@+id/edittext_phone"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:singleLine="true"
-                        android:layout_marginLeft="20px"
-                        android:padding="10px"
-                        android:textSize="32px"
-                        android:layout_marginRight="79px"
-                        android:background="@drawable/shape_register_edittext"
-                        android:hint="请输入电话" />
-                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

@@ -1,5 +1,6 @@
 package com.simpleryo.leyotang.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -45,11 +46,14 @@ public class BindAccontActivity extends BaseActivity {
         umShareAPI = UMShareAPI.get(BindAccontActivity.this);
     }
 
-    @Event(value = {R.id.iv_back, R.id.rl_facebook, R.id.rl_wechat, R.id.rl_alipay}, type = View.OnClickListener.class)
+    @Event(value = {R.id.iv_back, R.id.iv_msg,R.id.rl_facebook, R.id.rl_wechat, R.id.rl_alipay}, type = View.OnClickListener.class)
     private void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
                 XActivityUtils.getInstance().popActivity(this);
+                break;
+            case R.id.iv_msg:
+                startActivity(new Intent(BindAccontActivity.this,MyMsgActivity.class));
                 break;
             case R.id.rl_wechat:
                 doOauthVerify(SHARE_MEDIA.WEIXIN);

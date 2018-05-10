@@ -114,13 +114,13 @@ public class CourseDetailActivity extends BaseActivity {
         EventBus.getDefault().register(this);//注册EventBus
         courseId = getIntent().getStringExtra("courseId");
         isLogin = SharedPreferencesUtils.getKeyBoolean("isLogin");
-        EventBus.getDefault().post(new BusEntity(113));
     }
 
     @Override
     public void onResume() {
         super.onResume();
         isLogin = SharedPreferencesUtils.getKeyBoolean("isLogin");//获取用户登录状态
+        EventBus.getDefault().post(new BusEntity(113));
     }
 
     /**

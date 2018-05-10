@@ -1,5 +1,6 @@
 package com.simpleryo.leyotang.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.View;
@@ -104,11 +105,14 @@ public class MyAttentionActivity extends BaseActivity {
         });
 
     }
-    @Event(value = {R.id.iv_back}, type = View.OnClickListener.class)
+    @Event(value = {R.id.iv_back,R.id.iv_msg}, type = View.OnClickListener.class)
     private void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
                 XActivityUtils.getInstance().popActivity(MyAttentionActivity.this);
+                break;
+            case R.id.iv_msg:
+                startActivity(new Intent(MyAttentionActivity.this,MyMsgActivity.class));
                 break;
         }
     }

@@ -191,11 +191,14 @@ public class MyCollectionActivity extends BaseActivity {
         }
     }
 
-    @Event(value = {R.id.iv_back}, type = View.OnClickListener.class)
+    @Event(value = {R.id.iv_back,R.id.iv_msg}, type = View.OnClickListener.class)
     private void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
                 XActivityUtils.getInstance().popActivity(MyCollectionActivity.this);
+                break;
+            case R.id.iv_msg:
+                startActivity(new Intent(MyCollectionActivity.this,MyMsgActivity.class));
                 break;
         }
     }

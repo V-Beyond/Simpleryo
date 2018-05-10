@@ -75,6 +75,11 @@ public class ComfirmOrderActivity extends BaseActivity {
     EditText edittext_name;
     @ViewInject(R.id.edittext_phone)
     EditText edittext_phone;
+    @ViewInject(R.id.edittext_remark)
+    EditText edittext_remark;
+    String name;
+    String phone;
+    String remark;
     int price;
     int total_price;
     String courseName;
@@ -177,11 +182,14 @@ public class ComfirmOrderActivity extends BaseActivity {
         }, courseId);
     }
 
-    @Event(value = {R.id.iv_back, R.id.iv_count_reduce, R.id.iv_count_increase, R.id.rl_pay}, type = View.OnClickListener.class)
+    @Event(value = {R.id.iv_back,R.id.iv_msg, R.id.iv_count_reduce, R.id.iv_count_increase, R.id.rl_pay}, type = View.OnClickListener.class)
     private void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
                 XActivityUtils.getInstance().popActivity(ComfirmOrderActivity.this);
+                break;
+            case R.id.iv_msg:
+                startActivity(new Intent(ComfirmOrderActivity.this,MyMsgActivity.class));
                 break;
             case R.id.iv_count_reduce://减少
                 if (count > 1) {
@@ -200,6 +208,21 @@ public class ComfirmOrderActivity extends BaseActivity {
                 tv_total_price.setText("课程总额：" + XStringPars.foramtPrice(total_price * 1) + "$");
                 break;
             case R.id.rl_pay://支付
+                name=edittext_name.getText().toString().trim();
+                phone=edittext_phone.getText().toString().trim();
+                remark=edittext_remark.getText().toString().trim();
+//                if (name.isEmpty()){
+//                Toast.makeText(ComfirmOrderActivity.this,"预订人不能为空",Toast.LENGTH_SHORT).show();
+//                return;
+//                }
+//                if (phone.isEmpty()){
+//                    Toast.makeText(ComfirmOrderActivity.this,"手机号不能为空",Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
+//                if (XStringPars.isMobileNO(phone)){
+//                    Toast.makeText(ComfirmOrderActivity.this,"请输入正确的手机号",Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
                 SimpleryoNetwork.createOrder(ComfirmOrderActivity.this, new MyBaseProgressCallbackImpl(ComfirmOrderActivity.this) {
                     @Override
                     public void onSuccess(HttpInfo info) {
@@ -209,9 +232,9 @@ public class ComfirmOrderActivity extends BaseActivity {
                         if (createOrderBean.getCode().equalsIgnoreCase("0")) {
                             recordOrder(createOrderBean.getData().getId(), createOrderBean.getData().getPayAmt() + "", createOrderBean.getData().getNo(), createOrderBean.getData().getCourseName(), payType);
                             if (createOrderBean.getData().getPayType().equalsIgnoreCase("ALIPAY")) {//支付宝支付
-                                clickAlipay(ComfirmOrderActivity.this, total_price + "", createOrderBean.getData().getNo(), courseName);
+                                clickAlipay(ComfirmOrderActivity.this, XStringPars.foramtPrice(createOrderBean.getData().getPayAmt())  + "", createOrderBean.getData().getNo(), courseName);
                             } else {//微信支付
-                                clickWechat(ComfirmOrderActivity.this, total_price + "", createOrderBean.getData().getNo(), courseName);
+                                clickWechat(ComfirmOrderActivity.this, XStringPars.foramtPrice(createOrderBean.getData().getPayAmt())  + "", createOrderBean.getData().getNo(), courseName);
 //                                alertDialog();
                             }
                         } else if (createOrderBean.getCode().equalsIgnoreCase("401")) {
@@ -230,7 +253,7 @@ public class ComfirmOrderActivity extends BaseActivity {
                         super.onFailure(info);
                         loadingDialog.dismiss();
                     }
-                }, coachId, storeId, courseId, courseName, payType, count, price, total_price, total_price);
+                }, coachId, storeId, courseId, courseName, payType, count, price, total_price, total_price,name,phone,remark);
 
                 break;
         }
@@ -300,7 +323,7 @@ public class ComfirmOrderActivity extends BaseActivity {
     private void clickWechat(final Activity activity, String amount, String merchantReference, String productName) {
         dialog = ProgressDialog.show(activity, null, "Loading", false, true);
         WechatpayRequest req = new WechatpayRequest(activity);
-        req.amount = "0.1";//支付金额
+        req.amount = amount;//支付金额
         req.merchantReference = merchantReference;//订单号
         req.productName = productName;//商品名称
         req.callbackUrl = "https://api.simpleryo.com/o/orders/callback/url";//支付回调地址
@@ -366,7 +389,7 @@ public class ComfirmOrderActivity extends BaseActivity {
     public void clickAlipay(final Activity activity, String amount, String merchantReference, String productName) {
         dialog = ProgressDialog.show(activity, null, "Loading", false, true);
         AlipayRequest req = new AlipayRequest(activity);
-        req.amount = "0.1";//支付金额
+        req.amount = amount;//支付金额
         req.merchantReference = merchantReference;//订单号
         req.productName = productName;//商品名称
         req.callbackUrl = "https://api.simpleryo.com/o/orders/callback/url";//支付回调地址

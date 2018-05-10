@@ -117,11 +117,14 @@ public class ComplaintProposalActivity extends BaseActivity implements ImagePick
         initWidget();
     }
 
-    @Event(value = {R.id.iv_back, R.id.tv_commit}, type = View.OnClickListener.class)
+    @Event(value = {R.id.iv_back, R.id.tv_commit,R.id.iv_msg}, type = View.OnClickListener.class)
     private void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
                 XActivityUtils.getInstance().popActivity(ComplaintProposalActivity.this);
+                break;
+            case R.id.iv_msg:
+                startActivity(new Intent(ComplaintProposalActivity.this,MyMsgActivity.class));
                 break;
             case R.id.tv_commit:
                 String content=edittext_complaint.getText().toString().trim();
