@@ -232,8 +232,8 @@ public class MyFragment extends XLibraryLazyFragment {
                             } else {
                                 tv_attention.setText("0");
                             }
-                            if (userInfoBean.getData().getNickName() != null) {
-                                tv_nickname.setText(userInfoBean.getData().getNickName());
+                            if (userInfoBean.getData().getName() != null) {
+                                tv_nickname.setText(userInfoBean.getData().getName());
                             } else {
                                 tv_nickname.setText("暂无昵称");
                             }

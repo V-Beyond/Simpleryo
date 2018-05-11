@@ -69,6 +69,54 @@ public class SimpleryoNetwork {
     }
 
     /**
+     * 获取微信getAccess_token
+     * @param context
+     * @param callback
+     * @param httpUrl
+     */
+    public static void getAccess_token(Context context, Callback callback,String httpUrl) {
+        doHttpAsync(context, HttpInfo.Builder()
+                .setUrl(httpUrl)
+                .setRequestType(RequestType.GET)//设置请求方式
+                .build(), callback);
+    }
+    /**
+     * 获取微信用户信息
+     * @param context
+     * @param callback
+     * @param httpUrl
+     */
+    public static void getUserMsg(Context context, Callback callback,String httpUrl) {
+        doHttpAsync(context, HttpInfo.Builder()
+                .setUrl(httpUrl)
+                .setRequestType(RequestType.GET)//设置请求方式
+                .build(), callback);
+    }
+
+    /**
+     * 绑定第三方账号
+     * @param context
+     * @param callback
+     * @param id
+     * @param thirdNo
+     * @param typeCode
+     */
+    public static void bindAccount(Context context, Callback callback,String id,String thirdNo,String typeCode) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("thirdNo", thirdNo);
+            jsonObject.put("typeCode", typeCode);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.w("cc", "注册json：" + jsonObject.toString());
+        doHttpAsync(context, HttpInfo.Builder()
+                .setUrl(httpUrl + "/u/users/"+id+"/bind/account?token=" + getToken())
+                .setRequestType(RequestType.POST)//设置请求方式
+                .addParamJson(jsonObject.toString())
+                .build(), callback);
+    }
+    /**
      * 用户注册
      *
      * @param callback
@@ -270,7 +318,7 @@ public class SimpleryoNetwork {
             jsonObject.put("id", userId);
             jsonObject.put("email", email);
             jsonObject.put("loginName", loginName);
-//            jsonObject.put("name", name);
+            jsonObject.put("name", name);
             jsonObject.put("nickName", name);
             jsonObject.put("gender", gender);
             jsonObject.put("avatarUrl", avatarUrl);

@@ -88,6 +88,9 @@ public class MyMsgActivity extends BaseActivity {
                 MessageListBean messageListBean = info.getRetDetail(MessageListBean.class);
                 if (messageListBean.getCode().equalsIgnoreCase("0")) {
                     if (messageListBean.getData() != null && messageListBean.getData().size() > 0) {
+                        if (messageList!=null&&messageList.size()>0){
+                            messageList.clear();
+                        }
                         messageList.addAll(messageListBean.getData());
                         messageAdapter.setDataList(messageList);
                     } else {

@@ -219,6 +219,9 @@ public class HomeFragment extends XLibraryLazyFragment {
         if (bus.getType() == 021) {
             getCourseType();
         }
+        if(bus.getType()==022){
+            startActivity(new Intent(getActivity(), LoginActivity.class));
+        }
         if (bus.getType() == 122) {
             if (isLogin) {
                 HomeDataBean.DataBeanX.CoursesBeanX.CoursesBean coursesBean = bus.getCoursesBean();

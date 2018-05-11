@@ -253,11 +253,15 @@ public class HomeAdapter extends BaseMultiAdapter<MultipleItem> {
                     if (position==7){
                         Intent intent=new Intent(mContext,AllCourseActivity.class);
                         context.startActivity(intent);
+
                     }else{
                         Intent intent=new Intent(mContext,CourseListActivity.class);
                         intent.putExtra("type",courseTypetBeans.get(position).getName());
                         intent.putExtra("tagId1",courseTypetBeans.get(position).getId());
                         context.startActivity(intent);
+//                        Intent intent=new Intent(mContext,CourseDetailActivity.class);
+//                        intent.putExtra("courseId","");
+//                        context.startActivity(intent);
                     }
 
                 }

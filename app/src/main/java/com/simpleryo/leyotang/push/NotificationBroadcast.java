@@ -37,22 +37,24 @@ public class NotificationBroadcast extends BroadcastReceiver {
                 EXTRA_ACTION_NOT_EXIST);
         try {
             Log.w("cc","onReceive："+message);
-            UMessage msg = new UMessage(new JSONObject(message));
-            switch (action) {
-                case ACTION_DISMISS:
-                    Log.i(TAG, "dismiss notification");
-                    UTrack.getInstance(context).setClearPrevMessage(true);
-                    UTrack.getInstance(context).trackMsgDismissed(msg);
-                    break;
-                case ACTION_CLICK:
-                    Log.i(TAG, "click notification");
-                    Intent myMsgIntent = new Intent(context, MyNoticeActivity.class);
-                    myMsgIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(myMsgIntent);
-                    UTrack.getInstance(context).setClearPrevMessage(true);
-                    MyNotificationService.oldMessage = null;
-                    UTrack.getInstance(context).trackMsgClick(msg);
-                    break;
+            if(message!=null){
+                UMessage msg = new UMessage(new JSONObject(message));
+                switch (action) {
+                    case ACTION_DISMISS:
+                        Log.i(TAG, "dismiss notification");
+                        UTrack.getInstance(context).setClearPrevMessage(true);
+                        UTrack.getInstance(context).trackMsgDismissed(msg);
+                        break;
+                    case ACTION_CLICK:
+                        Log.i(TAG, "click notification");
+                        Intent myMsgIntent = new Intent(context, MyNoticeActivity.class);
+                        myMsgIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(myMsgIntent);
+                        UTrack.getInstance(context).setClearPrevMessage(true);
+                        MyNotificationService.oldMessage = null;
+                        UTrack.getInstance(context).trackMsgClick(msg);
+                        break;
+                }
             }
             //
         } catch (JSONException e) {
@@ -72,6 +74,10 @@ public class NotificationBroadcast extends BroadcastReceiver {
                     if (loginBean.getCode().equalsIgnoreCase("0")) {
                         SharedPreferencesUtils.saveKeyString("refreshToken",loginBean.getData().getRefreshToken());
                         SharedPreferencesUtils.saveKeyString("token",loginBean.getData().getToken());
+                        EventBus.getDefault().post(new BusEntity(021));
+                    }else if (loginBean.getCode().equalsIgnoreCase("101")){
+                        SharedPreferencesUtils.saveKeyBoolean("isLogin", false);
+                        SharedPreferencesUtils.saveKeyString("token","simpleryo");
                         EventBus.getDefault().post(new BusEntity(021));
                     }
                 }
