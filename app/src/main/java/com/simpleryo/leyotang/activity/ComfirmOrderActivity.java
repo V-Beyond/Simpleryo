@@ -211,18 +211,18 @@ public class ComfirmOrderActivity extends BaseActivity {
                 name=edittext_name.getText().toString().trim();
                 phone=edittext_phone.getText().toString().trim();
                 remark=edittext_remark.getText().toString().trim();
-//                if (name.isEmpty()){
-//                Toast.makeText(ComfirmOrderActivity.this,"预订人不能为空",Toast.LENGTH_SHORT).show();
-//                return;
-//                }
-//                if (phone.isEmpty()){
-//                    Toast.makeText(ComfirmOrderActivity.this,"手机号不能为空",Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
-//                if (XStringPars.isMobileNO(phone)){
-//                    Toast.makeText(ComfirmOrderActivity.this,"请输入正确的手机号",Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
+                if (name.isEmpty()){
+                Toast.makeText(ComfirmOrderActivity.this,"预订人不能为空",Toast.LENGTH_SHORT).show();
+                return;
+                }
+                if (phone.isEmpty()){
+                    Toast.makeText(ComfirmOrderActivity.this,"手机号不能为空",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (!XStringPars.isMobileNO(phone)){
+                    Toast.makeText(ComfirmOrderActivity.this,"请输入正确的手机号",Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 SimpleryoNetwork.createOrder(ComfirmOrderActivity.this, new MyBaseProgressCallbackImpl(ComfirmOrderActivity.this) {
                     @Override
                     public void onSuccess(HttpInfo info) {

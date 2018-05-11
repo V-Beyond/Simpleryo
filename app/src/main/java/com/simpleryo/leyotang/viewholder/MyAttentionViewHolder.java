@@ -5,6 +5,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.simpleryo.leyotang.R;
+import com.simpleryo.leyotang.view.ZzHorizontalProgressBar;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -22,6 +23,8 @@ public class MyAttentionViewHolder extends SuperViewHolder {
     public  TextView tv_to_store_detail;
     @ViewInject(R.id.tv_store_follow_count)
     public  TextView tv_store_follow_count;
+    @ViewInject(R.id.horizontal_progressbar)
+    public ZzHorizontalProgressBar horizontal_progressbar;
     public MyAttentionViewHolder(View itemView) {
         super(itemView);
         x.view().inject(this,itemView);

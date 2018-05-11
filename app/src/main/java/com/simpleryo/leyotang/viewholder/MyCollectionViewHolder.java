@@ -6,6 +6,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.simpleryo.leyotang.R;
+import com.simpleryo.leyotang.view.ZzHorizontalProgressBar;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -27,6 +28,8 @@ public class MyCollectionViewHolder extends SuperViewHolder {
     public  ImageView iv_collection_star;
     @ViewInject(R.id.tv_collection_count)
     public TextView tv_collection_count;
+  @ViewInject(R.id.horizontal_progressbar)
+  public ZzHorizontalProgressBar horizontal_progressbar;
     public MyCollectionViewHolder(View itemView) {
         super(itemView);
         x.view().inject(this,itemView);
