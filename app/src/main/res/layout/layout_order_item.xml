@@ -21,7 +21,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="35px"
+                android:layout_marginLeft="30px"
                 android:text="----------"
                 android:textColor="#373737"
                 android:textSize="33px" />
@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="52px"
+                android:layout_marginRight="30px"
                 android:text="------"
                 android:textColor="#989898"
                 android:textSize="33px" />
@@ -66,7 +66,7 @@
                 android:id="@+id/iv_order_img"
                 android:layout_width="182px"
                 android:layout_height="115px"
-                android:layout_marginLeft="39px"
+                android:layout_marginLeft="30px"
                 android:layout_marginTop="33px"
                 android:scaleType="fitXY"
                 />
@@ -76,17 +76,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="22px"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:layout_toLeftOf="@+id/ll_right"
                 android:layout_marginTop="46px"
+                android:layout_marginRight="20px"
                 android:layout_toRightOf="@+id/iv_order_img"
                 android:text="----"
                 android:textColor="#373737"
                 android:textSize="33px" />
 
             <LinearLayout
+                android:id="@+id/ll_right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="52px"
+                android:layout_marginRight="30px"
                 android:layout_marginTop="49px"
                 android:orientation="vertical">
 
@@ -140,7 +145,7 @@
                 android:paddingTop="12px"
                 android:gravity="center"
                 android:text="评价"
-                android:layout_marginRight="37px"
+                android:layout_marginRight="30px"
                 android:textColor="@color/color_ffffff"
                 android:textSize="29px" />
         </RelativeLayout>

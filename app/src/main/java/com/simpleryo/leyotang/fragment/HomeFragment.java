@@ -105,7 +105,6 @@ public class HomeFragment extends XLibraryLazyFragment {
         lrecyclerview.setHasFixedSize(true);
         lrecyclerview.setLoadMoreEnabled(false);
         lrecyclerview.setOnRefreshListener(onRefreshListener);
-        lrecyclerview.forceToRefresh();
 //        getCourseType();
     }
     SimpleryoNetwork simpleryoNetwork;
@@ -293,6 +292,7 @@ public class HomeFragment extends XLibraryLazyFragment {
     public void onResume() {
         super.onResume();
         isLogin = SharedPreferencesUtils.getKeyBoolean("isLogin");//获取用户登录状态
+        lrecyclerview.forceToRefresh();
         MobclickAgent.onPageStart(mPageName);
         EventBus.getDefault().post(new BusEntity(555));//通知banner开始轮播
     }

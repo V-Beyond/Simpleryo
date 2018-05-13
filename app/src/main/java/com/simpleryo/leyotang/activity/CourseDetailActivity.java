@@ -190,7 +190,7 @@ public class CourseDetailActivity extends BaseActivity  implements IWXAPIEventHa
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updateCollect(BusEntity bus) {
         if (bus.getType() == 701) {//微信
-            if (umShareAPI.isInstall(CourseDetailActivity.this, SHARE_MEDIA.WEIXIN)) {
+            if (api.isWXAppInstalled()) {
 //                share(SHARE_MEDIA.WEIXIN);
                 shareToWeiXin(SendMessageToWX.Req.WXSceneSession);
             } else {
@@ -198,7 +198,7 @@ public class CourseDetailActivity extends BaseActivity  implements IWXAPIEventHa
             }
         }
         if (bus.getType() == 702) {//朋友圈
-            if (umShareAPI.isInstall(CourseDetailActivity.this, SHARE_MEDIA.WEIXIN)) {
+            if (api.isWXAppInstalled()) {
 //                share(SHARE_MEDIA.WEIXIN_CIRCLE);
                 shareToWeiXin(SendMessageToWX.Req.WXSceneTimeline);
             } else {

@@ -121,7 +121,7 @@ public class OrderDetailActivity extends BaseActivity {
                 tv_total_price.setText(XStringPars.foramtPrice(orderDetailBean.getData().getTotalAmt()) + "$");
                 tv_shop_price.setText(XStringPars.foramtPrice(orderDetailBean.getData().getUnitPrice()) + "$");
                 tv_count.setText("X" + orderDetailBean.getData().getQuantity());
-                tv_order_number.setText("订单号：" + orderDetailBean.getData().getNo());
+                tv_order_number.setText("订单号：" + orderDetailBean.getData().getId());
                 payType = orderDetailBean.getData().getPayType();
                 amount= XStringPars.foramtPrice(orderDetailBean.getData().getPayAmt());
                 merchantReference=orderDetailBean.getData().getNo();
@@ -155,13 +155,22 @@ public class OrderDetailActivity extends BaseActivity {
                 tv_store_name.setText("所在机构：" + orderDetailBean.getData().getStore().getName());
                 tv_address.setText("授课地点：" + orderDetailBean.getData().getStore().getAddress().getDetail());
             }
+
+            @Override
+            public void onFailure(HttpInfo info) {
+                super.onFailure(info);
+                loadingDialog.dismiss();
+            }
         }, orderId);
     }
-    @Event(value = {R.id.iv_back, R.id.tv_detail, R.id.tv_order_remark}, type = View.OnClickListener.class)
+    @Event(value = {R.id.iv_back, R.id.tv_detail, R.id.tv_order_remark,R.id.iv_msg}, type = View.OnClickListener.class)
     private void onClick(View view) {
         switch (view.getId()) {
-            case R.id.iv_back:
+            case R.id.iv_msg:
                 XActivityUtils.getInstance().popActivity(OrderDetailActivity.this);
+                break;
+            case R.id.iv_back:
+                startActivity(new Intent(OrderDetailActivity.this,MyMsgActivity.class));
                 break;
             case R.id.tv_detail:
                 if (payType.equalsIgnoreCase("ALIPAY")) {

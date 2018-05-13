@@ -219,10 +219,10 @@ public class ComfirmOrderActivity extends BaseActivity {
                     Toast.makeText(ComfirmOrderActivity.this,"手机号不能为空",Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (!XStringPars.isMobileNO(phone)){
-                    Toast.makeText(ComfirmOrderActivity.this,"请输入正确的手机号",Toast.LENGTH_SHORT).show();
-                    return;
-                }
+//                if (!XStringPars.isMobileNO(phone)){
+//                    Toast.makeText(ComfirmOrderActivity.this,"请输入正确的手机号",Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
                 SimpleryoNetwork.createOrder(ComfirmOrderActivity.this, new MyBaseProgressCallbackImpl(ComfirmOrderActivity.this) {
                     @Override
                     public void onSuccess(HttpInfo info) {

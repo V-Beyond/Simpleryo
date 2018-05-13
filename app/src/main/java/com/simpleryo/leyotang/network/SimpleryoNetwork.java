@@ -109,9 +109,9 @@ public class SimpleryoNetwork {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Log.w("cc", "注册json：" + jsonObject.toString());
+        Log.w("cc", "注册json：" + jsonObject.toString()+"用户id："+id);
         doHttpAsync(context, HttpInfo.Builder()
-                .setUrl(httpUrl + "/u/users/"+id+"/bind/account?token=" + getToken())
+                .setUrl(httpUrl + "u/users/"+id+"/bind/account?token=" + getToken())
                 .setRequestType(RequestType.POST)//设置请求方式
                 .addParamJson(jsonObject.toString())
                 .build(), callback);

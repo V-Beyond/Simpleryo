@@ -108,7 +108,7 @@ public class MyCourseDetailActivity extends BaseActivity implements OnMapReadyCa
                 loadingDialog.dismiss();
                 OrderDetailBean orderDetailBean = info.getRetDetail(OrderDetailBean.class);
                 if (orderDetailBean.getCode().equalsIgnoreCase("0")) {
-                    tv_order_number.setText("订单号：" + orderDetailBean.getData().getNo());
+                    tv_order_number.setText("订单号：" + orderDetailBean.getData().getId());
                     if (orderDetailBean.getData().getImageUrl() != null) {
                         Picasso.with(MyCourseDetailActivity.this).load(orderDetailBean.getData().getImageUrl()).into(iv_my_course_detail_img);
                     } else {

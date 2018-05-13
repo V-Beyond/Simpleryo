@@ -178,6 +178,7 @@ public class MyFragment extends XLibraryLazyFragment {
     String gender;
     String starSign;
     String des;
+    boolean isBindWechat;
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updateSex(BusEntity bus) {
         if (bus.getType()==1001){
@@ -232,10 +233,13 @@ public class MyFragment extends XLibraryLazyFragment {
                             } else {
                                 tv_attention.setText("0");
                             }
-                            if (userInfoBean.getData().getName() != null) {
-                                tv_nickname.setText(userInfoBean.getData().getName());
+                            if (userInfoBean.getData().getNickName() != null) {
+                                tv_nickname.setText(userInfoBean.getData().getNickName());
                             } else {
                                 tv_nickname.setText("暂无昵称");
+                            }
+                            if (userInfoBean.getData().getThirdNos()!=null&&userInfoBean.getData().getThirdNos().size()>0){
+                                SharedPreferencesUtils.saveKeyBoolean("isBindWechat",true);
                             }
                         }
 
@@ -399,7 +403,11 @@ public class MyFragment extends XLibraryLazyFragment {
                 }
                 break;
             case R.id.ll_bind_account:
-                startActivity(new Intent(getActivity(), BindAccontActivity.class));
+                if (isLogin) {
+                    startActivity(new Intent(getActivity(), BindAccontActivity.class));
+                } else {
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                }
                 break;
             case R.id.ll_my_attention:
                 if (isLogin) {

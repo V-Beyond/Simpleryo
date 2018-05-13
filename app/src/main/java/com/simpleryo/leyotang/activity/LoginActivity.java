@@ -2,6 +2,7 @@ package com.simpleryo.leyotang.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -15,6 +16,8 @@ import com.simpleryo.leyotang.bean.LoginBean;
 import com.simpleryo.leyotang.network.SimpleryoNetwork;
 import com.simpleryo.leyotang.utils.SharedPreferencesUtils;
 import com.simpleryo.leyotang.utils.XActivityUtils;
+import com.umeng.message.PushAgent;
+import com.umeng.message.UTrack;
 
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
@@ -65,14 +68,15 @@ public class LoginActivity extends BaseActivity {
                         loadingDialog.dismiss();
                         if (loginBean.getCode().equalsIgnoreCase("0")) {
                             //设置推送Alias
-//                            PushAgent mPushAgent = PushAgent.getInstance(LoginActivity.this);
-//                            mPushAgent.setPushCheck(true);
-//                            mPushAgent.setAlias(loginBean.getData().getUserId(), "leyotang", new UTrack.ICallBack() {
-//                                @Override
-//                                public void onMessage(boolean isSuccess, String message) {
-//
-//                                }
-//                            });
+                            PushAgent mPushAgent = PushAgent.getInstance(LoginActivity.this);
+                            mPushAgent.setPushCheck(true);
+                            mPushAgent.setAlias(loginBean.getData().getUserId(), "leyotang", new UTrack.ICallBack() {
+                                @Override
+                                public void onMessage(boolean isSuccess, String message) {
+                                    Log.w("cc","isSuccess:"+isSuccess);
+                                    Log.w("cc","message:"+message);
+                                }
+                            });
                             Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
                             SharedPreferencesUtils.saveKeyString("refreshToken",loginBean.getData().getRefreshToken());
                             SharedPreferencesUtils.saveKeyBoolean("isLogin", true);

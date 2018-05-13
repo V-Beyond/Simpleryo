@@ -74,10 +74,10 @@ public class RegisterActivity extends BaseActivity {
                     Toast.makeText(RegisterActivity.this, "手机不能为空", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (!XStringPars.isMobileNO(phone)) {
-                    Toast.makeText(RegisterActivity.this, "请输入正确的手机号", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+//                if (!XStringPars.isMobileNO(phone)) {
+//                    Toast.makeText(RegisterActivity.this, "请输入正确的手机号", Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
                 if (code.isEmpty()) {
                     Toast.makeText(RegisterActivity.this, "验证码不能为空", Toast.LENGTH_SHORT).show();
                     return;

@@ -19,7 +19,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 
 import java.util.Date;
@@ -219,9 +218,9 @@ final class CustomCalendarViewDelegate {
         mWeekBarHeight = (int) array.getDimension(R.styleable.CalendarView_week_bar_height, Util.dipToPx(context, 40));
 
         mSchemeText = array.getString(R.styleable.CalendarView_scheme_text);
-        if (TextUtils.isEmpty(mSchemeText)) {
-            mSchemeText = "记";
-        }
+//        if (TextUtils.isEmpty(mSchemeText)) {
+//            mSchemeText = "记";
+//        }
         mMonthViewShowMode = array.getInt(R.styleable.CalendarView_month_view_show_mode, MODE_ALL_MONTH);
 
         mWeekBackground = array.getColor(R.styleable.CalendarView_week_background, Color.WHITE);

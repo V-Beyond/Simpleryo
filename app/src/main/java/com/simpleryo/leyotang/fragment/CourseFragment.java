@@ -80,6 +80,9 @@ public class CourseFragment extends XLibraryLazyFragment {
         return mMainView;
     }
 
+    int year;
+    int month;
+
     @Override
     protected void lazyLoad() {
         if (!isPrepared || !isVisible || mHasLoadedOnce) {
@@ -90,11 +93,11 @@ public class CourseFragment extends XLibraryLazyFragment {
     }
 
     CalendarListBean calendarListBean;
+    final List<Calendar> schemes = new ArrayList<>();
 
     public void initData() {
-        final List<Calendar> schemes = new ArrayList<>();
-        final int year = calenar_view.getCurYear();
-        final int month = calenar_view.getCurMonth();
+
+
         SimpleryoNetwork.getCalendarOrderList(getActivity(), new MyBaseProgressCallbackImpl() {
             @Override
             public void onSuccess(HttpInfo info) {
@@ -161,8 +164,10 @@ public class CourseFragment extends XLibraryLazyFragment {
         calendar.setYear(year);
         calendar.setMonth(month);
         calendar.setDay(day);
-        calendar.setSchemeColor(0xffff40ff);//如果单独标记颜色、则会使用这个颜色
-        calendar.setScheme(text);
+        if (!text.equalsIgnoreCase("")){
+            calendar.setSchemeColor(0xffff40ff);//如果单独标记颜色、则会使用这个颜色
+            calendar.setScheme(text);
+        }
         return calendar;
     }
 
@@ -199,8 +204,22 @@ public class CourseFragment extends XLibraryLazyFragment {
     public void onResume() {
         super.onResume();
         isLogin = SharedPreferencesUtils.getKeyBoolean("isLogin");//获取用户登录状态
-        if (isLogin){
+        year = calenar_view.getCurYear();
+        month = calenar_view.getCurMonth();
+        if (isLogin) {
+            lrecyclerview.setVisibility(View.VISIBLE);
+            tv_no_order.setVisibility(View.GONE);
             initData();
+        } else {
+            lrecyclerview.setVisibility(View.GONE);
+            tv_no_order.setVisibility(View.VISIBLE);
+            if (calendarListBean!=null){
+                for (CalendarListBean.DataBean dataBean : calendarListBean.getData()) {
+                    String date = dataBean.getDateStr().split("-")[2];
+                    schemes.add(getSchemeCalendar(year, month, Integer.parseInt(date), 0, ""));
+                    calenar_view.setSchemeDate(schemes);
+                }
+            }
         }
         tv_current_date.setText(calenar_view.getCurYear() + "年" + calenar_view.getCurMonth() + "月");
         tv_current_day.setText(calenar_view.getCurDay() + "");
@@ -224,47 +243,49 @@ public class CourseFragment extends XLibraryLazyFragment {
         calenar_view.setOnDateSelectedListener(new CalendarView.OnDateSelectedListener() {
             @Override
             public void onDateSelected(Calendar calendar, boolean isClick) {
-                if (calendarListBean != null) {
-                    if (calendarListBean.getCode().equalsIgnoreCase("0")) {
-                        int day = calendar.getDay();
-                        String currentDay;
-                        if (day >= 1 && day <= 9) {
-                            currentDay = "0" + day;
-                        } else {
-                            currentDay = String.valueOf(day);
-                        }
-                        int month = calendar.getMonth();
-                        String currentMonth;
-                        if (month >= 1 && month <= 9) {
-                            currentMonth = "0" + month;
-                        } else {
-                            currentMonth = String.valueOf(month);
-                        }
-                        String date = calendar.getYear() + "-" + currentMonth + "-" + currentDay;
-                        List<CalendarListBean.DataBean.CourseListBean> dataBeanList = courseList.get(date);
-                        if (dataBeanList != null && dataBeanList.size() > 0) {
-                            if (ordersBeanList != null && ordersBeanList.size() > 0) {
-                                ordersBeanList.clear();
-                            }
-                            tv_no_order.setVisibility(View.GONE);
-                            lrecyclerview.setVisibility(View.VISIBLE);
-                            for (CalendarListBean.DataBean.CourseListBean ordersBean : dataBeanList) {
-                                if (ordersBeanList.size() < 8) {
-                                    ordersBeanList.add(ordersBean);
-                                }
-                            }
-                            calendarCourseAdapter.setDataList(ordersBeanList);
-                            lrecyclerview.setAdapter(lRecyclerViewAdapter);
-                            lrecyclerview.setLoadMoreEnabled(false);
-                            lrecyclerview.setPullRefreshEnabled(false);
-                            calendarCourseAdapter.notifyDataSetChanged();
-                            lRecyclerViewAdapter.notifyDataSetChanged();
-                        } else {
-                            lrecyclerview.setVisibility(View.GONE);
-                            tv_no_order.setVisibility(View.VISIBLE);
-                        }
-                    }
-                }
+               if(isLogin){
+                   if (calendarListBean != null) {
+                       if (calendarListBean.getCode().equalsIgnoreCase("0")) {
+                           int day = calendar.getDay();
+                           String currentDay;
+                           if (day >= 1 && day <= 9) {
+                               currentDay = "0" + day;
+                           } else {
+                               currentDay = String.valueOf(day);
+                           }
+                           int month = calendar.getMonth();
+                           String currentMonth;
+                           if (month >= 1 && month <= 9) {
+                               currentMonth = "0" + month;
+                           } else {
+                               currentMonth = String.valueOf(month);
+                           }
+                           String date = calendar.getYear() + "-" + currentMonth + "-" + currentDay;
+                           List<CalendarListBean.DataBean.CourseListBean> dataBeanList = courseList.get(date);
+                           if (dataBeanList != null && dataBeanList.size() > 0) {
+                               if (ordersBeanList != null && ordersBeanList.size() > 0) {
+                                   ordersBeanList.clear();
+                               }
+                               tv_no_order.setVisibility(View.GONE);
+                               lrecyclerview.setVisibility(View.VISIBLE);
+                               for (CalendarListBean.DataBean.CourseListBean ordersBean : dataBeanList) {
+                                   if (ordersBeanList.size() < 8) {
+                                       ordersBeanList.add(ordersBean);
+                                   }
+                               }
+                               calendarCourseAdapter.setDataList(ordersBeanList);
+                               lrecyclerview.setAdapter(lRecyclerViewAdapter);
+                               lrecyclerview.setLoadMoreEnabled(false);
+                               lrecyclerview.setPullRefreshEnabled(false);
+                               calendarCourseAdapter.notifyDataSetChanged();
+                               lRecyclerViewAdapter.notifyDataSetChanged();
+                           } else {
+                               lrecyclerview.setVisibility(View.GONE);
+                               tv_no_order.setVisibility(View.VISIBLE);
+                           }
+                       }
+                   }
+               }
                 tv_current_day.setText(calendar.getDay() + "");
             }
         });

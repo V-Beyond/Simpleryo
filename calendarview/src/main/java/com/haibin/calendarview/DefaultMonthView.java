@@ -57,9 +57,9 @@ public class DefaultMonthView extends MonthView {
 
     @Override
     protected void onDrawScheme(Canvas canvas, Calendar calendar, int x, int y) {
-        mSchemeBasicPaint.setColor(calendar.getSchemeColor());
-        canvas.drawCircle(x + mItemWidth -mPadding*3+10 , y + mPadding + mRadio, mRadio, mSchemeBasicPaint);
         if (!calendar.getScheme().equalsIgnoreCase("")){
+            mSchemeBasicPaint.setColor(calendar.getSchemeColor());
+            canvas.drawCircle(x + mItemWidth -mPadding*3+10 , y + mPadding + mRadio, mRadio, mSchemeBasicPaint);
             canvas.drawText(calendar.getScheme(), x + mItemWidth -mPadding*3+10 , y + mPadding + mSchemeBaseLine, mTextPaint);
         }
     }

@@ -140,6 +140,10 @@ public class SimpleryoApplication extends MultiDexApplication {
             @Override
             public void launchApp(Context context, UMessage msg) {
                 super.launchApp(context, msg);
+                Log.w("cc", "推送消息：" + msg.toString());
+                Intent intent = new Intent(context, MyMsgActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
             }
 
             @Override
@@ -150,6 +154,10 @@ public class SimpleryoApplication extends MultiDexApplication {
             @Override
             public void openActivity(Context context, UMessage msg) {
                 super.openActivity(context, msg);
+                Log.w("cc", "推送消息：" + msg.toString());
+                Intent intent = new Intent(context, MyMsgActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
             }
 
             @Override
@@ -158,7 +166,7 @@ public class SimpleryoApplication extends MultiDexApplication {
                 Intent intent = new Intent(context, MyMsgActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
-                Toast.makeText(context, msg.custom, Toast.LENGTH_LONG).show();
+//                Toast.makeText(context, msg.custom, Toast.LENGTH_LONG).show();
             }
         };
         //使用自定义的NotificationHandler

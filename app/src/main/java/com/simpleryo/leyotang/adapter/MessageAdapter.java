@@ -37,13 +37,18 @@ public class MessageAdapter extends BaseAdapter<MessageListBean.DataBean> {
          if (holder instanceof  MessageViewHolder){
              String secondTypeCode=dataBean.getSecondTypeCode();
              if (secondTypeCode.equalsIgnoreCase("SYSTEM_NOTICE")){
-                ((MessageViewHolder) holder).iv_msg_category.setImageResource(R.mipmap.iv_msg_buy);
+                ((MessageViewHolder) holder).iv_msg_category.setImageResource(R.mipmap.iv_msg_content);
              }else if(secondTypeCode.equalsIgnoreCase("COURSE_ALERT")){
                  ((MessageViewHolder) holder).iv_msg_category.setImageResource(R.mipmap.iv_msg_email);
              }else if(secondTypeCode.equalsIgnoreCase("PAY_SUCCESS")){
-                 ((MessageViewHolder) holder).iv_msg_category.setImageResource(R.mipmap.iv_msg_content);
+                 ((MessageViewHolder) holder).iv_msg_category.setImageResource(R.mipmap.iv_msg_buy);
              }
-             ((MessageViewHolder) holder).tv_title.setText(dataBean.getTitle());
+             if (dataBean.getTitle()!=null){
+                 ((MessageViewHolder) holder).tv_title.setText(dataBean.getTitle());
+             }else{
+                 ((MessageViewHolder) holder).tv_title.setText("暂无标题");
+             }
+
             ((MessageViewHolder) holder).tv_time.setText(XStringPars.getStrTime(dataBean.getCreationTime()));
          }
     }

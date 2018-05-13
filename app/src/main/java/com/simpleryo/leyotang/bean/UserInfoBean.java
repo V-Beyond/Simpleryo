@@ -42,6 +42,7 @@ public class UserInfoBean extends BaseResult {
         private String followCount;
         private String collectCount;
         private String starSign;
+        private List<ThirdNo> thirdNos;
         private ActivityDataBean activityData;
         private List<NoPermitBean> noPermit;
         private List<ShipToAddrBean> shipToAddr;
@@ -96,6 +97,14 @@ public class UserInfoBean extends BaseResult {
 
         public String getGender() {
             return gender;
+        }
+
+        public List<ThirdNo> getThirdNos() {
+            return thirdNos;
+        }
+
+        public void setThirdNos(List<ThirdNo> thirdNos) {
+            this.thirdNos = thirdNos;
         }
 
         public void setGender(String gender) {
@@ -287,6 +296,27 @@ public class UserInfoBean extends BaseResult {
 
             public void setValue(String value) {
                 this.value = value;
+            }
+        }
+
+        public class ThirdNo{
+            String typeCode;
+            String thirdNo;
+
+            public String getTypeCode() {
+                return typeCode;
+            }
+
+            public void setTypeCode(String typeCode) {
+                this.typeCode = typeCode;
+            }
+
+            public String getThirdNo() {
+                return thirdNo;
+            }
+
+            public void setThirdNo(String thirdNo) {
+                this.thirdNo = thirdNo;
             }
         }
 

@@ -68,10 +68,10 @@ public class MyMsgActivity extends BaseActivity {
                     startActivity(new Intent(MyMsgActivity.this, MyNoticeActivity.class).putExtra("msg_id", dataBean.getId()));
                 }
                 if (dataBean.getSecondTypeCode().equalsIgnoreCase("PAY_SUCCESS")) {//支付消息
-                    startActivity(new Intent(MyMsgActivity.this, OrderDetailActivity.class).putExtra("orderId", dataBean.getId()));
+                    startActivity(new Intent(MyMsgActivity.this, OrderDetailActivity.class).putExtra("orderId", dataBean.getLinkId()));
                 }
                 if (dataBean.getSecondTypeCode().equalsIgnoreCase("COURSE_ALERT")) {//课程提醒
-                    startActivity(new Intent(MyMsgActivity.this, MyCourseDetailActivity.class).putExtra("id", dataBean.getId()));
+                    startActivity(new Intent(MyMsgActivity.this, MyCourseDetailActivity.class).putExtra("id", dataBean.getLinkId()));
                 }
             }
         });

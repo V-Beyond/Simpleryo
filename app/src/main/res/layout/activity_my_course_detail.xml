@@ -24,7 +24,7 @@
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="93px"
                     android:orientation="horizontal">
 
@@ -32,30 +32,35 @@
                         android:layout_width="10px"
                         android:layout_height="41px"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="56px"
+                        android:layout_marginLeft="20px"
                         android:background="#F32E59" />
 
                     <TextView
                         android:id="@+id/tv_order_number"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="20px"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="14px"
                         android:text="订单号：-------"
                         android:textColor="#373737"
                         android:textSize="38px" />
                 </LinearLayout>
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="27px"
-                    android:layout_marginLeft="70px"
+                    android:layout_marginLeft="34px"
                     android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/tv_order_course_name"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:layout_toLeftOf="@+id/tv_right"
+                        android:layout_marginRight="20px"
+                        android:ellipsize="end"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="14px"
                         android:text="课程名称：-------"
@@ -63,10 +68,12 @@
                         android:textSize="35px" />
 
                     <TextView
+                        android:id="@+id/tv_right"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="41px"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="41px"
                         android:background="@mipmap/iv_join"
                         android:gravity="center"
                         android:paddingLeft="23px"
@@ -76,15 +83,15 @@
                         android:text="线下授课"
                         android:textColor="@color/color_ffffff"
                         android:textSize="21px" />
-                </LinearLayout>
+                </RelativeLayout>
                 <ImageView
                     android:id="@+id/iv_my_course_detail_img"
                     android:layout_width="match_parent"
-                    android:layout_marginRight="45px"
+                    android:layout_marginRight="25px"
                     android:scaleType="fitXY"
                     android:layout_marginTop="27px"
                     android:layout_marginBottom="45px"
-                    android:layout_marginLeft="45px"
+                    android:layout_marginLeft="25px"
                     android:layout_height="254px" />
             </LinearLayout>
 

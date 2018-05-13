@@ -556,6 +556,14 @@ public class CalendarView extends FrameLayout {
         mMonthPager.updateScheme();
         mWeekPager.updateScheme();
     }
+    /**
+     * 清空标记日期
+     */
+    public void clearSchemeDate() {
+        this.mDelegate.mSchemeDate = null;
+        mMonthPager.updateScheme();
+        mWeekPager.updateScheme();
+    }
 
     /**
      * 设置背景色

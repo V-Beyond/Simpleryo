@@ -310,12 +310,18 @@ public abstract class WeekView extends BaseView {
             for (Calendar a : mItems) {
                 for (Calendar d : mDelegate.mSchemeDate) {
                     if (d.equals(a)) {
-                        a.setScheme(TextUtils.isEmpty(d.getScheme()) ? mDelegate.getSchemeText() : d.getScheme());
+                        if(d.getScheme()!=null){
+                            a.setScheme(TextUtils.isEmpty(d.getScheme()) ? mDelegate.getSchemeText() : d.getScheme());
+                        }else{
+                            a.setScheme("");
+                        }
                         a.setSchemeColor(d.getSchemeColor());
                         a.setSchemes(d.getSchemes());
                     }
                 }
             }
+            invalidate();
+        }else{
             invalidate();
         }
     }

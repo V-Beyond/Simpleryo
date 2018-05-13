@@ -58,9 +58,11 @@ public class DefaultWeekView extends WeekView {
 
     @Override
     protected void onDrawScheme(Canvas canvas, Calendar calendar, int x) {
-        mSchemeBasicPaint.setColor(calendar.getSchemeColor());
-        canvas.drawCircle(x + mItemWidth - mPadding , mPadding + mRadio, mRadius, mSchemeBasicPaint);
-        canvas.drawText(calendar.getScheme(), x + mItemWidth - mPadding - mRadio, mPadding + mSchemeBaseLine, mTextPaint);
+        if (!calendar.getScheme().equalsIgnoreCase("")){
+            mSchemeBasicPaint.setColor(calendar.getSchemeColor());
+            canvas.drawCircle(x + mItemWidth - mPadding , mPadding + mRadio, mRadius, mSchemeBasicPaint);
+            canvas.drawText(calendar.getScheme(), x + mItemWidth - mPadding - mRadio, mPadding + mSchemeBaseLine, mTextPaint);
+        }
     }
 
     @Override

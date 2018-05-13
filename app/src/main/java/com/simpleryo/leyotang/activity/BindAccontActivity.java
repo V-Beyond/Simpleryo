@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -11,6 +12,7 @@ import com.okhttplib.HttpInfo;
 import com.simpleryo.leyotang.R;
 import com.simpleryo.leyotang.base.BaseActivity;
 import com.simpleryo.leyotang.base.MyBaseProgressCallbackImpl;
+import com.simpleryo.leyotang.bean.BindAccountBean;
 import com.simpleryo.leyotang.bean.BusEntity;
 import com.simpleryo.leyotang.bean.WxUserInfo;
 import com.simpleryo.leyotang.network.SimpleryoNetwork;
@@ -49,8 +51,11 @@ public class BindAccontActivity extends BaseActivity {
     @ViewInject(R.id.tv_nickname)
     TextView tv_nickname;
     private IWXAPI api;
-
+    @ViewInject(R.id.rl_wechat)
+    RelativeLayout rl_wechat;
     public String userId;
+    boolean isBindWechat;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,8 +65,15 @@ public class BindAccontActivity extends BaseActivity {
         api = WXAPIFactory.createWXAPI(this, Constants.APP_ID, false);
         api.registerApp(Constants.APP_ID);
         userId = SharedPreferencesUtils.getKeyString("userId");
+        isBindWechat = SharedPreferencesUtils.getKeyBoolean("isBindWechat");
+        if (isBindWechat) {
+            rl_wechat.setClickable(false);
+            tv_nickname.setText("已绑定");
+        }
     }
-String typeCode;
+
+    String typeCode;
+
     @Event(value = {R.id.iv_back, R.id.iv_msg, R.id.rl_facebook, R.id.rl_wechat, R.id.rl_alipay}, type = View.OnClickListener.class)
     private void onClick(View view) {
         switch (view.getId()) {
@@ -72,9 +84,8 @@ String typeCode;
                 startActivity(new Intent(BindAccontActivity.this, MyMsgActivity.class));
                 break;
             case R.id.rl_wechat:
-                typeCode="APP";
+                typeCode = "APP";
                 if (api.isWXAppInstalled()) {
-//                    doOauthVerify(SHARE_MEDIA.WEIXIN);
                     final SendAuth.Req req = new SendAuth.Req();
                     req.scope = "snsapi_userinfo";
                     req.state = "leyotang_weixin";
@@ -87,19 +98,14 @@ String typeCode;
                 doOauthVerify(SHARE_MEDIA.ALIPAY);
                 break;
             case R.id.rl_facebook:
-                typeCode="Facebook";
+                typeCode = "Facebook";
                 doOauthVerify(SHARE_MEDIA.FACEBOOK);
                 break;
         }
     }
 
     public void doOauthVerify(SHARE_MEDIA share_media) {
-//        boolean isauth = umShareAPI.isAuthorize(BindAccontActivity.this, share_media);
-//        if (isauth) {
         umShareAPI.deleteOauth(BindAccontActivity.this, share_media, deleteAuthListener);
-//        } else {
-//            umShareAPI.doOauthVerify(BindAccontActivity.this, share_media, authListener);
-//        }
     }
 
     public void getPlatformInfo(SHARE_MEDIA share_media) {
@@ -114,7 +120,6 @@ String typeCode;
         @Override
         public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
             umShareAPI.doOauthVerify(BindAccontActivity.this, platform, authListener);
-//            Toast.makeText(BindAccontActivity.this, "成功了", Toast.LENGTH_LONG).show();
         }
 
         @Override
@@ -183,8 +188,8 @@ String typeCode;
             getUserMsg(access_token, openid);
         }
         if (bus.getType() == 303) {
-            String thirdNo=bus.getContent();
-            bindAccount(thirdNo,typeCode);
+            String thirdNo = bus.getContent();
+            bindAccount(thirdNo, typeCode);
         }
     }
 
@@ -223,19 +228,25 @@ String typeCode;
     }
 
 
-    public void bindAccount(String thirdNo,String typeCode){
-        SimpleryoNetwork.bindAccount(BindAccontActivity.this,new MyBaseProgressCallbackImpl(){
+    public void bindAccount(String thirdNo, String typeCode) {
+        SimpleryoNetwork.bindAccount(BindAccontActivity.this, new MyBaseProgressCallbackImpl() {
             @Override
             public void onSuccess(HttpInfo info) {
                 super.onSuccess(info);
-
+                BindAccountBean bindAccountBean=info.getRetDetail(BindAccountBean.class);
+                if (bindAccountBean.getCode().equalsIgnoreCase("0")){
+                    tv_nickname.setText("已绑定");
+                    rl_wechat.setClickable(false);
+                }
             }
+
             @Override
             public void onFailure(HttpInfo info) {
                 super.onFailure(info);
             }
-        },userId,thirdNo,typeCode);
+        }, userId, thirdNo, typeCode);
     }
+
     /**
      * 获取微信个人信息
      *
@@ -249,9 +260,7 @@ String typeCode;
             public void onSuccess(HttpInfo info) {
                 super.onSuccess(info);
                 WxUserInfo wxUserInfo = info.getRetDetail(WxUserInfo.class);
-                tv_nickname.setText(wxUserInfo.getNickname());
-                Log.w("cc","getUnionid:"+wxUserInfo.getUnionid());
-                EventBus.getDefault().post(new BusEntity(303,wxUserInfo.getUnionid()));
+                EventBus.getDefault().post(new BusEntity(303, wxUserInfo.getUnionid()));
             }
         }, path);
 
