@@ -50,6 +50,33 @@ public class OrderDetailBean extends BaseResult {
         private BuyerBean buyer;
         private CoachBean coach;
         private OrderCourseBean course;
+        private String userName;
+        private String userPhone;
+        private  String userRemark;
+
+        public String getUserName() {
+            return userName;
+        }
+
+        public void setUserName(String userName) {
+            this.userName = userName;
+        }
+
+        public String getUserPhone() {
+            return userPhone;
+        }
+
+        public void setUserPhone(String userPhone) {
+            this.userPhone = userPhone;
+        }
+
+        public String getUserRemark() {
+            return userRemark;
+        }
+
+        public void setUserRemark(String userRemark) {
+            this.userRemark = userRemark;
+        }
 
         public OrderCourseBean getCourse() {
             return course;

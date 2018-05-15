@@ -46,7 +46,7 @@ public class ExcellentCourseAdapter extends BaseAdapter<HomeDataBean.DataBeanX.C
     public void onBindItemHolder(SuperViewHolder holder, int position) {
         final HomeDataBean.DataBeanX.CoursesBeanX.CoursesBean bean = listData.get(position);
         int collectCount=bean.getCollectCount();
-        Picasso.with(mContext).load(bean.getCoverUrl()).into(((ExcellentCourseItemViewHolder) holder).iv_collection_img);
+        Picasso.with(mContext).load(bean.getCoverUrl()).transform(raduisTransformation).into(((ExcellentCourseItemViewHolder) holder).iv_collection_img);
         ((ExcellentCourseItemViewHolder) holder).tv_collection_name.setText(bean.getName());
         ((ExcellentCourseItemViewHolder) holder).tv_price.setText(XStringPars.foramtPrice(Integer.valueOf(bean.getPrice()))+"$/hour");
         ((ExcellentCourseItemViewHolder) holder).tv_popular.setText(collectCount+" people");

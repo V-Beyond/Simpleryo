@@ -43,8 +43,10 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="14px"
                         android:text="订单号：-------"
+                        android:singleLine="true"
+                        android:ellipsize="end"
                         android:textColor="#373737"
-                        android:textSize="38px" />
+                        android:textSize="35px" />
                 </LinearLayout>
                 <RelativeLayout
                     android:layout_width="wrap_content"

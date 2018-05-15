@@ -55,13 +55,17 @@ public class HomeAdapter extends BaseMultiAdapter<MultipleItem> {
     HomeDataBean.DataBeanX.CoursesBeanX orderListBeans = new HomeDataBean.DataBeanX.CoursesBeanX();
     HomeDataBean.DataBeanX.CoursesBeanX excellentListBeans = new HomeDataBean.DataBeanX.CoursesBeanX();
     View view = null;
-
+    DividerDecoration divider;
     public HomeAdapter(Context context) {
         super(context);
         this.context = context;
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
+        divider= new DividerDecoration.Builder(mContext)
+                .setHeight(30f)
+                .setColorResource(R.color.color_transparent)
+                .build();
     }
 
     public List<HomeDataBean.DataBeanX.CourseTypesBean> getCourseTypetBeans() {
@@ -129,12 +133,10 @@ public class HomeAdapter extends BaseMultiAdapter<MultipleItem> {
     public void onBindItemHolder(final SuperViewHolder holder, int position) {
         final MultipleItem bean;
         bean = mDataList.get(position);
-        DividerDecoration divider = new DividerDecoration.Builder(mContext)
-                .setHeight(30f)
-                .setColorResource(R.color.color_transparent)
-                .build();
         if (holder instanceof IntroductoryCourseViewHolder) {//入门课程
             ((IntroductoryCourseViewHolder) holder).textView.setText(introductoryListBeans.getTag().getName());
+            ((IntroductoryCourseViewHolder) holder).lrecyclerview.removeItemDecoration(divider);
+            ((IntroductoryCourseViewHolder) holder).lrecyclerview.addItemDecoration(divider);
             LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
             ((IntroductoryCourseViewHolder) holder).lrecyclerview.setLayoutManager(layoutManager);
             IntroductoryCourseAdapter jingxuanAdapter = new IntroductoryCourseAdapter(mContext);
@@ -142,8 +144,6 @@ public class HomeAdapter extends BaseMultiAdapter<MultipleItem> {
             ((IntroductoryCourseViewHolder) holder).lrecyclerview.setAdapter(lRecyclerViewAdapter);
             ((IntroductoryCourseViewHolder) holder).lrecyclerview.setPullRefreshEnabled(false);
             ((IntroductoryCourseViewHolder) holder).lrecyclerview.setLoadMoreEnabled(false);
-            ((IntroductoryCourseViewHolder) holder).lrecyclerview.removeItemDecoration(divider);
-            ((IntroductoryCourseViewHolder) holder).lrecyclerview.addItemDecoration(divider);
             ((IntroductoryCourseViewHolder) holder).lrecyclerview.setHasFixedSize(false);
             if (introductoryListBeans != null && introductoryListBeans.getCourses().size() > 0) {
                 jingxuanAdapter.setDataList(introductoryListBeans.getCourses());
@@ -167,6 +167,8 @@ public class HomeAdapter extends BaseMultiAdapter<MultipleItem> {
 
         } else if (holder instanceof HotCourseViewHolder) {//热门课程
             ((HotCourseViewHolder) holder).textView.setText(orderListBeans.getTag().getName());
+            ((HotCourseViewHolder) holder).lrecyclerview.removeItemDecoration(divider);
+            ((HotCourseViewHolder) holder).lrecyclerview.addItemDecoration(divider);
             LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
             ((HotCourseViewHolder) holder).lrecyclerview.setLayoutManager(layoutManager);
             HotCourseAdapter jingxuanAdapter = new HotCourseAdapter(mContext);
@@ -174,8 +176,6 @@ public class HomeAdapter extends BaseMultiAdapter<MultipleItem> {
             ((HotCourseViewHolder) holder).lrecyclerview.setAdapter(lRecyclerViewAdapter);
             ((HotCourseViewHolder) holder).lrecyclerview.setPullRefreshEnabled(false);
             ((HotCourseViewHolder) holder).lrecyclerview.setLoadMoreEnabled(false);
-            ((HotCourseViewHolder) holder).lrecyclerview.removeItemDecoration(divider);
-            ((HotCourseViewHolder) holder).lrecyclerview.addItemDecoration(divider);
             ((HotCourseViewHolder) holder).lrecyclerview.setHasFixedSize(false);
             if (orderListBeans != null && orderListBeans.getCourses().size() > 0) {
                 jingxuanAdapter.setDataList(orderListBeans.getCourses());
@@ -199,6 +199,8 @@ public class HomeAdapter extends BaseMultiAdapter<MultipleItem> {
             });
         } else if (holder instanceof ExcellentCourseViewHolder) {//精选课程
             ((ExcellentCourseViewHolder) holder).textView.setText(excellentListBeans.getTag().getName());
+            ((ExcellentCourseViewHolder) holder).lrecyclerview.removeItemDecoration(divider);
+            ((ExcellentCourseViewHolder) holder).lrecyclerview.addItemDecoration(divider);
             LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
             ((ExcellentCourseViewHolder) holder).lrecyclerview.setLayoutManager(layoutManager);
             ExcellentCourseAdapter excellentCourseAdapter = new ExcellentCourseAdapter(mContext);
@@ -206,8 +208,6 @@ public class HomeAdapter extends BaseMultiAdapter<MultipleItem> {
             ((ExcellentCourseViewHolder) holder).lrecyclerview.setAdapter(lRecyclerViewAdapter);
             ((ExcellentCourseViewHolder) holder).lrecyclerview.setPullRefreshEnabled(false);
             ((ExcellentCourseViewHolder) holder).lrecyclerview.setLoadMoreEnabled(false);
-            ((ExcellentCourseViewHolder) holder).lrecyclerview.removeItemDecoration(divider);
-            ((ExcellentCourseViewHolder) holder).lrecyclerview.addItemDecoration(divider);
             ((ExcellentCourseViewHolder) holder).lrecyclerview.setHasFixedSize(false);
             if (excellentListBeans != null && excellentListBeans.getCourses().size() > 0) {
                 excellentCourseAdapter.setDataList(excellentListBeans.getCourses());
@@ -232,6 +232,8 @@ public class HomeAdapter extends BaseMultiAdapter<MultipleItem> {
 
         } else if (holder instanceof CourseTypeViewHolder) {
             ((CourseTypeViewHolder) holder).lrecyclerview.setNestedScrollingEnabled(false);
+            ((CourseTypeViewHolder) holder).lrecyclerview.removeItemDecoration(divider);
+            ((CourseTypeViewHolder) holder).lrecyclerview.addItemDecoration(divider);
             GridLayoutManager layoutManager = new GridLayoutManager(mContext, 4);
             ((CourseTypeViewHolder) holder).lrecyclerview.setLayoutManager(layoutManager);
             CourseTypeAdapter courseTypeAdapter = new CourseTypeAdapter(mContext);
@@ -239,8 +241,6 @@ public class HomeAdapter extends BaseMultiAdapter<MultipleItem> {
             ((CourseTypeViewHolder) holder).lrecyclerview.setAdapter(lRecyclerViewAdapter);
             ((CourseTypeViewHolder) holder).lrecyclerview.setPullRefreshEnabled(false);
             ((CourseTypeViewHolder) holder).lrecyclerview.setLoadMoreEnabled(false);
-            ((CourseTypeViewHolder) holder).lrecyclerview.removeItemDecoration(divider);
-            ((CourseTypeViewHolder) holder).lrecyclerview.addItemDecoration(divider);
             courseTypeAdapter.setDataList(courseTypetBeans);
             lRecyclerViewAdapter.notifyDataSetChanged();
             ((CourseTypeViewHolder) holder).lrecyclerview.setHasFixedSize(false);

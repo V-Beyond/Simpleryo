@@ -2,6 +2,8 @@ package com.simpleryo.leyotang.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -49,6 +51,12 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * @author huanglei
@@ -113,6 +121,7 @@ public class CourseDetailActivity extends BaseActivity  implements IWXAPIEventHa
     public final static String CSS_STYLE = "<style>* {font-size:14px;line-height:20px;}p {color:#373737;font-size:12px}</style>";
     UMShareAPI umShareAPI;//友盟分享
     private IWXAPI api;
+    Bitmap bitmap;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -169,7 +178,33 @@ public class CourseDetailActivity extends BaseActivity  implements IWXAPIEventHa
 
     String courseName;
     String coverUrl;
+    /**
+     * 根据图片的url路径获得Bitmap对象
+     * @param url
+     * @return
+     */
+    private Bitmap returnBitmap(String url) {
+        URL fileUrl = null;
+        Bitmap bitmap = null;
+        try {
+            fileUrl = new URL(url);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        try {
+            HttpURLConnection conn = (HttpURLConnection) fileUrl
+                    .openConnection();
+            conn.setDoInput(true);
+            conn.connect();
+            InputStream is = conn.getInputStream();
+            bitmap = BitmapFactory.decodeStream(is);
+            is.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bitmap;
 
+    }
     /**
      * 微信原生SDK分享
      * @param type
@@ -180,6 +215,9 @@ public class CourseDetailActivity extends BaseActivity  implements IWXAPIEventHa
         final WXMediaMessage mediaMessage = new WXMediaMessage(wxWebpageObject);
         mediaMessage.title = courseName;//设置标题
         mediaMessage.description = "我在乐友堂推荐你一个课程";//设置内容
+        if (bitmap!=null){
+            mediaMessage.setThumbImage(bitmap);
+        }
         SendMessageToWX.Req  req = new SendMessageToWX.Req();
         req.transaction = "webpage";//分享类型为网页
         req.message = mediaMessage;//分享的内容为上面的信息
@@ -213,6 +251,7 @@ public class CourseDetailActivity extends BaseActivity  implements IWXAPIEventHa
         }
         if (bus.getType() == 222) {
             getStoreDetail(storeId);
+            bitmap=returnBitmap(coverUrl);
         }
         if (bus.getType() == 113) {//获取课程详情
             SimpleryoNetwork.getCourseDetail(CourseDetailActivity.this, new MyBaseProgressCallbackImpl(CourseDetailActivity.this) {

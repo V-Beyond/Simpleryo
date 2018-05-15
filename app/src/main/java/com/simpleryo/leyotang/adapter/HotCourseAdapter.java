@@ -46,7 +46,7 @@ public class HotCourseAdapter extends BaseAdapter<HomeDataBean.DataBeanX.Courses
     public void onBindItemHolder(SuperViewHolder holder, int position) {
         final HomeDataBean.DataBeanX.CoursesBeanX.CoursesBean bean = listData.get(position);
         int collectCount=bean.getCollectCount();
-        Picasso.with(mContext).load(bean.getCoverUrl()).into(((HotCourseItemViewHolder) holder).iv_collection_img);
+        Picasso.with(mContext).load(bean.getCoverUrl()).transform(raduisTransformation).into(((HotCourseItemViewHolder) holder).iv_collection_img);
         ((HotCourseItemViewHolder) holder).tv_collection_name.setText(bean.getName());
         ((HotCourseItemViewHolder) holder).tv_price.setText(XStringPars.foramtPrice(Integer.valueOf(bean.getPrice()))+"$/hour");
         ((HotCourseItemViewHolder) holder).tv_popular.setText(collectCount+" people");

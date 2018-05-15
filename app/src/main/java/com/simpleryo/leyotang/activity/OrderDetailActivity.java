@@ -58,6 +58,12 @@ public class OrderDetailActivity extends BaseActivity {
     TextView tv_coach_name;
     @ViewInject(R.id.tv_store_name)
     TextView tv_store_name;
+    @ViewInject(R.id.tv_buyer_name)
+    TextView  tv_buyer_name;
+    @ViewInject(R.id.tv_buyer_phone)
+    TextView  tv_buyer_phone;
+    @ViewInject(R.id.tv_buyer_remark)
+    TextView  tv_buyer_remark;
     Transformation transformation = new RoundedTransformationBuilder()
             .cornerRadius(30)
             .borderWidth(5)
@@ -122,6 +128,14 @@ public class OrderDetailActivity extends BaseActivity {
                 tv_shop_price.setText(XStringPars.foramtPrice(orderDetailBean.getData().getUnitPrice()) + "$");
                 tv_count.setText("X" + orderDetailBean.getData().getQuantity());
                 tv_order_number.setText("订单号：" + orderDetailBean.getData().getId());
+                tv_buyer_name.setText(orderDetailBean.getData().getUserName());
+                tv_buyer_phone.setText(orderDetailBean.getData().getUserPhone());
+                if (orderDetailBean.getData().getUserRemark()!=null){
+                    tv_buyer_remark.setText(orderDetailBean.getData().getUserRemark());
+                }else{
+                    tv_buyer_remark.setText("暂无备注");
+                }
+
                 payType = orderDetailBean.getData().getPayType();
                 amount= XStringPars.foramtPrice(orderDetailBean.getData().getPayAmt());
                 merchantReference=orderDetailBean.getData().getNo();

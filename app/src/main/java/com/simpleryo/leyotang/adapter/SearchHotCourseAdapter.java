@@ -53,7 +53,7 @@ public class SearchHotCourseAdapter extends BaseAdapter<CourseListBean.DataBeanX
     public void onBindItemHolder(SuperViewHolder holder, final int position) {
         final CourseListBean.DataBeanX bean = listData.get(position);
         if (bean.getCoverUrl() != null) {
-            Picasso.with(mContext).load(bean.getCoverUrl()).into(((HotCourseItemViewHolder) holder).iv_collection_img);
+            Picasso.with(mContext).load(bean.getCoverUrl()).transform(raduisTransformation).into(((HotCourseItemViewHolder) holder).iv_collection_img);
         } else {
             Picasso.with(mContext).load("http://p0.so.qhmsg.com/bdr/_240_/t01eb2a6c6319b04655.jpg").into(((HotCourseItemViewHolder) holder).iv_collection_img);
         }
