@@ -56,12 +56,12 @@ public class XStringPars {
      * @param pwd
      * @return
      */
-    public static boolean isCorrectPwd(String pwd) {// 正确 返回 true
-        Pattern p = Pattern
-                .compile("^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,12}$");
-        Matcher m = p.matcher(pwd);
-        return m.matches();
-    }
+//    public static boolean isCorrectPwd(String pwd) {// 正确 返回 true
+//        Pattern p = Pattern
+//                .compile("^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,12}$");
+//        Matcher m = p.matcher(pwd);
+//        return m.matches();
+//    }
 
     /**
      * 价格保留两位小数

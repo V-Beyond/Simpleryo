@@ -2,6 +2,8 @@ package com.simpleryo.leyotang.activity;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -21,6 +23,9 @@ import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 
+import static android.widget.Toast.LENGTH_SHORT;
+import static android.widget.Toast.makeText;
+
 /**
  * @author huanglei
  * @ClassNname：RegisterActivity.java
@@ -28,7 +33,7 @@ import org.xutils.view.annotation.ViewInject;
  * @time 2018/3/21 14:08
  */
 @ContentView(R.layout.activity_register)
-public class RegisterActivity extends BaseActivity {
+public class RegisterActivity extends BaseActivity{
     @ViewInject(R.id.edittext_email)
     EditText edittext_email;
     @ViewInject(R.id.edittext_phone)
@@ -74,10 +79,6 @@ public class RegisterActivity extends BaseActivity {
                     Toast.makeText(RegisterActivity.this, "手机不能为空", Toast.LENGTH_SHORT).show();
                     return;
                 }
-//                if (!XStringPars.isMobileNO(phone)) {
-//                    Toast.makeText(RegisterActivity.this, "请输入正确的手机号", Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
                 if (code.isEmpty()) {
                     Toast.makeText(RegisterActivity.this, "验证码不能为空", Toast.LENGTH_SHORT).show();
                     return;
@@ -94,12 +95,12 @@ public class RegisterActivity extends BaseActivity {
                     Toast.makeText(RegisterActivity.this, "密码不一致", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (!XStringPars.isCorrectPwd(password)) {
-                    Toast.makeText(RegisterActivity.this, "请输入6-12位的数字和字母", Toast.LENGTH_SHORT).show();
+                if (password.length()<6) {
+                    Toast.makeText(RegisterActivity.this, "请输入6位以上密码", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (!XStringPars.isCorrectPwd(comfirmPassWord)) {
-                    Toast.makeText(RegisterActivity.this, "请输入6-12位的数字和字母", Toast.LENGTH_SHORT).show();
+                if (comfirmPassWord.length()<6) {
+                    Toast.makeText(RegisterActivity.this, "请输入6位以上密码", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -116,7 +117,6 @@ public class RegisterActivity extends BaseActivity {
                             Toast.makeText(RegisterActivity.this, registerBean.getMsg(), Toast.LENGTH_SHORT).show();
                         }
                     }
-
                     @Override
                     public void onFailure(HttpInfo info)   {
                         loadingDialog.dismiss();
@@ -127,11 +127,11 @@ public class RegisterActivity extends BaseActivity {
             case R.id.tv_get_code://获取验证码
                 phone = edittext_phone.getText().toString().trim();
                 if (phone.isEmpty()) {
-                    Toast.makeText(RegisterActivity.this, "手机不能为空", Toast.LENGTH_SHORT).show();
+                    makeText(RegisterActivity.this, "手机不能为空", LENGTH_SHORT).show();
                     return;
                 }
                 if (!XStringPars.isMobileNO(phone)) {
-                    Toast.makeText(RegisterActivity.this, "请输入正确的手机号", Toast.LENGTH_SHORT).show();
+                    makeText(RegisterActivity.this, "请输入正确的手机号", LENGTH_SHORT).show();
                     return;
                 }
                 mTime.start();
@@ -141,20 +141,37 @@ public class RegisterActivity extends BaseActivity {
                         loadingDialog.dismiss();
                         CodeBean codeBean = info.getRetDetail(CodeBean.class);
                         if (codeBean.getCode().equalsIgnoreCase("0")) {
-                            Toast.makeText(RegisterActivity.this, "验证码发送成功，请注意查收", Toast.LENGTH_SHORT).show();
+                            makeText(RegisterActivity.this, "验证码发送成功，请注意查收", LENGTH_SHORT).show();
                         }else{
-                            Toast.makeText(RegisterActivity.this, codeBean.getMsg(),Toast.LENGTH_SHORT).show();
+                            handler.sendEmptyMessage(6);
+                            makeText(RegisterActivity.this, codeBean.getMsg(), LENGTH_SHORT).show();
                         }
                     }
                     @Override
                     public void onFailure(HttpInfo info){
-
+                        makeText(RegisterActivity.this, "发送失败", LENGTH_SHORT).show();
+                        handler.sendEmptyMessage(6);
                     }
                 }, phone);
-
                 break;
         }
     }
+
+
+    Handler handler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 0:
+                    mTime.cancel();
+                    tv_get_code.setBackgroundResource(R.drawable.shape_get_code);
+                    tv_get_code.setText("获取验证码");
+                    tv_get_code.setClickable(true);
+                    break;
+            }
+        }
+    };
     class TimeCount extends CountDownTimer {
 
         public TimeCount(long millisInFuture, long countDownInterval) {

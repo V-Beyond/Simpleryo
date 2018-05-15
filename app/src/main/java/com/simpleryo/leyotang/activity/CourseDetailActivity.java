@@ -178,7 +178,7 @@ public class CourseDetailActivity extends BaseActivity  implements IWXAPIEventHa
         WXWebpageObject wxWebpageObject = new WXWebpageObject();
         wxWebpageObject.webpageUrl = SimpleryoNetwork.h5Url+"Main/CourseDetail?id="+courseId;//设置跳转的url
         final WXMediaMessage mediaMessage = new WXMediaMessage(wxWebpageObject);
-        mediaMessage.title = "乐友堂";//设置标题
+        mediaMessage.title = courseName;//设置标题
         mediaMessage.description = "我在乐友堂推荐你一个课程";//设置内容
         SendMessageToWX.Req  req = new SendMessageToWX.Req();
         req.transaction = "webpage";//分享类型为网页

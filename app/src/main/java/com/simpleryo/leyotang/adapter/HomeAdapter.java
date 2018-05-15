@@ -51,11 +51,11 @@ public class HomeAdapter extends BaseMultiAdapter<MultipleItem> {
     Context context;
     List<HomeDataBean.DataBeanX.BannersBean> images = new ArrayList<>();
     List<HomeDataBean.DataBeanX.CourseTypesBean> courseTypetBeans = new ArrayList<>();
-   HomeDataBean.DataBeanX.CoursesBeanX introductoryListBeans=new HomeDataBean.DataBeanX.CoursesBeanX();
-    HomeDataBean.DataBeanX.CoursesBeanX orderListBeans=new HomeDataBean.DataBeanX.CoursesBeanX();
-    HomeDataBean.DataBeanX.CoursesBeanX excellentListBeans=new HomeDataBean.DataBeanX.CoursesBeanX();
+    HomeDataBean.DataBeanX.CoursesBeanX introductoryListBeans = new HomeDataBean.DataBeanX.CoursesBeanX();
+    HomeDataBean.DataBeanX.CoursesBeanX orderListBeans = new HomeDataBean.DataBeanX.CoursesBeanX();
+    HomeDataBean.DataBeanX.CoursesBeanX excellentListBeans = new HomeDataBean.DataBeanX.CoursesBeanX();
     View view = null;
-//    MZBannerView bannerView;
+
     public HomeAdapter(Context context) {
         super(context);
         this.context = context;
@@ -113,11 +113,9 @@ public class HomeAdapter extends BaseMultiAdapter<MultipleItem> {
             return new BannerViewHolder(mInflater.inflate(R.layout.layout_banner, parent, false));
         } else if (viewType == MultipleItem.HOMECOURSETYPE) {
             return new CourseTypeViewHolder(mInflater.inflate(R.layout.layout_course_type, parent, false));
-        }
-        else if (viewType == MultipleItem.HOMEINTRODUCTORYCOURSE) {
+        } else if (viewType == MultipleItem.HOMEINTRODUCTORYCOURSE) {
             return new IntroductoryCourseViewHolder(mInflater.inflate(R.layout.layout_introductory_course, parent, false));
-        }
-        else if (viewType == MultipleItem.HOMEHOTCOURSE) {
+        } else if (viewType == MultipleItem.HOMEHOTCOURSE) {
             return new HotCourseViewHolder(mInflater.inflate(R.layout.layout_hot_course, parent, false));
         } else if (viewType == MultipleItem.HOMEEXCELLENT) {
             return new ExcellentCourseViewHolder(mInflater.inflate(R.layout.layout_excellent_course, parent, false));
@@ -147,9 +145,9 @@ public class HomeAdapter extends BaseMultiAdapter<MultipleItem> {
             ((IntroductoryCourseViewHolder) holder).lrecyclerview.removeItemDecoration(divider);
             ((IntroductoryCourseViewHolder) holder).lrecyclerview.addItemDecoration(divider);
             ((IntroductoryCourseViewHolder) holder).lrecyclerview.setHasFixedSize(false);
-            if (introductoryListBeans!=null&&introductoryListBeans.getCourses().size()>0){
+            if (introductoryListBeans != null && introductoryListBeans.getCourses().size() > 0) {
                 jingxuanAdapter.setDataList(introductoryListBeans.getCourses());
-            }else{
+            } else {
                 ((IntroductoryCourseViewHolder) holder).lrecyclerview.setEmptyView(((IntroductoryCourseViewHolder) holder).empty_view);
             }
             lRecyclerViewAdapter.notifyDataSetChanged();
@@ -157,17 +155,17 @@ public class HomeAdapter extends BaseMultiAdapter<MultipleItem> {
             lRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    context.startActivity(new Intent(mContext, CourseDetailActivity.class).putExtra("courseId",introductoryListBeans.getCourses().get(position).getId()));
+                    context.startActivity(new Intent(mContext, CourseDetailActivity.class).putExtra("courseId", introductoryListBeans.getCourses().get(position).getId()));
                 }
             });
             ((IntroductoryCourseViewHolder) holder).item_more_rihgt_more.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    context.startActivity(new Intent(mContext, CourseTypeActivity.class).putExtra("type","introductory"));
+                    context.startActivity(new Intent(mContext, CourseTypeActivity.class).putExtra("type", "introductory"));
                 }
             });
 
-        }  else  if (holder instanceof HotCourseViewHolder) {//热门课程
+        } else if (holder instanceof HotCourseViewHolder) {//热门课程
             ((HotCourseViewHolder) holder).textView.setText(orderListBeans.getTag().getName());
             LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
             ((HotCourseViewHolder) holder).lrecyclerview.setLayoutManager(layoutManager);
@@ -179,9 +177,9 @@ public class HomeAdapter extends BaseMultiAdapter<MultipleItem> {
             ((HotCourseViewHolder) holder).lrecyclerview.removeItemDecoration(divider);
             ((HotCourseViewHolder) holder).lrecyclerview.addItemDecoration(divider);
             ((HotCourseViewHolder) holder).lrecyclerview.setHasFixedSize(false);
-            if (orderListBeans!=null&&orderListBeans.getCourses().size()>0){
+            if (orderListBeans != null && orderListBeans.getCourses().size() > 0) {
                 jingxuanAdapter.setDataList(orderListBeans.getCourses());
-            }else{
+            } else {
                 ((HotCourseViewHolder) holder).lrecyclerview.setEmptyView(((HotCourseViewHolder) holder).empty_view);
             }
 
@@ -190,16 +188,16 @@ public class HomeAdapter extends BaseMultiAdapter<MultipleItem> {
             lRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    context.startActivity(new Intent(mContext, CourseDetailActivity.class).putExtra("courseId",orderListBeans.getCourses().get(position).getId()));
+                    context.startActivity(new Intent(mContext, CourseDetailActivity.class).putExtra("courseId", orderListBeans.getCourses().get(position).getId()));
                 }
             });
             ((HotCourseViewHolder) holder).item_more_rihgt_more.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    context.startActivity(new Intent(mContext, CourseTypeActivity.class).putExtra("type","hot"));
+                    context.startActivity(new Intent(mContext, CourseTypeActivity.class).putExtra("type", "hot"));
                 }
             });
-        }  else if (holder instanceof ExcellentCourseViewHolder) {//精选课程
+        } else if (holder instanceof ExcellentCourseViewHolder) {//精选课程
             ((ExcellentCourseViewHolder) holder).textView.setText(excellentListBeans.getTag().getName());
             LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
             ((ExcellentCourseViewHolder) holder).lrecyclerview.setLayoutManager(layoutManager);
@@ -211,9 +209,9 @@ public class HomeAdapter extends BaseMultiAdapter<MultipleItem> {
             ((ExcellentCourseViewHolder) holder).lrecyclerview.removeItemDecoration(divider);
             ((ExcellentCourseViewHolder) holder).lrecyclerview.addItemDecoration(divider);
             ((ExcellentCourseViewHolder) holder).lrecyclerview.setHasFixedSize(false);
-            if (excellentListBeans!=null&&excellentListBeans.getCourses().size()>0){
+            if (excellentListBeans != null && excellentListBeans.getCourses().size() > 0) {
                 excellentCourseAdapter.setDataList(excellentListBeans.getCourses());
-            }else{
+            } else {
                 ((ExcellentCourseViewHolder) holder).lrecyclerview.setEmptyView(((ExcellentCourseViewHolder) holder).empty_view);
             }
 
@@ -222,21 +220,21 @@ public class HomeAdapter extends BaseMultiAdapter<MultipleItem> {
             ((ExcellentCourseViewHolder) holder).item_more_rihgt_more.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    context.startActivity(new Intent(mContext, CourseTypeActivity.class).putExtra("type","excellent"));
+                    context.startActivity(new Intent(mContext, CourseTypeActivity.class).putExtra("type", "excellent"));
                 }
             });
             lRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    context.startActivity(new Intent(mContext, CourseDetailActivity.class).putExtra("courseId",excellentListBeans.getCourses().get(position).getId()));
+                    context.startActivity(new Intent(mContext, CourseDetailActivity.class).putExtra("courseId", excellentListBeans.getCourses().get(position).getId()));
                 }
             });
 
-        }else if(holder instanceof  CourseTypeViewHolder){
+        } else if (holder instanceof CourseTypeViewHolder) {
             ((CourseTypeViewHolder) holder).lrecyclerview.setNestedScrollingEnabled(false);
-            GridLayoutManager layoutManager = new GridLayoutManager(mContext,4);
+            GridLayoutManager layoutManager = new GridLayoutManager(mContext, 4);
             ((CourseTypeViewHolder) holder).lrecyclerview.setLayoutManager(layoutManager);
-             CourseTypeAdapter courseTypeAdapter = new CourseTypeAdapter(mContext);
+            CourseTypeAdapter courseTypeAdapter = new CourseTypeAdapter(mContext);
             LRecyclerViewAdapter lRecyclerViewAdapter = new LRecyclerViewAdapter(courseTypeAdapter);
             ((CourseTypeViewHolder) holder).lrecyclerview.setAdapter(lRecyclerViewAdapter);
             ((CourseTypeViewHolder) holder).lrecyclerview.setPullRefreshEnabled(false);
@@ -250,24 +248,20 @@ public class HomeAdapter extends BaseMultiAdapter<MultipleItem> {
             lRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    if (position==7){
-                        Intent intent=new Intent(mContext,AllCourseActivity.class);
+                    if (position == 7) {
+                        Intent intent = new Intent(mContext, AllCourseActivity.class);
                         context.startActivity(intent);
 
-                    }else{
-                        Intent intent=new Intent(mContext,CourseListActivity.class);
-                        intent.putExtra("type",courseTypetBeans.get(position).getName());
-                        intent.putExtra("tagId1",courseTypetBeans.get(position).getId());
+                    } else {
+                        Intent intent = new Intent(mContext, CourseListActivity.class);
+                        intent.putExtra("type", courseTypetBeans.get(position).getName());
+                        intent.putExtra("tagId1", courseTypetBeans.get(position).getId());
                         context.startActivity(intent);
-//                        Intent intent=new Intent(mContext,CourseDetailActivity.class);
-//                        intent.putExtra("courseId","");
-//                        context.startActivity(intent);
                     }
 
                 }
             });
-        }
-        else if(holder instanceof BannerViewHolder){
+        } else if (holder instanceof BannerViewHolder) {
             ((BannerViewHolder) holder).arcViewPager.mViewPager.setPages(images, new MZHolderCreator<BannerItemViewHolder>() {
                 @Override
                 public BannerItemViewHolder createViewHolder() {
@@ -275,12 +269,12 @@ public class HomeAdapter extends BaseMultiAdapter<MultipleItem> {
                 }
             });
             ((BannerViewHolder) holder).arcViewPager.mViewPager.start();
-            ((BannerViewHolder) holder).arcViewPager.mViewPager.setIndicatorRes(R.drawable.indicator_normal,R.drawable.indicator_selected);
+            ((BannerViewHolder) holder).arcViewPager.mViewPager.setIndicatorRes(R.drawable.indicator_normal, R.drawable.indicator_selected);
         }
 
     }
 
-    public  class BannerItemViewHolder implements MZViewHolder<HomeDataBean.DataBeanX.BannersBean> {
+    public class BannerItemViewHolder implements MZViewHolder<HomeDataBean.DataBeanX.BannersBean> {
         private ImageView iv_viewpager_item;
 
         @Override
@@ -298,13 +292,12 @@ public class HomeAdapter extends BaseMultiAdapter<MultipleItem> {
             iv_viewpager_item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (data.getCod().equalsIgnoreCase("STORE")){
-                        mContext.startActivity(new Intent(mContext, BusinessHomeActivty.class).putExtra("storeId",data.getRefId()));
-                    }else if(data.getCod().equalsIgnoreCase("COURSE")){
-                        mContext.startActivity(new Intent(mContext, CourseDetailActivity.class).putExtra("courseId",data.getRefId()));
-                    }
-                    else if(data.getCod().equalsIgnoreCase("NOTICE")){
-                        mContext.startActivity(new Intent(mContext, MyNoticeActivity.class).putExtra("msg_id",data.getRefId()));
+                    if (data.getCod().equalsIgnoreCase("STORE")) {
+                        mContext.startActivity(new Intent(mContext, BusinessHomeActivty.class).putExtra("storeId", data.getRefId()));
+                    } else if (data.getCod().equalsIgnoreCase("COURSE")) {
+                        mContext.startActivity(new Intent(mContext, CourseDetailActivity.class).putExtra("courseId", data.getRefId()));
+                    } else if (data.getCod().equalsIgnoreCase("NOTICE")) {
+                        mContext.startActivity(new Intent(mContext, MyNoticeActivity.class).putExtra("msg_id", data.getRefId()));
                     }
                 }
             });
@@ -313,15 +306,9 @@ public class HomeAdapter extends BaseMultiAdapter<MultipleItem> {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void BusMain(BusEntity bus) {
-        if (bus.getType()==121){
-            HomeDataBean.DataBeanX.CoursesBeanX.CoursesBean coursesBean=bus.getCoursesBean();
-            EventBus.getDefault().post(new BusEntity(122,coursesBean));
+        if (bus.getType() == 121) {
+            HomeDataBean.DataBeanX.CoursesBeanX.CoursesBean coursesBean = bus.getCoursesBean();
+            EventBus.getDefault().post(new BusEntity(122, coursesBean));
         }
-//        if (bus.getType() == 444) {
-//            bannerView.pause();
-//        }
-//        if (bus.getType() == 555) {
-//            bannerView.start();
-//        }
     }
 }

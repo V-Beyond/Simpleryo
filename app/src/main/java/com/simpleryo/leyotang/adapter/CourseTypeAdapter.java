@@ -11,14 +11,11 @@ import com.simpleryo.leyotang.viewholder.SuperViewHolder;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
-
 /**
+ * @ClassNname：CourseTypeAdapter.java
+ * @Describe 课程分类适配器
  * @author huanglei
- * @version V1.0
- * @Title: JingXuanAdapter
- * @Package com.hpkj.kexue.adapter
- * @Description: 精选推荐item适配器
- * @date 2017/11/10 18:55
+ * @time 2018/5/14 10:11
  */
 
 public class CourseTypeAdapter extends BaseAdapter<HomeDataBean.DataBeanX.CourseTypesBean> {
@@ -43,28 +40,11 @@ public class CourseTypeAdapter extends BaseAdapter<HomeDataBean.DataBeanX.Course
     @Override
     public void onBindItemHolder(SuperViewHolder holder, int position) {
         final HomeDataBean.DataBeanX.CourseTypesBean bean = listData.get(position);
-//        if (position == 0) {
-//            ((CourseTypeItemViewHolder) holder).iv_course_type.setImageResource(R.mipmap.iv_course_one);
-//        } else if (position == 1) {
-//            ((CourseTypeItemViewHolder) holder).iv_course_type.setImageResource(R.mipmap.iv_course_two);
-//        } else if (position == 2) {
-//            ((CourseTypeItemViewHolder) holder).iv_course_type.setImageResource(R.mipmap.iv_course_three);
-//        } else if (position == 3) {
-//            ((CourseTypeItemViewHolder) holder).iv_course_type.setImageResource(R.mipmap.iv_course_four);
-//        } else if (position == 4) {
-//            ((CourseTypeItemViewHolder) holder).iv_course_type.setImageResource(R.mipmap.iv_course_five);
-//        } else if (position == 5) {
-//            ((CourseTypeItemViewHolder) holder).iv_course_type.setImageResource(R.mipmap.iv_course_six);
-//        } else if (position == 6) {
-//            ((CourseTypeItemViewHolder) holder).iv_course_type.setImageResource(R.mipmap.iv_course_seven);
-//        } else if (position == 7) {
-//            ((CourseTypeItemViewHolder) holder).iv_course_type.setImageResource(R.mipmap.iv_course_eight);
-//        }
-        Picasso.with(mContext).load(bean.getImageUrl()).transform(transformation).into(((CourseTypeItemViewHolder) holder).iv_course_type);
         if (position==7){
-            ((CourseTypeItemViewHolder) holder).tv_course_type.setText("更多");
+            ((CourseTypeItemViewHolder) holder).iv_course_type.setImageResource(R.mipmap.iv_course_more);
+            ((CourseTypeItemViewHolder) holder).tv_course_type.setText("更多分类");
         }else{
-
+            Picasso.with(mContext).load(bean.getImageUrl()).transform(transformation).into(((CourseTypeItemViewHolder) holder).iv_course_type);
             ((CourseTypeItemViewHolder) holder).tv_course_type.setText(bean.getName());
         }
 
