@@ -51,6 +51,9 @@ public class BusinessCoachAdapter extends BaseAdapter<CoachListBean.DataBean> {
             }else{
                 ((CoachItemViewHolder) holder).tv_name.setText("暂无昵称");
             }
+            ((CoachItemViewHolder) holder).rating_bar.setRating(Float.parseFloat(bean.getPoint()));
+            ((CoachItemViewHolder) holder).tv_coach_count.setText(bean.getStudentCount());
+            ((CoachItemViewHolder) holder).tv_point.setText(bean.getPoint());
     }
     @Override
     public int getItemCount() {

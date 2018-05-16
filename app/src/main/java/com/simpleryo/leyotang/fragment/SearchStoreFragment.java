@@ -5,9 +5,13 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.jdsjlzx.ItemDecoration.GridItemDecoration;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
@@ -77,7 +81,7 @@ public class SearchStoreFragment extends XLibraryLazyFragment {
          divider = new GridItemDecoration.Builder(getActivity())
                 .setHorizontal(30f)
                 .setVertical(30f)
-                .setColorResource(R.color.color_transparent)
+                    .setColorResource(R.color.color_transparent)
                 .build();
 
         lrecyclerview.setLayoutManager(new GridLayoutManager(getActivity(),2));
@@ -89,8 +93,32 @@ public class SearchStoreFragment extends XLibraryLazyFragment {
                 startActivity(new Intent(getActivity(), BusinessHomeActivty.class).putExtra("storeId",orderListBeans.get(position).getStoreInfo().getId()));
             }
         });
+        //监听输入框搜索事件
+        CourseSearchActivity.edittext_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    storeName=v.getText().toString().trim();
+                    if(!storeName.isEmpty()){
+                        initExcellentCourse(storeName);
+                    }else{
+                        Toast.makeText(getActivity(),"请输入要搜索的内容",Toast.LENGTH_SHORT).show();
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
         String edittextContent=CourseSearchActivity.edittext_search.getText().toString();
-        initExcellentCourse(edittextContent);
+        if (!edittextContent.isEmpty()){
+            initExcellentCourse(edittextContent);
+        }else{
+            lrecyclerview.setEmptyView(mEmptyView);//设置在setAdapter之前才能生效
+            lrecyclerview.setAdapter(lRecyclerViewAdapter);
+            lrecyclerview.refreshComplete(orderListBeans.size());
+            storeListAdapter.notifyDataSetChanged();
+            lRecyclerViewAdapter.notifyDataSetChanged();
+        }
         CourseSearchActivity.edittext_search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -99,7 +127,18 @@ public class SearchStoreFragment extends XLibraryLazyFragment {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 storeName=charSequence.toString().trim();
-                initExcellentCourse(storeName);
+//                if(!storeName.isEmpty()){
+                    initExcellentCourse(storeName);
+//                }else{
+//                    if (orderListBeans!=null&&orderListBeans.size()>0){
+//                        orderListBeans.clear();
+//                    }
+//                    lrecyclerview.setEmptyView(mEmptyView);//设置在setAdapter之前才能生效
+//                    lrecyclerview.setAdapter(lRecyclerViewAdapter);
+//                    lrecyclerview.refreshComplete(orderListBeans.size());
+//                    storeListAdapter.notifyDataSetChanged();
+//                    lRecyclerViewAdapter.notifyDataSetChanged();
+//                }
             }
 
             @Override

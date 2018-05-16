@@ -81,7 +81,7 @@ public class BusinessCourseAdapter extends BaseAdapter<CourseListBean.DataBeanX>
                 EventBus.getDefault().post(new BusEntity(1003,bean.getId(),bean.isHasCollect()));//收藏or取消收藏
             }
         });
-        ((ExcellentCourseItemViewHolder) holder).tv_price.setText(XStringPars.foramtPrice(Integer.valueOf(bean.getPrice()))+"$/hour");
+        ((ExcellentCourseItemViewHolder) holder).tv_price.setText(XStringPars.foramtPrice(Integer.valueOf(bean.getPrice()))+"$/"+course_price);
         int collectCount=bean.getCollectCount();
         ((ExcellentCourseItemViewHolder) holder).tv_popular.setText(collectCount+" people");
 

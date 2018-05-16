@@ -48,7 +48,7 @@ public class ExcellentCourseAdapter extends BaseAdapter<HomeDataBean.DataBeanX.C
         int collectCount=bean.getCollectCount();
         Picasso.with(mContext).load(bean.getCoverUrl()).transform(raduisTransformation).into(((ExcellentCourseItemViewHolder) holder).iv_collection_img);
         ((ExcellentCourseItemViewHolder) holder).tv_collection_name.setText(bean.getName());
-        ((ExcellentCourseItemViewHolder) holder).tv_price.setText(XStringPars.foramtPrice(Integer.valueOf(bean.getPrice()))+"$/hour");
+        ((ExcellentCourseItemViewHolder) holder).tv_price.setText(XStringPars.foramtPrice(Integer.valueOf(bean.getPrice()))+"$/"+course_price);
         ((ExcellentCourseItemViewHolder) holder).tv_popular.setText(collectCount+" people");
         // 创建一个数值格式化对象
         NumberFormat numberFormat = NumberFormat.getInstance();

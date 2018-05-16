@@ -132,7 +132,7 @@ public class MyCourseDetailActivity extends BaseActivity implements OnMapReadyCa
                     }
                     tv_store_name.setText("机构：" + orderDetailBean.getData().getStore().getName());
                     tv_course_duration.setText("上课时间：" + orderDetailBean.getData().getCourse().getDurations().getStartDate() + "至" + orderDetailBean.getData().getCourse().getDurations().getEndDate());
-                    tv_course_address.setText("上课方式：线下授课，授课地点：" + orderDetailBean.getData().getStore().getAddress().getDetail());
+                    tv_course_address.setText("上课方式：线下授课，授课地点：" + orderDetailBean.getData().getCourse().getAddress().getDetail());
                     lat = orderDetailBean.getData().getStore().getAddress().getLat();
                     lng = orderDetailBean.getData().getStore().getAddress().getLng();
                 }

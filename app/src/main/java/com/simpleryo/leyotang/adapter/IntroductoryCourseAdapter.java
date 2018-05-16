@@ -54,7 +54,7 @@ public class IntroductoryCourseAdapter extends BaseAdapter<HomeDataBean.DataBean
         int collectCount=bean.getCollectCount();
         Picasso.with(mContext).load(bean.getCoverUrl()).transform(raduisTransformation).into(((IntroductoryCourseItemViewHolder) holder).iv_collection_img);
         ((IntroductoryCourseItemViewHolder) holder).tv_collection_name.setText(bean.getName());
-        ((IntroductoryCourseItemViewHolder) holder).tv_price.setText(XStringPars.foramtPrice(Integer.valueOf(bean.getPrice()))+"$/hour");
+        ((IntroductoryCourseItemViewHolder) holder).tv_price.setText(XStringPars.foramtPrice(Integer.valueOf(bean.getPrice()))+"$/"+course_price);
         ((IntroductoryCourseItemViewHolder) holder).tv_popular.setText(collectCount+" people");
         // 创建一个数值格式化对象
         NumberFormat numberFormat = NumberFormat.getInstance();

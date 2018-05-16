@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.makeramen.roundedimageview.RoundedTransformationBuilder;
+import com.simpleryo.leyotang.R;
 import com.simpleryo.leyotang.viewholder.SuperViewHolder;
 import com.squareup.picasso.Transformation;
 
@@ -27,6 +28,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<SuperViewHolde
     LayoutInflater layoutInflater;
     public List<T> listData = new ArrayList<>();
     Context mContext;
+    String  course_price;
     public Transformation transformation = new RoundedTransformationBuilder()
             .cornerRadiusDp(30)
             .oval(true)
@@ -38,6 +40,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<SuperViewHolde
     public BaseAdapter(Context context) {
         mContext = context;
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        course_price=context.getResources().getString(R.string.course_price);
     }
 
     /**

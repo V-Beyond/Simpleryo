@@ -133,7 +133,7 @@ public class OrderDetailActivity extends BaseActivity {
                 if (orderDetailBean.getData().getUserRemark()!=null){
                     tv_buyer_remark.setText(orderDetailBean.getData().getUserRemark());
                 }else{
-                    tv_buyer_remark.setText("暂无备注");
+                    tv_buyer_remark.setText("暂无");
                 }
 
                 payType = orderDetailBean.getData().getPayType();

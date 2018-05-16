@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.makeramen.roundedimageview.RoundedTransformationBuilder;
+import com.simpleryo.leyotang.R;
 import com.simpleryo.leyotang.bean.MultiItemEntity;
 import com.simpleryo.leyotang.interfaces.IExpandable;
 import com.simpleryo.leyotang.viewholder.SuperViewHolder;
@@ -52,10 +53,11 @@ public abstract class BaseMultiAdapter<T extends MultiItemEntity> extends Recycl
     private static final int DEFAULT_VIEW_TYPE = -0xff;
 
     protected List<T> mDataList = new ArrayList<>();
-
+    String  course_price;
     public BaseMultiAdapter(Context context) {
         mContext = context;
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        course_price=context.getResources().getString(R.string.course_price);
     }
 
     @Override

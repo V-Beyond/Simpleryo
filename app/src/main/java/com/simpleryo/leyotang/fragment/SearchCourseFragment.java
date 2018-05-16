@@ -101,14 +101,22 @@ public class SearchCourseFragment extends XLibraryLazyFragment {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    searchCourse(v.getText().toString());
+                    courseName=v.getText().toString().trim();
+                    if(!courseName.isEmpty()){
+                        searchCourse(courseName);
+                    }else{
+                        Toast.makeText(getActivity(),"请输入要搜索的内容",Toast.LENGTH_SHORT).show();
+                    }
                     return true;
                 }
                 return false;
             }
         });
         String edittextContent = CourseSearchActivity.edittext_search.getText().toString();
-        searchCourse(edittextContent);
+        if (!edittextContent.isEmpty()){
+            searchCourse(edittextContent);
+        }
+
         CourseSearchActivity.edittext_search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -118,7 +126,18 @@ public class SearchCourseFragment extends XLibraryLazyFragment {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 courseName=charSequence.toString().trim();
-                searchCourse(courseName);
+//                if(!courseName.isEmpty()){
+                    searchCourse(courseName);
+//                }else{
+//                    if (hotCourseList != null && hotCourseList.size() > 0) {
+//                        hotCourseList.clear();
+//                    }
+//                    lrecyclerview.setEmptyView(mEmptyView);//设置在setAdapter之前才能生效
+//                    lrecyclerview.setAdapter(lRecyclerViewAdapter);
+//                    lrecyclerview.refreshComplete(hotCourseList.size());
+//                    searchHotCourseAdapter.notifyDataSetChanged();
+//                    lRecyclerViewAdapter.notifyDataSetChanged();
+//                }
             }
 
             @Override

@@ -171,7 +171,7 @@ public class MyOrderAdapter extends BaseMultiAdapter<MultipleItem> {
                     Picasso.with(context).load(dataBean.getCoverUrl()).transform(transformation).into(((MyCollectionViewHolder) holder).iv_collection_img);
                 }
                 ((MyCollectionViewHolder) holder).tv_collection_name.setText(dataBean.getName());
-                ((MyCollectionViewHolder) holder).tv_price.setText(XStringPars.foramtPrice(dataBean.getPrice())+"$/hour");
+                ((MyCollectionViewHolder) holder).tv_price.setText(XStringPars.foramtPrice(dataBean.getPrice())+"$/"+course_price);
 
                 int collectCount= Integer.parseInt(dataBean.getCollectCount());
                 // 创建一个数值格式化对象

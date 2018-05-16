@@ -5,7 +5,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
@@ -92,6 +94,21 @@ public class CourseSearchActivity extends BaseActivity {
         course_lrecyclerview.setHasFixedSize(true);
         course_lrecyclerview.setLoadMoreEnabled(false);
         course_lrecyclerview.setPullRefreshEnabled(false);
+        edittext_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    if(!v.getText().toString().trim().isEmpty()){
+                        course_lrecyclerview.setVisibility(View.GONE);
+                        ll_search_main.setVisibility(View.VISIBLE);
+                    }else{
+                        Toast.makeText(CourseSearchActivity.this,"请输入要搜索的内容",Toast.LENGTH_SHORT).show();
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
         edittext_search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -103,10 +120,11 @@ public class CourseSearchActivity extends BaseActivity {
                 if (charSequence.length()>0){
                     course_lrecyclerview.setVisibility(View.GONE);
                     ll_search_main.setVisibility(View.VISIBLE);
-                }else{
-                    course_lrecyclerview.setVisibility(View.VISIBLE);
-                    ll_search_main.setVisibility(View.GONE);
                 }
+//                else{
+//                    course_lrecyclerview.setVisibility(View.VISIBLE);
+//                    ll_search_main.setVisibility(View.GONE);
+//                }
             }
 
             @Override

@@ -68,7 +68,7 @@ public class CourseListTypeAdapter extends BaseMultiAdapter<MultipleItem> {
         if (holder instanceof HotCourseItemViewHolder){
             Picasso.with(mContext).load(bean.getCourseListBean().getCoverUrl()).into(((HotCourseItemViewHolder) holder).iv_collection_img);
             ((HotCourseItemViewHolder) holder).tv_collection_name.setText(bean.getCourseListBean().getName());
-            ((HotCourseItemViewHolder) holder).tv_price.setText(XStringPars.foramtPrice(Integer.valueOf(bean.getCourseListBean().getPrice()))+"$/hour");
+            ((HotCourseItemViewHolder) holder).tv_price.setText(XStringPars.foramtPrice(Integer.valueOf(bean.getCourseListBean().getPrice()))+"$/"+course_price);
             ((HotCourseItemViewHolder) holder).tv_popular.setText(bean.getCourseListBean().getClassCount()+" people");
             if (bean.getCourseListBean().isHasCollect()){
                 ((HotCourseItemViewHolder) holder).iv_collection_star.setImageResource(R.mipmap.iv_collection_star);
@@ -85,7 +85,7 @@ public class CourseListTypeAdapter extends BaseMultiAdapter<MultipleItem> {
         if (holder instanceof ExcellentCourseItemViewHolder){
             Picasso.with(mContext).load(bean.getCourseListBean().getCoverUrl()).into(((ExcellentCourseItemViewHolder) holder).iv_collection_img);
             ((ExcellentCourseItemViewHolder) holder).tv_collection_name.setText(bean.getCourseListBean().getName());
-            ((ExcellentCourseItemViewHolder) holder).tv_price.setText(XStringPars.foramtPrice(Integer.valueOf(bean.getCourseListBean().getPrice()))+"$/hour");
+            ((ExcellentCourseItemViewHolder) holder).tv_price.setText(XStringPars.foramtPrice(Integer.valueOf(bean.getCourseListBean().getPrice()))+"$/"+course_price);
             ((ExcellentCourseItemViewHolder) holder).tv_popular.setText(bean.getCourseListBean().getClassCount()+" people");
             if (bean.getCourseListBean().isHasCollect()){
                 ((ExcellentCourseItemViewHolder) holder).iv_collection_star.setImageResource(R.mipmap.iv_collection_star);
@@ -102,7 +102,7 @@ public class CourseListTypeAdapter extends BaseMultiAdapter<MultipleItem> {
         if (holder instanceof IntroductoryCourseItemViewHolder){
             Picasso.with(mContext).load(bean.getCourseListBean().getCoverUrl()).into(((IntroductoryCourseItemViewHolder) holder).iv_collection_img);
             ((IntroductoryCourseItemViewHolder) holder).tv_collection_name.setText(bean.getCourseListBean().getName());
-            ((IntroductoryCourseItemViewHolder) holder).tv_price.setText(XStringPars.foramtPrice(Integer.valueOf(bean.getCourseListBean().getPrice()))+"$/hour");
+            ((IntroductoryCourseItemViewHolder) holder).tv_price.setText(XStringPars.foramtPrice(Integer.valueOf(bean.getCourseListBean().getPrice()))+"$/"+course_price);
             ((IntroductoryCourseItemViewHolder) holder).tv_popular.setText(bean.getCourseListBean().getClassCount()+" people");
             if (bean.getCourseListBean().isHasCollect()){
                 ((IntroductoryCourseItemViewHolder) holder).iv_collection_star.setImageResource(R.mipmap.iv_collection_star);

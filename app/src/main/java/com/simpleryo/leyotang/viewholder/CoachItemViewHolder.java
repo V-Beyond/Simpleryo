@@ -2,6 +2,7 @@ package com.simpleryo.leyotang.viewholder;
 
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.simpleryo.leyotang.R;
@@ -20,6 +21,12 @@ public class CoachItemViewHolder extends SuperViewHolder {
     public  TextView tv_name;
     @ViewInject(R.id.iv_coach_img)
     public ImageView iv_coach_img;
+    @ViewInject(R.id.rating_bar)
+    public RatingBar rating_bar;
+    @ViewInject(R.id.tv_coach_count)
+    public TextView tv_coach_count;
+    @ViewInject(R.id.tv_point)
+    public  TextView tv_point;
 
     public CoachItemViewHolder(View itemView) {
         super(itemView);

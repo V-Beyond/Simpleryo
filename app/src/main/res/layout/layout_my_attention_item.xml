@@ -73,7 +73,7 @@
                 android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/tv_to_store_detail"
-                android:background="@drawable/shape_register"
+                android:background="@drawable/shape_store_attention"
                 android:textColor="@color/color_ffffff"
                 android:layout_width="wrap_content"
                 android:layout_alignParentRight="true"
