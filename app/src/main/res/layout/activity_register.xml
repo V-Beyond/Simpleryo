@@ -6,9 +6,11 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="606px"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="50px"
+        android:layout_marginRight="50px"
         android:layout_marginTop="224px"
         android:background="@drawable/shape_my"
         android:orientation="vertical"
@@ -16,7 +18,7 @@
         android:paddingRight="62px">
 
         <LinearLayout
-            android:layout_width="490px"
+            android:layout_width="match_parent"
             android:layout_height="62px"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="50px"
@@ -62,7 +64,7 @@
                 android:background="@null"
                 android:drawablePadding="15px"
                 android:inputType="number"
-                android:hint="请输入手机号"
+                android:hint="请输入以02开头的手机号"
                 android:paddingLeft="20px"
                 android:textSize="30px" />
 

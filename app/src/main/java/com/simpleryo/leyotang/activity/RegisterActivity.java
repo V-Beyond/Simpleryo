@@ -130,10 +130,10 @@ public class RegisterActivity extends BaseActivity{
                     makeText(RegisterActivity.this, "手机不能为空", LENGTH_SHORT).show();
                     return;
                 }
-                if (!XStringPars.isMobileNO(phone)) {
-                    makeText(RegisterActivity.this, "请输入正确的手机号", LENGTH_SHORT).show();
-                    return;
-                }
+//                if (!XStringPars.isMobileNO(phone)) {
+//                    makeText(RegisterActivity.this, "请输入正确的手机号", LENGTH_SHORT).show();
+//                    return;
+//                }
                 mTime.start();
                 SimpleryoNetwork.userGetCode(RegisterActivity.this, new MyBaseProgressCallbackImpl(RegisterActivity.this) {
                     @Override
@@ -163,7 +163,7 @@ public class RegisterActivity extends BaseActivity{
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
-                case 0:
+                case 6:
                     mTime.cancel();
                     tv_get_code.setBackgroundResource(R.drawable.shape_get_code);
                     tv_get_code.setText("获取验证码");
