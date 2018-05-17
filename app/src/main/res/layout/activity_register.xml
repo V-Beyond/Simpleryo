@@ -14,8 +14,8 @@
         android:layout_marginTop="224px"
         android:background="@drawable/shape_my"
         android:orientation="vertical"
-        android:paddingLeft="53px"
-        android:paddingRight="62px">
+        android:paddingLeft="30px"
+        android:paddingRight="30px">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,7 +39,8 @@
                 android:background="@null"
                 android:hint="邮箱账号"
                 android:paddingLeft="15px"
-                android:textSize="30px" />
+                android:singleLine="true"
+                android:textSize="28px" />
         </LinearLayout>
 
         <RelativeLayout
@@ -64,9 +65,10 @@
                 android:background="@null"
                 android:drawablePadding="15px"
                 android:inputType="number"
+                android:singleLine="true"
                 android:hint="请输入以02开头的手机号"
                 android:paddingLeft="20px"
-                android:textSize="30px" />
+                android:textSize="28px" />
 
             <TextView
                 android:id="@+id/tv_get_code"
@@ -104,11 +106,12 @@
                 android:id="@+id/edittext_code"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:singleLine="true"
                 android:background="@null"
                 android:hint="输入验证码"
                 android:paddingLeft="20px"
                 android:inputType="number"
-                android:textSize="30px" />
+                android:textSize="28px" />
         </LinearLayout>
 
         <LinearLayout
@@ -131,9 +134,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@null"
+                android:singleLine="true"
                 android:hint="请输入密码"
                 android:paddingLeft="20px"
-                android:textSize="30px" />
+                android:textSize="28px" />
         </LinearLayout>
 
         <LinearLayout
@@ -156,9 +160,10 @@
                 android:inputType="textPassword"
                 android:layout_height="match_parent"
                 android:background="@null"
+                android:singleLine="true"
                 android:hint="请再次输入密码"
                 android:paddingLeft="20px"
-                android:textSize="30px" />
+                android:textSize="28px" />
         </LinearLayout>
 
         <TextView

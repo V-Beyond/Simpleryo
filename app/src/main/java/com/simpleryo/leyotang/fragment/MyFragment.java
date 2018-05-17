@@ -248,6 +248,8 @@ public class MyFragment extends XLibraryLazyFragment {
             } else {
                 tv_exit.setVisibility(View.GONE);
                 tv_nickname.setText("未登录");
+                tv_collection.setText("0");
+                tv_attention.setText("0");
                 Picasso.with(getContext().getApplicationContext()).load("http://p2.so.qhmsg.com/bdr/_240_/t0118ff1cab46ddba27.jpg").transform(transformation).into(iv_avatar);
             }
         }
