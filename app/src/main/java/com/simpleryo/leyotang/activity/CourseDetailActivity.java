@@ -2,8 +2,6 @@ package com.simpleryo.leyotang.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -27,17 +25,8 @@ import com.simpleryo.leyotang.network.SimpleryoNetwork;
 import com.simpleryo.leyotang.utils.SharedPreferencesUtils;
 import com.simpleryo.leyotang.utils.XActivityUtils;
 import com.simpleryo.leyotang.utils.XStringPars;
-import com.simpleryo.leyotang.wxapi.Constants;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
-import com.tencent.mm.opensdk.modelbase.BaseReq;
-import com.tencent.mm.opensdk.modelbase.BaseResp;
-import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
-import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
-import com.tencent.mm.opensdk.modelmsg.WXWebpageObject;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
@@ -52,12 +41,6 @@ import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-
 /**
  * @author huanglei
  * @ClassNname：MyCourse.java
@@ -65,7 +48,7 @@ import java.net.URL;
  * @time 2018/3/19 13:28
  */
 @ContentView(R.layout.activity_course_detail)
-public class CourseDetailActivity extends BaseActivity  implements IWXAPIEventHandler {
+public class CourseDetailActivity extends BaseActivity    {
     @ViewInject(R.id.tv_name)
     TextView tv_name;
     @ViewInject(R.id.tv_share)
@@ -120,8 +103,6 @@ public class CourseDetailActivity extends BaseActivity  implements IWXAPIEventHa
             .build();
     public final static String CSS_STYLE = "<style>* {font-size:14px;line-height:20px;}p {color:#373737;font-size:12px}</style>";
     UMShareAPI umShareAPI;//友盟分享
-    private IWXAPI api;
-    Bitmap bitmap;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,18 +113,14 @@ public class CourseDetailActivity extends BaseActivity  implements IWXAPIEventHa
         EventBus.getDefault().register(this);//注册EventBus
         courseId = getIntent().getStringExtra("courseId");
         isLogin = SharedPreferencesUtils.getKeyBoolean("isLogin");
-        api = WXAPIFactory.createWXAPI(this, Constants.APP_ID, false);
-        api.registerApp(Constants.APP_ID);
-        try {
-            api.handleIntent(getIntent(), this);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        if (dialog!=null){
+            dialog.dismiss();
+        }
         isLogin = SharedPreferencesUtils.getKeyBoolean("isLogin");//获取用户登录状态
         EventBus.getDefault().post(new BusEntity(113));
     }
@@ -178,67 +155,18 @@ public class CourseDetailActivity extends BaseActivity  implements IWXAPIEventHa
 
     String courseName;
     String coverUrl;
-    /**
-     * 根据图片的url路径获得Bitmap对象
-     * @param url
-     * @return
-     */
-    private Bitmap returnBitmap(String url) {
-        URL fileUrl = null;
-        Bitmap bitmap = null;
-        try {
-            fileUrl = new URL(url);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        try {
-            HttpURLConnection conn = (HttpURLConnection) fileUrl
-                    .openConnection();
-            conn.setDoInput(true);
-            conn.connect();
-            InputStream is = conn.getInputStream();
-            bitmap = BitmapFactory.decodeStream(is);
-            is.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return bitmap;
-
-    }
-    /**
-     * 微信原生SDK分享
-     * @param type
-     */
-    public void shareToWeiXin(int type){
-        WXWebpageObject wxWebpageObject = new WXWebpageObject();
-        wxWebpageObject.webpageUrl = SimpleryoNetwork.h5Url+"Main/CourseDetail?id="+courseId;//设置跳转的url
-        final WXMediaMessage mediaMessage = new WXMediaMessage(wxWebpageObject);
-        mediaMessage.title = courseName;//设置标题
-        mediaMessage.description = "我在乐友堂推荐你一个课程";//设置内容
-        if (bitmap!=null){
-            mediaMessage.setThumbImage(bitmap);
-        }
-        SendMessageToWX.Req  req = new SendMessageToWX.Req();
-        req.transaction = "webpage";//分享类型为网页
-        req.message = mediaMessage;//分享的内容为上面的信息
-        req.scene = type;//设置分享到微信好友OR朋友圈
-        api.sendReq(req);
-    }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updateCollect(BusEntity bus) {
         if (bus.getType() == 701) {//微信
-            if (api.isWXAppInstalled()) {
-//                share(SHARE_MEDIA.WEIXIN);
-                shareToWeiXin(SendMessageToWX.Req.WXSceneSession);
+            if (umShareAPI.isInstall(CourseDetailActivity.this,SHARE_MEDIA.WEIXIN)) {
+                share(SHARE_MEDIA.WEIXIN);
             } else {
                 Toast.makeText(CourseDetailActivity.this, "请安装微信客户端", Toast.LENGTH_SHORT).show();
             }
         }
         if (bus.getType() == 702) {//朋友圈
-            if (api.isWXAppInstalled()) {
-//                share(SHARE_MEDIA.WEIXIN_CIRCLE);
-                shareToWeiXin(SendMessageToWX.Req.WXSceneTimeline);
+            if (umShareAPI.isInstall(CourseDetailActivity.this,SHARE_MEDIA.WEIXIN)) {
+                share(SHARE_MEDIA.WEIXIN_CIRCLE);
             } else {
                 Toast.makeText(CourseDetailActivity.this, "请安装微信客户端", Toast.LENGTH_SHORT).show();
             }
@@ -251,7 +179,6 @@ public class CourseDetailActivity extends BaseActivity  implements IWXAPIEventHa
         }
         if (bus.getType() == 222) {
             getStoreDetail(storeId);
-            bitmap=returnBitmap(coverUrl);
         }
         if (bus.getType() == 113) {//获取课程详情
             SimpleryoNetwork.getCourseDetail(CourseDetailActivity.this, new MyBaseProgressCallbackImpl(CourseDetailActivity.this) {
@@ -561,22 +488,5 @@ public class CourseDetailActivity extends BaseActivity  implements IWXAPIEventHa
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
-    public void onReq(BaseReq baseReq) {
-
-    }
-
-    @Override
-    public void onResp(BaseResp baseResp) {
-
-    }
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-
-        setIntent(intent);
-        api.handleIntent(intent, this);
     }
 }

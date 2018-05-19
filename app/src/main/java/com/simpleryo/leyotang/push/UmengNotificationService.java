@@ -2,8 +2,8 @@ package com.simpleryo.leyotang.push;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
-import com.tencent.mm.opensdk.utils.Log;
 import com.umeng.message.UmengMessageService;
 
 import org.android.agoo.common.AgooConstants;

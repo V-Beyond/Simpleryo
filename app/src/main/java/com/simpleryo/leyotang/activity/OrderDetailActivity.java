@@ -181,10 +181,10 @@ public class OrderDetailActivity extends BaseActivity {
     private void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_msg:
-                XActivityUtils.getInstance().popActivity(OrderDetailActivity.this);
+                startActivity(new Intent(OrderDetailActivity.this,MyMsgActivity.class));
                 break;
             case R.id.iv_back:
-                startActivity(new Intent(OrderDetailActivity.this,MyMsgActivity.class));
+                XActivityUtils.getInstance().popActivity(OrderDetailActivity.this);
                 break;
             case R.id.tv_detail:
                 if (payType.equalsIgnoreCase("ALIPAY")) {

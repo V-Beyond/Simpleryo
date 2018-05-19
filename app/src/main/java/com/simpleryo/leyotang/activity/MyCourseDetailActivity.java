@@ -131,7 +131,21 @@ public class MyCourseDetailActivity extends BaseActivity implements OnMapReadyCa
                         tv_order_course_name.setText("课程名称：无");
                     }
                     tv_store_name.setText("机构：" + orderDetailBean.getData().getStore().getName());
-                    tv_course_duration.setText("上课时间：" + orderDetailBean.getData().getCourse().getDurations().getStartDate() + "至" + orderDetailBean.getData().getCourse().getDurations().getEndDate());
+                    //上课时间
+                    if (orderDetailBean.getData().getCourse().getDurations()!= null && orderDetailBean.getData().getCourse().getDurations().getData().size() > 0) {
+                        StringBuilder durations = new StringBuilder();
+                        durations.append((orderDetailBean.getData().getCourse().getDurations().getStartDate() + "至" + orderDetailBean.getData().getCourse().getDurations().getEndDate()));
+                        durations.append("\n");
+                        for (int i = 0; i < orderDetailBean.getData().getCourse().getDurations().getData().size(); i++) {
+                            OrderDetailBean.OrderCourseBean.DurationsBean.DataBean dataBean = orderDetailBean.getData().getCourse().getDurations().getData().get(i);
+                            durations.append(dataBean.getWeek() + "   " + dataBean.getStartTime() + "-" + dataBean.getEndTime());
+                            if (i < orderDetailBean.getData().getCourse().getDurations().getData().size() - 1) {
+                                durations.append("\n");
+                            }
+                        }
+                        tv_course_duration.setText("上课时间：" +durations);
+                    }
+//                    tv_course_duration.setText("上课时间：" + orderDetailBean.getData().getCourse().getDurations().getStartDate() + "至" + orderDetailBean.getData().getCourse().getDurations().getEndDate());
                     tv_course_address.setText("上课方式：线下授课，授课地点：" + orderDetailBean.getData().getCourse().getAddress().getDetail());
                     lat = orderDetailBean.getData().getStore().getAddress().getLat();
                     lng = orderDetailBean.getData().getStore().getAddress().getLng();

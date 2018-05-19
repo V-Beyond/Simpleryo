@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
+import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
@@ -56,9 +57,10 @@ public class MyMsgActivity extends BaseActivity {
         messageAdapter = new MessageAdapter(MyMsgActivity.this);
         lRecyclerViewAdapter = new LRecyclerViewAdapter(messageAdapter);
         lrecyclerview.setAdapter(lRecyclerViewAdapter);
-        lrecyclerview.setLoadMoreEnabled(false);
+        lrecyclerview.setLoadMoreEnabled(true);
         lrecyclerview.setPullRefreshEnabled(true);
         lrecyclerview.setOnRefreshListener(onRefreshListener);
+        lrecyclerview.setOnLoadMoreListener(onLoadMoreListener);
         lrecyclerview.forceToRefresh();
         lRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -76,7 +78,8 @@ public class MyMsgActivity extends BaseActivity {
             }
         });
     }
-
+    int offset=0;
+    int limit=9;
     /**
      * 获取消息列表
      */
@@ -94,10 +97,15 @@ public class MyMsgActivity extends BaseActivity {
                         messageList.addAll(messageListBean.getData());
                         messageAdapter.setDataList(messageList);
                     } else {
-                        lrecyclerview.setEmptyView(mEmptyView);
+                        if (messageList.size()>0){
+                            lrecyclerview.setNoMore(true);
+                        }else{
+                            lrecyclerview.setEmptyView(mEmptyView);//设置在setAdapter之前才能生效
+                        }
                     }
                 }
                 lrecyclerview.refreshComplete(messageList.size());
+                lRecyclerViewAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -107,12 +115,24 @@ public class MyMsgActivity extends BaseActivity {
                 textView.setText("数据一不小心走丢了，请稍后回来");
                 lrecyclerview.setEmptyView(mEmptyView);
             }
-        });
+        },offset,limit);
     }
-
-    private OnRefreshListener onRefreshListener = new OnRefreshListener() {
+    private OnRefreshListener onRefreshListener=new OnRefreshListener() {
         @Override
         public void onRefresh() {
+            if (messageList!=null&&messageList.size()>0){
+                messageList.clear();
+            }
+            offset=0;
+            limit=9;
+            getMessageList();
+        }
+    };
+    private OnLoadMoreListener onLoadMoreListener=new OnLoadMoreListener() {
+        @Override
+        public void onLoadMore() {
+            offset=limit+1;
+            limit+=10;
             getMessageList();
         }
     };

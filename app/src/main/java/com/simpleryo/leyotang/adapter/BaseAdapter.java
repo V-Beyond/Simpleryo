@@ -34,7 +34,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<SuperViewHolde
             .oval(true)
             .build();
     public Transformation raduisTransformation = new RoundedTransformationBuilder()
-            .cornerRadiusDp(10)
+            .cornerRadius(20)
             .oval(false)
             .build();
     public BaseAdapter(Context context) {

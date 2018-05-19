@@ -1,7 +1,6 @@
 package com.simpleryo.leyotang.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -89,10 +88,8 @@ public class RemarkCourseActivity extends BaseActivity implements ImagePickerAda
     private ArrayList<ImageItem> selImageList; //当前选择的所有图片
     private int maxImgCount = 9;               //允许选择图片最大数
     public Transformation transformation = new RoundedTransformationBuilder()
-            .cornerRadiusDp(30)
-            .borderColor(Color.WHITE)
-            .borderWidth(10)
-            .oval(true)
+            .cornerRadius(20)
+            .oval(false)
             .build();
     String token;
     String corseId;
@@ -140,7 +137,7 @@ public class RemarkCourseActivity extends BaseActivity implements ImagePickerAda
                 if (orderDetailBean.getCode().equalsIgnoreCase("0")){
                     corseId=orderDetailBean.getData().getCourseId();
                     Picasso.with(RemarkCourseActivity.this).load(orderDetailBean.getData().getImageUrl()).transform(transformation).into(iv_order_img);
-                    tv_course_name.setText("课程名称："+orderDetailBean.getData().getCourseName());
+                    tv_course_name.setText(orderDetailBean.getData().getCourseName());
                 }
 
             }

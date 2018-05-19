@@ -408,11 +408,13 @@ public class SimpleryoNetwork {
      * @param context
      * @param callback
      */
-    public static void getStoresList(Context context, MyBaseProgressCallbackImpl callback) {
+    public static void getStoresList(Context context, MyBaseProgressCallbackImpl callback, int offset, int limit) {
         doHttpAsync(context, HttpInfo.Builder()
                 .setUrl(httpUrl + "u/follow/stores")
                 .setRequestType(RequestType.GET)//设置请求方式
                 .addParam("token", getToken())//添加接口参数
+                .addParam("offset", offset + "")
+                .addParam("limit", limit + "")
                 .build(), callback);
     }
 
@@ -638,12 +640,14 @@ public class SimpleryoNetwork {
      * @param context
      * @param callback
      */
-    public static void getMessageList(Context context, MyBaseProgressCallbackImpl callback) {
+    public static void getMessageList(Context context, MyBaseProgressCallbackImpl callback,int offset, int limit) {
         doHttpAsync(context, HttpInfo.Builder()
                 .setUrl(httpUrl + "s/contents")
                 .setRequestType(RequestType.GET)//设置请求方式
                 .addParam("token", getToken())//添加接口参数
                 .addParam("typeCode", "MESSAGE")
+                .addParam("offset", offset + "")
+                .addParam("limit", limit + "")
                 .build(), callback);
     }
 

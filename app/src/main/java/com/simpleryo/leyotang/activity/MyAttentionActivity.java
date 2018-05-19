@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.github.jdsjlzx.ItemDecoration.GridItemDecoration;
+import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
+import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.okhttplib.HttpInfo;
@@ -44,6 +46,10 @@ public class MyAttentionActivity extends BaseActivity {
     MyOrderAdapter myOrderAdapter;
     private List<MultipleItem> mItemModels = new ArrayList<>();
     ArrayList<StoreFollowBean.DataBean> storeList = new ArrayList<>();
+    @ViewInject(R.id.empty_view)
+    private View mEmptyView;
+    int offset=0;
+    int limit=9;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,20 +62,36 @@ public class MyAttentionActivity extends BaseActivity {
         lrecyclerview.addItemDecoration(divider);
         lrecyclerview.setLayoutManager(new GridLayoutManager(this,2));
         myOrderAdapter = new MyOrderAdapter(MyAttentionActivity.this);
-//        myOrderAdapter.setDataList(initData());
         lRecyclerViewAdapter = new LRecyclerViewAdapter(myOrderAdapter);
         lrecyclerview.setAdapter(lRecyclerViewAdapter);
-        lrecyclerview.setLoadMoreEnabled(false);
-        lrecyclerview.setPullRefreshEnabled(false);
-//        lRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
-//            @Override
-//            public void onItemClick(View view, int position) {
-//
-//            }
-//        });
-        initData();
+        lrecyclerview.setLoadMoreEnabled(true);
+        lrecyclerview.setPullRefreshEnabled(true);
+        lrecyclerview.setOnLoadMoreListener(onLoadMoreListener);
+        lrecyclerview.setOnRefreshListener(onRefreshListener);
+        lrecyclerview.forceToRefresh();
     }
-
+    private OnRefreshListener onRefreshListener=new OnRefreshListener() {
+        @Override
+        public void onRefresh() {
+            if (mItemModels != null && mItemModels.size() > 0) {
+                mItemModels.clear();
+            }
+            if (storeList != null && storeList.size() > 0) {
+                storeList.clear();
+            }
+            offset=0;
+            limit=9;
+            initData();
+        }
+    };
+    private OnLoadMoreListener onLoadMoreListener=new OnLoadMoreListener() {
+        @Override
+        public void onLoadMore() {
+            offset=limit+1;
+            limit+=10;
+            initData();
+        }
+    };
     /**
      * 获取我的关注列表
      */
@@ -98,11 +120,25 @@ public class MyAttentionActivity extends BaseActivity {
                         }
                         myOrderAdapter.setDataList(mItemModels);
                     }else{
-                        lrecyclerview.setEmptyView(empty_view);
+                        if (storeList.size()>0){
+                            lrecyclerview.setNoMore(true);
+                        }else{
+                            lrecyclerview.setEmptyView(mEmptyView);//设置在setAdapter之前才能生效
+                        }
                     }
                 }
+                lrecyclerview.refreshComplete(storeList.size());
+                lRecyclerViewAdapter.notifyDataSetChanged();
             }
-        });
+
+            @Override
+            public void onFailure(HttpInfo info) {
+                super.onFailure(info);
+                TextView textView = mEmptyView.findViewById(R.id.tv_tips);
+                textView.setText("数据一不小心走丢了，请稍后回来");
+                lrecyclerview.setEmptyView(mEmptyView);
+            }
+        },offset,limit);
 
     }
     @Event(value = {R.id.iv_back,R.id.iv_msg}, type = View.OnClickListener.class)

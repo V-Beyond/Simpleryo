@@ -52,7 +52,7 @@ public class BusinessCourseAdapter extends BaseAdapter<CourseListBean.DataBeanX>
     public void onBindItemHolder(SuperViewHolder holder, int position) {
         final CourseListBean.DataBeanX bean = listData.get(position);
         if (bean.getCoverUrl()!=null){
-            Picasso.with(mContext).load(bean.getCoverUrl()).into(((ExcellentCourseItemViewHolder) holder).iv_collection_img);
+            Picasso.with(mContext).load(bean.getCoverUrl()).transform(raduisTransformation).into(((ExcellentCourseItemViewHolder) holder).iv_collection_img);
         }else{
             Picasso.with(mContext).load("http://p0.so.qhmsg.com/bdr/_240_/t01eb2a6c6319b04655.jpg").into(((ExcellentCourseItemViewHolder) holder).iv_collection_img);
         }

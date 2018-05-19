@@ -115,11 +115,10 @@ public class MyCollectionActivity extends BaseActivity {
      * 获取收藏列表
      */
     public void initCollectList() {
-        SimpleryoNetwork.geCollectList(MyCollectionActivity.this, new MyBaseProgressCallbackImpl(MyCollectionActivity.this) {
+        SimpleryoNetwork.geCollectList(MyCollectionActivity.this, new MyBaseProgressCallbackImpl() {
             @Override
             public void onSuccess(HttpInfo info) {
                 super.onSuccess(info);
-                loadingDialog.dismiss();
                 CollectionListBean collectionListBean = info.getRetDetail(CollectionListBean.class);
                 if (collectionListBean.getCode().equalsIgnoreCase("0")) {
                     if (collectionListBean.getData() != null && collectionListBean.getData().size() > 0) {
@@ -152,7 +151,6 @@ public class MyCollectionActivity extends BaseActivity {
             @Override
             public void onFailure(HttpInfo info) {
                 super.onFailure(info);
-                loadingDialog.dismiss();
                 TextView tv_tips=mEmptyView.findViewById(R.id.tv_tips);
                 tv_tips.setText("数据一不小心走丢了，请稍后回来");
                 lrecyclerview.setEmptyView(mEmptyView);
@@ -165,11 +163,10 @@ public class MyCollectionActivity extends BaseActivity {
         if (bus.getType() == 001) {//取消收率
             final CollectionListBean.DataBean dataBean = bus.getDataBean();
             final int position = Integer.parseInt(bus.getContent());
-            SimpleryoNetwork.disCollectCourse(MyCollectionActivity.this, new MyBaseProgressCallbackImpl(MyCollectionActivity.this) {
+            SimpleryoNetwork.disCollectCourse(MyCollectionActivity.this, new MyBaseProgressCallbackImpl() {
                 @Override
                 public void onSuccess(HttpInfo info) {
                     super.onSuccess(info);
-                    loadingDialog.dismiss();
                     CodeBean createOrderBean = info.getRetDetail(CodeBean.class);
                     if (createOrderBean.getCode().equalsIgnoreCase("0")) {
                         Toast.makeText(MyCollectionActivity.this, "取消收藏成功", Toast.LENGTH_SHORT).show();
@@ -182,12 +179,11 @@ public class MyCollectionActivity extends BaseActivity {
                 @Override
                 public void onFailure(HttpInfo info) {
                     super.onFailure(info);
-                    loadingDialog.dismiss();
                 }
             }, dataBean.getId());
         }
         if (bus.getType() == 002) {
-            initCollectList();
+            lrecyclerview.forceToRefresh();
         }
     }
 
