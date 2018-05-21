@@ -340,6 +340,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:singleLine="true"
+                        android:inputType="number"
                         android:padding="10px"
                         android:textSize="32px"
                         android:layout_marginRight="79px"

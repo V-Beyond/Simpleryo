@@ -17,6 +17,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.text.NumberFormat;
+
 
 /**
  * @author huanglei
@@ -52,11 +54,12 @@ public class StoreListAdapter extends BaseAdapter<StoreListBean.DataBean> {
     public void onBindItemHolder(SuperViewHolder holder, final int position) {
         final StoreListBean.DataBean bean = listData.get(position);
         if (bean.getStoreInfo().getCoverUrl()!=null){
-            Picasso.with(mContext).load(bean.getStoreInfo().getCoverUrl()).transform(transformation).into(((MyAttentionViewHolder) holder).iv_attention_img);
+            Picasso.with(mContext).load(bean.getStoreInfo().getCoverUrl()).transform(raduisTransformation).into(((MyAttentionViewHolder) holder).iv_attention_img);
         }else{
-            Picasso.with(mContext).load("http://p3.so.qhimgs1.com/bdr/_240_/t01144f848052b04663.").transform(transformation).into(((MyAttentionViewHolder) holder).iv_attention_img);
+            Picasso.with(mContext).load("http://p3.so.qhimgs1.com/bdr/_240_/t01144f848052b04663.").transform(raduisTransformation).into(((MyAttentionViewHolder) holder).iv_attention_img);
         }
-
+        int followCount=bean.getFollowCount();
+        ((MyAttentionViewHolder) holder).tv_store_follow_count.setText(followCount+" people");
         ((MyAttentionViewHolder) holder).tv_my_attentoin_name.setText(bean.getStoreInfo().getName());
         ((MyAttentionViewHolder) holder).tv_to_store_detail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,6 +67,22 @@ public class StoreListAdapter extends BaseAdapter<StoreListBean.DataBean> {
                 mContext.startActivity(new Intent(mContext, BusinessHomeActivty.class).putExtra("storeId", bean.getStoreInfo().getStoreId()));
             }
         });
+        // 创建一个数值格式化对象
+        NumberFormat numberFormat = NumberFormat.getInstance();
+        // 设置精确到小数点后2位
+        numberFormat.setMaximumFractionDigits(2);
+        int totalCount=100;
+        if (followCount>=1&&followCount<=99){
+            totalCount=100;
+        }
+        if (followCount>=100&&followCount<=999){
+            totalCount=1000;
+        }
+        if (followCount>=1000&&followCount<=9999){
+            totalCount=1000;
+        }
+        float percent= (float)followCount / (float) totalCount * 100;
+        ((MyAttentionViewHolder) holder).horizontal_progressbar.setProgress((int) percent);
     }
 
     @Override

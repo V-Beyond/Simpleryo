@@ -96,6 +96,8 @@ public class CourseDetailActivity extends BaseActivity    {
     TextView tv_point;
     @ViewInject(R.id.tv_collection)
     TextView tv_collection;
+    @ViewInject(R.id.tv_to_use_help)
+    TextView tv_to_use_help;
     boolean hasCollect;//是否收藏
     public Transformation transformation = new RoundedTransformationBuilder()
             .cornerRadius(10)
@@ -275,6 +277,11 @@ public class CourseDetailActivity extends BaseActivity    {
                 StoreDetailBean storeDetailBean = info.getRetDetail(StoreDetailBean.class);
                 if (storeDetailBean.getCode().equalsIgnoreCase("0")) {
                     isFollow = storeDetailBean.getData().isHasFollow();
+                    if (isFollow){
+                        tv_to_use_help.setText("取消关注");
+                    }else{
+                        tv_to_use_help.setText("关注");
+                    }
                     if (storeDetailBean.getData().getStoreInfo().getStatus().equalsIgnoreCase("AUDIT_OK")) {
                         tv_store_status.setText("已认证");
                     } else if (storeDetailBean.getData().getStoreInfo().getStatus().equalsIgnoreCase("AUDITING")) {
