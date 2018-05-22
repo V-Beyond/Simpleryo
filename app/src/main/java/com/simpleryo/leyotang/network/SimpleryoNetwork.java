@@ -104,7 +104,7 @@ public class SimpleryoNetwork {
     public static void bindAccount(Context context, Callback callback,String id,String thirdNo,String typeCode) {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("thirdNo", thirdNo);
+            jsonObject.put("thirdNo", thirdNo);//第三方用户唯一标识
             jsonObject.put("typeCode", typeCode);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -128,11 +128,11 @@ public class SimpleryoNetwork {
     public static void userRegister(Context context, Callback callback, String email, String phone, String code, String password) {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("email", email);
-            jsonObject.put("phone", phone);
-            jsonObject.put("msgAuthCode", code);
-            jsonObject.put("password", password);
-            jsonObject.put("loginName", phone);
+            jsonObject.put("email", email);//邮箱
+            jsonObject.put("phone", phone);//手机号
+            jsonObject.put("msgAuthCode", code);//验证码
+            jsonObject.put("password", password);//密码
+            jsonObject.put("loginName", phone);//登录名
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -168,8 +168,8 @@ public class SimpleryoNetwork {
     public static void userLogin(Context context, Callback callback, String phone, String pwd) {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("loginName", phone);
-            jsonObject.put("password", pwd);
+            jsonObject.put("loginName", phone);//登录名
+            jsonObject.put("password", pwd);//密码
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -191,7 +191,7 @@ public class SimpleryoNetwork {
                 .setUrl(httpUrl + "home")
                 .setRequestType(RequestType.GET)//设置请求方式
                 .addParam("token", getToken())//添加接口参数
-                .addParam("platform", "ANDROID")
+                .addParam("platform", "ANDROID")//平台
                 .build(), callback);
     }
 
@@ -208,8 +208,8 @@ public class SimpleryoNetwork {
                 .setUrl(httpUrl + "o/orders/calendar")
                 .setRequestType(RequestType.GET)//设置请求方式
                 .addParam("token", getToken())//添加接口参数
-                .addParam("year", year + "")
-                .addParam("month", month + "")
+                .addParam("year", year + "")//年
+                .addParam("month", month + "")//月
                 .build(), callback);
     }
 
@@ -246,7 +246,6 @@ public class SimpleryoNetwork {
         doHttpAsync(context, HttpInfo.Builder()
                 .setUrl(httpUrl + "o/orders?token=" + getToken())
                 .setRequestType(RequestType.POST)//设置请求方式
-//                .addParam("token",getToken())//添加接口参数
                 .addParamJson(jsonObject.toString())
                 .build(), callback);
     }
@@ -265,8 +264,8 @@ public class SimpleryoNetwork {
             jsonObject.put("productName", productName);//订单名称
             jsonObject.put("paymentMethod", paymentMethod);//支付方式（暂时默认是支付宝）
             jsonObject.put("callbackUrl", "https://api.simpleryo.com/o/orders/callback/url");//支付异步通知地址
-            jsonObject.put("userId", "U000000348");
-            jsonObject.put("walletId ", "W000000384");
+            jsonObject.put("userId", "U000000348");//Latipay平台的userId
+            jsonObject.put("walletId ", "W000000384");//Latipay平台的walletId
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -290,10 +289,10 @@ public class SimpleryoNetwork {
         builder.setRequestType(RequestType.GET);
         builder.addParam("token", getToken());
         if (!storeId.equalsIgnoreCase("")) {
-            builder.addParam("storeId", storeId);
+            builder.addParam("storeId", storeId);//商家id
         }
         if (!name.equalsIgnoreCase("")) {
-            builder.addParam("name", name);
+            builder.addParam("name", name);//课程名
         }
         if (!tagId3.equalsIgnoreCase("")) {
             builder.addParam("tagId3", tagId3);

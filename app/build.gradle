@@ -87,5 +87,6 @@ dependencies {
     compile 'com.umeng.sdk:analytics:latest.integration'
     compile 'com.umeng.sdk:share-core:latest.integration'
 //    compile 'com.umeng.sdk:share-wechat:latest.integration'
+    //微信SDK
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
 }

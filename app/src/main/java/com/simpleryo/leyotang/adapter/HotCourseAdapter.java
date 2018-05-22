@@ -54,18 +54,11 @@ public class HotCourseAdapter extends BaseAdapter<HomeDataBean.DataBeanX.Courses
         NumberFormat numberFormat = NumberFormat.getInstance();
         // 设置精确到小数点后2位
         numberFormat.setMaximumFractionDigits(2);
-        int totalCount=100;
-        if (collectCount>=1&&collectCount<=99){
-            totalCount=100;
-        }
-        if (collectCount>=100&&collectCount<=999){
-            totalCount=1000;
-        }
-        if (collectCount>=1000&&collectCount<=9999){
-            totalCount=1000;
-        }
-        float percent= (float)collectCount / (float) totalCount * 100;
+        int totalCount=bean.getUpperLimit();
+        int classCount=bean.getClassCount();
+        float percent= (float)classCount/ (float)totalCount*100;
         ((HotCourseItemViewHolder) holder).horizontal_progressbar.setProgress((int) percent);
+        ((HotCourseItemViewHolder) holder).tv_percent.setText(classCount+"/"+totalCount);
         if (bean.isHasCollect()){
             ((HotCourseItemViewHolder) holder).iv_collection_star.setImageResource(R.mipmap.iv_collection_star);
         }else{

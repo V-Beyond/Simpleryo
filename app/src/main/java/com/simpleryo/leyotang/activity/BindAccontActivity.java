@@ -56,7 +56,7 @@ public class BindAccontActivity extends BaseActivity {
         umShareAPI = UMShareAPI.get(BindAccontActivity.this);
         userId = SharedPreferencesUtils.getKeyString("userId");
         isBindWechat = SharedPreferencesUtils.getKeyBoolean("isBindWechat");
-        if (isBindWechat) {
+        if (isBindWechat==true) {
             rl_wechat.setClickable(false);
             tv_nickname.setText("已绑定");
         }

@@ -57,7 +57,24 @@ public class StoreFollowBean extends BaseResult {
         private AddressBean address;
         private String authorities;
         private String notifiers;
+        private int classCount;
+        private int upperLimit;
 
+        public int getClassCount() {
+            return classCount;
+        }
+
+        public void setClassCount(int classCount) {
+            this.classCount = classCount;
+        }
+
+        public int getUpperLimit() {
+            return upperLimit;
+        }
+
+        public void setUpperLimit(int upperLimit) {
+            this.upperLimit = upperLimit;
+        }
         public String getFollowCount() {
             return followCount;
         }

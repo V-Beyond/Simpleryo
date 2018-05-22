@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.simpleryo.leyotang.utils.SharedPreferencesUtils;
+import com.umeng.analytics.MobclickAgent;
 
 import org.xutils.common.Callback;
 
@@ -17,6 +18,7 @@ import org.xutils.common.Callback;
  * @time 2018/3/19 11:01
  */
 public abstract class XLibraryLazyFragment extends Fragment {
+    private final String mPageName = "XLibraryLazyFragment";
     /**
      * 得到根Fragment
      *
@@ -90,5 +92,17 @@ public abstract class XLibraryLazyFragment extends Fragment {
      * 延迟加载 子类必须重写此方法
      */
     protected abstract void lazyLoad();
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart(mPageName);
+        MobclickAgent.onResume(getActivity()); // 基础指标统计，不能遗漏
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd(mPageName);
+        MobclickAgent.onPause(getActivity()); // 基础指标统计，不能遗漏
+    }
 }

@@ -1,9 +1,7 @@
 package com.simpleryo.leyotang.fragment;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
@@ -265,23 +263,6 @@ public class OrderNewFragment extends XLibraryLazyFragment {
         }
     };
     OrderListBean.DataBean orderDataBean;
-
-    public void alertDialog(){
-        final AlertDialog.Builder normalDialog =
-                new AlertDialog.Builder(getActivity());
-        normalDialog.setTitle("提示");
-        normalDialog.setMessage("该订单无法支付，请重新下单");
-        normalDialog.setPositiveButton("确定",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-        normalDialog.setCancelable(false);
-        // 显示
-        normalDialog.show();
-    }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updateCollect(BusEntity bus) {
         if (bus.getType() == 111) {

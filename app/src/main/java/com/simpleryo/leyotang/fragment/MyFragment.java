@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -65,11 +64,6 @@ import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -240,6 +234,8 @@ public class MyFragment extends XLibraryLazyFragment {
                             }
                             if (userInfoBean.getData().getThirdNos()!=null&&userInfoBean.getData().getThirdNos().size()>0){
                                 SharedPreferencesUtils.saveKeyBoolean("isBindWechat",true);
+                            }else{
+                                SharedPreferencesUtils.saveKeyBoolean("isBindWechat",false);
                             }
                         }
 
@@ -266,31 +262,6 @@ public class MyFragment extends XLibraryLazyFragment {
 
         }
     }
-    /*
-   *    get image from network
-   *    @param [String]imageURL
-   *    @return [BitMap]image
-   */
-    public Bitmap returnBitMap(String url){
-        URL myFileUrl = null;
-        Bitmap bitmap = null;
-        try {
-            myFileUrl = new URL(url);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        try {
-            HttpURLConnection conn = (HttpURLConnection) myFileUrl.openConnection();
-            conn.setDoInput(true);
-            conn.connect();
-            InputStream is = conn.getInputStream();
-            bitmap = BitmapFactory.decodeStream(is);
-            is.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return bitmap;
-    }
 
     @Override
     public void onDestroy() {
@@ -314,13 +285,8 @@ public class MyFragment extends XLibraryLazyFragment {
     OSSAsyncTask ossAsyncTask= oss.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
             @Override
             public void onSuccess(PutObjectRequest request, PutObjectResult result) {
-//                Toast.makeText(getActivity(), "上传成功", Toast.LENGTH_SHORT).show();
                 uploadAvataPath=SimpleryoNetwork.imgUrl+fileName;
-//                loadingDialog.dismiss();
                 EventBus.getDefault().post(new BusEntity(402));
-                Log.w("cc", "UploadSuccess");
-                Log.w("cc", result.getETag());
-                Log.d("cc", result.getRequestId());
             }
 
             @Override
@@ -363,98 +329,89 @@ public class MyFragment extends XLibraryLazyFragment {
     @Event(value = {R.id.iv_msg,R.id.tv_exit, R.id.ll_login, R.id.ll_use_help, R.id.ll_wait_pay, R.id.ll_comprehensive_evaluation, R.id.ll_contact_us, R.id.ll_my_course, R.id.iv_avatar, R.id.ll_my_info, R.id.ll_bind_account, R.id.ll_complaint, R.id.ll_my_attention, R.id.ll_collection}, type = View.OnClickListener.class)
     private void onClick(View view) {
         switch (view.getId()) {
-            case R.id.tv_exit:
+            case R.id.tv_exit://退出
                 ExitDialogFragment exitDialogFragment=new ExitDialogFragment();
                 exitDialogFragment.show(getFragmentManager(),"exitDialogFragment");
                 break;
-            case R.id.iv_msg:
+            case R.id.iv_msg://消息
                 startActivity(new Intent(getActivity(), MyMsgActivity.class));
                 break;
-            case R.id.ll_use_help:
+            case R.id.ll_use_help://使用磅数
                 startActivity(new Intent(getActivity(), UseHelpActivity.class));
                 break;
-            case R.id.ll_contact_us:
+            case R.id.ll_contact_us://联系我们
                 startActivity(new Intent(getActivity(), AboutUsActivity.class));
                 break;
-            case R.id.ll_wait_pay:
+            case R.id.ll_wait_pay://待付款
                 if (isLogin) {
                     startActivity(new Intent(getActivity(), MyOrderActivity.class).putExtra("status", "NEW"));
                 } else {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                 }
                 break;
-            case R.id.ll_comprehensive_evaluation:
+            case R.id.ll_comprehensive_evaluation://待评价
                 if (isLogin) {
                     startActivity(new Intent(getActivity(), MyOrderActivity.class).putExtra("status", "RECEIVED"));
                 } else {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                 }
                 break;
-            case R.id.ll_my_course:
+            case R.id.ll_my_course://已完成
                 if (isLogin) {
                     startActivity(new Intent(getActivity(), MyOrderActivity.class).putExtra("status", "COMPLETED"));
                 } else {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                 }
                 break;
-            case R.id.ll_my_info:
+            case R.id.ll_my_info://基本信息
                 if (isLogin) {
                     startActivity(new Intent(getActivity(), MyInfoActivity.class).putExtra("userId", userId));
                 } else {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                 }
                 break;
-            case R.id.ll_bind_account:
+            case R.id.ll_bind_account://绑定账号
                 if (isLogin) {
                     startActivity(new Intent(getActivity(), BindAccontActivity.class));
                 } else {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                 }
                 break;
-            case R.id.ll_my_attention:
+            case R.id.ll_my_attention://我的关注
                 if (isLogin) {
                     startActivity(new Intent(getActivity(), MyAttentionActivity.class));
                 } else {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                 }
                 break;
-            case R.id.ll_collection:
+            case R.id.ll_collection://我的收藏
                 if (isLogin) {
                     startActivity(new Intent(getActivity(), MyCollectionActivity.class));
                 } else {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                 }
                 break;
-            case R.id.ll_complaint:
+            case R.id.ll_complaint://投诉建议
                 startActivity(new Intent(getActivity(), ComplaintProposalActivity.class));
                 break;
-            case R.id.ll_login:
+            case R.id.ll_login://登录
                 if (!isLogin) {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                 }
                 break;
             case R.id.iv_avatar:
                 if (isLogin) {
-//                    PhotoUtils.openPic(getActivity(), CODE_GALLERY_REQUEST);
                     Intent i = new Intent(
                             Intent.ACTION_PICK,
                             MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
                     startActivityForResult(i, CODE_GALLERY_REQUEST);
-//                    imageUri = Uri.fromFile(fileUri);
-//                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-//                        imageUri = FileProvider.getUriForFile(getActivity(), "com.simpleryo.nz.fileprovider", fileUri);//通过FileProvider创建一个content类型的Uri
-//                        PhotoUtils.takePicture(getActivity(), imageUri, CODE_CAMERA_REQUEST);
                 } else {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                 }
-//                SystemProgramUtils.zhaopian(getActivity());
                 break;
         }
     }
-
-    String imgPath = getInnerSDCardPath() + "/simpleryo/icon/avatar.jpg";
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -463,9 +420,6 @@ public class MyFragment extends XLibraryLazyFragment {
                 //相机返回
                 case CODE_CAMERA_REQUEST:
                     cropImageUri = Uri.fromFile(fileCropUri);
-//                Picasso.with(getContext().getApplicationContext()).load("http://p0.so.qhmsg.com/bdr/_240_/t01eb2a6c6319b04655.jpg").transform(transformation).into(iv_avatar);
-//                 PhotoUtils.cropImageUri(getActivity(), imageUri, cropImageUri, 1, 1, OUTPUT_X, OUTPUT_Y, CODE_RESULT_REQUEST);
-
                     Picasso.with(getContext().getApplicationContext()).load(cropImageUri).transform(transformation).into(iv_avatar);
                     break;
                 //相册返回
@@ -504,37 +458,5 @@ public class MyFragment extends XLibraryLazyFragment {
                     break;
             }
         }
-
-//        if (resultCode != RESULT_OK) {
-//            return;
-//        }
-//        Uri filtUri;
-//        File outputFile = new File(getInnerSDCardPath()+"/simpleryo/icon/avatar_out.jpg");//裁切后输出的图片
-//        switch (requestCode) {
-//            case SystemProgramUtils.REQUEST_CODE_PAIZHAO:
-//                //拍照完成，进行图片裁切
-//                File file = new File(imgPath);
-//                filtUri = FileProviderUtils.uriFromFile(getActivity(), file);
-//                SystemProgramUtils.Caiqie(getActivity(), filtUri, outputFile);
-//                break;
-//            case SystemProgramUtils.REQUEST_CODE_ZHAOPIAN:
-//                //相册选择图片完毕，进行图片裁切
-//                if (data == null ||  data.getData()==null) {
-//                    return;
-//                }
-//                filtUri = data.getData();
-//                SystemProgramUtils.Caiqie(getActivity(), filtUri, outputFile);
-//                break;
-//            case SystemProgramUtils.REQUEST_CODE_CAIQIE:
-//                //图片裁切完成，显示裁切后的图片
-//                try {
-//                    Uri uri = Uri.fromFile(outputFile);
-//                    Bitmap bitmap = BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(uri));
-//                    iv_avatar.setImageBitmap(bitmap);
-//                }catch (Exception ex){
-//                    ex.printStackTrace();
-//                }
-//                break;
-//        }
     }
 }

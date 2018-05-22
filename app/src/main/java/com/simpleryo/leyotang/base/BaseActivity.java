@@ -17,7 +17,7 @@ import org.xutils.x;
  */
 public class BaseActivity extends AutoLayoutActivity {
     private final String mPageName = "BaseActivity";
-    public  boolean isLogin;
+    public  boolean isLogin;//是否登录
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,14 +34,14 @@ public class BaseActivity extends AutoLayoutActivity {
     @Override
     public void onResume() {
         super.onResume();
-        MobclickAgent.onResume(this); // 基础指标统计，不能遗漏
         MobclickAgent.onPageStart(mPageName);
+        MobclickAgent.onResume(this); // 基础指标统计，不能遗漏
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        MobclickAgent.onPause(this); // 基础指标统计，不能遗漏
         MobclickAgent.onPageEnd(mPageName);
+        MobclickAgent.onPause(this); // 基础指标统计，不能遗漏
     }
 }

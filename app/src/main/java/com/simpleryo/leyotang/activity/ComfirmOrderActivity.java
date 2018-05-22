@@ -1,9 +1,7 @@
 package com.simpleryo.leyotang.activity;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -219,10 +217,6 @@ public class ComfirmOrderActivity extends BaseActivity {
                     Toast.makeText(ComfirmOrderActivity.this,"手机号不能为空",Toast.LENGTH_SHORT).show();
                     return;
                 }
-//                if (!XStringPars.isMobileNO(phone)){
-//                    Toast.makeText(ComfirmOrderActivity.this,"请输入正确的手机号",Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
                 SimpleryoNetwork.createOrder(ComfirmOrderActivity.this, new MyBaseProgressCallbackImpl(ComfirmOrderActivity.this) {
                     @Override
                     public void onSuccess(HttpInfo info) {
@@ -254,31 +248,11 @@ public class ComfirmOrderActivity extends BaseActivity {
                         loadingDialog.dismiss();
                     }
                 }, coachId, storeId, courseId, courseName, payType, count, price, total_price, total_price,name,phone,remark);
-
                 break;
         }
     }
 
 
-    /**
-     * 支付提示
-     */
-    public void alertDialog() {
-        final AlertDialog.Builder normalDialog =
-                new AlertDialog.Builder(ComfirmOrderActivity.this);
-        normalDialog.setTitle("提示");
-        normalDialog.setMessage("该订单无法支付，请重新下单");
-        normalDialog.setPositiveButton("确定",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-        normalDialog.setCancelable(false);
-        // 显示
-        normalDialog.show();
-    }
 
     @Event(value = {R.id.radio_group_pay}, type = RadioGroup.OnCheckedChangeListener.class)
     private void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
@@ -345,12 +319,12 @@ public class ComfirmOrderActivity extends BaseActivity {
             @Override
             public void onPaymentCompleted(int result) {
                 if (result == PaymentStatus.PAID) {
-                    EventBus.getDefault().post(new BusEntity(022, "PAID"));
+                    EventBus.getDefault().post(new BusEntity(0222, "PAID"));
                 } else if (result == PaymentStatus.UNPAID) {
-                    EventBus.getDefault().post(new BusEntity(022, "UNPAID"));
+                    EventBus.getDefault().post(new BusEntity(0222, "UNPAID"));
                 } else { //PaymentStatus.UNKNOWN
                     //search payment status from your own server
-                    EventBus.getDefault().post(new BusEntity(022, "UNKNOWN"));
+                    EventBus.getDefault().post(new BusEntity(0222, "UNKNOWN"));
                 }
             }
         });
@@ -361,7 +335,7 @@ public class ComfirmOrderActivity extends BaseActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updateCollect(BusEntity bus) {
-        if (bus.getType() == 022) {
+        if (bus.getType() == 0222) {
             String state = bus.getContent();
             if (state.equalsIgnoreCase("PAID")) {
                 Toast.makeText(ComfirmOrderActivity.this, "支付成功", Toast.LENGTH_SHORT).show();

@@ -5,9 +5,9 @@ import org.xutils.http.annotation.HttpResponse;
 import java.util.List;
 
 /**
+ * @author huanglei
  * @ClassNname：CollectionListBean.java
  * @Describe 收藏列表
- * @author huanglei
  * @time 2018/4/16 14:14
  */
 @HttpResponse(parser = JsonResponseParser.class)
@@ -59,7 +59,25 @@ public class CollectionListBean extends BaseResult {
         private CoachBean coach;
         private List<RecommendsBean> recommends;
         private List<WorkdayBean> workday;
-//        private List<DurationsBean> durations;
+        //        private List<DurationsBean> durations;
+        private int classCount;
+        private int upperLimit;
+
+        public int getClassCount() {
+            return classCount;
+        }
+
+        public void setClassCount(int classCount) {
+            this.classCount = classCount;
+        }
+
+        public int getUpperLimit() {
+            return upperLimit;
+        }
+
+        public void setUpperLimit(int upperLimit) {
+            this.upperLimit = upperLimit;
+        }
 
         public String getId() {
             return id;

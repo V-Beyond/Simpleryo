@@ -2,11 +2,11 @@ package com.simpleryo.leyotang.viewholder;
 
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.simpleryo.leyotang.R;
-import com.simpleryo.leyotang.view.ZzHorizontalProgressBar;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -29,7 +29,9 @@ public class IntroductoryCourseItemViewHolder extends SuperViewHolder {
     @ViewInject(R.id.iv_collection_star)
     public  ImageView iv_collection_star;
   @ViewInject(R.id.horizontal_progressbar)
-  public ZzHorizontalProgressBar horizontal_progressbar;
+  public ProgressBar horizontal_progressbar;
+  @ViewInject(R.id.tv_percent)
+  public TextView tv_percent;
     public IntroductoryCourseItemViewHolder(View itemView) {
         super(itemView);
         x.view().inject(this,itemView);

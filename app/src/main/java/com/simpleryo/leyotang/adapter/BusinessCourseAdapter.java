@@ -89,18 +89,10 @@ public class BusinessCourseAdapter extends BaseAdapter<CourseListBean.DataBeanX>
         NumberFormat numberFormat = NumberFormat.getInstance();
         // 设置精确到小数点后2位
         numberFormat.setMaximumFractionDigits(2);
-        int totalCount=100;
-        if (collectCount>=1&&collectCount<=99){
-            totalCount=100;
-        }
-        if (collectCount>=100&&collectCount<=999){
-            totalCount=1000;
-        }
-        if (collectCount>=1000&&collectCount<=9999){
-            totalCount=1000;
-        }
-        float percent= (float)collectCount / (float) totalCount * 100;
+        int totalCount=bean.getUpperLimit();
+        float percent= (float)bean.getClassCount() / (float)totalCount*100;
         ((ExcellentCourseItemViewHolder) holder).horizontal_progressbar.setProgress((int) percent);
+        ((ExcellentCourseItemViewHolder) holder).tv_percent.setText(bean.getClassCount()+"/"+totalCount);
 
     }
     @Override

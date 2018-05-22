@@ -45,7 +45,10 @@ public abstract class BaseMultiAdapter<T extends MultiItemEntity> extends Recycl
             .cornerRadiusDp(30)
             .oval(true)
             .build();
-    ;
+    public Transformation raduisTransformation = new RoundedTransformationBuilder()
+            .cornerRadius(20)
+            .oval(false)
+            .build();
     /**
      * layouts indexed with their types
      */

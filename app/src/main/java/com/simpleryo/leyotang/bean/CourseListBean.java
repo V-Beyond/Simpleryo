@@ -92,6 +92,15 @@ public class CourseListBean extends BaseResult {
         private AddressBean address;
         private CoachBean coach;
         private List<RecommendsBean> recommends;
+        private  int upperLimit;
+
+        public int getUpperLimit() {
+            return upperLimit;
+        }
+
+        public void setUpperLimit(int upperLimit) {
+            this.upperLimit = upperLimit;
+        }
 
         public String getId() {
             return id;

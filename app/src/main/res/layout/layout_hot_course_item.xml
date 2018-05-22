@@ -1,91 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="306px"
         android:orientation="vertical">
+
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
+            android:layout_height="match_parent">
+
             <ImageView
                 android:id="@+id/iv_collection_img"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="fitXY" />
+
             <ImageView
                 android:layout_width="match_parent"
-                android:background="@drawable/shape_course_gradient"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:background="@drawable/shape_course_gradient" />
+
             <TextView
                 android:id="@+id/tv_collection_name"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="34px"
-                android:text="Private Yoga"
-                android:textSize="21sp"
                 android:layout_marginTop="48px"
+                android:text="Private Yoga"
                 android:textColor="@color/color_ffffff"
-                android:layout_height="wrap_content" />
+                android:textSize="21sp" />
+
             <TextView
                 android:id="@+id/tv_price"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/iv_collection"
                 android:layout_marginLeft="26px"
                 android:text="99$/hour"
-                android:textSize="19sp"
-                android:layout_above="@+id/iv_collection"
                 android:textColor="#FF006C"
-                android:layout_height="wrap_content" />
+                android:textSize="19sp" />
+
             <ImageView
-                android:layout_above="@+id/horizontal_progressbar"
                 android:id="@+id/iv_collection"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/ll_progress"
                 android:layout_marginBottom="4px"
                 android:layout_marginLeft="28px"
-                android:src="@mipmap/iv_collection"
-                android:layout_height="wrap_content" />
+                android:src="@mipmap/iv_collection" />
+
             <TextView
                 android:id="@+id/tv_popular"
                 android:layout_width="wrap_content"
-                android:layout_marginLeft="8px"
-                android:text="100 thousand people"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/ll_progress"
                 android:layout_marginBottom="4px"
-                android:layout_above="@+id/horizontal_progressbar"
+                android:layout_marginLeft="8px"
                 android:layout_toRightOf="@+id/iv_collection"
-                android:textSize="9sp"
+                android:text="100 thousand people"
                 android:textColor="@color/color_ffffff"
-                android:layout_height="wrap_content" />
-            <com.simpleryo.leyotang.view.ZzHorizontalProgressBar
-                android:id="@+id/horizontal_progressbar"
-                android:layout_marginLeft="28px"
-                android:layout_width="210px"
-                app:zpb_padding="0px"
-                app:zpb_pb_color="#FF006C"
-                app:zpb_bg_color="#1b1b1b"
-                app:zpb_max="100"
-                app:zpb_progress="0"
+                android:textSize="9sp" />
+
+            <LinearLayout
+                android:id="@+id/ll_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="28px"
-                android:layout_height="4px" />
+                android:layout_marginLeft="28px"
+                android:orientation="horizontal">
+
+                <ProgressBar
+                    android:id="@+id/horizontal_progressbar"
+                    style="@android:style/Widget.ProgressBar.Horizontal"
+                    android:layout_width="210px"
+                    android:layout_height="4px"
+                    android:layout_gravity="center_vertical"
+                    android:max="100"
+                    android:progress="0"
+                    android:progressDrawable="@drawable/layer_list_progress_drawable" />
+
+                <TextView
+                    android:id="@+id/tv_percent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10px"
+                    android:text=""
+                    android:textColor="@color/color_ffffff"
+                    android:textSize="9sp" />
+            </LinearLayout>
+
             <RelativeLayout
                 android:id="@+id/rl_collect"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
                 android:layout_marginBottom="38px"
                 android:layout_marginRight="52px"
-                android:layout_alignParentRight="true"
-                android:background="@mipmap/iv_collection_bg"
-                android:layout_height="wrap_content">
+                android:background="@mipmap/iv_collection_bg">
+
                 <ImageView
                     android:id="@+id/iv_collection_star"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:src="@mipmap/iv_collection_white_star"
-                    android:layout_height="wrap_content" />
+                    android:src="@mipmap/iv_collection_white_star" />
             </RelativeLayout>
         </RelativeLayout>
 
