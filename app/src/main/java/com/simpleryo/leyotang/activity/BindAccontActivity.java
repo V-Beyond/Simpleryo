@@ -74,7 +74,7 @@ public class BindAccontActivity extends BaseActivity {
                 startActivity(new Intent(BindAccontActivity.this, MyMsgActivity.class));
                 break;
             case R.id.rl_wechat:
-                typeCode = "APP";
+                typeCode = "WECHAT";
                 if (umShareAPI.isInstall(BindAccontActivity.this, SHARE_MEDIA.WEIXIN)) {
                     doOauthVerify(SHARE_MEDIA.WEIXIN);
                 } else {

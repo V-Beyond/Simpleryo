@@ -22,6 +22,7 @@
 
             <ImageView
                 android:layout_width="match_parent"
+                android:alpha="0.8"
                 android:layout_height="match_parent"
                 android:background="@drawable/shape_course_gradient" />
 
@@ -59,12 +60,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/ll_progress"
-                android:layout_marginBottom="4px"
                 android:layout_marginLeft="8px"
                 android:layout_toRightOf="@+id/iv_collection"
                 android:text="100 thousand people"
                 android:textColor="@color/color_ffffff"
-                android:textSize="9sp" />
+                android:textSize="@dimen/percent_size" />
 
             <LinearLayout
                 android:id="@+id/ll_progress"
@@ -92,7 +92,7 @@
                     android:layout_marginLeft="10px"
                     android:text=""
                     android:textColor="@color/color_ffffff"
-                    android:textSize="9sp" />
+                    android:textSize="@dimen/percent_size" />
             </LinearLayout>
 
             <RelativeLayout

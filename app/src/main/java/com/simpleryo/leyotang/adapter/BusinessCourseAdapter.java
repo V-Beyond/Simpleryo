@@ -61,14 +61,16 @@ public class BusinessCourseAdapter extends BaseAdapter<CourseListBean.DataBeanX>
         }else{
             ((ExcellentCourseItemViewHolder) holder).tv_collection_name.setText("暂无课程名称");
         }
-        if (bean.getRecommends().get(0).getValue().equalsIgnoreCase("HOT")){
-            ((ExcellentCourseItemViewHolder) holder).rl_collect.setBackgroundResource(R.mipmap.iv_collection_bg);
-        }
-        else if (bean.getRecommends().get(0).getValue().equalsIgnoreCase("EXCELLENT")){
-            ((ExcellentCourseItemViewHolder) holder).rl_collect.setBackgroundResource(R.mipmap.iv_collection_blue);
-        }
-        else if (bean.getRecommends().get(0).getValue().equalsIgnoreCase("OFFCIAL")){
-            ((ExcellentCourseItemViewHolder) holder).rl_collect.setBackgroundResource(R.mipmap.iv_collection_ping);
+        if (bean.getRecommends()!=null&&bean.getRecommends().size()>0){
+            if (bean.getRecommends().get(0).getValue().equalsIgnoreCase("HOT")){
+                ((ExcellentCourseItemViewHolder) holder).rl_collect.setBackgroundResource(R.mipmap.iv_collection_bg);
+            }
+            else if (bean.getRecommends().get(0).getValue().equalsIgnoreCase("EXCELLENT")){
+                ((ExcellentCourseItemViewHolder) holder).rl_collect.setBackgroundResource(R.mipmap.iv_collection_blue);
+            }
+            else if (bean.getRecommends().get(0).getValue().equalsIgnoreCase("OFFCIAL")){
+                ((ExcellentCourseItemViewHolder) holder).rl_collect.setBackgroundResource(R.mipmap.iv_collection_ping);
+            }
         }
         if (bean.isHasCollect()){
             ((ExcellentCourseItemViewHolder) holder).iv_collection_star.setImageResource(R.mipmap.iv_collection_star);

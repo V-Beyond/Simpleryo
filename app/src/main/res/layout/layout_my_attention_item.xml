@@ -22,10 +22,10 @@
                 android:scaleType="fitXY"
                 android:layout_height="312px" />
             <ImageView
-                android:layout_above="@+id/horizontal_progressbar"
                 android:id="@+id/iv_collection"
                 android:layout_width="wrap_content"
-                android:layout_marginBottom="4px"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="32px"
                 android:layout_marginLeft="28px"
                 android:src="@mipmap/iv_collection"
                 android:layout_height="wrap_content" />
@@ -34,24 +34,25 @@
                 android:layout_width="wrap_content"
                 android:layout_marginLeft="8px"
                 android:text="0 people"
-                android:layout_marginBottom="4px"
-                android:layout_above="@+id/horizontal_progressbar"
                 android:layout_toRightOf="@+id/iv_collection"
-                android:textSize="9sp"
-                android:textColor="@color/color_ffffff"
-                android:layout_height="wrap_content" />
-            <com.simpleryo.leyotang.view.ZzHorizontalProgressBar
-                android:id="@+id/horizontal_progressbar"
-                android:layout_marginLeft="28px"
-                android:layout_width="210px"
-                app:zpb_padding="0px"
-                app:zpb_pb_color="#ff006a"
-                app:zpb_bg_color="#1b1b1b"
-                app:zpb_max="100"
-                app:zpb_progress="0"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="28px"
-                android:layout_height="4px" />
+                android:textSize="@dimen/percent_size"
+                android:textColor="@color/color_ffffff"
+                android:layout_height="wrap_content" />
+            <ProgressBar
+                android:id="@+id/horizontal_progressbar"
+                style="@android:style/Widget.ProgressBar.Horizontal"
+                android:layout_width="210px"
+                android:layout_height="4px"
+                android:layout_gravity="center_vertical"
+                android:visibility="gone"
+                android:layout_marginLeft="28px"
+                android:max="100"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="28px"
+                android:progress="0"
+                android:progressDrawable="@drawable/layer_list_progress_drawable" />
         </RelativeLayout>
 
         <RelativeLayout
