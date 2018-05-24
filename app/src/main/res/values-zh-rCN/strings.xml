@@ -1,13 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--  APP名称-->
     <string name="app_name" >乐友堂</string>
+    <!-- MainActivity-->
     <string name="main_home" >首页</string>
     <string name="main_course">课程</string>
     <string name="main_my" >我的</string>
+    <!-- 个人中心-->
     <string name="useing_help" >使用帮助</string>
     <string name="complaint_proposal" >投诉建议</string>
     <string name="bind_account" >绑定账号</string>
     <string name="contact_us" >联系我们</string>
+    <string name="personal_center">个人中心</string>
+    <string name="exit">退出</string>
+    <string name="essential_information">基本信息</string>
+    <string name="my_order">我的订单</string>
+    <string name="my_service">我的服务</string>
+    <string name="my_collection">个收藏</string>
+    <string name="collection">收藏</string>
+    <string name="collectioned">已收藏</string>
+    <string name="my_attention">个关注</string>
+    <string name="pending_payment">等待付款</string>
+    <string name="complete_the_order">完成订单</string>
+    <string name="comprehensive_evaluation">综合评价</string>
+    <string name="no_login">未登录</string>
+    <!-- 登录-->
+    <string name="welcome_tips">您好，欢迎登陆新普乐优</string>
+    <string name="edit_account">请输入账号</string>
+    <string name="edit_pwd">请输入密码</string>
+    <string name="sign_in">登录</string>
     <string name="no_register_click" ><u>未注册用户请点击</u></string>
+    <string name="my_msg">我的消息</string>
+    <string name="all_course">全部课程</string>
+    <string name="institutional_recommendation">机构推荐</string>
+    <string name="mechanism">机构</string>
+    <string name="notice">公告</string>
     <string name="course_price">人</string>
+    <string name="share">分享</string>
+    <string name="course_detail">课程详情</string>
+    <string name="no_data">该页面暂无更多数据</string>
+    <string name="no_orders">暂无课程订单</string>
 </resources>

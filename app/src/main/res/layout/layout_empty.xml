@@ -17,7 +17,7 @@
         android:layout_marginTop="30px"
         android:gravity="center"
         android:paddingBottom="30px"
-        android:text="该页面暂无更多数据"
+        android:text="@string/no_data"
         android:textColor="#ff898989"
         android:textSize="30px"
         />

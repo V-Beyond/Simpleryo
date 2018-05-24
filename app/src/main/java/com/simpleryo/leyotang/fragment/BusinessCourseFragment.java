@@ -9,11 +9,13 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
+import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.okhttplib.HttpInfo;
 import com.simpleryo.leyotang.R;
+import com.simpleryo.leyotang.activity.CourseDetailActivity;
 import com.simpleryo.leyotang.activity.LoginActivity;
 import com.simpleryo.leyotang.adapter.BusinessCourseAdapter;
 import com.simpleryo.leyotang.base.MyBaseProgressCallbackImpl;
@@ -93,6 +95,12 @@ public class BusinessCourseFragment extends XLibraryLazyFragment {
        if (storeId!=null){
            lrecyclerview.forceToRefresh();
        }
+       lRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
+           @Override
+           public void onItemClick(View view, int position) {
+               startActivity(new Intent(getActivity(), CourseDetailActivity.class).putExtra("courseId",excellentListBeans.get(position).getId()));
+           }
+       });
     }
     private OnRefreshListener onRefreshListener = new OnRefreshListener() {
         @Override

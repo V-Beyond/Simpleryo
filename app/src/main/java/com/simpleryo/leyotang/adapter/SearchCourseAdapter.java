@@ -6,7 +6,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
@@ -119,8 +118,6 @@ public class SearchCourseAdapter extends BaseMultiAdapter<MultipleItem> {
                     }
                 });
             }else{
-                TextView tv_tips=((RecommendViewHolder) holder).empty_view.findViewById(R.id.tv_tips);
-                tv_tips.setText("该页面暂无更多数据");
                 ((RecommendViewHolder) holder).lrecyclerview.setEmptyView(((RecommendViewHolder) holder).empty_view);
             }
             //是否允许嵌套滑动

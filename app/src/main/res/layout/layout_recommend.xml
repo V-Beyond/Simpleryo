@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="31px"
-                android:text="机构推荐"
+                android:text="@string/institutional_recommendation"
                 android:textColor="#898787"
                 android:textSize="33px" />
 

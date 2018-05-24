@@ -51,7 +51,7 @@ public class MyMsgActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        tv_name.setText("我的消息");
+        tv_name.setText(getResources().getString(R.string.my_msg));
         iv_msg.setVisibility(View.GONE);
         lrecyclerview.setLayoutManager(new LinearLayoutManager(this));
         messageAdapter = new MessageAdapter(MyMsgActivity.this);

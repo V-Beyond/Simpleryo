@@ -36,7 +36,8 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/shape_course_gradient" />
+                    android:alpha="0.3"
+                    android:background="@drawable/shape_course_gradient_with_radius" />
 
                 <TextView
                     android:id="@+id/tv_course_category"

@@ -115,7 +115,7 @@ public class MyFragment extends XLibraryLazyFragment {
             EventBus.getDefault().register(this);
             isPrepared = true;
             iv_back.setVisibility(View.GONE);
-            tv_name.setText("个人中心");
+            tv_name.setText(getResources().getString(R.string.personal_center));
             lazyLoad();
         }
         ViewGroup parent = (ViewGroup) mMainView.getParent();
@@ -243,7 +243,7 @@ public class MyFragment extends XLibraryLazyFragment {
                 }, userId);
             } else {
                 tv_exit.setVisibility(View.GONE);
-                tv_nickname.setText("未登录");
+                tv_nickname.setText(getResources().getString(R.string.no_login));
                 tv_collection.setText("0");
                 tv_attention.setText("0");
                 Picasso.with(getContext().getApplicationContext()).load("http://p2.so.qhmsg.com/bdr/_240_/t0118ff1cab46ddba27.jpg").transform(transformation).into(iv_avatar);

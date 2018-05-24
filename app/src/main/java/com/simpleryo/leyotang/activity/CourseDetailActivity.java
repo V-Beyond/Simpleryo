@@ -108,7 +108,7 @@ public class CourseDetailActivity extends BaseActivity    {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        tv_name.setText("课程详情");
+        tv_name.setText(getResources().getString(R.string.course_detail));
         iv_msg.setVisibility(View.GONE);
         tv_share.setVisibility(View.VISIBLE);
         umShareAPI = UMShareAPI.get(this);
@@ -203,9 +203,9 @@ public class CourseDetailActivity extends BaseActivity    {
                         }
                         hasCollect = courdeDetailBean.getData().isHasCollect();
                         if (hasCollect) {
-                            tv_collection.setText("已收藏");
+                            tv_collection.setText(getResources().getString(R.string.collectioned));
                         } else {
-                            tv_collection.setText("收藏");
+                            tv_collection.setText(getResources().getString(R.string.collection));
                         }
                         tv_coach_name.setText(courdeDetailBean.getData().getCoach().getNickName());
                         tv_price.setText(XStringPars.foramtPrice(Integer.valueOf(courdeDetailBean.getData().getPrice())) + "$");

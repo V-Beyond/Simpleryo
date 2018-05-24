@@ -44,7 +44,7 @@ public class AllCourseActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        tv_name.setText("全部课程");
+        tv_name.setText(getResources().getString(R.string.all_course));
         GridItemDecoration divider = new GridItemDecoration.Builder(this)
                 .setHorizontal(30f)
                 .setVertical(30f)

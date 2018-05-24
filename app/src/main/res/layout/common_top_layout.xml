@@ -25,7 +25,7 @@
             android:layout_centerVertical="true"
             android:visibility="gone"
             android:layout_marginLeft="49px"
-            android:text="退出"
+            android:text="@string/exit"
             android:textColor="@color/color_ffffff"
             android:textSize="32px" />
         <TextView
@@ -44,7 +44,7 @@
             android:layout_centerVertical="true"
             android:textSize="32px"
             android:visibility="gone"
-            android:text="分享"
+            android:text="@string/share"
             android:textColor="@color/color_ffffff"
             android:layout_marginRight="37px"/>
         <ImageView

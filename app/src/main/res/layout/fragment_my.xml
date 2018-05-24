@@ -84,7 +84,7 @@
                             android:layout_gravity="center_horizontal"
                             android:layout_marginBottom="20px"
                             android:layout_marginTop="10px"
-                            android:text="基本信息"
+                            android:text="@string/essential_information"
                             android:textColor="@color/color_ffffff" />
                     </LinearLayout>
 
@@ -120,7 +120,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="个收藏"
+                                android:text="@string/my_collection"
                                 android:textColor="@color/color_474747" />
                         </LinearLayout>
                     </LinearLayout>
@@ -163,7 +163,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="个关注"
+                                android:text="@string/my_attention"
                                 android:textColor="@color/color_474747" />
                         </LinearLayout>
                     </LinearLayout>
@@ -177,7 +177,7 @@
                     android:background="@drawable/shape_my_item"
                     android:gravity="center_vertical"
                     android:paddingLeft="59px"
-                    android:text="我的订单"
+                    android:text="@string/my_order"
                     android:textColor="@color/color_ffffff" />
 
                 <LinearLayout
@@ -205,7 +205,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:layout_marginTop="20px"
-                            android:text="等待付款"
+                            android:text="@string/pending_payment"
                             android:textColor="@color/color_474747" />
                     </LinearLayout>
 
@@ -234,7 +234,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:layout_marginTop="20px"
-                            android:text="完成订单"
+                            android:text="@string/complete_the_order"
                             android:textColor="@color/color_474747" />
                     </LinearLayout>
 
@@ -264,7 +264,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:layout_marginTop="20px"
-                            android:text="综合评价"
+                            android:text="@string/comprehensive_evaluation"
                             android:textColor="@color/color_474747" />
                     </LinearLayout>
                 </LinearLayout>
@@ -277,7 +277,7 @@
                     android:background="@drawable/shape_my_item"
                     android:gravity="center_vertical"
                     android:paddingLeft="59px"
-                    android:text="我的服务"
+                    android:text="@string/my_service"
                     android:textColor="@color/color_ffffff" />
 
                 <LinearLayout

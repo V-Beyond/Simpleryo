@@ -33,6 +33,7 @@
 
                 <ImageView
                     android:layout_width="match_parent"
+                    android:alpha="0.3"
                     android:layout_height="match_parent"
                     android:background="@drawable/shape_course_gradient_with_radius" />
 
@@ -90,7 +91,7 @@
 
                 <LinearLayout
                     android:id="@+id/ll_collection"
-                    android:layout_width="132px"
+                    android:layout_width="wrap_content"
                     android:layout_height="41px"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentRight="true"
@@ -112,8 +113,9 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="7px"
+                        android:layout_marginRight="30px"
                         android:drawablePadding="15px"
-                        android:text="收藏"
+                        android:text="@string/collection"
                         android:textColor="@color/color_ffffff"
                         android:textSize="23px" />
                 </LinearLayout>
@@ -143,7 +145,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="14px"
-                        android:text="课程详情"
+                        android:text="@string/course_detail"
                         android:textColor="#373737"
                         android:textSize="35px" />
                 </LinearLayout>

@@ -33,7 +33,7 @@ public class AboutUsActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        tv_name.setText("联系我们");
+        tv_name.setText(getResources().getString(R.string.contact_us));
         iv_msg.setVisibility(View.GONE);
         //启用支持javascript
         WebSettings settings = web_view.getSettings();

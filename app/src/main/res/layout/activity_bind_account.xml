@@ -37,7 +37,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="3px"
+                android:layout_height="1px"
                 android:layout_alignParentBottom="true"
                 android:background="@color/color_d5d5d5"></View>
 
@@ -68,7 +68,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="3px"
+                android:layout_height="1px"
                 android:layout_alignParentBottom="true"
                 android:background="@color/color_d5d5d5"></View>
         </RelativeLayout>
@@ -95,7 +95,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="3px"
+                android:layout_height="1px"
                 android:layout_alignParentBottom="true"
                 android:background="@color/color_d5d5d5"></View>
         </RelativeLayout>

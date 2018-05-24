@@ -33,7 +33,7 @@ public class UseHelpActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        tv_name.setText("使用帮助");
+        tv_name.setText(getResources().getString(R.string.useing_help));
         iv_msg.setVisibility(View.GONE);
 
         //启用支持javascript

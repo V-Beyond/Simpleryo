@@ -89,7 +89,7 @@ public class CourseFragment extends XLibraryLazyFragment {
             return;
         }
         iv_back.setVisibility(View.GONE);
-        tv_name.setText("课程");
+        tv_name.setText(getActivity().getResources().getString(R.string.main_course));
     }
 
     CalendarListBean calendarListBean;

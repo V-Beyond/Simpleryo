@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" >乐友堂</string>
+    <string name="app_name" >Leyotang</string>
     <string name="main_home" >Home</string>
     <string name="main_course">Course</string>
     <string name="main_my">My</string>
@@ -7,8 +7,35 @@
     <string name="complaint_proposal">Complaint Proposal</string>
     <string name="bind_account">Bind Account</string>
     <string name="contact_us">Contact Us</string>
-    <string name="no_register_click" ><u>未注册用户请点击</u></string>
+    <string name="essential_information">Essential Information</string>
+    <string name="my_order">My Order</string>
+    <string name="my_service">My Service</string>
+    <string name="my_collection"> collection</string>
+    <string name="collection">collection</string>
+    <string name="collectioned">collectioned</string>
+    <string name="my_attention"> attention</string>
+    <string name="pending_payment">Pending Payment</string>
+    <string name="complete_the_order">Complete The Order</string>
+    <string name="comprehensive_evaluation">Comprehensive Evaluation</string>
+    <string name="no_login">Not logged in</string>
+
+    <string name="welcome_tips">Hello, welcome to Simpleryo</string>
+    <string name="edit_account">Please enter the account number</string>
+    <string name="edit_pwd">Please input a password</string>
+    <string name="sign_in">Sign in</string>
+    <string name="no_register_click" ><u>Unregistered users please click</u></string>
     <string name="course_price">person</string>
+    <string name="my_msg">My news</string>
+    <string name="all_course">All courses</string>
+    <string name="institutional_recommendation">Institutional Recommendation</string>
+    <string name="mechanism">Mechanism</string>
+    <string name="notice">Notice</string>
+    <string name="personal_center">Personal</string>
+    <string name="share">Share</string>
+    <string name="course_detail">CoueseDetail</string>
+    <string name="exit">Exit</string>
+    <string name="no_data">There is no more data on this page</string>
+    <string name="no_orders">No course orders</string>
     <!--    Permissions    -->
     <string name="permission_rationale_location">Access to the location service is required to demonstrate the \'my location\' feature, which shows your current location on the map.</string>
     <string name="location_permission_denied">This sample requires location permission to enable the \'my location\' layer. Please try again and grant access to use the location.\nIf the permission has been permanently denied, it can be enabled from the System Settings &gt; Apps &gt; \'Google Maps API Demos\'.</string>

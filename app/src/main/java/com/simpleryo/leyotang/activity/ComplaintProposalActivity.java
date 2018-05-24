@@ -88,7 +88,7 @@ public class ComplaintProposalActivity extends BaseActivity implements ImagePick
         x.view().inject(this);
         XActivityUtils.getInstance().pushActivity(this);
         EventBus.getDefault().register(this);
-        tv_name.setText("投诉建议");
+        tv_name.setText(getResources().getString(R.string.complaint_proposal));
         String endpoint = "oss-cn-hangzhou.aliyuncs.com";
 //        String endpoint = "oss-cn-shanghai.aliyuncs.com";
         // 在移动端建议使用STS的方式初始化OSSClient，更多信息参考：[访问控制]

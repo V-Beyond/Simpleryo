@@ -106,7 +106,7 @@
                         android:button="@null"
                         android:checked="true"
                         android:gravity="center"
-                        android:text="课程"
+                        android:text="@string/main_course"
                         android:textColor="@color/selector_my_course_radio_text_color" />
 
                     <RadioButton
@@ -120,7 +120,7 @@
                         android:background="@drawable/selector_business_radio_course"
                         android:button="@null"
                         android:gravity="center"
-                        android:text="机构"
+                        android:text="@string/mechanism"
                         android:textColor="@color/selector_my_course_radio_text_color" />
                 </RadioGroup>
 
