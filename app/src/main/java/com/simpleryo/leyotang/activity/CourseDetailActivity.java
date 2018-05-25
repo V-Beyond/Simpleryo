@@ -24,12 +24,12 @@ import com.simpleryo.leyotang.fragment.ShareDialogFragment;
 import com.simpleryo.leyotang.network.SimpleryoNetwork;
 import com.simpleryo.leyotang.utils.SharedPreferencesUtils;
 import com.simpleryo.leyotang.utils.XActivityUtils;
-import com.simpleryo.leyotang.utils.XStringPars;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.UmengTool;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
@@ -105,6 +105,8 @@ public class CourseDetailActivity extends BaseActivity    {
             .build();
     public final static String CSS_STYLE = "<style>* {font-size:14px;line-height:20px;}p {color:#373737;font-size:12px}</style>";
     UMShareAPI umShareAPI;//友盟分享
+
+    boolean isSingle=true;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,6 +117,7 @@ public class CourseDetailActivity extends BaseActivity    {
         EventBus.getDefault().register(this);//注册EventBus
         courseId = getIntent().getStringExtra("courseId");
         isLogin = SharedPreferencesUtils.getKeyBoolean("isLogin");
+        UmengTool.getSignature(this);
     }
 
     @Override
@@ -208,7 +211,11 @@ public class CourseDetailActivity extends BaseActivity    {
                             tv_collection.setText(getResources().getString(R.string.collection));
                         }
                         tv_coach_name.setText(courdeDetailBean.getData().getCoach().getNickName());
-                        tv_price.setText(XStringPars.foramtPrice(Integer.valueOf(courdeDetailBean.getData().getPrice())) + "$");
+
+                        if (isSingle){
+                            tv_price.setText("免费预约");
+                        }
+//                        tv_price.setText(XStringPars.foramtPrice(Integer.valueOf(courdeDetailBean.getData().getPrice())) + "$");
                         tv_join_count.setText("已有" + courdeDetailBean.getData().getClassCount() + "人参加");
                         tv_popular.setText(courdeDetailBean.getData().getClassCount() + "个人正在学习");
                         tv_goodreviewrate.setText("好评率：" + courdeDetailBean.getData().getGoodReviewRate() + "%");
@@ -282,12 +289,13 @@ public class CourseDetailActivity extends BaseActivity    {
                     }else{
                         tv_to_use_help.setText("关注");
                     }
-                    if (storeDetailBean.getData().getStoreInfo().getStatus().equalsIgnoreCase("AUDIT_OK")) {
-                        tv_store_status.setText("已认证");
-                    } else if (storeDetailBean.getData().getStoreInfo().getStatus().equalsIgnoreCase("AUDITING")) {
-                        tv_store_status.setText("待审核");
-                    } else if (storeDetailBean.getData().getStoreInfo().getStatus().equalsIgnoreCase("AUDIT_FAIL")) {
-                        tv_store_status.setText("未通过");
+                    if (storeDetailBean.getData().getStoreInfo().getStatus().equalsIgnoreCase("AUDIT_OK")){
+                        tv_store_status.setText(getResources().getString(R.string.certified));
+                    }else if(storeDetailBean.getData().getStoreInfo().getStatus().equalsIgnoreCase("AUDITING")){
+                        tv_store_status.setText(getResources().getString(R.string.to_be_audited));
+                    }
+                    else if(storeDetailBean.getData().getStoreInfo().getStatus().equalsIgnoreCase("AUDIT_FAIL")){
+                        tv_store_status.setText(getResources().getString(R.string.not_through));
                     }
                     if (storeDetailBean.getData().getStoreInfo().getAddress() != null) {
                         tv_address.setText(storeDetailBean.getData().getStoreInfo().getAddress().getDetail());
@@ -380,7 +388,7 @@ public class CourseDetailActivity extends BaseActivity    {
                 break;
             case R.id.ll_collection://收藏与取消收藏课程
                 if (isLogin) {
-                    if (hasCollect) {//收藏
+                    if (hasCollect==false) {//收藏
                         SimpleryoNetwork.collectCourse(CourseDetailActivity.this, new MyBaseProgressCallbackImpl(CourseDetailActivity.this) {
                             @Override
                             public void onSuccess(HttpInfo info) {

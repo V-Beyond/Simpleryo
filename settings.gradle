@@ -1,1 +1,1 @@
-include ':app', ':calendarview', ':imagepicker', ':latipay'
+include ':app', ':calendarview', ':imagepicker', ':latipay', ':wheelview', ':pickerview'

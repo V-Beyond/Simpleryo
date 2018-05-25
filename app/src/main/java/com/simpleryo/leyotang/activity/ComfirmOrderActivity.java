@@ -5,10 +5,12 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -89,16 +91,39 @@ public class ComfirmOrderActivity extends BaseActivity {
     TextView tv_course_time;
     @ViewInject(R.id.tv_course_address)
     TextView tv_course_address;
+    @ViewInject(R.id.radigroup_time)
+    RadioGroup radigroup_time;
     public final static String CSS_STYLE = "<style>* {font-size:14px;line-height:20px;}p {color:##373737;font-size:12px}</style>";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        tv_name.setText("确认订单");
+        tv_name.setText(getResources().getString(R.string.confirmation_of_order));
         EventBus.getDefault().register(this);
         count = Integer.parseInt(et_count.getText().toString().trim());
         courseId = getIntent().getStringExtra("courseId");
         getCourseDetail();
+        for (int i=0;i<5;i++){
+            RadioButton radioButton= (RadioButton) LayoutInflater.from(ComfirmOrderActivity.this).inflate(R.layout.custom_radiobtn_layout,null);
+            radioButton.setText("2018-05-2"+i+" 08:00-12:00");
+            radioButton.setId(i);
+            radioButton.setTextSize(12);
+            radioButton.setPadding(50, 20, 50, 20);
+            RadioGroup.LayoutParams lp = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.MATCH_PARENT, RadioGroup.LayoutParams.WRAP_CONTENT);
+            //设置RadioButton边距 (int left, int top, int right, int bottom)
+            lp.setMargins(15,15,15,15);
+            radigroup_time.addView(radioButton,lp);
+        }
+        radigroup_time.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // TODO Auto-generated method stub
+                RadioButton tempButton = (RadioButton)findViewById(checkedId); // 通过RadioGroup的findViewById方法，找到ID为checkedID的RadioButton
+                // 以下就可以对这个RadioButton进行处理了
+                Toast.makeText(ComfirmOrderActivity.this,tempButton.getText(),Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -163,8 +188,8 @@ public class ComfirmOrderActivity extends BaseActivity {
                         price = 2;
                     }
                     total_price = count * price;
-                    tv_price.setText("课程价格：" + XStringPars.foramtPrice(total_price) + "$");
-                    tv_total_price.setText("课程总额：" + XStringPars.foramtPrice(total_price) + "$");
+                    tv_price.setText(getResources().getString(R.string.course_of_price) + XStringPars.foramtPrice(total_price) + "$");
+                    tv_total_price.setText(getResources().getString(R.string.total_course) + XStringPars.foramtPrice(total_price) + "$");
                     if (courdeDetailBean.getData().getStoreName() != null) {
                         tv_store_name.setText(courdeDetailBean.getData().getStoreName());
                     } else {

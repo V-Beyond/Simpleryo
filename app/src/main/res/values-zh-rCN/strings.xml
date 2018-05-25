@@ -6,6 +6,7 @@
     <string name="main_home" >首页</string>
     <string name="main_course">课程</string>
     <string name="main_my" >我的</string>
+    <string name="course_arrangement">课程安排</string>
     <!-- 个人中心-->
     <string name="useing_help" >使用帮助</string>
     <string name="complaint_proposal" >投诉建议</string>
@@ -16,14 +17,21 @@
     <string name="essential_information">基本信息</string>
     <string name="my_order">我的订单</string>
     <string name="my_service">我的服务</string>
+    <string name="my_collections">我的收藏</string>
+    <string name="my_attentions">我的关注</string>
     <string name="my_collection">个收藏</string>
     <string name="collection">收藏</string>
     <string name="collectioned">已收藏</string>
     <string name="my_attention">个关注</string>
+    <string name="follow">关注</string>
+    <string name="abolish_concern">取消关注</string>
     <string name="pending_payment">等待付款</string>
     <string name="complete_the_order">完成订单</string>
     <string name="comprehensive_evaluation">综合评价</string>
     <string name="no_login">未登录</string>
+
+    <string name="mailbox_account">邮箱账号</string>
+    <string name="register">注 册</string>
     <!-- 登录-->
     <string name="welcome_tips">您好，欢迎登陆新普乐优</string>
     <string name="edit_account">请输入账号</string>
@@ -32,7 +40,24 @@
     <string name="no_register_click" ><u>未注册用户请点击</u></string>
     <string name="my_msg">我的消息</string>
     <string name="all_course">全部课程</string>
+    <string name="reservations">预约课程</string>
     <string name="institutional_recommendation">机构推荐</string>
+    <string name="coaching_information">教练信息</string>
+    <string name="institutional_information">机构信息</string>
+    <string name="qualification_certificate">资质证书</string>
+    <string name="business_home">商家主页</string>
+    <string name="certified">已认证</string>
+    <string name="to_be_audited">待审核</string>
+    <string name="not_through">未通过</string>
+
+    <string name="confirmation_of_order">确认订单</string>
+    <string name="confirmation_of_payment">确认支付</string>
+    <string name="course_of_price">课程价格：</string>
+    <string name="total_course">课程总额：</string>
+    <string name="purchase_quantity">购买数量：</string>
+    <string name="reservation">预订人：</string>
+    <string name="cell_phone_number">手机号：</string>
+    <string name="remarks">备注：</string>
     <string name="mechanism">机构</string>
     <string name="notice">公告</string>
     <string name="course_price">人</string>
@@ -40,4 +65,7 @@
     <string name="course_detail">课程详情</string>
     <string name="no_data">该页面暂无更多数据</string>
     <string name="no_orders">暂无课程订单</string>
+
+
+    <string name="facebook_app_id">2121752104719489</string>
 </resources>

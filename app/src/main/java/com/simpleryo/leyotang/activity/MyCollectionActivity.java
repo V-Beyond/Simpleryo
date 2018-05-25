@@ -59,7 +59,7 @@ public class MyCollectionActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
-        tv_name.setText("我的收藏");
+        tv_name.setText(getResources().getString(R.string.my_collections));
         DividerDecoration divider = new DividerDecoration.Builder(this)
                 .setHeight(50f)
                 .setColorResource(R.color.color_transparent)
@@ -79,6 +79,11 @@ public class MyCollectionActivity extends BaseActivity {
                 startActivity(new Intent(MyCollectionActivity.this, CourseDetailActivity.class).putExtra("courseId",collectList.get(position).getId()));
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         EventBus.getDefault().post(new BusEntity(002));
     }
 
@@ -121,14 +126,14 @@ public class MyCollectionActivity extends BaseActivity {
                 super.onSuccess(info);
                 CollectionListBean collectionListBean = info.getRetDetail(CollectionListBean.class);
                 if (collectionListBean.getCode().equalsIgnoreCase("0")) {
+                    if (mItemModels != null && mItemModels.size() > 0) {
+                        mItemModels.clear();
+                    }
+                    if (collectList != null && collectList.size() > 0) {
+                        collectList.clear();
+                    }
                     if (collectionListBean.getData() != null && collectionListBean.getData().size() > 0) {
                         MultipleItem item;
-                        if (mItemModels != null && mItemModels.size() > 0) {
-                            mItemModels.clear();
-                        }
-                        if (collectList != null && collectList.size() > 0) {
-                            collectList.clear();
-                        }
                         collectList.addAll(collectionListBean.getData());
                         for (CollectionListBean.DataBean dataBean : collectList) {
                             item = new MultipleItem(MultipleItem.MYCOLLECTION);
@@ -140,10 +145,14 @@ public class MyCollectionActivity extends BaseActivity {
                         if (collectList.size()>0){
                             lrecyclerview.setNoMore(true);
                         }else{
+                            myOrderAdapter = new MyOrderAdapter(MyCollectionActivity.this);
+                            lRecyclerViewAdapter = new LRecyclerViewAdapter(myOrderAdapter);
+                            lrecyclerview.setAdapter(lRecyclerViewAdapter);
                             lrecyclerview.setEmptyView(mEmptyView);//设置在setAdapter之前才能生效
                         }
                     }
                     lrecyclerview.refreshComplete(collectList.size());
+                    myOrderAdapter.notifyDataSetChanged();
                     lRecyclerViewAdapter.notifyDataSetChanged();
                 }
             }

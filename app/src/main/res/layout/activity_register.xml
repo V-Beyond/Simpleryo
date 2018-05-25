@@ -37,7 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@null"
-                android:hint="邮箱账号"
+                android:hint="@string/mailbox_account"
                 android:paddingLeft="15px"
                 android:singleLine="true"
                 android:textSize="28px" />
@@ -176,7 +176,7 @@
             android:gravity="center"
             android:padding="20px"
             android:textSize="33px"
-            android:text="注 册"
+            android:text="@string/register"
             android:textColor="@color/color_ffffff" />
     </LinearLayout>
 </LinearLayout>

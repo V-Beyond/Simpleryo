@@ -56,7 +56,7 @@ public class MyOrderActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         status = getIntent().getStringExtra("status");
-        tv_name.setText("我的订单");
+        tv_name.setText(getResources().getString(R.string.my_order));
         fragments.add(new OrderNewFragment());
         fragments.add(new OrderPayedFragment());
         fragments.add(new OrderReceiveFragment());

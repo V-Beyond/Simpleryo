@@ -17,6 +17,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
+import com.bigkoo.pickerview.listener.CustomListener;
+import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
+import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -49,6 +53,8 @@ import com.squareup.picasso.Transformation;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
+
+import java.util.ArrayList;
 
 /**
  * @author huanglei
@@ -175,18 +181,106 @@ public class MyCourseDetailActivity extends BaseActivity implements OnMapReadyCa
     }
 
 
-    @Event(value = {R.id.iv_back,R.id.iv_msg}, type = View.OnClickListener.class)
+    @Event(value = {R.id.iv_back,R.id.iv_msg,R.id.tv_update_course_time}, type = View.OnClickListener.class)
     private void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
                 XActivityUtils.getInstance().popActivity(MyCourseDetailActivity.this);
+                break;
+            case R.id.tv_update_course_time:
+                initCustomOptionPicker();
                 break;
             case R.id.iv_msg:
                 startActivity(new Intent(MyCourseDetailActivity.this,MyMsgActivity.class));
                 break;
         }
     }
+    private OptionsPickerView pvCustomOptions;
+    ArrayList<String> arrayList = new ArrayList<>();
+    String time;
+    private void initCustomOptionPicker() {//条件选择器初始化，自定义布局
+        for (int i = 0; i < 10; i++) {
+            arrayList.add("2018-05-2" + i + " 08:00-12:00");
+        }
+//        pvNoLinkOptions = new OptionsPickerBuilder(this, new OnOptionsSelectListener() {
+//
+//            @Override
+//            public void onOptionsSelect(int options1, int options2, int options3, View v) {
+//                Toast.makeText(MyCourseDetailActivity.this, arrayList.get(options1), Toast.LENGTH_SHORT).show();
+//            }
+//            })
+//                .setOptionsSelectChangeListener(new OnOptionsSelectChangeListener() {
+//                    @Override
+//                    public void onOptionsSelectChanged(int options1, int options2, int options3) {
+//                        time= arrayList.get(options1);
+//                    }
+//                })
+////                .setLayoutRes(R.layout.dialog_course_time, new CustomListener() {
+////                    @Override
+////                    public void customLayout(View v) {
+////                        final TextView tvSubmit = (TextView) v.findViewById(R.id.tv_cancel);
+////                        TextView ivCancel = (TextView) v.findViewById(R.id.tv_sure);
+////                        tvSubmit.setOnClickListener(new View.OnClickListener() {
+////                            @Override
+////                            public void onClick(View v) {
+////                                pvNoLinkOptions.returnData();
+////                                pvNoLinkOptions.dismiss();
+////                            }
+////                        });
+////
+////                        ivCancel.setOnClickListener(new View.OnClickListener() {
+////                            @Override
+////                            public void onClick(View v) {
+////                                pvNoLinkOptions.dismiss();
+////                            }
+////                        });
+////                    }
+////                })
+//                .isDialog(false)
+//                .build();
+//        pvNoLinkOptions.setNPicker(arrayList,null,null);
+//        pvNoLinkOptions.setSelectOptions(3, 1, 1);
+//        pvNoLinkOptions.show();
+        /**
+         * @description
+         *
+         * 注意事项：
+         * 自定义布局中，id为 optionspicker 或者 timepicker 的布局以及其子控件必须要有，否则会报空指针。
+         * 具体可参考demo 里面的两个自定义layout布局。
+         */
+        pvCustomOptions = new OptionsPickerBuilder(MyCourseDetailActivity.this, new OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int option2, int options3, View v) {
+                //返回的分别是三个级别的选中位置
+                String tx = arrayList.get(options1);
+            }
+        })
+                .setLayoutRes(R.layout.dialog_course_time, new CustomListener() {
+                    @Override
+                    public void customLayout(View v) {
+                        final TextView tvSubmit = (TextView) v.findViewById(R.id.tv_cancel);
+                        TextView ivCancel = (TextView) v.findViewById(R.id.tv_sure);
+                        tvSubmit.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                pvCustomOptions.returnData();
+                                pvCustomOptions.dismiss();
+                            }
+                        });
 
+                        ivCancel.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                pvCustomOptions.dismiss();
+                            }
+                        });
+                    }
+                })
+                .isDialog(true)
+                .build();
+        pvCustomOptions.setPicker(arrayList);//添加数据
+        pvCustomOptions.show();
+    }
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private Location mLastKnownLocation;

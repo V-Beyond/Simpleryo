@@ -55,7 +55,7 @@ public class MyInfoActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
-        tv_name.setText("基本信息");
+        tv_name.setText(getResources().getString(R.string.essential_information));
         userId= SharedPreferencesUtils.getKeyString("userId");
         EventBus.getDefault().post(new BusEntity(87));
     }

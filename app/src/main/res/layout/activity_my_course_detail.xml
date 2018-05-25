@@ -157,7 +157,16 @@
                             android:text="上课时间：-------"
                             android:textColor="#373737"
                             android:textSize="29px" />
-
+                        <TextView
+                            android:id="@+id/tv_update_course_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="14px"
+                            android:layout_marginTop="27px"
+                            android:text="修改预约时间"
+                            android:textColor="#057dff"
+                            android:textSize="29px" />
                         <TextView
                             android:id="@+id/tv_course_address"
                             android:layout_width="wrap_content"

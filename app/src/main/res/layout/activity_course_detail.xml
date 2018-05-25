@@ -290,7 +290,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="14px"
-                        android:text="教练信息"
+                        android:text="@string/coaching_information"
                         android:textColor="#373737"
                         android:textSize="35px" />
                 </LinearLayout>
@@ -441,7 +441,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="14px"
-                        android:text="机构信息"
+                        android:text="@string/institutional_information"
                         android:textColor="#373737"
                         android:textSize="35px" />
                 </LinearLayout>
@@ -486,7 +486,7 @@
 
                         <TextView
                             android:id="@+id/tv_store_status"
-                            android:layout_width="70px"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="5px"
@@ -543,7 +543,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="14px"
-                        android:text="资质证书"
+                        android:text="@string/qualification_certificate"
                         android:textColor="#373737"
                         android:textSize="35px" />
                 </LinearLayout>
@@ -623,7 +623,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:gravity="center"
-                android:text="预约课程"
+                android:text="@string/reservations"
                 android:textColor="@color/color_ffffff"
                 android:textSize="46px" />
         </RelativeLayout>

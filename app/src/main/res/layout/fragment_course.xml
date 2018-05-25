@@ -40,7 +40,7 @@
             android:layout_marginTop="62px"
             android:layout_toRightOf="@+id/tv_line"
             android:gravity="center"
-            android:text="课程安排"
+            android:text="@string/course_arrangement"
             android:textColor="@color/color_ffffff"
             android:textSize="34px" />
 

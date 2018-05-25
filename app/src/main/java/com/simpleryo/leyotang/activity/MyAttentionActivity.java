@@ -53,7 +53,7 @@ public class MyAttentionActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        tv_name.setText("我的关注");
+        tv_name.setText(getResources().getString(R.string.my_attentions));
         GridItemDecoration divider = new GridItemDecoration.Builder(this)
                .setHorizontal(30f)
                 .setVertical(30f)

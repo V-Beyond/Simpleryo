@@ -58,7 +58,7 @@ public class BusinessHomeActivty extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        tv_name.setText("商家主页");
+        tv_name.setText(getResources().getString(R.string.business_home));
         storeId=getIntent().getStringExtra("storeId");
         Bundle bundle=new Bundle();
         bundle.putString("storeId",storeId);
@@ -88,12 +88,12 @@ public class BusinessHomeActivty extends BaseActivity {
                 if (storeDetailBean.getCode().equalsIgnoreCase("0")){
                     tv_store_name.setText(storeDetailBean.getData().getStoreInfo().getName());
                     if (storeDetailBean.getData().getStoreInfo().getStatus().equalsIgnoreCase("AUDIT_OK")){
-                        tv_store_status.setText("已认证");
+                        tv_store_status.setText(getResources().getString(R.string.certified));
                     }else if(storeDetailBean.getData().getStoreInfo().getStatus().equalsIgnoreCase("AUDITING")){
-                        tv_store_status.setText("待审核");
+                        tv_store_status.setText(getResources().getString(R.string.to_be_audited));
                     }
                     else if(storeDetailBean.getData().getStoreInfo().getStatus().equalsIgnoreCase("AUDIT_FAIL")){
-                        tv_store_status.setText("未通过");
+                        tv_store_status.setText(getResources().getString(R.string.not_through));
                     }
                     if (storeDetailBean.getData().getStoreInfo().getLicenceUrl()!=null){
                         Picasso.with(BusinessHomeActivty.this).load(storeDetailBean.getData().getStoreInfo().getLicenceUrl()).into(iv_licence);
