@@ -165,6 +165,7 @@
                             android:layout_marginLeft="14px"
                             android:layout_marginTop="27px"
                             android:text="修改预约时间"
+                            android:visibility="gone"
                             android:textColor="#057dff"
                             android:textSize="29px" />
                         <TextView

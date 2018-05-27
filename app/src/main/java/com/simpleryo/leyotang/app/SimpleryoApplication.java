@@ -26,7 +26,7 @@ import net.latipay.mobile.LatipayAPI;
 
 import org.xutils.BuildConfig;
 import org.xutils.x;
-
+import java.lang.reflect.Field;
 
 /**
  * @ClassNname：SimpleryoApplication.java
@@ -49,6 +49,15 @@ public class SimpleryoApplication extends MultiDexApplication {
         LatipayAPI.setup("126vzmg8M7", "U000000348", "W000000381");
         //设置LOG开关，默认为false
         UMConfigure.setLogEnabled(true);
+        try {
+            Class<?> aClass = Class.forName("com.umeng.commonsdk.UMConfigure");
+            Field[] fs = aClass.getDeclaredFields();
+            for (Field f:fs){
+                Log.e("xxxxxx","ff="+f.getName()+"   "+f.getType().getName());
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         //初始化组件化基础库, 统计SDK/推送SDK/分享SDK都必须调用此初始化接口
         UMConfigure.init(this, "5ad84bdd8f4a9d5761000069", "Simpleryo", UMConfigure.DEVICE_TYPE_PHONE,
                 "195cd57308d0d88adb1c6578b25f5345");

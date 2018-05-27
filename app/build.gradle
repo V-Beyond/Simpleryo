@@ -46,8 +46,6 @@ android {
     android {
         lintOptions {
             checkReleaseBuilds false
-            // Or, if you prefer, you can continue to check for errors in release builds,
-            // but continue the build even when errors are found:
             abortOnError false
         }
     }
@@ -83,9 +81,9 @@ dependencies {
     compile 'com.squareup.okio:okio:1.9.0'
     compile 'com.aliyun.dpa:oss-android-sdk:+'
     //友盟
-    compile 'com.umeng.sdk:common:latest.integration'
+//    compile 'com.umeng.sdk:common:latest.integration'
     compile 'com.umeng.sdk:analytics:latest.integration'
-    compile 'com.umeng.sdk:share-core:latest.integration'
+//    compile 'com.umeng.sdk:share-core:latest.integration'
     //    compile 'com.umeng.sdk:share-wechat:latest.integration'
     //微信SDK
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'

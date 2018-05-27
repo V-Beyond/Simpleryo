@@ -24,12 +24,12 @@ import com.simpleryo.leyotang.fragment.ShareDialogFragment;
 import com.simpleryo.leyotang.network.SimpleryoNetwork;
 import com.simpleryo.leyotang.utils.SharedPreferencesUtils;
 import com.simpleryo.leyotang.utils.XActivityUtils;
+import com.simpleryo.leyotang.utils.XStringPars;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
-import com.umeng.socialize.UmengTool;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
@@ -98,6 +98,8 @@ public class CourseDetailActivity extends BaseActivity    {
     TextView tv_collection;
     @ViewInject(R.id.tv_to_use_help)
     TextView tv_to_use_help;
+    @ViewInject(R.id.tv_comfirm_pay)
+    TextView tv_comfirm_pay;
     boolean hasCollect;//是否收藏
     public Transformation transformation = new RoundedTransformationBuilder()
             .cornerRadius(10)
@@ -105,8 +107,6 @@ public class CourseDetailActivity extends BaseActivity    {
             .build();
     public final static String CSS_STYLE = "<style>* {font-size:14px;line-height:20px;}p {color:#373737;font-size:12px}</style>";
     UMShareAPI umShareAPI;//友盟分享
-
-    boolean isSingle=true;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,7 +117,7 @@ public class CourseDetailActivity extends BaseActivity    {
         EventBus.getDefault().register(this);//注册EventBus
         courseId = getIntent().getStringExtra("courseId");
         isLogin = SharedPreferencesUtils.getKeyBoolean("isLogin");
-        UmengTool.getSignature(this);
+//        UmengTool.getSignature(this);
     }
 
     @Override
@@ -212,10 +212,20 @@ public class CourseDetailActivity extends BaseActivity    {
                         }
                         tv_coach_name.setText(courdeDetailBean.getData().getCoach().getNickName());
 
-                        if (isSingle){
-                            tv_price.setText("免费预约");
+                        if(courdeDetailBean.getData().getPrice()!=0){
+                            tv_price.setText(XStringPars.foramtPrice(Integer.valueOf(courdeDetailBean.getData().getPrice())) + "$");
+                            if (courdeDetailBean.getData().getType().equalsIgnoreCase("series")){
+                                tv_comfirm_pay.setText("购买课程");
+                            }else if(courdeDetailBean.getData().getType().equalsIgnoreCase("single")){
+                                tv_comfirm_pay.setText("预约课程");
+                            }
+                        }else{
+                            if (courdeDetailBean.getData().getType().equalsIgnoreCase("series")){
+                                tv_price.setText("免费购买");
+                            }else if(courdeDetailBean.getData().getType().equalsIgnoreCase("single")){
+                               tv_price.setText("免费预约");
+                            }
                         }
-//                        tv_price.setText(XStringPars.foramtPrice(Integer.valueOf(courdeDetailBean.getData().getPrice())) + "$");
                         tv_join_count.setText("已有" + courdeDetailBean.getData().getClassCount() + "人参加");
                         tv_popular.setText(courdeDetailBean.getData().getClassCount() + "个人正在学习");
                         tv_goodreviewrate.setText("好评率：" + courdeDetailBean.getData().getGoodReviewRate() + "%");

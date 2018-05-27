@@ -83,6 +83,8 @@ public class MyCourseDetailActivity extends BaseActivity implements OnMapReadyCa
     TextView tv_store_name;
     @ViewInject(R.id.tv_course_address)
     TextView tv_course_address;
+    @ViewInject(R.id.tv_update_course_time)
+    TextView tv_update_course_time;
     public Transformation transformation = new RoundedTransformationBuilder()
             .cornerRadiusDp(30)
             .oval(true)
@@ -102,7 +104,7 @@ public class MyCourseDetailActivity extends BaseActivity implements OnMapReadyCa
         id = getIntent().getStringExtra("id");
         initData();
     }
-
+    ArrayList<OrderDetailBean.OrderCourseBean.Arrange> arrangeArrayList=new ArrayList<>();
     /**
      * 获取订单详情
      */
@@ -115,6 +117,12 @@ public class MyCourseDetailActivity extends BaseActivity implements OnMapReadyCa
                 OrderDetailBean orderDetailBean = info.getRetDetail(OrderDetailBean.class);
                 if (orderDetailBean.getCode().equalsIgnoreCase("0")) {
                     tv_order_number.setText("订单号：" + orderDetailBean.getData().getId());
+                    if (orderDetailBean.getData().getCourse().getType().equalsIgnoreCase("single")) {
+                        tv_update_course_time.setVisibility(View.VISIBLE);
+                        if (orderDetailBean.getData().getCourse().getArranges()!=null&&orderDetailBean.getData().getCourse().getArranges().size()>0){
+                            arrangeArrayList.addAll(orderDetailBean.getData().getCourse().getArranges());
+                        }
+                    }
                     if (orderDetailBean.getData().getImageUrl() != null) {
                         Picasso.with(MyCourseDetailActivity.this).load(orderDetailBean.getData().getImageUrl()).into(iv_my_course_detail_img);
                     } else {
@@ -196,51 +204,9 @@ public class MyCourseDetailActivity extends BaseActivity implements OnMapReadyCa
         }
     }
     private OptionsPickerView pvCustomOptions;
-    ArrayList<String> arrayList = new ArrayList<>();
     String time;
     private void initCustomOptionPicker() {//条件选择器初始化，自定义布局
-        for (int i = 0; i < 10; i++) {
-            arrayList.add("2018-05-2" + i + " 08:00-12:00");
-        }
-//        pvNoLinkOptions = new OptionsPickerBuilder(this, new OnOptionsSelectListener() {
-//
-//            @Override
-//            public void onOptionsSelect(int options1, int options2, int options3, View v) {
-//                Toast.makeText(MyCourseDetailActivity.this, arrayList.get(options1), Toast.LENGTH_SHORT).show();
-//            }
-//            })
-//                .setOptionsSelectChangeListener(new OnOptionsSelectChangeListener() {
-//                    @Override
-//                    public void onOptionsSelectChanged(int options1, int options2, int options3) {
-//                        time= arrayList.get(options1);
-//                    }
-//                })
-////                .setLayoutRes(R.layout.dialog_course_time, new CustomListener() {
-////                    @Override
-////                    public void customLayout(View v) {
-////                        final TextView tvSubmit = (TextView) v.findViewById(R.id.tv_cancel);
-////                        TextView ivCancel = (TextView) v.findViewById(R.id.tv_sure);
-////                        tvSubmit.setOnClickListener(new View.OnClickListener() {
-////                            @Override
-////                            public void onClick(View v) {
-////                                pvNoLinkOptions.returnData();
-////                                pvNoLinkOptions.dismiss();
-////                            }
-////                        });
-////
-////                        ivCancel.setOnClickListener(new View.OnClickListener() {
-////                            @Override
-////                            public void onClick(View v) {
-////                                pvNoLinkOptions.dismiss();
-////                            }
-////                        });
-////                    }
-////                })
-//                .isDialog(false)
-//                .build();
-//        pvNoLinkOptions.setNPicker(arrayList,null,null);
-//        pvNoLinkOptions.setSelectOptions(3, 1, 1);
-//        pvNoLinkOptions.show();
+
         /**
          * @description
          *
@@ -252,7 +218,7 @@ public class MyCourseDetailActivity extends BaseActivity implements OnMapReadyCa
             @Override
             public void onOptionsSelect(int options1, int option2, int options3, View v) {
                 //返回的分别是三个级别的选中位置
-                String tx = arrayList.get(options1);
+                String tx = arrangeArrayList.get(options1).getDateDetail();
             }
         })
                 .setLayoutRes(R.layout.dialog_course_time, new CustomListener() {
@@ -278,7 +244,7 @@ public class MyCourseDetailActivity extends BaseActivity implements OnMapReadyCa
                 })
                 .isDialog(true)
                 .build();
-        pvCustomOptions.setPicker(arrayList);//添加数据
+        pvCustomOptions.setPicker(arrangeArrayList);//添加数据
         pvCustomOptions.show();
     }
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;

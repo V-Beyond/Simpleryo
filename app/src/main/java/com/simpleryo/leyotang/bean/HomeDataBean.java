@@ -2,12 +2,13 @@ package com.simpleryo.leyotang.bean;
 
 import org.xutils.http.annotation.HttpResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * @author huanglei
  * @ClassNname：HomeDataBean.java
  * @Describe 首页实体类
- * @author huanglei
  * @time 2018/4/19 9:57
  */
 @HttpResponse(parser = JsonResponseParser.class)
@@ -338,7 +339,83 @@ public class HomeDataBean extends BaseResult {
                 private AddressBean address;
                 private CoachBean coach;
                 private List<RecommendsBean> recommends;
-                private  int upperLimit;
+                private int upperLimit;
+                private String type;
+
+                private ArrayList<Arrange> arranges;
+
+                public ArrayList<Arrange> getArranges() {
+                    return arranges;
+                }
+
+                public void setArranges(ArrayList<Arrange> arranges) {
+                    this.arranges = arranges;
+                }
+
+                public static class Arrange {
+                    private String id;
+                    private String courseId;
+                    private String classDate;
+                    private String startTime;
+                    private String endTime;
+                    private String dateDetail;
+
+                    public String getId() {
+                        return id;
+                    }
+
+                    public void setId(String id) {
+                        this.id = id;
+                    }
+
+                    public String getCourseId() {
+                        return courseId;
+                    }
+
+                    public void setCourseId(String courseId) {
+                        this.courseId = courseId;
+                    }
+
+                    public String getClassDate() {
+                        return classDate;
+                    }
+
+                    public void setClassDate(String classDate) {
+                        this.classDate = classDate;
+                    }
+
+                    public String getStartTime() {
+                        return startTime;
+                    }
+
+                    public void setStartTime(String startTime) {
+                        this.startTime = startTime;
+                    }
+
+                    public String getEndTime() {
+                        return endTime;
+                    }
+
+                    public void setEndTime(String endTime) {
+                        this.endTime = endTime;
+                    }
+
+                    public String getDateDetail() {
+                        return dateDetail;
+                    }
+
+                    public void setDateDetail(String dateDetail) {
+                        this.dateDetail = dateDetail;
+                    }
+                }
+
+                public String getType() {
+                    return type;
+                }
+
+                public void setType(String type) {
+                    this.type = type;
+                }
 
                 public int getUpperLimit() {
                     return upperLimit;
@@ -757,10 +834,10 @@ public class HomeDataBean extends BaseResult {
                      * studentCount : 1
                      * point : 0
                      * phone : 66666666666
-                     * chatNum : 
+                     * chatNum :
                      * workLife : 10年以上
                      * intro : 1) 微信识别或扫下面图中二维码，进入「翻牌有奖」页面；
-                     2) 点击随机翻开任意一张，等待3s，将立即跳转到抽奖页面，即可参与抽奖
+                     * 2) 点击随机翻开任意一张，等待3s，将立即跳转到抽奖页面，即可参与抽奖
                      * desc : <p><img style="display: block; margin-left: auto; margin-right: auto;" src="https://simpleryo-china.oss-cn-hangzhou.aliyuncs.com/file/6f993a338dd3eec991105c99d42ed061" alt="" width="570" height="120" /></p>
                      * skills : [{"value":"散打"}]
                      */

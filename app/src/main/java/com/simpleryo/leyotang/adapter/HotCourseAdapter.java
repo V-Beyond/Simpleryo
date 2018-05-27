@@ -48,7 +48,15 @@ public class HotCourseAdapter extends BaseAdapter<HomeDataBean.DataBeanX.Courses
         int collectCount=bean.getCollectCount();
         Picasso.with(mContext).load(bean.getCoverUrl()).transform(raduisTransformation).into(((HotCourseItemViewHolder) holder).iv_collection_img);
         ((HotCourseItemViewHolder) holder).tv_collection_name.setText(bean.getName());
-        ((HotCourseItemViewHolder) holder).tv_price.setText(XStringPars.foramtPrice(Integer.valueOf(bean.getPrice()))+"$/"+course_price);
+        if(bean.getPrice()!=0){
+            ((HotCourseItemViewHolder) holder).tv_price.setText(XStringPars.foramtPrice(Integer.valueOf(bean.getPrice()))+"$/"+course_price);
+        }else{
+            if (bean.getType().equalsIgnoreCase("series")){
+                ((HotCourseItemViewHolder) holder).tv_price.setText("免费购买");
+            }else if(bean.getType().equalsIgnoreCase("single")){
+                ((HotCourseItemViewHolder) holder).tv_price.setText("免费预约");
+            }
+        }
         ((HotCourseItemViewHolder) holder).tv_popular.setText(collectCount+" people");
         // 创建一个数值格式化对象
         NumberFormat numberFormat = NumberFormat.getInstance();

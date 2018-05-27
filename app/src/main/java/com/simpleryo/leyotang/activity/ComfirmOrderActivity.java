@@ -10,6 +10,7 @@ import android.view.View;
 import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -41,6 +42,7 @@ import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -93,6 +95,9 @@ public class ComfirmOrderActivity extends BaseActivity {
     TextView tv_course_address;
     @ViewInject(R.id.radigroup_time)
     RadioGroup radigroup_time;
+    @ViewInject(R.id.ll_course_time)
+    LinearLayout ll_course_time;
+
     public final static String CSS_STYLE = "<style>* {font-size:14px;line-height:20px;}p {color:##373737;font-size:12px}</style>";
 
     @Override
@@ -103,27 +108,6 @@ public class ComfirmOrderActivity extends BaseActivity {
         count = Integer.parseInt(et_count.getText().toString().trim());
         courseId = getIntent().getStringExtra("courseId");
         getCourseDetail();
-        for (int i=0;i<5;i++){
-            RadioButton radioButton= (RadioButton) LayoutInflater.from(ComfirmOrderActivity.this).inflate(R.layout.custom_radiobtn_layout,null);
-            radioButton.setText("2018-05-2"+i+" 08:00-12:00");
-            radioButton.setId(i);
-            radioButton.setTextSize(12);
-            radioButton.setPadding(50, 20, 50, 20);
-            RadioGroup.LayoutParams lp = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.MATCH_PARENT, RadioGroup.LayoutParams.WRAP_CONTENT);
-            //设置RadioButton边距 (int left, int top, int right, int bottom)
-            lp.setMargins(15,15,15,15);
-            radigroup_time.addView(radioButton,lp);
-        }
-        radigroup_time.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                // TODO Auto-generated method stub
-                RadioButton tempButton = (RadioButton)findViewById(checkedId); // 通过RadioGroup的findViewById方法，找到ID为checkedID的RadioButton
-                // 以下就可以对这个RadioButton进行处理了
-                Toast.makeText(ComfirmOrderActivity.this,tempButton.getText(),Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     @Override
@@ -131,7 +115,8 @@ public class ComfirmOrderActivity extends BaseActivity {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
-
+    ArrayList<CourdeDetailBean.DataBeanX.Arrange> arrangeArrayList=new ArrayList<>();
+    String arrangeTime;
     /**
      * 获取课程详情
      */
@@ -195,6 +180,35 @@ public class ComfirmOrderActivity extends BaseActivity {
                     } else {
                         tv_store_name.setText("暂无机构名称");
                     }
+                     if (courdeDetailBean.getData().getType().equalsIgnoreCase("single")) {
+                         ll_course_time.setVisibility(View.VISIBLE);
+                         if (courdeDetailBean.getData().getArranges()!=null&&courdeDetailBean.getData().getArranges().size()>0){
+                             arrangeArrayList.addAll(courdeDetailBean.getData().getArranges());
+                             for (int i=0;i<arrangeArrayList.size();i++) {
+                                 RadioButton radioButton = (RadioButton) LayoutInflater.from(ComfirmOrderActivity.this).inflate(R.layout.custom_radiobtn_layout, null);
+                                 radioButton.setText(arrangeArrayList.get(i).getDateDetail());
+                                 radioButton.setId(i);
+                                 radioButton.setTextSize(12);
+                                 radioButton.setPadding(50, 20, 50, 20);
+                                 RadioGroup.LayoutParams lp = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.MATCH_PARENT, RadioGroup.LayoutParams.WRAP_CONTENT);
+                                 //设置RadioButton边距 (int left, int top, int right, int bottom)
+                                 lp.setMargins(15, 15, 15, 15);
+                                 radigroup_time.addView(radioButton, lp);
+                             }
+                         }
+                         radigroup_time.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+
+                             @Override
+                             public void onCheckedChanged(RadioGroup group, int checkedId) {
+                                 // TODO Auto-generated method stub
+                                 RadioButton tempButton = (RadioButton) findViewById(checkedId); // 通过RadioGroup的findViewById方法，找到ID为checkedID的RadioButton
+                                 // 以下就可以对这个RadioButton进行处理了
+                                 arrangeTime=tempButton.getText().toString().toLowerCase().trim();
+                                 Toast.makeText(ComfirmOrderActivity.this, arrangeTime, Toast.LENGTH_SHORT).show();
+                             }
+                         });
+                    }
+
                 }
             }
 
@@ -205,14 +219,14 @@ public class ComfirmOrderActivity extends BaseActivity {
         }, courseId);
     }
 
-    @Event(value = {R.id.iv_back,R.id.iv_msg, R.id.iv_count_reduce, R.id.iv_count_increase, R.id.rl_pay}, type = View.OnClickListener.class)
+    @Event(value = {R.id.iv_back, R.id.iv_msg, R.id.iv_count_reduce, R.id.iv_count_increase, R.id.rl_pay}, type = View.OnClickListener.class)
     private void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
                 XActivityUtils.getInstance().popActivity(ComfirmOrderActivity.this);
                 break;
             case R.id.iv_msg:
-                startActivity(new Intent(ComfirmOrderActivity.this,MyMsgActivity.class));
+                startActivity(new Intent(ComfirmOrderActivity.this, MyMsgActivity.class));
                 break;
             case R.id.iv_count_reduce://减少
                 if (count > 1) {
@@ -231,15 +245,15 @@ public class ComfirmOrderActivity extends BaseActivity {
                 tv_total_price.setText("课程总额：" + XStringPars.foramtPrice(total_price * 1) + "$");
                 break;
             case R.id.rl_pay://支付
-                name=edittext_name.getText().toString().trim();
-                phone=edittext_phone.getText().toString().trim();
-                remark=edittext_remark.getText().toString().trim();
-                if (name.isEmpty()){
-                Toast.makeText(ComfirmOrderActivity.this,"预订人不能为空",Toast.LENGTH_SHORT).show();
-                return;
+                name = edittext_name.getText().toString().trim();
+                phone = edittext_phone.getText().toString().trim();
+                remark = edittext_remark.getText().toString().trim();
+                if (name.isEmpty()) {
+                    Toast.makeText(ComfirmOrderActivity.this, "预订人不能为空", Toast.LENGTH_SHORT).show();
+                    return;
                 }
-                if (phone.isEmpty()){
-                    Toast.makeText(ComfirmOrderActivity.this,"手机号不能为空",Toast.LENGTH_SHORT).show();
+                if (phone.isEmpty()) {
+                    Toast.makeText(ComfirmOrderActivity.this, "手机号不能为空", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 SimpleryoNetwork.createOrder(ComfirmOrderActivity.this, new MyBaseProgressCallbackImpl(ComfirmOrderActivity.this) {
@@ -251,9 +265,9 @@ public class ComfirmOrderActivity extends BaseActivity {
                         if (createOrderBean.getCode().equalsIgnoreCase("0")) {
                             recordOrder(createOrderBean.getData().getId(), createOrderBean.getData().getPayAmt() + "", createOrderBean.getData().getNo(), createOrderBean.getData().getCourseName(), payType);
                             if (createOrderBean.getData().getPayType().equalsIgnoreCase("ALIPAY")) {//支付宝支付
-                                clickAlipay(ComfirmOrderActivity.this, XStringPars.foramtPrice(createOrderBean.getData().getPayAmt())  + "", createOrderBean.getData().getNo(), courseName);
+                                clickAlipay(ComfirmOrderActivity.this, XStringPars.foramtPrice(createOrderBean.getData().getPayAmt()) + "", createOrderBean.getData().getNo(), courseName);
                             } else {//微信支付
-                                clickWechat(ComfirmOrderActivity.this, XStringPars.foramtPrice(createOrderBean.getData().getPayAmt())  + "", createOrderBean.getData().getNo(), courseName);
+                                clickWechat(ComfirmOrderActivity.this, XStringPars.foramtPrice(createOrderBean.getData().getPayAmt()) + "", createOrderBean.getData().getNo(), courseName);
 //                                alertDialog();
                             }
                         } else if (createOrderBean.getCode().equalsIgnoreCase("401")) {
@@ -272,11 +286,10 @@ public class ComfirmOrderActivity extends BaseActivity {
                         super.onFailure(info);
                         loadingDialog.dismiss();
                     }
-                }, coachId, storeId, courseId, courseName, payType, count, price, total_price, total_price,name,phone,remark);
+                }, coachId, storeId, courseId, courseName, payType, count, price, total_price, total_price, name, phone, remark);
                 break;
         }
     }
-
 
 
     @Event(value = {R.id.radio_group_pay}, type = RadioGroup.OnCheckedChangeListener.class)

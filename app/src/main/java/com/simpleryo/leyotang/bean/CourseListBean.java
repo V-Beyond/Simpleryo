@@ -2,6 +2,7 @@ package com.simpleryo.leyotang.bean;
 
 import org.xutils.http.annotation.HttpResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -93,7 +94,80 @@ public class CourseListBean extends BaseResult {
         private CoachBean coach;
         private List<RecommendsBean> recommends;
         private  int upperLimit;
+        private String type;
+        private ArrayList<HomeDataBean.DataBeanX.CoursesBeanX.CoursesBean.Arrange> arranges;
 
+        public ArrayList<HomeDataBean.DataBeanX.CoursesBeanX.CoursesBean.Arrange> getArranges() {
+            return arranges;
+        }
+
+        public void setArranges(ArrayList<HomeDataBean.DataBeanX.CoursesBeanX.CoursesBean.Arrange> arranges) {
+            this.arranges = arranges;
+        }
+
+        public static class Arrange {
+            private String id;
+            private String courseId;
+            private String classDate;
+            private String startTime;
+            private String endTime;
+            private String dateDetail;
+
+            public String getId() {
+                return id;
+            }
+
+            public void setId(String id) {
+                this.id = id;
+            }
+
+            public String getCourseId() {
+                return courseId;
+            }
+
+            public void setCourseId(String courseId) {
+                this.courseId = courseId;
+            }
+
+            public String getClassDate() {
+                return classDate;
+            }
+
+            public void setClassDate(String classDate) {
+                this.classDate = classDate;
+            }
+
+            public String getStartTime() {
+                return startTime;
+            }
+
+            public void setStartTime(String startTime) {
+                this.startTime = startTime;
+            }
+
+            public String getEndTime() {
+                return endTime;
+            }
+
+            public void setEndTime(String endTime) {
+                this.endTime = endTime;
+            }
+
+            public String getDateDetail() {
+                return dateDetail;
+            }
+
+            public void setDateDetail(String dateDetail) {
+                this.dateDetail = dateDetail;
+            }
+        }
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
         public int getUpperLimit() {
             return upperLimit;
         }

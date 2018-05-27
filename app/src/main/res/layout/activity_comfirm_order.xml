@@ -349,9 +349,11 @@
                         android:hint="必填，便于商家联系" />
                 </LinearLayout>
                 <LinearLayout
+                    android:id="@+id/ll_course_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30px"
+                    android:visibility="gone"
                     android:background="@color/color_ffffff"
                     android:orientation="horizontal">
 

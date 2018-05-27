@@ -15,6 +15,7 @@ import com.simpleryo.leyotang.bean.MultipleItem;
 import com.simpleryo.leyotang.bean.OrderListBean;
 import com.simpleryo.leyotang.utils.XStringPars;
 import com.simpleryo.leyotang.viewholder.EmptyViewHolder;
+import com.simpleryo.leyotang.viewholder.HotCourseItemViewHolder;
 import com.simpleryo.leyotang.viewholder.MyAttentionViewHolder;
 import com.simpleryo.leyotang.viewholder.MyCollectionViewHolder;
 import com.simpleryo.leyotang.viewholder.MyOrderViewHolder;
@@ -167,8 +168,16 @@ public class MyOrderAdapter extends BaseMultiAdapter<MultipleItem> {
                     Picasso.with(context).load(dataBean.getCoverUrl()).transform(raduisTransformation).into(((MyCollectionViewHolder) holder).iv_collection_img);
                 }
                 ((MyCollectionViewHolder) holder).tv_collection_name.setText(dataBean.getName());
-                ((MyCollectionViewHolder) holder).tv_price.setText(XStringPars.foramtPrice(dataBean.getPrice())+"$/"+course_price);
 
+                if(dataBean.getPrice()!=0){
+                    ((MyCollectionViewHolder) holder).tv_price.setText(XStringPars.foramtPrice(dataBean.getPrice())+"$/"+course_price);
+                }else{
+                    if (dataBean.getType().equalsIgnoreCase("series")){
+                        ((HotCourseItemViewHolder) holder).tv_price.setText("免费购买");
+                    }else if(dataBean.getType().equalsIgnoreCase("single")){
+                        ((HotCourseItemViewHolder) holder).tv_price.setText("免费预约");
+                    }
+                }
                 int collectCount= Integer.parseInt(dataBean.getCollectCount());
                 // 创建一个数值格式化对象
                 NumberFormat numberFormat = NumberFormat.getInstance();
