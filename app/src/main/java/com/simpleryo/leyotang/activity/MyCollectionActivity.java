@@ -126,13 +126,13 @@ public class MyCollectionActivity extends BaseActivity {
                 super.onSuccess(info);
                 CollectionListBean collectionListBean = info.getRetDetail(CollectionListBean.class);
                 if (collectionListBean.getCode().equalsIgnoreCase("0")) {
-                    if (mItemModels != null && mItemModels.size() > 0) {
-                        mItemModels.clear();
-                    }
-                    if (collectList != null && collectList.size() > 0) {
-                        collectList.clear();
-                    }
                     if (collectionListBean.getData() != null && collectionListBean.getData().size() > 0) {
+                        if (mItemModels != null && mItemModels.size() > 0) {
+                            mItemModels.clear();
+                        }
+                        if (collectList != null && collectList.size() > 0) {
+                            collectList.clear();
+                        }
                         MultipleItem item;
                         collectList.addAll(collectionListBean.getData());
                         for (CollectionListBean.DataBean dataBean : collectList) {

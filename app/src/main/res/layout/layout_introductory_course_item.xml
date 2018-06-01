@@ -29,6 +29,8 @@
                 android:layout_marginLeft="34px"
                 android:text="Private Yoga"
                 android:textSize="21sp"
+                android:maxLines="2"
+                android:ellipsize="end"
                 android:layout_marginTop="48px"
                 android:textColor="@color/color_ffffff"
                 android:layout_height="wrap_content" />

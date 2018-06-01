@@ -49,6 +49,8 @@ public class ConstellationDialogFragment extends BaseDialogFragment {
     RadioButton radio_btn_capricorn;
     @ViewInject(R.id.radio_btn_pisces)
     RadioButton radio_btn_pisces;
+
+
     @ViewInject(R.id.radio_btn_aguarius)
     RadioButton radio_btn_aguarius;
     @ViewInject(R.id.constellation_radiogroup)

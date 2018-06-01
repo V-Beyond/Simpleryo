@@ -129,7 +129,7 @@
                         android:orientation="vertical">
                         <TextView
                             android:id="@+id/tv_coach_name"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="14px"
@@ -139,7 +139,7 @@
 
                         <TextView
                             android:id="@+id/tv_store_name"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="14px"
@@ -147,16 +147,30 @@
                             android:text="机构：-------"
                             android:textColor="#373737"
                             android:textSize="29px" />
-                        <TextView
-                            android:id="@+id/tv_course_duration"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_marginLeft="14px"
                             android:layout_marginTop="27px"
-                            android:text="上课时间：-------"
-                            android:textColor="#373737"
-                            android:textSize="29px" />
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="14px"
+                                android:text="上课时间："
+                                android:textColor="#373737" />
+
+                            <TextView
+                                android:id="@+id/tv_course_duration"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:text="-------"
+                                android:textColor="#373737"
+                                android:textSize="29px" />
+                        </LinearLayout>
+
                         <TextView
                             android:id="@+id/tv_update_course_time"
                             android:layout_width="wrap_content"
@@ -170,7 +184,7 @@
                             android:textSize="29px" />
                         <TextView
                             android:id="@+id/tv_course_address"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="14px"

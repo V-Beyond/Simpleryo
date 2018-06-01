@@ -46,6 +46,8 @@
                     android:layout_marginLeft="56px"
                     android:layout_marginTop="56px"
                     android:text="Private Yoga"
+                    android:maxLines="2"
+                    android:ellipsize="end"
                     android:textColor="@color/color_ffffff"
                     android:textSize="47px" />
 
@@ -351,7 +353,7 @@
                 <LinearLayout
                     android:id="@+id/ll_course_time"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="80px"
                     android:layout_marginTop="30px"
                     android:visibility="gone"
                     android:background="@color/color_ffffff"
@@ -361,14 +363,21 @@
                         android:layout_width="170px"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="79px"
+                        android:layout_gravity="center_vertical"
                         android:textSize="32px"
                         android:text="预约时间：" />
-                    <RadioGroup
+                    <TextView
                         android:id="@+id/radigroup_time"
                         android:layout_width="match_parent"
                         android:layout_marginRight="79px"
+                        android:gravity="center"
+                        android:background="@drawable/shape_radio_unselect"
+                        android:layout_gravity="center_vertical"
+                        android:paddingBottom="10px"
+                        android:paddingTop="10px"
+                        android:text="请选择预约时间"
                         android:orientation="vertical"
-                        android:layout_height="wrap_content"></RadioGroup>
+                        android:layout_height="wrap_content"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"

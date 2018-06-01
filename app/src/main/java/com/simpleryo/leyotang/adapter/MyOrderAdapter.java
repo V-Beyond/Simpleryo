@@ -15,7 +15,6 @@ import com.simpleryo.leyotang.bean.MultipleItem;
 import com.simpleryo.leyotang.bean.OrderListBean;
 import com.simpleryo.leyotang.utils.XStringPars;
 import com.simpleryo.leyotang.viewholder.EmptyViewHolder;
-import com.simpleryo.leyotang.viewholder.HotCourseItemViewHolder;
 import com.simpleryo.leyotang.viewholder.MyAttentionViewHolder;
 import com.simpleryo.leyotang.viewholder.MyCollectionViewHolder;
 import com.simpleryo.leyotang.viewholder.MyOrderViewHolder;
@@ -173,9 +172,9 @@ public class MyOrderAdapter extends BaseMultiAdapter<MultipleItem> {
                     ((MyCollectionViewHolder) holder).tv_price.setText(XStringPars.foramtPrice(dataBean.getPrice())+"$/"+course_price);
                 }else{
                     if (dataBean.getType().equalsIgnoreCase("series")){
-                        ((HotCourseItemViewHolder) holder).tv_price.setText("免费购买");
+                        ((MyCollectionViewHolder) holder).tv_price.setText("免费购买");
                     }else if(dataBean.getType().equalsIgnoreCase("single")){
-                        ((HotCourseItemViewHolder) holder).tv_price.setText("免费预约");
+                        ((MyCollectionViewHolder) holder).tv_price.setText("免费预约");
                     }
                 }
                 int collectCount= Integer.parseInt(dataBean.getCollectCount());

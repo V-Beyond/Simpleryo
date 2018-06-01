@@ -5,11 +5,13 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.util.ArrayMap;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -42,14 +44,20 @@ import com.okhttplib.HttpInfo;
 import com.simpleryo.leyotang.R;
 import com.simpleryo.leyotang.base.BaseActivity;
 import com.simpleryo.leyotang.base.MyBaseProgressCallbackImpl;
+import com.simpleryo.leyotang.bean.BusEntity;
 import com.simpleryo.leyotang.bean.CurrentAddressInfo;
 import com.simpleryo.leyotang.bean.OrderDetailBean;
+import com.simpleryo.leyotang.bean.UpdateOrderBean;
 import com.simpleryo.leyotang.network.SimpleryoNetwork;
+import com.simpleryo.leyotang.push.NotificationBroadcast;
 import com.simpleryo.leyotang.utils.PermissionUtils;
 import com.simpleryo.leyotang.utils.XActivityUtils;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
@@ -100,15 +108,40 @@ public class MyCourseDetailActivity extends BaseActivity implements OnMapReadyCa
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         tv_name.setText("课程详情");
         id = getIntent().getStringExtra("id");
-        initData();
+        EventBus.getDefault().post(new BusEntity(6001));
     }
-    ArrayList<OrderDetailBean.OrderCourseBean.Arrange> arrangeArrayList=new ArrayList<>();
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+
+    ArrayList<OrderDetailBean.OrderCourseBean.Arrange> arrangeArrayList = new ArrayList<>();
+    ArrayList<String> arrangeTimes = new ArrayList<>();
+    String arrangeTime;
+    ArrayMap<String, OrderDetailBean.OrderCourseBean.Arrange> arrayMap = new ArrayMap();
+    String aboutArrangeId;//预约单节课程id
+    String coachId;
+    String storeId;
+    String courseId;
+    String courseName;
+    String payType;
+    String remark;
+    int count;
+    int price;
+    int total_price;
+    String name;
+    String phone;
+
     /**
      * 获取订单详情
      */
-    public void initData(){
+    public void initData() {
         SimpleryoNetwork.getOrderDetail(MyCourseDetailActivity.this, new MyBaseProgressCallbackImpl(MyCourseDetailActivity.this) {
             @Override
             public void onSuccess(HttpInfo info) {
@@ -116,11 +149,46 @@ public class MyCourseDetailActivity extends BaseActivity implements OnMapReadyCa
                 loadingDialog.dismiss();
                 OrderDetailBean orderDetailBean = info.getRetDetail(OrderDetailBean.class);
                 if (orderDetailBean.getCode().equalsIgnoreCase("0")) {
+                    coachId = orderDetailBean.getData().getCoach().getId();
+                    storeId=orderDetailBean.getData().getStoreId();
+                    courseId=orderDetailBean.getData().getCourseId();
+                    courseName=orderDetailBean.getData().getCourseName();
+                    payType=orderDetailBean.getData().getPayType();
+                    remark=orderDetailBean.getData().getUserRemark();
+                    count=orderDetailBean.getData().getQuantity();
+                    price=orderDetailBean.getData().getUnitPrice();
+                    total_price=orderDetailBean.getData().getTotalAmt();
+                    name=orderDetailBean.getData().getUserName();
+                    phone=orderDetailBean.getData().getUserPhone();
                     tv_order_number.setText("订单号：" + orderDetailBean.getData().getId());
                     if (orderDetailBean.getData().getCourse().getType().equalsIgnoreCase("single")) {
                         tv_update_course_time.setVisibility(View.VISIBLE);
-                        if (orderDetailBean.getData().getCourse().getArranges()!=null&&orderDetailBean.getData().getCourse().getArranges().size()>0){
+                        if (orderDetailBean.getData().isArrangeFlag()==false){
+                            tv_update_course_time.setClickable(false);
+                            tv_update_course_time.setTextColor(Color.parseColor("#dcdcdc"));
+                        }
+                        if (orderDetailBean.getData().getCourse().getArranges() != null && orderDetailBean.getData().getCourse().getArranges().size() > 0) {
                             arrangeArrayList.addAll(orderDetailBean.getData().getCourse().getArranges());
+                            for (int i = 0; i < arrangeArrayList.size(); i++) {
+                                arrangeTimes.add(arrangeArrayList.get(i).getDateDetail());
+                                arrayMap.put(arrangeArrayList.get(i).getDateDetail(), arrangeArrayList.get(i));
+                            }
+                            tv_course_duration.setText(orderDetailBean.getData().getClassTime());
+                        }
+                    } else {
+                        //上课时间
+                        if (orderDetailBean.getData().getCourse().getDurations() != null && orderDetailBean.getData().getCourse().getDurations().getData().size() > 0) {
+                            StringBuilder durations = new StringBuilder();
+                            durations.append((orderDetailBean.getData().getCourse().getDurations().getStartDate() + "至" + orderDetailBean.getData().getCourse().getDurations().getEndDate()));
+                            durations.append("\n");
+                            for (int i = 0; i < orderDetailBean.getData().getCourse().getDurations().getData().size(); i++) {
+                                OrderDetailBean.OrderCourseBean.DurationsBean.DataBean dataBean = orderDetailBean.getData().getCourse().getDurations().getData().get(i);
+                                durations.append(dataBean.getWeek() + "   " + dataBean.getStartTime() + "-" + dataBean.getEndTime());
+                                if (i < orderDetailBean.getData().getCourse().getDurations().getData().size() - 1) {
+                                    durations.append("\n");
+                                }
+                            }
+                            tv_course_duration.setText(durations);
                         }
                     }
                     if (orderDetailBean.getData().getImageUrl() != null) {
@@ -135,7 +203,7 @@ public class MyCourseDetailActivity extends BaseActivity implements OnMapReadyCa
                             Picasso.with(MyCourseDetailActivity.this).load("http://p3.so.qhimgs1.com/bdr/_240_/t01144f848052b04663.jpg").transform(transformation).into(iv_coach_img);
                         }
                         tv_coach_name.setText("授课教练：" + orderDetailBean.getData().getCoach().getName());
-                    }else{
+                    } else {
                         tv_coach_name.setText("授课教练：无");
                         Picasso.with(MyCourseDetailActivity.this).load("http://p3.so.qhimgs1.com/bdr/_240_/t01144f848052b04663.jpg").transform(transformation).into(iv_coach_img);
                     }
@@ -145,21 +213,6 @@ public class MyCourseDetailActivity extends BaseActivity implements OnMapReadyCa
                         tv_order_course_name.setText("课程名称：无");
                     }
                     tv_store_name.setText("机构：" + orderDetailBean.getData().getStore().getName());
-                    //上课时间
-                    if (orderDetailBean.getData().getCourse().getDurations()!= null && orderDetailBean.getData().getCourse().getDurations().getData().size() > 0) {
-                        StringBuilder durations = new StringBuilder();
-                        durations.append((orderDetailBean.getData().getCourse().getDurations().getStartDate() + "至" + orderDetailBean.getData().getCourse().getDurations().getEndDate()));
-                        durations.append("\n");
-                        for (int i = 0; i < orderDetailBean.getData().getCourse().getDurations().getData().size(); i++) {
-                            OrderDetailBean.OrderCourseBean.DurationsBean.DataBean dataBean = orderDetailBean.getData().getCourse().getDurations().getData().get(i);
-                            durations.append(dataBean.getWeek() + "   " + dataBean.getStartTime() + "-" + dataBean.getEndTime());
-                            if (i < orderDetailBean.getData().getCourse().getDurations().getData().size() - 1) {
-                                durations.append("\n");
-                            }
-                        }
-                        tv_course_duration.setText("上课时间：" +durations);
-                    }
-//                    tv_course_duration.setText("上课时间：" + orderDetailBean.getData().getCourse().getDurations().getStartDate() + "至" + orderDetailBean.getData().getCourse().getDurations().getEndDate());
                     tv_course_address.setText("上课方式：线下授课，授课地点：" + orderDetailBean.getData().getCourse().getAddress().getDetail());
                     lat = orderDetailBean.getData().getStore().getAddress().getLat();
                     lng = orderDetailBean.getData().getStore().getAddress().getLng();
@@ -189,7 +242,7 @@ public class MyCourseDetailActivity extends BaseActivity implements OnMapReadyCa
     }
 
 
-    @Event(value = {R.id.iv_back,R.id.iv_msg,R.id.tv_update_course_time}, type = View.OnClickListener.class)
+    @Event(value = {R.id.iv_back, R.id.iv_msg, R.id.tv_update_course_time}, type = View.OnClickListener.class)
     private void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
@@ -199,12 +252,14 @@ public class MyCourseDetailActivity extends BaseActivity implements OnMapReadyCa
                 initCustomOptionPicker();
                 break;
             case R.id.iv_msg:
-                startActivity(new Intent(MyCourseDetailActivity.this,MyMsgActivity.class));
+                startActivity(new Intent(MyCourseDetailActivity.this, MyMsgActivity.class));
                 break;
         }
     }
+
     private OptionsPickerView pvCustomOptions;
     String time;
+
     private void initCustomOptionPicker() {//条件选择器初始化，自定义布局
 
         /**
@@ -218,19 +273,21 @@ public class MyCourseDetailActivity extends BaseActivity implements OnMapReadyCa
             @Override
             public void onOptionsSelect(int options1, int option2, int options3, View v) {
                 //返回的分别是三个级别的选中位置
-                String tx = arrangeArrayList.get(options1).getDateDetail();
+                arrangeTime = arrangeTimes.get(options1);
+                aboutArrangeId = arrayMap.get(arrangeTime).getId();
             }
         })
                 .setLayoutRes(R.layout.dialog_course_time, new CustomListener() {
                     @Override
                     public void customLayout(View v) {
-                        final TextView tvSubmit = (TextView) v.findViewById(R.id.tv_cancel);
-                        TextView ivCancel = (TextView) v.findViewById(R.id.tv_sure);
+                        TextView tvSubmit = (TextView) v.findViewById(R.id.tv_sure);
+                        TextView ivCancel = (TextView) v.findViewById(R.id.tv_cancel);
                         tvSubmit.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 pvCustomOptions.returnData();
                                 pvCustomOptions.dismiss();
+                                EventBus.getDefault().post(new BusEntity(6002));
                             }
                         });
 
@@ -244,9 +301,47 @@ public class MyCourseDetailActivity extends BaseActivity implements OnMapReadyCa
                 })
                 .isDialog(true)
                 .build();
-        pvCustomOptions.setPicker(arrangeArrayList);//添加数据
+        pvCustomOptions.setPicker(arrangeTimes);//添加数据
         pvCustomOptions.show();
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void updateOrder(BusEntity bus) {
+        if (bus.getType()==6001){
+            initData();
+        }
+
+        if (bus.getType() == 6002) {
+            SimpleryoNetwork.updateOrder(MyCourseDetailActivity.this, new MyBaseProgressCallbackImpl(MyCourseDetailActivity.this) {
+                @Override
+                public void onSuccess(HttpInfo info) {
+                    super.onSuccess(info);
+                    loadingDialog.dismiss();
+                    UpdateOrderBean createOrderBean = info.getRetDetail(UpdateOrderBean.class);
+                    if (createOrderBean.getCode().equalsIgnoreCase("0")) {
+                        Toast.makeText(MyCourseDetailActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
+                        EventBus.getDefault().post(new BusEntity(6001));
+                    } else if (createOrderBean.getCode().equalsIgnoreCase("401")) {
+                        Intent intent = new Intent();
+                        intent.setClass(context, NotificationBroadcast.class);
+                        intent.putExtra(NotificationBroadcast.EXTRA_KEY_ACTION,
+                                NotificationBroadcast.ACTION_REFRESHTOKEN);
+                        sendBroadcast(intent);
+                    } else {
+                        Toast.makeText(MyCourseDetailActivity.this, createOrderBean.getMsg(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(HttpInfo info) {
+                    super.onFailure(info);
+                    loadingDialog.dismiss();
+                }
+            },id, coachId, storeId, courseId, courseName, payType, count, price, total_price, total_price, name, phone, remark, aboutArrangeId,arrangeTime);
+        }
+
+    }
+
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private Location mLastKnownLocation;

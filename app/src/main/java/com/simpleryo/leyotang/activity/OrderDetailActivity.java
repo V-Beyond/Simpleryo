@@ -165,7 +165,24 @@ public class OrderDetailActivity extends BaseActivity {
                     tv_coach_name.setText("授课教练：无");
                     Picasso.with(OrderDetailActivity.this).load("http://p3.so.qhimgs1.com/bdr/_240_/t01144f848052b04663.jpg").transform(transformation).into(iv_coach_img);
                 }
-                tv_time.setText("上课时间：" + orderDetailBean.getData().getCourse().getDurations().getStartDate() + "至" + orderDetailBean.getData().getCourse().getDurations().getEndDate());
+                if (orderDetailBean.getData().getCourse().getType().equalsIgnoreCase("single")) {
+                        tv_time.setText(orderDetailBean.getData().getClassTime());
+                } else {
+                    //上课时间
+                    if (orderDetailBean.getData().getCourse().getDurations() != null && orderDetailBean.getData().getCourse().getDurations().getData().size() > 0) {
+                        StringBuilder durations = new StringBuilder();
+                        durations.append((orderDetailBean.getData().getCourse().getDurations().getStartDate() + "至" + orderDetailBean.getData().getCourse().getDurations().getEndDate()));
+                        durations.append("\n");
+                        for (int i = 0; i < orderDetailBean.getData().getCourse().getDurations().getData().size(); i++) {
+                            OrderDetailBean.OrderCourseBean.DurationsBean.DataBean dataBean = orderDetailBean.getData().getCourse().getDurations().getData().get(i);
+                            durations.append(dataBean.getWeek() + "   " + dataBean.getStartTime() + "-" + dataBean.getEndTime());
+                            if (i < orderDetailBean.getData().getCourse().getDurations().getData().size() - 1) {
+                                durations.append("\n");
+                            }
+                        }
+                        tv_time.setText(durations);
+                    }
+                }
                 tv_store_name.setText("所在机构：" + orderDetailBean.getData().getStore().getName());
                 tv_address.setText("授课地点：" + orderDetailBean.getData().getStore().getAddress().getDetail());
             }

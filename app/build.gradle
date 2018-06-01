@@ -18,12 +18,12 @@ android {
             keyAlias "simpleryo"
             keyPassword "123456"  //签名密码
         }
-//        release {
-//            storeFile file('simpleryo.jks')//签名文件路径
-//            storePassword "123456"
-//            keyAlias "simpleryo"
-//            keyPassword "123456"  //签名密码
-//        }
+        release {
+            storeFile file('simpleryo.jks')//签名文件路径
+            storePassword "123456"
+            keyAlias "simpleryo"
+            keyPassword "123456"  //签名密码
+        }
     }
     buildTypes {
         debug {
@@ -32,7 +32,7 @@ android {
         }
         release {
             minifyEnabled false
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
 //            proguardFiles 'proguard-project.txt'
             // proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

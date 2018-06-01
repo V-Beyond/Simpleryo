@@ -54,7 +54,24 @@ public class OrderDetailBean extends BaseResult {
         private String userName;
         private String userPhone;
         private  String userRemark;
+        private  boolean arrangeFlag;
+        private  String classTime;
 
+        public String getClassTime() {
+            return classTime;
+        }
+
+        public void setClassTime(String classTime) {
+            this.classTime = classTime;
+        }
+
+        public boolean isArrangeFlag() {
+            return arrangeFlag;
+        }
+
+        public void setArrangeFlag(boolean arrangeFlag) {
+            this.arrangeFlag = arrangeFlag;
+        }
         public String getUserName() {
             return userName;
         }
@@ -915,7 +932,6 @@ public class OrderDetailBean extends BaseResult {
         private List<RecommendsBean> recommends;
         private String type;
         private ArrayList<Arrange> arranges;
-
         public ArrayList<Arrange> getArranges() {
             return arranges;
         }

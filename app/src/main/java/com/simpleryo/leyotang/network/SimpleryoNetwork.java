@@ -223,7 +223,7 @@ public class SimpleryoNetwork {
      * @param quantity
      * @param totalAmt
      */
-    public static void createOrder(Context context, Callback callback, String coachId, String storeId, String courseId, String courseName, String payType, int quantity, int unitPrice, int totalAmt, int payAmt,String name,String phone,String remark) {
+    public static void createOrder(Context context, Callback callback, String coachId, String storeId, String courseId, String courseName, String payType, int quantity, int unitPrice, int totalAmt, int payAmt,String name,String phone,String remark,String aboutArrangeId) {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("coachId", coachId);
@@ -236,9 +236,10 @@ public class SimpleryoNetwork {
             jsonObject.put("totalAmt", totalAmt);
             jsonObject.put("unitPrice", unitPrice);
             jsonObject.put("payAmt", payAmt);
-            jsonObject.put("userPhone", name);
-            jsonObject.put("userName", phone);
+            jsonObject.put("userName", name);
+            jsonObject.put("userPhone", phone);
             jsonObject.put("userRemark", remark);
+            jsonObject.put("aboutArrangeId",aboutArrangeId);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -249,7 +250,44 @@ public class SimpleryoNetwork {
                 .addParamJson(jsonObject.toString())
                 .build(), callback);
     }
-
+    /**
+     * 修改订单
+     *
+     * @param context
+     * @param callback
+     * @param courseId
+     * @param payType
+     * @param quantity
+     * @param totalAmt
+     */
+    public static void updateOrder(Context context, Callback callback, String orderId,String coachId, String storeId, String courseId, String courseName, String payType, int quantity, int unitPrice, int totalAmt, int payAmt,String name,String phone,String remark,String aboutArrangeId,String creationDate) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("coachId", coachId);
+            jsonObject.put("storeId", storeId);
+            jsonObject.put("courseId", courseId);
+            jsonObject.put("courseName", courseName);
+            jsonObject.put("payType", payType);
+            jsonObject.put("quantity", quantity);
+            jsonObject.put("routeCode", "ANDROID");
+            jsonObject.put("totalAmt", totalAmt);
+            jsonObject.put("unitPrice", unitPrice);
+            jsonObject.put("payAmt", payAmt);
+            jsonObject.put("userName", name);
+            jsonObject.put("userPhone", phone);
+            jsonObject.put("userRemark", remark);
+            jsonObject.put("aboutArrangeId",aboutArrangeId);
+            jsonObject.put("creationDate",creationDate);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.w("cc", "订单json：" + jsonObject.toString());
+        doHttpAsync(context, HttpInfo.Builder()
+                .setUrl(httpUrl + "o/orders/"+orderId+"?token=" + getToken())
+                .setRequestType(RequestType.PUT)//设置请求方式
+                .addParamJson(jsonObject.toString())
+                .build(), callback);
+    }
     /**
      * 记录订单
      *
