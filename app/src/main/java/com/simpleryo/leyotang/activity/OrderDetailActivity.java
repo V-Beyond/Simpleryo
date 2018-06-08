@@ -102,7 +102,7 @@ public class OrderDetailActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
-        tv_name.setText("订单详情");
+        tv_name.setText(getResources().getString(R.string.Order_detail));
         orderId = getIntent().getStringExtra("orderId");
         getOrderDetail();
     }
@@ -122,12 +122,12 @@ public class OrderDetailActivity extends BaseActivity {
                 } else {
                     Picasso.with(OrderDetailActivity.this).load("http://p3.so.qhimgs1.com/bdr/_240_/t01144f848052b04663.jpg").into(iv_order_img);
                 }
-                tv_course_name.setText("课程名称：" + orderDetailBean.getData().getCourseName());
+                tv_course_name.setText(getResources().getString(R.string.Course_name)+"：" + orderDetailBean.getData().getCourseName());
                 tv_order_course_name.setText(orderDetailBean.getData().getCourseName());
                 tv_total_price.setText(XStringPars.foramtPrice(orderDetailBean.getData().getTotalAmt()) + "$");
                 tv_shop_price.setText(XStringPars.foramtPrice(orderDetailBean.getData().getUnitPrice()) + "$");
                 tv_count.setText("X" + orderDetailBean.getData().getQuantity());
-                tv_order_number.setText("订单号：" + orderDetailBean.getData().getId());
+                tv_order_number.setText(getResources().getString(R.string.Order_number)+"：" + orderDetailBean.getData().getId());
                 tv_buyer_name.setText(orderDetailBean.getData().getUserName());
                 tv_buyer_phone.setText(orderDetailBean.getData().getUserPhone());
                 if (orderDetailBean.getData().getUserRemark()!=null){
@@ -150,7 +150,7 @@ public class OrderDetailActivity extends BaseActivity {
                 if (status.equalsIgnoreCase("RECEIVED")) {
                     rl_bottom.setVisibility(View.VISIBLE);
                     tv_detail.setVisibility(View.GONE);
-                    tv_order_remark.setText("评价");
+                    tv_order_remark.setText(getResources().getString(R.string.To_evaluate));
                 }
                 if (status.equalsIgnoreCase("COMPLETED")) {
                     rl_bottom.setVisibility(View.GONE);
@@ -159,10 +159,10 @@ public class OrderDetailActivity extends BaseActivity {
                     rl_bottom.setVisibility(View.GONE);
                 }
                 if (orderDetailBean.getData().getCoach() != null) {
-                    tv_coach_name.setText("授课教练：" + orderDetailBean.getData().getCoach().getName());
+                    tv_coach_name.setText(getResources().getString(R.string.tutor)+"：" + orderDetailBean.getData().getCoach().getName());
                     Picasso.with(OrderDetailActivity.this).load(orderDetailBean.getData().getCoach().getAvatarUrl()).transform(transformation).into(iv_coach_img);
                 } else {
-                    tv_coach_name.setText("授课教练：无");
+                    tv_coach_name.setText(getResources().getString(R.string.tutor)+"：无");
                     Picasso.with(OrderDetailActivity.this).load("http://p3.so.qhimgs1.com/bdr/_240_/t01144f848052b04663.jpg").transform(transformation).into(iv_coach_img);
                 }
                 if (orderDetailBean.getData().getCourse().getType().equalsIgnoreCase("single")) {
@@ -183,8 +183,8 @@ public class OrderDetailActivity extends BaseActivity {
                         tv_time.setText(durations);
                     }
                 }
-                tv_store_name.setText("所在机构：" + orderDetailBean.getData().getStore().getName());
-                tv_address.setText("授课地点：" + orderDetailBean.getData().getStore().getAddress().getDetail());
+                tv_store_name.setText(getResources().getString(R.string.Organisation)+"：" + orderDetailBean.getData().getStore().getName());
+                tv_address.setText(getResources().getString(R.string.On_site)+"：" + orderDetailBean.getData().getStore().getAddress().getDetail());
             }
 
             @Override
@@ -274,8 +274,8 @@ public class OrderDetailActivity extends BaseActivity {
                 dialog.dismiss();
 
                 if (error != null) {
+                    Toast.makeText(activity, getResources().getString(R.string.Payment_error), Toast.LENGTH_SHORT).show();
                     Log.w("cc", "onOrderCompleted:" + error.getMessage());
-                    Toast.makeText(activity, "Latipay: " + error.getMessage(), Toast.LENGTH_SHORT).show();
                     return;
                 }
             }
@@ -283,13 +283,13 @@ public class OrderDetailActivity extends BaseActivity {
             @Override
             public void onPaymentCompleted(int result) {
                 if (result == PaymentStatus.PAID) {
-                    Toast.makeText(activity, "支付成功", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, getResources().getString(R.string.Payment_successful), Toast.LENGTH_SHORT).show();
                     EventBus.getDefault().post(new BusEntity(1002));
                 } else if (result == PaymentStatus.UNPAID) {
-                    Toast.makeText(activity, "支付取消", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity,  getResources().getString(R.string.Payment_cancle), Toast.LENGTH_SHORT).show();
                 } else { //PaymentStatus.UNKNOWN
                     //search payment status from your own server
-                    Toast.makeText(activity, "支付异常", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity,  getResources().getString(R.string.Payment_error), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -324,7 +324,7 @@ public class OrderDetailActivity extends BaseActivity {
 
                 if (error != null) {
                     Log.w("cc", "onOrderCompleted:" + error.getMessage());
-                    Toast.makeText(activity, "Latipay: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, getResources().getString(R.string.Payment_error), Toast.LENGTH_SHORT).show();
                     return;
                 }
             }
@@ -332,13 +332,13 @@ public class OrderDetailActivity extends BaseActivity {
             @Override
             public void onPaymentCompleted(int result) {
                 if (result == PaymentStatus.PAID) {
+                    Toast.makeText(activity, getResources().getString(R.string.Payment_successful), Toast.LENGTH_SHORT).show();
                     EventBus.getDefault().post(new BusEntity(1002));
-                    Toast.makeText(activity, "支付成功", Toast.LENGTH_SHORT).show();
                 } else if (result == PaymentStatus.UNPAID) {
-                    Toast.makeText(activity, "支付取消", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity,  getResources().getString(R.string.Payment_cancle), Toast.LENGTH_SHORT).show();
                 } else { //PaymentStatus.UNKNOWN
                     //search payment status from your own server
-                    Toast.makeText(activity, "支付异常", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity,  getResources().getString(R.string.Payment_error), Toast.LENGTH_SHORT).show();
                 }
             }
 

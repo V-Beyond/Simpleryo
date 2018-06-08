@@ -66,7 +66,7 @@
                 android:drawablePadding="15px"
                 android:inputType="number"
                 android:singleLine="true"
-                android:hint="请输入以02开头的手机号"
+                android:hint="@string/phone_number"
                 android:paddingLeft="20px"
                 android:textSize="28px" />
 
@@ -108,7 +108,7 @@
                 android:layout_height="match_parent"
                 android:singleLine="true"
                 android:background="@null"
-                android:hint="输入验证码"
+                android:hint="@string/verification_code"
                 android:paddingLeft="20px"
                 android:inputType="number"
                 android:textSize="28px" />
@@ -135,7 +135,7 @@
                 android:layout_height="match_parent"
                 android:background="@null"
                 android:singleLine="true"
-                android:hint="请输入密码"
+                android:hint="@string/password"
                 android:paddingLeft="20px"
                 android:textSize="28px" />
         </LinearLayout>
@@ -161,7 +161,7 @@
                 android:layout_height="match_parent"
                 android:background="@null"
                 android:singleLine="true"
-                android:hint="请再次输入密码"
+                android:hint="@string/comfirm_password"
                 android:paddingLeft="20px"
                 android:textSize="28px" />
         </LinearLayout>

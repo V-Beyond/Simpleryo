@@ -67,40 +67,40 @@ public class ConstellationDialogFragment extends BaseDialogFragment {
             EventBus.getDefault().register(this);
             starSign = getArguments().getString("starSign");
             if (starSign != null) {
-                if (starSign.equalsIgnoreCase("白羊座")) {
+                if (starSign.equalsIgnoreCase("白羊座")||starSign.equalsIgnoreCase("aries")) {
                     radio_btn_aries.setChecked(true);
                 }
-                if (starSign.equalsIgnoreCase("金牛座")) {
+                if (starSign.equalsIgnoreCase("金牛座")||starSign.equalsIgnoreCase("tourus")) {
                     radio_btn_tourus.setChecked(true);
                 }
-                if (starSign.equalsIgnoreCase("双子座")) {
+                if (starSign.equalsIgnoreCase("双子座")||starSign.equalsIgnoreCase("gemini")) {
                     radio_btn_gemini.setChecked(true);
                 }
-                if (starSign.equalsIgnoreCase("巨蟹座")) {
+                if (starSign.equalsIgnoreCase("巨蟹座")||starSign.equalsIgnoreCase("cancer")) {
                     radio_btn_cancer.setChecked(true);
                 }
-                if (starSign.equalsIgnoreCase("狮子座")) {
+                if (starSign.equalsIgnoreCase("狮子座")||starSign.equalsIgnoreCase("leo")) {
                     radio_btn_leo.setChecked(true);
                 }
-                if (starSign.equalsIgnoreCase("处女座")) {
+                if (starSign.equalsIgnoreCase("处女座")||starSign.equalsIgnoreCase("virgo")) {
                     radio_btn_virgo.setChecked(true);
                 }
-                if (starSign.equalsIgnoreCase("天秤座")) {
+                if (starSign.equalsIgnoreCase("天秤座")||starSign.equalsIgnoreCase("libra")) {
                     radio_btn_libra.setChecked(true);
                 }
-                if (starSign.equalsIgnoreCase("天蝎座")) {
+                if (starSign.equalsIgnoreCase("天蝎座")||starSign.equalsIgnoreCase("scorpio")) {
                     radio_btn_scorpio.setChecked(true);
                 }
-                if (starSign.equalsIgnoreCase("射手座")) {
+                if (starSign.equalsIgnoreCase("射手座")||starSign.equalsIgnoreCase("sagittarius")) {
                     radio_btn_sagittarius.setChecked(true);
                 }
-                if (starSign.equalsIgnoreCase("摩羯座")) {
+                if (starSign.equalsIgnoreCase("摩羯座")||starSign.equalsIgnoreCase("capricorn")) {
                     radio_btn_capricorn.setChecked(true);
                 }
-                if (starSign.equalsIgnoreCase("水瓶座")) {
+                if (starSign.equalsIgnoreCase("水瓶座")||starSign.equalsIgnoreCase("pisces")) {
                     radio_btn_pisces.setChecked(true);
                 }
-                if (starSign.equalsIgnoreCase("双鱼座")) {
+                if (starSign.equalsIgnoreCase("双鱼座")||starSign.equalsIgnoreCase("aguarius")) {
                     radio_btn_aguarius.setChecked(true);
                 }
             }

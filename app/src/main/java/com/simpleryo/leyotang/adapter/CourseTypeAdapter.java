@@ -42,7 +42,7 @@ public class CourseTypeAdapter extends BaseAdapter<HomeDataBean.DataBeanX.Course
         final HomeDataBean.DataBeanX.CourseTypesBean bean = listData.get(position);
         if (position==7){
             ((CourseTypeItemViewHolder) holder).iv_course_type.setImageResource(R.mipmap.iv_course_more);
-            ((CourseTypeItemViewHolder) holder).tv_course_type.setText("更多分类");
+            ((CourseTypeItemViewHolder) holder).tv_course_type.setText(mContext.getResources().getString(R.string.More));
         }else{
             Picasso.with(mContext).load(bean.getImageUrl()).transform(transformation).into(((CourseTypeItemViewHolder) holder).iv_course_type);
             ((CourseTypeItemViewHolder) holder).tv_course_type.setText(bean.getName());

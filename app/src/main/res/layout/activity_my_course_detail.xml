@@ -82,7 +82,7 @@
                         android:paddingRight="23px"
                         android:paddingTop="7px"
                         android:paddingBottom="7px"
-                        android:text="线下授课"
+                        android:text="@string/offline_training"
                         android:textColor="@color/color_ffffff"
                         android:textSize="21px" />
                 </RelativeLayout>
@@ -149,7 +149,6 @@
                             android:textSize="29px" />
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_marginLeft="14px"
                             android:layout_marginTop="27px"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
@@ -158,7 +157,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="14px"
-                                android:text="上课时间："
+                                android:text="@string/Timetable"
+                                android:textSize="29px"
                                 android:textColor="#373737" />
 
                             <TextView
@@ -178,7 +178,7 @@
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="14px"
                             android:layout_marginTop="27px"
-                            android:text="修改预约时间"
+                            android:text="@string/Edit_appointment_time"
                             android:visibility="gone"
                             android:textColor="#057dff"
                             android:textSize="29px" />

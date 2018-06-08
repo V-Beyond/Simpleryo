@@ -52,11 +52,11 @@ public class MyCourseAdapter extends BaseAdapter<BuyedCouseListBean.DataBeanX> {
         if (bean.getName() != null) {
             ((MyCourseItemViewHolder) holder).tv_collection_name.setText(bean.getName());
         } else {
-            ((MyCourseItemViewHolder) holder).tv_collection_name.setText("暂无课程名称");
+            ((MyCourseItemViewHolder) holder).tv_collection_name.setText(mContext.getResources().getString(R.string.No_course_name));
         }
         if (bean.getStatus().equalsIgnoreCase("PENDING")){
-            ((MyCourseItemViewHolder) holder).tv_complete_count.setText("已完成：" + bean.getCompleteClass() + "/" + bean.getTotalClass() + "课次");
-            ((MyCourseItemViewHolder) holder).tv_course_time.setText("上课时间：" + bean.getDurations().getStartDate() + "-" + bean.getDurations().getEndDate());
+            ((MyCourseItemViewHolder) holder).tv_complete_count.setText(mContext.getResources().getString(R.string.Finished)+"：" + bean.getCompleteClass() + "/" + bean.getTotalClass() +mContext.getResources().getString(R.string.Sessions));
+            ((MyCourseItemViewHolder) holder).tv_course_time.setText(mContext.getResources().getString(R.string.Timetable)+ bean.getDurations().getStartDate() + "-" + bean.getDurations().getEndDate());
             // 创建一个数值格式化对象
             NumberFormat numberFormat = NumberFormat.getInstance();
             // 设置精确到小数点后2位
@@ -64,7 +64,7 @@ public class MyCourseAdapter extends BaseAdapter<BuyedCouseListBean.DataBeanX> {
             float percent= (float)bean.getCompleteClass() / (float) bean.getTotalClass() * 100;
             ((MyCourseItemViewHolder) holder).horizontal_progressbar.setProgress((int) percent);
         }else if (bean.getStatus().equalsIgnoreCase("COMPLETED")){
-            ((MyCourseItemViewHolder) holder).tv_complete_count.setText("已结束");
+            ((MyCourseItemViewHolder) holder).tv_complete_count.setText(mContext.getResources().getString(R.string.Completed));
             ((MyCourseItemViewHolder) holder).tv_course_time.setVisibility(View.GONE);
             ((MyCourseItemViewHolder) holder).horizontal_progressbar.setProgressColor(Color.parseColor("#6b6a6b"));
             ((MyCourseItemViewHolder) holder).horizontal_progressbar.setProgress(100);

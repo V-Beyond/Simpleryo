@@ -164,7 +164,7 @@ public class ComfirmOrderActivity extends BaseActivity {
                     if (addressBean != null) {
 //                    String address=addressBean.getProvice()+addressBean.getCity()+addressBean.getDistrict()+addressBean.getDetail();
                         String address = addressBean.getDetail();
-                        tv_course_address.setText("线下授课，授课地点：" + address);
+                        tv_course_address.setText(getResources().getString(R.string.offline_training_training_address) +address);
                     }
                     if (courdeDetailBean.getData().getCoach() != null) {
                         coachId = courdeDetailBean.getData().getCoach().getId();
@@ -176,7 +176,7 @@ public class ComfirmOrderActivity extends BaseActivity {
                         tv_course_category.setText(courseName);
                     }
                     if (courdeDetailBean.getData().getCoach() != null) {
-                        tv_coach_name.setText("教练姓名：" + courdeDetailBean.getData().getCoach().getNickName() + "   " + courdeDetailBean.getData().getCoach().getWorkLife() + "年教龄");
+                        tv_coach_name.setText(getResources().getString(R.string.Tutor_name) +"：" + courdeDetailBean.getData().getCoach().getNickName() + "   " + courdeDetailBean.getData().getCoach().getWorkLife() + getResources().getString(R.string.experience) );
 
                     }
                     price = courdeDetailBean.getData().getPrice();
@@ -277,13 +277,13 @@ public class ComfirmOrderActivity extends BaseActivity {
                     Toast.makeText(ComfirmOrderActivity.this, "订单数量不能小于1", Toast.LENGTH_SHORT).show();
                 }
                 total_price = count * price;
-                tv_total_price.setText("课程总额：" + XStringPars.foramtPrice(total_price * 1) + "$");
+                tv_total_price.setText(getResources().getString(R.string.total_course) + XStringPars.foramtPrice(total_price * 1) + "$");
                 break;
             case R.id.iv_count_increase://增加
                 count += 1;
                 et_count.setText(count + "");
                 total_price = count * price;
-                tv_total_price.setText("课程总额：" + XStringPars.foramtPrice(total_price * 1) + "$");
+                tv_total_price.setText(getResources().getString(R.string.total_course)  + XStringPars.foramtPrice(total_price * 1) + "$");
                 break;
             case R.id.rl_pay://支付
                 name = edittext_name.getText().toString().trim();
@@ -406,12 +406,11 @@ public class ComfirmOrderActivity extends BaseActivity {
                 dialog.dismiss();
 
                 if (error != null) {
-                    Toast.makeText(activity, "支付失败", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ComfirmOrderActivity.this, getResources().getString(R.string.Payment_error), Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(ComfirmOrderActivity.this, MyOrderActivity.class).putExtra("status", "NEW"));
                     XActivityUtils.getInstance().popActivity(ComfirmOrderActivity.this);
                     return;
                 }
-                Toast.makeText(activity, "Go to Wechat", Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -429,24 +428,22 @@ public class ComfirmOrderActivity extends BaseActivity {
 
         LatipayAPI.sendRequest(req);
     }
-
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updateCollect(BusEntity bus) {
         if (bus.getType() == 0222) {
             String state = bus.getContent();
             if (state.equalsIgnoreCase("PAID")) {
-                Toast.makeText(ComfirmOrderActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ComfirmOrderActivity.this,  getResources().getString(R.string.Payment_successful), Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(ComfirmOrderActivity.this, MyOrderActivity.class).putExtra("status", "PAYED"));
                 XActivityUtils.getInstance().popActivity(ComfirmOrderActivity.this);
             }
             if (state.equalsIgnoreCase("UNPAID")) {
-                Toast.makeText(ComfirmOrderActivity.this, "支付取消", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ComfirmOrderActivity.this,  getResources().getString(R.string.Payment_cancle), Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(ComfirmOrderActivity.this, MyOrderActivity.class).putExtra("status", "NEW"));
                 XActivityUtils.getInstance().popActivity(ComfirmOrderActivity.this);
             }
             if (state.equalsIgnoreCase("UNKNOWN")) {
-                Toast.makeText(ComfirmOrderActivity.this, "支付异常", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ComfirmOrderActivity.this, getResources().getString(R.string.Payment_error), Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(ComfirmOrderActivity.this, MyOrderActivity.class).putExtra("status", "NEW"));
                 XActivityUtils.getInstance().popActivity(ComfirmOrderActivity.this);
             }
@@ -477,7 +474,7 @@ public class ComfirmOrderActivity extends BaseActivity {
                 Log.w("cc", "onTransactionCompleted " + String.valueOf(latipayOrder) + (error != null ? error.getMessage() : ""));
                 dialog.dismiss();
                 if (error != null) {
-                    Toast.makeText(activity, "支付失败", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ComfirmOrderActivity.this, getResources().getString(R.string.Payment_error), Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(ComfirmOrderActivity.this, MyOrderActivity.class).putExtra("status", "NEW"));
                     XActivityUtils.getInstance().popActivity(ComfirmOrderActivity.this);
                     return;
@@ -487,16 +484,16 @@ public class ComfirmOrderActivity extends BaseActivity {
             @Override
             public void onPaymentCompleted(int result) {
                 if (result == PaymentStatus.PAID) {
-                    Toast.makeText(activity, "支付成功", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ComfirmOrderActivity.this,  getResources().getString(R.string.Payment_successful), Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(ComfirmOrderActivity.this, MyOrderActivity.class).putExtra("status", "PAYED"));
                     XActivityUtils.getInstance().popActivity(ComfirmOrderActivity.this);
                 } else if (result == PaymentStatus.UNPAID) {
-                    Toast.makeText(activity, "支付取消", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ComfirmOrderActivity.this,  getResources().getString(R.string.Payment_cancle), Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(ComfirmOrderActivity.this, MyOrderActivity.class).putExtra("status", "NEW"));
                     XActivityUtils.getInstance().popActivity(ComfirmOrderActivity.this);
                 } else { //PaymentStatus.UNKNOWN
                     //search payment status from your own server
-                    Toast.makeText(activity, "支付异常", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ComfirmOrderActivity.this, getResources().getString(R.string.Payment_error), Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(ComfirmOrderActivity.this, MyOrderActivity.class).putExtra("status", "NEW"));
                     XActivityUtils.getInstance().popActivity(ComfirmOrderActivity.this);
                 }

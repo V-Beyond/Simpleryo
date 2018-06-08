@@ -23,7 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="修改昵称"
+                android:text="@string/Change_nickname"
                 android:textColor="#515050"
                 android:textSize="50px" />
             <EditText
@@ -36,7 +36,7 @@
                 android:paddingBottom="20px"
                 android:textColorHint="#a9a9a9"
                 android:textColor="#a9a9a9"
-                android:hint="请输入新的昵称"
+                android:hint="@string/new_nickname"
                 android:background="@drawable/shape_register_edittext"
                 android:layout_height="wrap_content" />
         </LinearLayout>
@@ -50,7 +50,7 @@
             android:gravity="center"
             android:paddingBottom="15px"
             android:paddingTop="15px"
-            android:text="取消"
+            android:text="@string/no"
             android:textColor="@color/color_ffffff" />
         <TextView
             android:id="@+id/tv_sure"
@@ -63,7 +63,7 @@
             android:gravity="center"
             android:paddingBottom="15px"
             android:paddingTop="15px"
-            android:text="确定"
+            android:text="@string/yes"
             android:textColor="@color/color_ffffff" />
     </RelativeLayout>
 </LinearLayout>

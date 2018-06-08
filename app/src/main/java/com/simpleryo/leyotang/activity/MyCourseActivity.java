@@ -40,7 +40,7 @@ public class MyCourseActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        tv_name.setText("我的课程");
+        tv_name.setText(getResources().getString(R.string.My_courses));
         Bundle bundle=new Bundle();
         bundle.putString("status","ALL");
         MyCourseFragment myCourseFragment=new MyCourseFragment();//所有课程

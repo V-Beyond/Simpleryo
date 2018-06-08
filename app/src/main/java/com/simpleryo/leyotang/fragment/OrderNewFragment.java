@@ -130,7 +130,7 @@ public class OrderNewFragment extends XLibraryLazyFragment {
 
                 if (error != null) {
                     Log.w("cc", "onOrderCompleted:" + error.getMessage());
-                    Toast.makeText(activity, "Latipay: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, getResources().getString(R.string.Payment_error), Toast.LENGTH_SHORT).show();
                     return;
                 }
             }
@@ -138,12 +138,12 @@ public class OrderNewFragment extends XLibraryLazyFragment {
             @Override
             public void onPaymentCompleted(int result) {
                 if (result == PaymentStatus.PAID) {
-                    Toast.makeText(activity, "支付成功", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, getResources().getString(R.string.Payment_successful), Toast.LENGTH_SHORT).show();
                 } else if (result == PaymentStatus.UNPAID) {
-                    Toast.makeText(activity, "支付取消", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, getResources().getString(R.string.Payment_cancle), Toast.LENGTH_SHORT).show();
                 } else { //PaymentStatus.UNKNOWN
                     //search payment status from your own server
-                    Toast.makeText(activity, "支付异常", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, getResources().getString(R.string.Payment_error), Toast.LENGTH_SHORT).show();
                 }
                 lrecyclerview.forceToRefresh();
             }
@@ -178,7 +178,7 @@ public class OrderNewFragment extends XLibraryLazyFragment {
 
                 if (error != null) {
                     Log.w("cc", "onOrderCompleted:" + error.getMessage());
-                    Toast.makeText(activity, "Latipay: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, getResources().getString(R.string.Payment_error), Toast.LENGTH_SHORT).show();
                     return;
                 }
             }
@@ -186,12 +186,12 @@ public class OrderNewFragment extends XLibraryLazyFragment {
             @Override
             public void onPaymentCompleted(int result) {
                 if (result == PaymentStatus.PAID) {
-                    Toast.makeText(activity, "支付成功", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, getResources().getString(R.string.Payment_successful), Toast.LENGTH_SHORT).show();
                 } else if (result == PaymentStatus.UNPAID) {
-                    Toast.makeText(activity, "支付取消", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, getResources().getString(R.string.Payment_cancle), Toast.LENGTH_SHORT).show();
                 } else { //PaymentStatus.UNKNOWN
                     //search payment status from your own server
-                    Toast.makeText(activity, "支付异常", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, getResources().getString(R.string.Payment_error), Toast.LENGTH_SHORT).show();
                 }
                 lrecyclerview.forceToRefresh();
             }

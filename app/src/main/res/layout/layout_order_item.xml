@@ -131,7 +131,7 @@
                 android:layout_toLeftOf="@+id/tv_order_remark"
                 android:background="@mipmap/iv_look_detail"
                 android:gravity="center"
-                android:text="查看详情"
+                android:text="@string/See_details"
                 android:textColor="@color/color_ffffff"
                 android:textSize="29px" />
 

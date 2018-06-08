@@ -109,7 +109,7 @@ public class MyCourseDetailActivity extends BaseActivity implements OnMapReadyCa
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
-        tv_name.setText("课程详情");
+        tv_name.setText(getResources().getString(R.string.course_detail));
         id = getIntent().getStringExtra("id");
         EventBus.getDefault().post(new BusEntity(6001));
     }
@@ -160,7 +160,7 @@ public class MyCourseDetailActivity extends BaseActivity implements OnMapReadyCa
                     total_price=orderDetailBean.getData().getTotalAmt();
                     name=orderDetailBean.getData().getUserName();
                     phone=orderDetailBean.getData().getUserPhone();
-                    tv_order_number.setText("订单号：" + orderDetailBean.getData().getId());
+                    tv_order_number.setText(getResources().getString(R.string.Order_number)+"：" + orderDetailBean.getData().getId());
                     if (orderDetailBean.getData().getCourse().getType().equalsIgnoreCase("single")) {
                         tv_update_course_time.setVisibility(View.VISIBLE);
                         if (orderDetailBean.getData().isArrangeFlag()==false){
@@ -202,18 +202,18 @@ public class MyCourseDetailActivity extends BaseActivity implements OnMapReadyCa
                         } else {
                             Picasso.with(MyCourseDetailActivity.this).load("http://p3.so.qhimgs1.com/bdr/_240_/t01144f848052b04663.jpg").transform(transformation).into(iv_coach_img);
                         }
-                        tv_coach_name.setText("授课教练：" + orderDetailBean.getData().getCoach().getName());
+                        tv_coach_name.setText(getResources().getString(R.string.tutor)+"：" + orderDetailBean.getData().getCoach().getName());
                     } else {
-                        tv_coach_name.setText("授课教练：无");
+                        tv_coach_name.setText(getResources().getString(R.string.tutor)+"：无");
                         Picasso.with(MyCourseDetailActivity.this).load("http://p3.so.qhimgs1.com/bdr/_240_/t01144f848052b04663.jpg").transform(transformation).into(iv_coach_img);
                     }
                     if (orderDetailBean.getData().getCourseName() != null) {
-                        tv_order_course_name.setText("课程名称：" + orderDetailBean.getData().getCourseName());
+                        tv_order_course_name.setText(getResources().getString(R.string.Course_name)+"：" + orderDetailBean.getData().getCourseName());
                     } else {
-                        tv_order_course_name.setText("课程名称：无");
+                        tv_order_course_name.setText(getResources().getString(R.string.Course_name)+"：无");
                     }
-                    tv_store_name.setText("机构：" + orderDetailBean.getData().getStore().getName());
-                    tv_course_address.setText("上课方式：线下授课，授课地点：" + orderDetailBean.getData().getCourse().getAddress().getDetail());
+                    tv_store_name.setText(getResources().getString(R.string.Organisation)+"：" + orderDetailBean.getData().getStore().getName());
+                    tv_course_address.setText(getResources().getString(R.string.offline_training_training_address)+orderDetailBean.getData().getCourse().getAddress().getDetail());
                     lat = orderDetailBean.getData().getStore().getAddress().getLat();
                     lng = orderDetailBean.getData().getStore().getAddress().getLng();
                 }

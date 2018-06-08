@@ -48,7 +48,7 @@ public class CourseTypeActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        tv_name.setText("课程列表");
+        tv_name.setText(getResources().getString(R.string.List_of_courses));
         type=getIntent().getStringExtra("type");
         fragments.add(new HotCourseFragment());
         fragments.add(new ExcellentCourseFragment());

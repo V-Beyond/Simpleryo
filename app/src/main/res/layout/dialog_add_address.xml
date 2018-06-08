@@ -25,7 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="新增地址"
+                android:text="@string/Add_new_address"
                 android:textColor="#515050"
                 android:textColorHint="#a9a9a9"
                 android:textSize="50px" />
@@ -43,12 +43,11 @@
 
                     <TextView
                         android:id="@+id/tv_contacts"
-                        android:layout_width="75px"
+                        android:layout_width="200px"
                         android:layout_height="62px"
                         android:gravity="center_vertical"
                         android:textSize="25px"
-                        android:textAlignment="center"
-                        android:text="联系人" />
+                        android:text="@string/Contact_person" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -61,7 +60,7 @@
                             android:layout_height="62px"
                             android:layout_marginLeft="10.5dp"
                             android:background="@drawable/shape_dialog_edittext"
-                            android:hint="姓名"
+                            android:hint="@string/Full_name"
                             android:paddingBottom="10px"
                             android:paddingLeft="20px"
                             android:paddingTop="10px"
@@ -113,11 +112,11 @@
 
                 <TextView
                     android:id="@+id/tv_phone"
-                    android:layout_width="75px"
+                    android:layout_width="200px"
                     android:layout_height="wrap_content"
                     android:textSize="25px"
                     android:layout_gravity="center_vertical"
-                    android:text="电话" />
+                    android:text="@string/Phone_number" />
 
                 <EditText
                     android:id="@+id/ed_phone"
@@ -126,7 +125,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="10.5dp"
                     android:background="@drawable/shape_dialog_edittext"
-                    android:hint="手机号码"
+                    android:hint="@string/Mobile_number"
                     android:paddingBottom="10px"
                     android:paddingLeft="20px"
                     android:inputType="number"
@@ -143,11 +142,11 @@
 
                 <TextView
                     android:id="@+id/tv_address"
-                    android:layout_width="75px"
+                    android:layout_width="200px"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:textSize="25px"
-                    android:text="地址" />
+                    android:text="@string/Address" />
 
                 <EditText
                     android:id="@+id/edittext_address"
@@ -156,7 +155,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="10.5dp"
                     android:background="@drawable/shape_dialog_edittext"
-                    android:hint="选择收货地址"
+                    android:hint="@string/Delivery_address"
                     android:paddingBottom="10px"
                     android:singleLine="true"
                     android:ellipsize="end"
@@ -174,11 +173,11 @@
 
                 <TextView
                     android:id="@+id/tv_door_number"
-                    android:layout_width="75px"
+                    android:layout_width="200px"
                     android:textSize="25px"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="门牌号" />
+                    android:text="@string/Flat_number" />
 
                 <EditText
                     android:id="@+id/edittext_house_number"
@@ -187,7 +186,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="10.5dp"
                     android:background="@drawable/shape_dialog_edittext"
-                    android:hint="列：2号楼301室"
+                    android:hint="@string/room"
                     android:paddingBottom="10px"
                     android:textColor="#cacaca"
                     android:paddingLeft="20px"
@@ -213,7 +212,7 @@
                 android:gravity="center"
                 android:paddingBottom="15px"
                 android:paddingTop="15px"
-                android:text="取消"
+                android:text="@string/no"
                 android:textColor="@color/color_ffffff" />
 
             <TextView
@@ -225,7 +224,7 @@
                 android:gravity="center"
                 android:paddingBottom="15px"
                 android:paddingTop="15px"
-                android:text="确定"
+                android:text="@string/yes"
                 android:textColor="@color/color_ffffff" />
         </RelativeLayout>
     </RelativeLayout>

@@ -109,9 +109,9 @@ public class SearchStoreFragment extends XLibraryLazyFragment {
                 return false;
             }
         });
-        String edittextContent=CourseSearchActivity.edittext_search.getText().toString();
-        if (!edittextContent.isEmpty()){
-            initExcellentCourse(edittextContent);
+        storeName=CourseSearchActivity.edittext_search.getText().toString();
+        if (!storeName.isEmpty()){
+            initExcellentCourse(storeName);
         }else{
             lrecyclerview.setEmptyView(mEmptyView);//设置在setAdapter之前才能生效
             lrecyclerview.setAdapter(lRecyclerViewAdapter);
@@ -169,7 +169,7 @@ public class SearchStoreFragment extends XLibraryLazyFragment {
     };
 
     public void initExcellentCourse(String name) {
-        if (!name.equalsIgnoreCase("")){
+        if (name!=null){
             SimpleryoNetwork.getStoreListByName(getActivity(),new MyBaseProgressCallbackImpl(){
                 @Override
                 public void onSuccess(HttpInfo info) {

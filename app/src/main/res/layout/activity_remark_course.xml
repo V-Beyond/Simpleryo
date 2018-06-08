@@ -66,7 +66,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="评分："
+                            android:text="@string/Grade"
                             android:textColor="@color/color_ffffff"
                             android:textSize="40px" />
 
@@ -105,7 +105,7 @@
                     android:layout_marginTop="27px"
                     android:background="@drawable/shape_complaint_proposal_edittext"
                     android:gravity="left|top"
-                    android:hint="请留下你的课程感想（1-244个字）"
+                    android:hint="@string/Describe_your_experience"
                     android:textColor="@color/color_8c8c8c"
                     android:padding="10px"
                     android:textSize="29px" />

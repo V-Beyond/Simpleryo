@@ -28,7 +28,7 @@
             android:background="@drawable/selector_business_radio_course"
             android:button="@null"
             android:gravity="center"
-            android:text="热门课程"
+            android:text="@string/Popular_Course"
             android:textColor="@color/selector_my_course_radio_text_color" />
 
         <RadioButton
@@ -42,7 +42,7 @@
             android:background="@drawable/selector_my_course_started"
             android:button="@null"
             android:gravity="center"
-            android:text="精品课程"
+            android:text="@string/Luxury_Course"
             android:textColor="@color/selector_my_course_radio_text_color" />
 
         <RadioButton
@@ -56,7 +56,7 @@
             android:background="@drawable/selector_my_course_end"
             android:button="@null"
             android:gravity="center"
-            android:text="官方课程"
+            android:text="@string/Recommended_Course"
             android:textColor="@color/selector_my_course_radio_text_color" />
     </RadioGroup>
 

@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="50px"
-            android:text="确定要退出吗？"
+            android:text="@string/exit_tips"
             android:textSize="21sp" />
 
         <TextView
@@ -31,7 +31,7 @@
             android:gravity="center"
             android:paddingBottom="15px"
             android:paddingTop="15px"
-            android:text="否"
+            android:text="@string/no"
             android:textColor="@color/color_ffffff" />
 
         <TextView
@@ -45,7 +45,7 @@
             android:gravity="center"
             android:paddingBottom="15px"
             android:paddingTop="15px"
-            android:text="是"
+            android:text="@string/yes"
             android:textColor="@color/color_ffffff" />
     </RelativeLayout>
 </LinearLayout>

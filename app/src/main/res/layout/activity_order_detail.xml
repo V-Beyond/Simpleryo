@@ -93,7 +93,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="订单总金额"
+                            android:text="@string/Total_amount_of_the_order"
                             android:textColor="#373737"
                             android:textSize="33px" />
 
@@ -117,7 +117,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="课程单价"
+                            android:text="@string/Price_per_course"
                             android:textColor="#373737"
                             android:textSize="33px" />
 
@@ -142,7 +142,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="购买数量"
+                            android:text="@string/Purchase_quantities"
                             android:textColor="#373737"
                             android:textSize="33px" />
 
@@ -175,7 +175,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="预订人"
+                        android:text="@string/Reserved_name"
                         android:textColor="#373737"
                         android:textSize="33px" />
 
@@ -199,7 +199,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="手机号"
+                        android:text="@string/Mobile_number"
                         android:textColor="#373737"
                         android:textSize="33px" />
 
@@ -225,7 +225,7 @@
                         android:id="@+id/buyer_remark"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="备注"
+                        android:text="@string/commant"
                         android:textColor="#373737"
                         android:textSize="33px" />
 
@@ -292,7 +292,7 @@
                         android:gravity="center"
                         android:paddingLeft="23px"
                         android:paddingRight="23px"
-                        android:text="线下授课"
+                        android:text="@string/offline_training"
                         android:textColor="@color/color_ffffff"
                         android:textSize="21px" />
                 </RelativeLayout>
@@ -328,7 +328,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="14px"
-                                android:text="上课时间："
+                                android:textSize="29px"
+                                android:text="@string/Timetable"
                                 android:textColor="#373737" />
 
                             <TextView
@@ -419,7 +420,7 @@
             android:gravity="center"
             android:paddingBottom="12px"
             android:paddingTop="12px"
-            android:text="去支付"
+            android:text="@string/To_pay"
             android:textColor="@color/color_ffffff"
             android:textSize="29px" />
 
@@ -433,7 +434,7 @@
             android:gravity="center"
             android:paddingBottom="12px"
             android:paddingTop="12px"
-            android:text="取消订单"
+            android:text="@string/Cancel_order"
             android:textColor="@color/color_ffffff"
             android:textSize="29px" />
     </RelativeLayout>

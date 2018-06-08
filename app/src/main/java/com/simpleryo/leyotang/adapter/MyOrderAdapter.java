@@ -76,13 +76,13 @@ public class MyOrderAdapter extends BaseMultiAdapter<MultipleItem> {
             ((MyOrderViewHolder) holder).tv_price.setText(XStringPars.foramtPrice(Integer.valueOf(dataBean.getUnitPrice()))+"$");
             ((MyOrderViewHolder) holder).tv_count.setText("x"+dataBean.getQuantity());
             if (dataBean.getStatus().equalsIgnoreCase("COMPLETED")) {
-                ((MyOrderViewHolder) holder).tv_state.setText("交易成功");
+                ((MyOrderViewHolder) holder).tv_state.setText(context.getResources().getString(R.string.Successful_trade));
                 ((MyOrderViewHolder) holder).tv_detail.setVisibility(View.GONE);
-                ((MyOrderViewHolder) holder).tv_order_remark.setText("查看评价");
+                ((MyOrderViewHolder) holder).tv_order_remark.setText(context.getResources().getString(R.string.View_evaluation));
             } else if (dataBean.getStatus().equalsIgnoreCase("NEW")) {
-                ((MyOrderViewHolder) holder).tv_state.setText("代付款");
-                ((MyOrderViewHolder) holder).tv_detail.setText("去支付");
-                ((MyOrderViewHolder) holder).tv_order_remark.setText("取消订单");
+                ((MyOrderViewHolder) holder).tv_state.setText(context.getResources().getString(R.string.Waiting_for_payment));
+                ((MyOrderViewHolder) holder).tv_detail.setText(context.getResources().getString(R.string.To_pay));
+                ((MyOrderViewHolder) holder).tv_order_remark.setText(context.getResources().getString(R.string.Cancel_order));
                 ((MyOrderViewHolder) holder).tv_order_remark.setBackgroundResource(R.mipmap.iv_no_remark);
 //                ((MyOrderViewHolder) holder).tv_order_remark.setEnabled(false);
                 ((MyOrderViewHolder) holder).tv_order_remark.setOnClickListener(new View.OnClickListener() {
@@ -98,9 +98,9 @@ public class MyOrderAdapter extends BaseMultiAdapter<MultipleItem> {
                     }
                 });
             } else if (dataBean.getStatus().equalsIgnoreCase("RECEIVED")) {
-                ((MyOrderViewHolder) holder).tv_state.setText("已上课");
+                ((MyOrderViewHolder) holder).tv_state.setText(context.getResources().getString(R.string.Attended));
                 ((MyOrderViewHolder) holder).tv_detail.setVisibility(View.GONE);
-                ((MyOrderViewHolder) holder).tv_order_remark.setText("评价");
+                ((MyOrderViewHolder) holder).tv_order_remark.setText(context.getResources().getString(R.string.To_evaluate));
                 ((MyOrderViewHolder) holder).tv_order_remark.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -110,12 +110,12 @@ public class MyOrderAdapter extends BaseMultiAdapter<MultipleItem> {
                 ((MyOrderViewHolder) holder).tv_order_remark.setBackgroundResource(R.mipmap.iv_no_remark);
             }
             else if (dataBean.getStatus().equalsIgnoreCase("CANCALLED")) {
-                ((MyOrderViewHolder) holder).tv_state.setText("已取消");
+                ((MyOrderViewHolder) holder).tv_state.setText(context.getResources().getString(R.string.Cancelled));
                 ((MyOrderViewHolder) holder).tv_order_remark.setVisibility(View.GONE);
                 ((MyOrderViewHolder) holder).tv_detail.setVisibility(View.GONE);
             }
             else if (dataBean.getStatus().equalsIgnoreCase("PAYED")) {
-                ((MyOrderViewHolder) holder).tv_state.setText("已支付");
+                ((MyOrderViewHolder) holder).tv_state.setText(context.getResources().getString(R.string.Payment_done));
                 ((MyOrderViewHolder) holder).tv_order_remark.setVisibility(View.INVISIBLE);
                 ((MyOrderViewHolder) holder).tv_detail.setVisibility(View.VISIBLE);
                 ((MyOrderViewHolder) holder).tv_detail.setOnClickListener(new View.OnClickListener() {
@@ -172,9 +172,9 @@ public class MyOrderAdapter extends BaseMultiAdapter<MultipleItem> {
                     ((MyCollectionViewHolder) holder).tv_price.setText(XStringPars.foramtPrice(dataBean.getPrice())+"$/"+course_price);
                 }else{
                     if (dataBean.getType().equalsIgnoreCase("series")){
-                        ((MyCollectionViewHolder) holder).tv_price.setText("免费购买");
+                        ((MyCollectionViewHolder) holder).tv_price.setText(context.getResources().getString(R.string.free_trail));
                     }else if(dataBean.getType().equalsIgnoreCase("single")){
-                        ((MyCollectionViewHolder) holder).tv_price.setText("免费预约");
+                        ((MyCollectionViewHolder) holder).tv_price.setText(context.getResources().getString(R.string.free_trail_booking));
                     }
                 }
                 int collectCount= Integer.parseInt(dataBean.getCollectCount());

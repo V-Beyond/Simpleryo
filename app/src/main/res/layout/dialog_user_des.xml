@@ -23,7 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="个人简介"
+                android:text="@string/Personal_Profile"
                 android:textColor="#515050"
                 android:textSize="50px" />
 
@@ -37,7 +37,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/shape_register_edittext"
-                    android:hint="请输入您的简介"
+                    android:hint="@string/Please_enter_your_profile"
                     android:paddingBottom="20px"
                     android:paddingLeft="20px"
                     android:gravity="top|left"
@@ -68,7 +68,7 @@
             android:gravity="center"
             android:paddingBottom="15px"
             android:paddingTop="15px"
-            android:text="取消"
+            android:text="@string/no"
             android:textColor="@color/color_ffffff" />
 
         <TextView
@@ -82,7 +82,7 @@
             android:gravity="center"
             android:paddingBottom="15px"
             android:paddingTop="15px"
-            android:text="确定"
+            android:text="@string/yes"
             android:textColor="@color/color_ffffff" />
     </RelativeLayout>
 </LinearLayout>

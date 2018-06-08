@@ -112,9 +112,9 @@ public class SearchCourseFragment extends XLibraryLazyFragment {
                 return false;
             }
         });
-        String edittextContent = CourseSearchActivity.edittext_search.getText().toString();
-        if (!edittextContent.isEmpty()){
-            searchCourse(edittextContent);
+        courseName= CourseSearchActivity.edittext_search.getText().toString();
+        if (!courseName.isEmpty()){
+            searchCourse(courseName);
         }
 
         CourseSearchActivity.edittext_search.addTextChangedListener(new TextWatcher() {
@@ -146,6 +146,7 @@ public class SearchCourseFragment extends XLibraryLazyFragment {
             }
         });
     }
+
     String courseName;
     private OnRefreshListener onRefreshListener = new OnRefreshListener() {
         @Override
@@ -172,7 +173,7 @@ public class SearchCourseFragment extends XLibraryLazyFragment {
      * @param name
      */
     public void searchCourse(String name) {
-        if (!name.isEmpty()) {
+        if (name!=null) {
             SimpleryoNetwork.getCourse(getActivity(), new MyBaseProgressCallbackImpl() {
                 @Override
                 public void onSuccess(HttpInfo info) {

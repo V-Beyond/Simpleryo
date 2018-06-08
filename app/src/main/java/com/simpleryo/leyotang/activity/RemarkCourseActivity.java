@@ -99,7 +99,7 @@ public class RemarkCourseActivity extends BaseActivity implements ImagePickerAda
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        tv_name.setText("晒单评价");
+        tv_name.setText(getResources().getString(R.string.All_reviews));
         EventBus.getDefault().register(this);
                 String endpoint = "oss-cn-hangzhou.aliyuncs.com";
 //        String endpoint = "oss-cn-shanghai.aliyuncs.com";
@@ -162,7 +162,7 @@ public class RemarkCourseActivity extends BaseActivity implements ImagePickerAda
                 }
                 comment=edittext_comment.getText().toString().trim();
                 if (TextUtils.isEmpty(comment)){
-                    Toast.makeText(RemarkCourseActivity.this,"请留下你的课程感想",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RemarkCourseActivity.this,getResources().getString(R.string.Describe_your_experience),Toast.LENGTH_SHORT).show();
                     return;
                 }
                 SimpleryoNetwork.reviewCourse(RemarkCourseActivity.this,new MyBaseProgressCallbackImpl(RemarkCourseActivity.this){
@@ -228,8 +228,8 @@ public class RemarkCourseActivity extends BaseActivity implements ImagePickerAda
         switch (position) {
             case IMAGE_ITEM_ADD:
                 List<String> names = new ArrayList<>();
-                names.add("拍照");
-                names.add("相册");
+                names.add(getResources().getString(R.string.Photograph));
+                names.add(getResources().getString(R.string.Album));
                 showDialog(new SelectDialog.SelectDialogListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

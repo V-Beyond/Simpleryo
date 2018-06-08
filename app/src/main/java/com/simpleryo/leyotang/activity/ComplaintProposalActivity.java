@@ -129,7 +129,7 @@ public class ComplaintProposalActivity extends BaseActivity implements ImagePick
             case R.id.tv_commit:
                 String content=edittext_complaint.getText().toString().trim();
                 if (TextUtils.isEmpty(content)){
-                    Toast.makeText(ComplaintProposalActivity.this,"请输入反馈信息",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ComplaintProposalActivity.this,getResources().getString(R.string.Please_enter_your_feedback),Toast.LENGTH_SHORT).show();
                     return;
                 }
                 int count = imageItemBeans.size();
@@ -201,8 +201,8 @@ public class ComplaintProposalActivity extends BaseActivity implements ImagePick
         switch (position) {
             case IMAGE_ITEM_ADD:
                 List<String> names = new ArrayList<>();
-                names.add("拍照");
-                names.add("相册");
+                names.add(getResources().getString(R.string.Photograph));
+                names.add(getResources().getString(R.string.Album));
                 showDialog(new SelectDialog.SelectDialogListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

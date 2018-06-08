@@ -22,7 +22,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="  用户姓名" />
+                android:drawablePadding="15px"
+                android:text="@string/User_Name" />
 
             <TextView
                 android:id="@+id/tv_nickname"
@@ -48,9 +49,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:drawablePadding="15px"
                 android:drawableLeft="@mipmap/iv_sex"
                 android:layout_centerVertical="true"
-                android:text="  用户性别" />
+                android:text="@string/Gender" />
 
             <TextView
                 android:id="@+id/tv_sex"
@@ -76,8 +78,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@mipmap/iv_email"
+                android:drawablePadding="15px"
                 android:layout_centerVertical="true"
-                android:text="  绑定邮箱" />
+                android:text="@string/Link_Email" />
 
             <TextView
                 android:id="@+id/tv_email"
@@ -104,8 +107,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@mipmap/iv_address"
+                android:drawablePadding="15px"
                 android:layout_centerVertical="true"
-                android:text="  联系地址" />
+                android:text="@string/Contact_address" />
 
             <TextView
                 android:id="@+id/tv_address"
@@ -132,8 +136,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:drawablePadding="15px"
                 android:drawableLeft="@mipmap/iv_rated"
-                android:text="  星座" />
+                android:text="@string/Constellation" />
 
             <TextView
                 android:id="@+id/tv_constellation"
@@ -162,7 +167,8 @@
                 android:layout_height="wrap_content"
                 android:drawableLeft="@mipmap/iv_user_comment"
                 android:layout_centerVertical="true"
-                android:text="  个人简介" />
+                android:drawablePadding="15px"
+                android:text="@string/Personal_Profile" />
 
             <TextView
                 android:id="@+id/tv_intro"

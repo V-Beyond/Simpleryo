@@ -184,7 +184,7 @@ public class MyInfoActivity extends BaseActivity {
                     }else{
                         tv_constellation.setText("暂无星座");
                     }
-                    if (userInfoBean.getData().getIntro()!=null){
+                    if (!userInfoBean.getData().getIntro().equalsIgnoreCase("")){
                         tv_intro.setText(userInfoBean.getData().getIntro());
                     }else{
                         tv_intro.setText("暂无个人简介");

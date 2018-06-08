@@ -41,9 +41,10 @@
 
                 <TextView
                     android:id="@+id/tv_course_category"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="56px"
+                    android:layout_marginRight="20px"
                     android:layout_marginTop="56px"
                     android:text="Private Yoga"
                     android:maxLines="2"
@@ -108,7 +109,7 @@
                         android:gravity="center"
                         android:paddingBottom="13px"
                         android:paddingTop="13px"
-                        android:text="上课时间"
+                        android:text="@string/Training_time"
                         android:textSize="25px" />
 
                     <TextView
@@ -139,7 +140,7 @@
                         android:gravity="center"
                         android:paddingBottom="13px"
                         android:paddingTop="13px"
-                        android:text="上课方式"
+                        android:text="@string/Training_style"
                         android:textSize="25px" />
 
                     <TextView
@@ -302,10 +303,10 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="170px"
+                        android:layout_width="220px"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:textSize="32px"
+                        android:textSize="28px"
                         android:layout_marginLeft="79px"
                         android:text="@string/reservation" />
 
@@ -314,12 +315,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:textSize="32px"
+                        android:textSize="28px"
                         android:singleLine="true"
                         android:padding="10px"
                         android:layout_marginRight="79px"
                         android:background="@drawable/shape_rectangle_edittext"
-                        android:hint="必填，姓名" />
+                        android:hint="@string/Required_name" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -330,11 +331,11 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="170px"
+                        android:layout_width="220px"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="79px"
-                        android:textSize="32px"
+                        android:textSize="28px"
                         android:text="@string/cell_phone_number" />
 
                     <EditText
@@ -345,10 +346,10 @@
                         android:singleLine="true"
                         android:inputType="number"
                         android:padding="10px"
-                        android:textSize="32px"
+                        android:textSize="28px"
                         android:layout_marginRight="79px"
                         android:background="@drawable/shape_rectangle_edittext"
-                        android:hint="必填，便于商家联系" />
+                        android:hint="@string/Required_phone" />
                 </LinearLayout>
                 <LinearLayout
                     android:id="@+id/ll_course_time"
@@ -360,12 +361,12 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="170px"
+                        android:layout_width="220px"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="79px"
                         android:layout_gravity="center_vertical"
-                        android:textSize="32px"
-                        android:text="预约时间：" />
+                        android:textSize="28px"
+                        android:text="@string/Booking_time" />
                     <TextView
                         android:id="@+id/radigroup_time"
                         android:layout_width="match_parent"
@@ -375,7 +376,8 @@
                         android:layout_gravity="center_vertical"
                         android:paddingBottom="10px"
                         android:paddingTop="10px"
-                        android:text="请选择预约时间"
+                        android:text="@string/book_time"
+                        android:textSize="28px"
                         android:orientation="vertical"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
@@ -387,9 +389,9 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="170px"
+                        android:layout_width="220px"
                         android:layout_height="wrap_content"
-                        android:textSize="32px"
+                        android:textSize="28px"
                         android:layout_marginLeft="79px"
                         android:text="@string/remarks" />
 
@@ -401,7 +403,7 @@
                         android:singleLine="true"
                         android:padding="10px"
                         android:gravity="top|left"
-                        android:textSize="32px"
+                        android:textSize="28px"
                         android:layout_marginRight="79px"
                         android:background="@drawable/shape_rectangle_edittext"
                         android:hint="" />

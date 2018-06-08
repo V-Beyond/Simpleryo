@@ -138,7 +138,7 @@ public class CourseDetailActivity extends BaseActivity    {
         UMWeb web = new UMWeb(SimpleryoNetwork.h5Url+"Main/CourseDetail?id="+courseId);
         web.setTitle(courseName);//标题
         web.setThumb(new UMImage(this, coverUrl));  //缩略图
-        web.setDescription("我在乐友堂推荐你一个课程");//描述
+        web.setDescription(getResources().getString(R.string.share_title));//描述
         new ShareAction(CourseDetailActivity.this)
                 .withMedia(web)
                 .setPlatform(shareMedia)
@@ -215,20 +215,20 @@ public class CourseDetailActivity extends BaseActivity    {
                         if(courdeDetailBean.getData().getPrice()!=0){
                             tv_price.setText(XStringPars.foramtPrice(Integer.valueOf(courdeDetailBean.getData().getPrice())) + "$");
                             if (courdeDetailBean.getData().getType().equalsIgnoreCase("series")){
-                                tv_comfirm_pay.setText("购买课程");
+                                tv_comfirm_pay.setText(getResources().getString(R.string.Purchase_a_course));
                             }else if(courdeDetailBean.getData().getType().equalsIgnoreCase("single")){
-                                tv_comfirm_pay.setText("预约课程");
+                                tv_comfirm_pay.setText(getResources().getString(R.string.Book_a_course));
                             }
                         }else{
                             if (courdeDetailBean.getData().getType().equalsIgnoreCase("series")){
-                                tv_price.setText("免费购买");
+                                tv_price.setText(getResources().getString(R.string.free_trail));
                             }else if(courdeDetailBean.getData().getType().equalsIgnoreCase("single")){
-                               tv_price.setText("免费预约");
+                               tv_price.setText(getResources().getString(R.string.free_trail_booking));
                             }
                         }
                         tv_join_count.setText("已有" + courdeDetailBean.getData().getClassCount() + "人参加");
                         tv_popular.setText(courdeDetailBean.getData().getClassCount() + "个人正在学习");
-                        tv_goodreviewrate.setText("好评率：" + courdeDetailBean.getData().getGoodReviewRate() + "%");
+                        tv_goodreviewrate.setText(getResources().getString(R.string.Favorable_rate)+"：" + courdeDetailBean.getData().getGoodReviewRate() + "%");
                         //上课时间
                         if (courdeDetailBean.getData().getDurations().getData() != null && courdeDetailBean.getData().getDurations().getData().size() > 0) {
                             StringBuilder durations = new StringBuilder();
@@ -264,7 +264,7 @@ public class CourseDetailActivity extends BaseActivity    {
                         if (addressBean != null) {
 //                    String address=addressBean.getProvice()+addressBean.getCity()+addressBean.getDistrict()+addressBean.getDetail();
                             String address = addressBean.getDetail();
-                            tv_course_address.setText("线下授课，授课地点：" + address);
+                            tv_course_address.setText(getResources().getString(R.string.offline_training_training_address)+ address);
                         }
                         EventBus.getDefault().post(new BusEntity(222, storeId));
                     }
@@ -295,9 +295,9 @@ public class CourseDetailActivity extends BaseActivity    {
                 if (storeDetailBean.getCode().equalsIgnoreCase("0")) {
                     isFollow = storeDetailBean.getData().isHasFollow();
                     if (isFollow){
-                        tv_to_use_help.setText("取消关注");
+                        tv_to_use_help.setText(getResources().getString(R.string.Unsubscribe));
                     }else{
-                        tv_to_use_help.setText("关注");
+                        tv_to_use_help.setText(getResources().getString(R.string.follow));
                     }
                     if (storeDetailBean.getData().getStoreInfo().getStatus().equalsIgnoreCase("AUDIT_OK")){
                         tv_store_status.setText(getResources().getString(R.string.certified));
@@ -358,7 +358,7 @@ public class CourseDetailActivity extends BaseActivity    {
                                 CodeBean createOrderBean = info.getRetDetail(CodeBean.class);
                                 if (createOrderBean.getCode().equalsIgnoreCase("0")) {
                                     EventBus.getDefault().post(new BusEntity(113));
-                                    Toast.makeText(CourseDetailActivity.this, "取消关注成功", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(CourseDetailActivity.this, getResources().getString(R.string.Unsubscribe_successful), Toast.LENGTH_SHORT).show();
                                 } else {
                                     Toast.makeText(CourseDetailActivity.this, createOrderBean.getMsg(), Toast.LENGTH_SHORT).show();
                                 }
@@ -378,7 +378,7 @@ public class CourseDetailActivity extends BaseActivity    {
                                 CodeBean createOrderBean = info.getRetDetail(CodeBean.class);
                                 if (createOrderBean.getCode().equalsIgnoreCase("0")) {
                                     EventBus.getDefault().post(new BusEntity(113));
-                                    Toast.makeText(CourseDetailActivity.this, "关注成功", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(CourseDetailActivity.this, getResources().getString(R.string.You_have_followed), Toast.LENGTH_SHORT).show();
                                 } else {
                                     Toast.makeText(CourseDetailActivity.this, createOrderBean.getMsg(), Toast.LENGTH_SHORT).show();
                                 }

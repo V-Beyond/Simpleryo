@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="44px"
             android:layout_marginTop="52px"
-            android:text="请输入您要反馈的信息"
+            android:text="@string/Please_enter_your_feedback"
             android:textColor="@color/color_8c8c8c"
             android:textSize="29px" />
 

@@ -29,7 +29,8 @@
             android:button="@null"
             android:checked="true"
             android:gravity="center"
-            android:text="我的课程"
+            android:textSize="26px"
+            android:text="@string/My_courses"
             android:textColor="@color/selector_my_course_radio_text_color" />
 
         <RadioButton
@@ -39,11 +40,12 @@
             android:layout_marginBottom="2px"
             android:layout_marginLeft="1px"
             android:layout_marginTop="2px"
+            android:textSize="26px"
             android:layout_weight="1"
             android:background="@drawable/selector_my_course_started"
             android:button="@null"
             android:gravity="center"
-            android:text="已开始课程"
+            android:text="@string/Course_has_started"
             android:textColor="@color/selector_my_course_radio_text_color" />
 
         <RadioButton
@@ -54,10 +56,11 @@
             android:layout_marginRight="5px"
             android:layout_marginTop="2px"
             android:layout_weight="1"
+            android:textSize="26px"
             android:background="@drawable/selector_my_course_end"
             android:button="@null"
             android:gravity="center"
-            android:text="已结束课程"
+            android:text="@string/Course_has_finished"
             android:textColor="@color/selector_my_course_radio_text_color" />
     </RadioGroup>
 

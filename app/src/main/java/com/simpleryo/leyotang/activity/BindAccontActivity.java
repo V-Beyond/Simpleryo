@@ -52,13 +52,13 @@ public class BindAccontActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
-        tv_name.setText("绑定账号");
+        tv_name.setText(getResources().getString(R.string.bind_account));
         umShareAPI = UMShareAPI.get(BindAccontActivity.this);
         userId = SharedPreferencesUtils.getKeyString("userId");
         isBindWechat = SharedPreferencesUtils.getKeyBoolean("isBindWechat");
         if (isBindWechat==true) {
             rl_wechat.setClickable(false);
-            tv_nickname.setText("已绑定");
+            tv_nickname.setText(getResources().getString(R.string.Linked));
         }
     }
 
@@ -187,7 +187,7 @@ public class BindAccontActivity extends BaseActivity {
                 super.onSuccess(info);
                 BindAccountBean bindAccountBean = info.getRetDetail(BindAccountBean.class);
                 if (bindAccountBean.getCode().equalsIgnoreCase("0")) {
-                    tv_nickname.setText("已绑定");
+                    tv_nickname.setText(getResources().getString(R.string.Linked));
                     rl_wechat.setClickable(false);
                 }
             }

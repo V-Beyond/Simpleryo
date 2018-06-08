@@ -33,7 +33,7 @@
                 android:layout_centerVertical="true"
                 android:drawablePadding="15px"
                 android:drawableRight="@mipmap/iv_right_more"
-                android:text="未绑定" />
+                android:text="@string/Unlink" />
 
             <View
                 android:layout_width="match_parent"
@@ -91,7 +91,7 @@
                 android:layout_centerVertical="true"
                 android:drawablePadding="15px"
                 android:drawableRight="@mipmap/iv_right_more"
-                android:text="未绑定" />
+                android:text="@string/Unlink" />
 
             <View
                 android:layout_width="match_parent"
