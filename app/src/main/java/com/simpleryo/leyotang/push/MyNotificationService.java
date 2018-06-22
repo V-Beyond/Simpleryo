@@ -7,6 +7,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.simpleryo.leyotang.R;
 import com.umeng.message.UTrack;
@@ -67,6 +68,7 @@ public class MyNotificationService extends Service {
     }
 
     public PendingIntent getClickPendingIntent(Context context, UMessage msg) {
+        Log.w("cc","getClickPendingIntent:"+msg.getRaw().toString());
         Intent clickIntent = new Intent();
         clickIntent.setClass(context, NotificationBroadcast.class);
         clickIntent.putExtra(NotificationBroadcast.EXTRA_KEY_MSG,
@@ -95,6 +97,12 @@ public class MyNotificationService extends Service {
                 (int) (System.currentTimeMillis() + 1),
                 deleteIntent, PendingIntent.FLAG_CANCEL_CURRENT);
         return deletePendingIntent;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.w("cc","onDestroy");
     }
 
     @Override

@@ -213,9 +213,9 @@ public class MyFragment extends XLibraryLazyFragment {
                             starSign=userInfoBean.getData().getStarSign();
                             des=userInfoBean.getData().getIntro();
                             if (userInfoBean.getData().getAvatarUrl() != null) {
-                                Picasso.with(getContext().getApplicationContext()).load(userInfoBean.getData().getAvatarUrl()).transform(transformation).into(iv_avatar);
+                                Picasso.with(getActivity().getApplicationContext()).load(userInfoBean.getData().getAvatarUrl()).transform(transformation).into(iv_avatar);
                             } else {
-                                Picasso.with(getContext().getApplicationContext()).load(R.mipmap.iv_my_info).into(iv_avatar);
+                                Picasso.with(getActivity().getApplicationContext()).load(R.mipmap.iv_my_info).into(iv_avatar);
                             }
                             if (userInfoBean.getData().getCollectCount() != null) {
                                 tv_collection.setText(userInfoBean.getData().getCollectCount() + "");
@@ -246,7 +246,7 @@ public class MyFragment extends XLibraryLazyFragment {
                 tv_nickname.setText(getResources().getString(R.string.no_login));
                 tv_collection.setText("0");
                 tv_attention.setText("0");
-                Picasso.with(getContext().getApplicationContext()).load("http://p2.so.qhmsg.com/bdr/_240_/t0118ff1cab46ddba27.jpg").transform(transformation).into(iv_avatar);
+                Picasso.with(getActivity().getApplicationContext()).load("http://p2.so.qhmsg.com/bdr/_240_/t0118ff1cab46ddba27.jpg").transform(transformation).into(iv_avatar);
             }
         }
         if (bus.getType()==403){
@@ -420,22 +420,10 @@ public class MyFragment extends XLibraryLazyFragment {
                 //相机返回
                 case CODE_CAMERA_REQUEST:
                     cropImageUri = Uri.fromFile(fileCropUri);
-                    Picasso.with(getContext().getApplicationContext()).load(cropImageUri).transform(transformation).into(iv_avatar);
+                    Picasso.with(getActivity().getApplicationContext()).load(cropImageUri).transform(transformation).into(iv_avatar);
                     break;
                 //相册返回
                 case CODE_GALLERY_REQUEST:
-//                    cropImageUri = Uri.fromFile(fileCropUri);
-//                    Uri newUri = Uri.parse(PhotoUtils.getPath(getActivity(), data.getData()));
-//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//                        newUri = FileProvider.getUriForFile(getActivity(), "com.simpleryo.nz.fileprovider", new File(newUri.getPath()));
-//                    }
-//                    String filePath=PhotoUtils.getPath(getActivity(), data.getData());
-//                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
-//                    Cursor cursor = getActivity().getContentResolver().query(newUri,
-//                            filePathColumn, null, null, null);
-//                    cursor.moveToFirst();
-//                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-//                    String  picturePath = cursor.getString(columnIndex);
                     Uri selectedImage = data.getData();
                     String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
@@ -453,7 +441,7 @@ public class MyFragment extends XLibraryLazyFragment {
                 case CODE_RESULT_REQUEST:
                     Bitmap bitmap = PhotoUtils.getBitmapFromUri(cropImageUri, getActivity());
                     if (bitmap != null) {
-                        Picasso.with(getContext().getApplicationContext()).load("http://p0.so.qhmsg.com/bdr/_240_/t01eb2a6c6319b04655.jpg").transform(transformation).into(iv_avatar);
+                        Picasso.with(getActivity().getApplicationContext()).load("http://p0.so.qhmsg.com/bdr/_240_/t01eb2a6c6319b04655.jpg").transform(transformation).into(iv_avatar);
                     }
                     break;
             }

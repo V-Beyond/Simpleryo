@@ -292,6 +292,8 @@
                         android:gravity="center"
                         android:paddingLeft="23px"
                         android:paddingRight="23px"
+                        android:paddingTop="7px"
+                        android:paddingBottom="7px"
                         android:text="@string/offline_training"
                         android:textColor="@color/color_ffffff"
                         android:textSize="21px" />

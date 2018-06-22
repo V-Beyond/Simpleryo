@@ -257,6 +257,9 @@ public class OrderNewFragment extends XLibraryLazyFragment {
     private OnLoadMoreListener onLoadMoreListener = new OnLoadMoreListener() {
         @Override
         public void onLoadMore() {
+            if (mItemModels != null && mItemModels.size() > 0) {
+                mItemModels.clear();
+            }
             offset = limit + 1;
             limit += 10;
             initData();

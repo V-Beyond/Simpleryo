@@ -99,12 +99,6 @@ public class OrderPayedFragment extends XLibraryLazyFragment {
                 OrderListBean orderListBean=info.getRetDetail(OrderListBean.class);
                 if (orderListBean.getCode().equalsIgnoreCase("0")){
                     if(orderListBean.getData()!=null&&orderListBean.getData().size()>0){
-                        if (orderListBeans!=null&&orderListBeans.size()>0){
-                            orderListBeans.clear();
-                        }
-                        if (mItemModels!=null&&mItemModels.size()>0){
-                            mItemModels.clear();
-                        }
                         orderListBeans.addAll(orderListBean.getData());
                         for (OrderListBean.DataBean dataBean:orderListBeans){
                             item = new MultipleItem(MultipleItem.ORDER);
@@ -148,6 +142,9 @@ public class OrderPayedFragment extends XLibraryLazyFragment {
     private OnLoadMoreListener onLoadMoreListener=new OnLoadMoreListener() {
         @Override
         public void onLoadMore() {
+            if (mItemModels != null && mItemModels.size() > 0) {
+                mItemModels.clear();
+            }
             offset=limit+1;
             limit+=10;
             initData();

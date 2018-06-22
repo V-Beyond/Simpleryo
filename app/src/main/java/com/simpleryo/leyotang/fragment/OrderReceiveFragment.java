@@ -44,11 +44,12 @@ public class OrderReceiveFragment extends XLibraryLazyFragment {
     LRecyclerViewAdapter lRecyclerViewAdapter;
     MyOrderAdapter myOrderAdapter;
     private List<MultipleItem> mItemModels = new ArrayList<>();
-    ArrayList<OrderListBean.DataBean> orderListBeans=new ArrayList<>();
+    ArrayList<OrderListBean.DataBean> orderListBeans = new ArrayList<>();
     @ViewInject(R.id.empty_view)
     private View mEmptyView;
     private ProgressDialog dialog;
-    String status="RECEIVED";//订单状态
+    String status = "RECEIVED";//订单状态
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (mMainView == null) {
@@ -87,35 +88,31 @@ public class OrderReceiveFragment extends XLibraryLazyFragment {
         lrecyclerview.forceToRefresh();
     }
 
-    int offset=0;
-    int limit=9;
+    int offset = 0;
+    int limit = 9;
+
     public void initData() {
-        SimpleryoNetwork.getOrders(getActivity(),new MyBaseProgressCallbackImpl(){
+        SimpleryoNetwork.getOrders(getActivity(), new MyBaseProgressCallbackImpl() {
             @Override
             public void onSuccess(HttpInfo info) {
                 super.onSuccess(info);
-                mHasLoadedOnce=true;
-                MultipleItem  item;
-                OrderListBean orderListBean=info.getRetDetail(OrderListBean.class);
-                if (orderListBean.getCode().equalsIgnoreCase("0")){
-                    if(orderListBean.getData()!=null&&orderListBean.getData().size()>0){
-                        if (orderListBeans!=null&&orderListBeans.size()>0){
-                            orderListBeans.clear();
-                        }
-                        if (mItemModels!=null&&mItemModels.size()>0){
-                            mItemModels.clear();
-                        }
+                mHasLoadedOnce = true;
+                MultipleItem item;
+                OrderListBean orderListBean = info.getRetDetail(OrderListBean.class);
+                if (orderListBean.getCode().equalsIgnoreCase("0")) {
+                    if (orderListBean.getData() != null && orderListBean.getData().size() > 0) {
                         orderListBeans.addAll(orderListBean.getData());
-                        for (OrderListBean.DataBean dataBean:orderListBeans){
+                        for (OrderListBean.DataBean dataBean : orderListBeans) {
                             item = new MultipleItem(MultipleItem.ORDER);
                             item.setOrderListBean(dataBean);
                             mItemModels.add(item);
                         }
                         myOrderAdapter.setDataList(mItemModels);
-                    }else{
-                        if (orderListBeans.size()>0){
+
+                    } else {
+                        if (orderListBeans.size() > 0) {
                             lrecyclerview.setNoMore(true);
-                        }else{
+                        } else {
                             lrecyclerview.setEmptyView(mEmptyView);//设置在setAdapter之前才能生效
                         }
                     }
@@ -129,36 +126,42 @@ public class OrderReceiveFragment extends XLibraryLazyFragment {
                 super.onFailure(info);
                 lrecyclerview.setEmptyView(mEmptyView);//设置在setAdapter之前才能生效
             }
-        },status,offset,limit);
+        }, status, offset, limit);
     }
+
     private OnRefreshListener onRefreshListener = new OnRefreshListener() {
         @Override
         public void onRefresh() {
-            if (orderListBeans!=null&&orderListBeans.size()>0){
+            if (orderListBeans != null && orderListBeans.size() > 0) {
                 orderListBeans.clear();
             }
-            if (mItemModels!=null&&mItemModels.size()>0){
+            if (mItemModels != null && mItemModels.size() > 0) {
                 mItemModels.clear();
             }
-            offset=0;
-            limit=9;
+            offset = 0;
+            limit = 9;
             initData();
         }
     };
-    private OnLoadMoreListener onLoadMoreListener=new OnLoadMoreListener() {
+    private OnLoadMoreListener onLoadMoreListener = new OnLoadMoreListener() {
         @Override
         public void onLoadMore() {
-            offset=limit+1;
-            limit+=10;
+            if (mItemModels != null && mItemModels.size() > 0) {
+                mItemModels.clear();
+            }
+            offset = limit + 1;
+            limit += 10;
             initData();
         }
     };
     OrderListBean.DataBean orderDataBean;
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updateCollect(BusEntity bus) {
-        if (bus.getType()==111){
+        if (bus.getType() == 111) {
         }
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();

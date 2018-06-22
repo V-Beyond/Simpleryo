@@ -43,16 +43,21 @@ public class MainActivity extends BaseActivity {
     ViewPager view_pager_main;
     @ViewInject(R.id.radio_btn_home)
     RadioButton radio_btn_home;
+    @ViewInject(R.id.radio_btn_course)
+    RadioButton radio_btn_course;
+    @ViewInject(R.id.radio_btn_my)
+    RadioButton radio_btn_my;
     FragMentAdapter<XLibraryLazyFragment> mAdapter;
     List<XLibraryLazyFragment> fragments = new ArrayList<XLibraryLazyFragment>();
     MyFragment myFragment;
-
+    String type;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MobclickAgent.openActivityDurationTrack(false);
         //设置 U-Dplus场景
         MobclickAgent.setScenarioType(MainActivity.this, MobclickAgent.EScenarioType.E_DUM_NORMAL);
+        type=getIntent().getStringExtra("type");
 
         myFragment = new MyFragment();
         fragments.add(new HomeFragment());
@@ -61,7 +66,15 @@ public class MainActivity extends BaseActivity {
         mAdapter = new FragMentAdapter<XLibraryLazyFragment>(
                 getSupportFragmentManager(), fragments);
         view_pager_main.setAdapter(mAdapter);
-        view_pager_main.setCurrentItem(0);
+        if (type.equalsIgnoreCase("splash")){//启动页跳转过来
+            view_pager_main.setCurrentItem(0);
+        }
+        if (type.equalsIgnoreCase("push")){//启动页跳转过来
+            view_pager_main.setCurrentItem(1);
+            radio_btn_course.setChecked(true);
+            radio_btn_home.setChecked(false);
+            radio_btn_my.setChecked(false);
+        }
         MainActivityPermissionsDispatcher.getMultiPermissionWithCheck(this);
     }
 
@@ -108,9 +121,8 @@ public class MainActivity extends BaseActivity {
     /**
      * 动态获取权限
      */
-    @NeedsPermission({Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR})
+    @NeedsPermission({ Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.READ_PHONE_STATE,Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR})
     void getMultiPermission() {
-//        SharedPreferencesUtils.customeToast("相机权限已获取");
     }
 
     /**

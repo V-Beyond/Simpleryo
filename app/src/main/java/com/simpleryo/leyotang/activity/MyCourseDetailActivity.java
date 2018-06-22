@@ -1,16 +1,12 @@
 package com.simpleryo.leyotang.activity;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.util.ArrayMap;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
@@ -50,7 +46,6 @@ import com.simpleryo.leyotang.bean.OrderDetailBean;
 import com.simpleryo.leyotang.bean.UpdateOrderBean;
 import com.simpleryo.leyotang.network.SimpleryoNetwork;
 import com.simpleryo.leyotang.push.NotificationBroadcast;
-import com.simpleryo.leyotang.utils.PermissionUtils;
 import com.simpleryo.leyotang.utils.XActivityUtils;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
@@ -71,7 +66,7 @@ import java.util.ArrayList;
  * @time 2018/3/19 13:28
  */
 @ContentView(R.layout.activity_my_course_detail)
-public class MyCourseDetailActivity extends BaseActivity implements OnMapReadyCallback, ActivityCompat.OnRequestPermissionsResultCallback, GoogleApiClient.ConnectionCallbacks,
+public class MyCourseDetailActivity extends BaseActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
     @ViewInject(R.id.tv_name)
     TextView tv_name;
@@ -346,6 +341,7 @@ public class MyCourseDetailActivity extends BaseActivity implements OnMapReadyCa
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private Location mLastKnownLocation;
 
+    @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -355,19 +351,12 @@ public class MyCourseDetailActivity extends BaseActivity implements OnMapReadyCa
         UiSettings mUiSettings = mMap.getUiSettings();
         // Keep the UI Settings state in sync with the checkboxes.
         mUiSettings.setZoomControlsEnabled(true);
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            mMap.setMyLocationEnabled(true);
-        } else {
-            // Uncheck the box until the layer has been enabled and request missing permission.
-            PermissionUtils.requestPermission(this, LOCATION_PERMISSION_REQUEST_CODE,
-                    Manifest.permission.ACCESS_FINE_LOCATION, false);
-        }
+        mMap.setMyLocationEnabled(true);
 //        // Add a marker in Sydney, Australia, and move the camera.
         final LatLng sydney = new LatLng(31.22, 121.48);
 //        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in ShangHai"));
 //        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 13f));
-        Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
+        @SuppressLint("MissingPermission") Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
         locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
             @Override
             public void onComplete(@NonNull Task<Location> task) {
@@ -437,19 +426,6 @@ public class MyCourseDetailActivity extends BaseActivity implements OnMapReadyCa
             }
         });
     }
-
-    @SuppressLint("MissingPermission")
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] results) {
-        if (requestCode != LOCATION_PERMISSION_REQUEST_CODE) {
-            return;
-        }
-        if (PermissionUtils.isPermissionGranted(permissions, results,
-                Manifest.permission.ACCESS_FINE_LOCATION)) {
-            mMap.setMyLocationEnabled(true);
-        }
-    }
-
     private PlaceDetectionClient mPlaceDetectionClient;
     private static final int M_MAX_ENTRIES = 5;
     private String[] mLikelyPlaceNames;

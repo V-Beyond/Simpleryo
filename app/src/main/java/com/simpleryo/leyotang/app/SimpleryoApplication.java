@@ -10,6 +10,7 @@ import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import com.simpleryo.leyotang.R;
+import com.simpleryo.leyotang.activity.MainActivity;
 import com.simpleryo.leyotang.activity.MyMsgActivity;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.message.IUmengRegisterCallback;
@@ -26,12 +27,14 @@ import net.latipay.mobile.LatipayAPI;
 
 import org.xutils.BuildConfig;
 import org.xutils.x;
+
 import java.lang.reflect.Field;
+import java.util.Map;
 
 /**
- * @ClassNname：SimpleryoApplication.java
- * @Describe  应用application
  * @author huanglei
+ * @ClassNname：SimpleryoApplication.java
+ * @Describe 应用application
  * @time 2018/3/19 10:52
  */
 public class SimpleryoApplication extends MultiDexApplication {
@@ -52,8 +55,8 @@ public class SimpleryoApplication extends MultiDexApplication {
         try {
             Class<?> aClass = Class.forName("com.umeng.commonsdk.UMConfigure");
             Field[] fs = aClass.getDeclaredFields();
-            for (Field f:fs){
-                Log.e("xxxxxx","ff="+f.getName()+"   "+f.getType().getName());
+            for (Field f : fs) {
+                Log.e("xxxxxx", "ff=" + f.getName() + "   " + f.getType().getName());
             }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -82,7 +85,6 @@ public class SimpleryoApplication extends MultiDexApplication {
             public void dealWithNotificationMessage(Context context, UMessage msg) {
                 //调用super，会展示通知，不调用super，则不展示通知。
                 super.dealWithNotificationMessage(context, msg);
-                Log.w("cc", "dealWithNotificationMessage:" + msg.title);
             }
 
             /**
@@ -90,7 +92,6 @@ public class SimpleryoApplication extends MultiDexApplication {
              */
             @Override
             public void dealWithCustomMessage(final Context context, final UMessage msg) {
-                Log.w("cc", "dealWithNotificationMessage:" + msg.title);
                 handler.post(new Runnable() {
 
                     @Override
@@ -149,10 +150,28 @@ public class SimpleryoApplication extends MultiDexApplication {
             @Override
             public void launchApp(Context context, UMessage msg) {
                 super.launchApp(context, msg);
-                Log.w("cc", "推送消息：" + msg.toString());
-                Intent intent = new Intent(context, MyMsgActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+                Map<String, String> extrs = msg.extra;
+//                courseClass 课程开课
+//                payComplete 支付完成
+//                sysMessage 系统消息
+                if (extrs.get("type").equalsIgnoreCase("courseClass")) {
+                    Intent intent = new Intent(context, MainActivity.class);
+                    intent.putExtra("type","push");
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+                if (extrs.get("type").equalsIgnoreCase("payComplete")) {
+                    Intent intent = new Intent(context, MainActivity.class);
+                    intent.putExtra("type","push");
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+                if (extrs.get("type").equalsIgnoreCase("sysMessage")) {
+                    Intent intent = new Intent(context, MyMsgActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+                Log.w("cc", "推送消息：" + msg.getRaw().toString());
             }
 
             @Override
@@ -163,19 +182,55 @@ public class SimpleryoApplication extends MultiDexApplication {
             @Override
             public void openActivity(Context context, UMessage msg) {
                 super.openActivity(context, msg);
-                Log.w("cc", "推送消息：" + msg.toString());
-                Intent intent = new Intent(context, MyMsgActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+                Map<String, String> extrs = msg.extra;
+//                courseClass 课程开课
+//                payComplete 支付完成
+//                sysMessage 系统消息
+                if (extrs.get("type").equalsIgnoreCase("courseClass")) {
+                    Intent intent = new Intent(context, MainActivity.class);
+                    intent.putExtra("type","push");
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+                if (extrs.get("type").equalsIgnoreCase("payComplete")) {
+                    Intent intent = new Intent(context, MainActivity.class);
+                    intent.putExtra("type","push");
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+                if (extrs.get("type").equalsIgnoreCase("sysMessage")) {
+                    Intent intent = new Intent(context, MyMsgActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+                Log.w("cc", "推送消息：" + msg.getRaw().toString());
+
             }
 
             @Override
             public void dealWithCustomAction(Context context, UMessage msg) {
-                Log.w("cc", "推送消息：" + msg.toString());
-                Intent intent = new Intent(context, MyMsgActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-//                Toast.makeText(context, msg.custom, Toast.LENGTH_LONG).show();
+                Map<String, String> extrs = msg.extra;
+//                courseClass 课程开课
+//                payComplete 支付完成
+//                sysMessage 系统消息
+                if (extrs.get("type").equalsIgnoreCase("courseClass")) {
+                    Intent intent = new Intent(context, MainActivity.class);
+                    intent.putExtra("type","push");
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+                if (extrs.get("type").equalsIgnoreCase("payComplete")) {
+                    Intent intent = new Intent(context, MainActivity.class);
+                    intent.putExtra("type","push");
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+                if (extrs.get("type").equalsIgnoreCase("sysMessage")) {
+                    Intent intent = new Intent(context, MyMsgActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+                Log.w("cc", "推送消息：" + msg.getRaw().toString());
             }
         };
         //使用自定义的NotificationHandler
@@ -206,6 +261,7 @@ public class SimpleryoApplication extends MultiDexApplication {
         //魅族通道
         //MeizuRegister.register(this, MEIZU_APPID, MEIZU_APPKEY);
     }
+
     {
         PlatformConfig.setWeixin("wx82b6fbe46e0289fc", "59eacc215322d41ea6f939c706ea81f3");
         PlatformConfig.setAlipay("2018050202618831");

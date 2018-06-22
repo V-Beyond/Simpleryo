@@ -12,17 +12,21 @@ android {
         multiDexEnabled true
     }
     signingConfigs {
+        def alias = "simpleryo"
+        def password = "123456"
+        def filePath = "simpleryo.jks"  //签名文件路径
+
         debug {
-            storeFile file('simpleryo.jks')//签名文件路径
-            storePassword "123456"
-            keyAlias "simpleryo"
-            keyPassword "123456"  //签名密码
+            storeFile file(filePath)//签名文件路径
+            storePassword password
+            keyAlias alias
+            keyPassword password  //签名密码
         }
         release {
-            storeFile file('simpleryo.jks')//签名文件路径
-            storePassword "123456"
-            keyAlias "simpleryo"
-            keyPassword "123456"  //签名密码
+            storeFile file(filePath)//签名文件路径
+            storePassword password
+            keyAlias alias
+            keyPassword password  //签名密码
         }
     }
     buildTypes {
@@ -81,10 +85,7 @@ dependencies {
     compile 'com.squareup.okio:okio:1.9.0'
     compile 'com.aliyun.dpa:oss-android-sdk:+'
     //友盟
-//    compile 'com.umeng.sdk:common:latest.integration'
     compile 'com.umeng.sdk:analytics:latest.integration'
-//    compile 'com.umeng.sdk:share-core:latest.integration'
-    //    compile 'com.umeng.sdk:share-wechat:latest.integration'
     //微信SDK
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
     //picker
