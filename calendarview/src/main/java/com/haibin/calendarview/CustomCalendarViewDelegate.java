@@ -28,7 +28,7 @@ import java.util.List;
  * Google规范化的属性委托,
  * 这里基本是没有逻辑的，代码量多，但是不影响阅读性
  */
-final class CustomCalendarViewDelegate {
+public final class CustomCalendarViewDelegate {
 
 
     /**
@@ -175,7 +175,7 @@ final class CustomCalendarViewDelegate {
     /**
      * 日期被选中监听
      */
-    CalendarView.OnDateSelectedListener mDateSelectedListener;
+  public  CalendarView.OnDateSelectedListener mDateSelectedListener;
 
     /**
      * 外部日期长按事件
@@ -201,7 +201,7 @@ final class CustomCalendarViewDelegate {
     /**
      * 保存选中的日期
      */
-    Calendar mSelectedCalendar;
+  public   Calendar mSelectedCalendar;
 
     CustomCalendarViewDelegate(Context context, @Nullable AttributeSet attrs) {
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.CalendarView);

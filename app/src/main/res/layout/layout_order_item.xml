@@ -18,13 +18,15 @@
 
             <TextView
                 android:id="@+id/tv_time"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:layout_marginRight="10px"
+                android:layout_toLeftOf="@+id/tv_state"
                 android:layout_marginLeft="30px"
                 android:text="----------"
                 android:textColor="#373737"
-                android:textSize="33px" />
+                android:textSize="30px" />
 
             <TextView
                 android:id="@+id/tv_state"
@@ -35,7 +37,7 @@
                 android:layout_marginRight="30px"
                 android:text="------"
                 android:textColor="#989898"
-                android:textSize="33px" />
+                android:textSize="30px" />
 
             <ImageView
                 android:id="@+id/iv_delete"
@@ -137,14 +139,16 @@
 
             <TextView
                 android:id="@+id/tv_order_remark"
-                android:layout_width="185px"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:background="@mipmap/iv_no_remark"
                 android:paddingBottom="12px"
                 android:paddingTop="12px"
+                android:paddingRight="12px"
+                android:paddingLeft="12px"
                 android:gravity="center"
-                android:text="评价"
+                android:text="@string/Cancel_order"
                 android:layout_marginRight="30px"
                 android:textColor="@color/color_ffffff"
                 android:textSize="29px" />

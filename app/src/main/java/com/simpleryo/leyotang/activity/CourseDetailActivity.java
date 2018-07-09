@@ -2,12 +2,14 @@ package com.simpleryo.leyotang.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -100,6 +102,8 @@ public class CourseDetailActivity extends BaseActivity    {
     TextView tv_to_use_help;
     @ViewInject(R.id.tv_comfirm_pay)
     TextView tv_comfirm_pay;
+    @ViewInject(R.id.tv_reservations)
+    RelativeLayout tv_reservations;
     boolean hasCollect;//是否收藏
     public Transformation transformation = new RoundedTransformationBuilder()
             .cornerRadius(10)
@@ -157,7 +161,7 @@ public class CourseDetailActivity extends BaseActivity    {
                 .setPlatform(shareMedia)
                 .setCallback(shareListener).share();
     }
-
+    boolean isArrang=true;
     String courseName;
     String coverUrl;
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -243,6 +247,10 @@ public class CourseDetailActivity extends BaseActivity    {
                             }
                             tv_course_time.setText(durations);
                         }
+                        if (courdeDetailBean.getData().getArranges().size()==0){
+                            isArrang=false;
+                            tv_reservations.setBackgroundColor(Color.parseColor("#808080"));
+                        }
                         if (courdeDetailBean.getData().getIntro() != null) {
                             tv_course_detail.loadDataWithBaseURL("about:blank", CSS_STYLE + courdeDetailBean.getData().getIntro(), "text/html", "utf-8", null);
                         } else {
@@ -295,7 +303,7 @@ public class CourseDetailActivity extends BaseActivity    {
                 if (storeDetailBean.getCode().equalsIgnoreCase("0")) {
                     isFollow = storeDetailBean.getData().isHasFollow();
                     if (isFollow){
-                        tv_to_use_help.setText(getResources().getString(R.string.Unsubscribe));
+                        tv_to_use_help.setText(getResources().getString(R.string.abolish_concern));
                     }else{
                         tv_to_use_help.setText(getResources().getString(R.string.follow));
                     }
@@ -427,7 +435,6 @@ public class CourseDetailActivity extends BaseActivity    {
                                     Toast.makeText(CourseDetailActivity.this, createOrderBean.getMsg(), Toast.LENGTH_SHORT).show();
                                 }
                             }
-
                             @Override
                             public void onFailure(HttpInfo info) {
                                 super.onFailure(info);
@@ -442,9 +449,13 @@ public class CourseDetailActivity extends BaseActivity    {
                 break;
             case R.id.tv_reservations://确定订单
                 if (isLogin) {
-                    Intent intent = new Intent(CourseDetailActivity.this, ComfirmOrderActivity.class);
-                    intent.putExtra("courseId", courseId);
-                    startActivity(intent);
+                    if (isArrang==true){
+                        Intent intent = new Intent(CourseDetailActivity.this, ComfirmOrderActivity.class);
+                        intent.putExtra("courseId", courseId);
+                        startActivity(intent);
+                    }else{
+                        Toast.makeText(CourseDetailActivity.this, "目前该课程没有可预约的时间段", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     Intent intent = new Intent(CourseDetailActivity.this, LoginActivity.class);
                     startActivity(intent);

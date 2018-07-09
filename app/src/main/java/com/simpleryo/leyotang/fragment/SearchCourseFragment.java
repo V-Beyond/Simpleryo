@@ -174,16 +174,14 @@ public class SearchCourseFragment extends XLibraryLazyFragment {
      */
     public void searchCourse(String name) {
         if (name!=null) {
-            SimpleryoNetwork.getCourse(getActivity(), new MyBaseProgressCallbackImpl() {
+            SimpleryoNetwork.getSearchCourse(getActivity(), new MyBaseProgressCallbackImpl() {
                 @Override
                 public void onSuccess(HttpInfo info) {
                     super.onSuccess(info);
+                    mHasLoadedOnce=true;
                     CourseListBean courseListBean = info.getRetDetail(CourseListBean.class);
                     if (courseListBean.getCode().equalsIgnoreCase("0")) {
                         if (courseListBean.getData() != null && courseListBean.getData().size() > 0) {
-                            if (hotCourseList != null && hotCourseList.size() > 0) {
-                                hotCourseList.clear();
-                            }
                             hotCourseList.addAll(courseListBean.getData());
                             searchHotCourseAdapter.setDataList(hotCourseList);
                             lrecyclerview.setAdapter(lRecyclerViewAdapter);
@@ -193,7 +191,7 @@ public class SearchCourseFragment extends XLibraryLazyFragment {
                             lrecyclerview.removeItemDecoration(divider);
                             lrecyclerview.addItemDecoration(divider);
                         } else {
-                            if (hotCourseList.size()>0){
+                            if (searchHotCourseAdapter.getDataList().size()==courseListBean.getCount()){
                                 lrecyclerview.setNoMore(true);
                             }else{
                                 lrecyclerview.setEmptyView(mEmptyView);//设置在setAdapter之前才能生效
@@ -205,7 +203,7 @@ public class SearchCourseFragment extends XLibraryLazyFragment {
                         lRecyclerViewAdapter.notifyDataSetChanged();
                     }
                 }
-            }, "", name, "", "");
+            }, name, offset,limit);
         }else{
             searchHotCourseAdapter.clear();
             lrecyclerview.setEmptyView(mEmptyView);//设置在setAdapter之前才能生效

@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.simpleryo.leyotang.R;
 import com.simpleryo.leyotang.activity.MainActivity;
 import com.simpleryo.leyotang.activity.MyMsgActivity;
+import com.simpleryo.leyotang.push.UmengNotificationService;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.MsgConstant;
@@ -25,6 +26,7 @@ import com.umeng.socialize.PlatformConfig;
 
 import net.latipay.mobile.LatipayAPI;
 
+import org.android.agoo.huawei.HuaWeiRegister;
 import org.xutils.BuildConfig;
 import org.xutils.x;
 
@@ -66,6 +68,7 @@ public class SimpleryoApplication extends MultiDexApplication {
                 "195cd57308d0d88adb1c6578b25f5345");
         InAppMessageManager.getInstance(this).setInAppMsgDebugMode(true);
         initUpush();
+        HuaWeiRegister.register(SimpleryoApplication.this);
     }
 
     private void initUpush() {
@@ -252,7 +255,7 @@ public class SimpleryoApplication extends MultiDexApplication {
         });
 
         //使用完全自定义处理
-//        mPushAgent.setPushIntentServiceClass(UmengNotificationService.class);
+        mPushAgent.setPushIntentServiceClass(UmengNotificationService.class);
 
         //小米通道
         //MiPushRegistar.register(this, XIAOMI_ID, XIAOMI_KEY);

@@ -5,7 +5,7 @@ android {
     defaultConfig {
         applicationId "com.simpleryo.leyotang"
         minSdkVersion 19
-        targetSdkVersion 26
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -90,4 +90,6 @@ dependencies {
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
     //picker
     implementation project(':pickerview')
+    //华为Push通道
+    compile 'com.umeng.sdk:push-huawei:1.0.0'
 }

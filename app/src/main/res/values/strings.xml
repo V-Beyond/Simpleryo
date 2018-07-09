@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name" >Leyotang</string>
-    <string name="main_home" >Homepage</string>
+    <string name="main_home" >Home</string>
     <string name="main_course">Course</string>
     <string name="main_my">My</string>
     <string name="course_arrangement">Course arrangement</string>
@@ -8,7 +8,7 @@
     <string name="complaint_proposal">Suggestion</string>
     <string name="bind_account">Link account</string>
     <string name="contact_us">Contact Us</string>
-    <string name="essential_information">Basic Information</string>
+    <string name="essential_information">Edit profile</string>
     <string name="my_order">My Order</string>
     <string name="my_collections">My Colletion</string>
     <string name="my_attentions">My Attention</string>
@@ -18,8 +18,8 @@
     <string name="collectioned">collectioned</string>
     <string name="my_attention">" Attentions"</string>
     <string name="follow">Follow</string>
-    <string name="abolish_concern">Abolish concern</string>
-    <string name="pending_payment">Pending Payment</string>
+    <string name="abolish_concern">Unfollow</string>
+    <string name="pending_payment">Pending payment</string>
     <string name="complete_the_order">Complete The Order</string>
     <string name="comprehensive_evaluation">reviews</string>
     <string name="no_login">Not logged in</string>
@@ -35,7 +35,7 @@
     <string name="all_course">All courses</string>
     <string name="reservations">Reservations</string>
     <string name="institutional_recommendation">Institutional Recommendation</string>
-    <string name="coaching_information">Coaching information</string>
+    <string name="coaching_information">Tutor’s profile</string>
     <string name="institutional_information">Organisation information</string>
     <string name="qualification_certificate">Qualification certificate</string>
     <string name="business_home">Organization details</string>
@@ -53,10 +53,10 @@
     <string name="Booking_time">Booking time：</string>
     <string name="mechanism">Mechanism</string>
     <string name="notice">Notice</string>
-    <string name="personal_center">Personal Profile</string>
+    <string name="personal_center">My Profile</string>
     <string name="share">Share</string>
     <string name="course_detail">CoueseDetail</string>
-    <string name="exit">Exit</string>
+    <string name="exit">Log out</string>
     <string name="no_data">There is no more data on this page</string>
     <string name="no_orders">No course orders</string>
     <string name="Popular_Course">Popular Course</string>
@@ -69,10 +69,10 @@
     <string name="full_price">Full price</string>
     <string name="User_Name">User Name</string>
     <string name="Gender">Gender</string>
-    <string name="Link_Email">Link Email</string>
-    <string name="Contact_address">Contact address</string>
+    <string name="Link_Email">Email address</string>
+    <string name="Contact_address">Home address</string>
     <string name="Constellation">Constellation</string>
-    <string name="Personal_Profile">Personal Profile</string>
+    <string name="Personal_Profile">Bio</string>
     <string name="Change_nickname">Change nickname</string>
     <string name="new_nickname">Please enter new nickname</string>
     <string name="yes">Yes</string>
@@ -82,15 +82,15 @@
     <string name="free_trail_booking">Free trail booking</string>
     <string name="free_trail">Free trail</string>
     <string name="book_time">Please select a booking time</string>
-    <string name="offline_training_training_address">offline training, training address：</string>
+    <string name="offline_training_training_address">Details: offline：</string>
     <string name="exit_tips">Are you sure you want to quit?</string>
     <string name="Favorable_rate">Favorable rate</string>
     <string name="Book_a_course">Book a course</string>
     <string name="Purchase_a_course">Purchase a course</string>
     <string name="See_details">See details</string>
     <string name="To_evaluate">To evaluate</string>
-    <string name="To_pay">To pay</string>
-    <string name="Cancel_order">Cancel order</string>
+    <string name="To_pay">Pay now</string>
+    <string name="Cancel_order">Cancel Booking</string>
     <string name="All_reviews">All reviews</string>
     <string name="Describe_your_experience">Describe your experience(1-244 characters)</string>
     <string name="Grade">Grade:</string>
@@ -98,7 +98,7 @@
     <string name="Payment_done">Payment done</string>
     <string name="Cancelled">Cancelled</string>
     <string name="Edit_appointment_time">Edit appointment time</string>
-    <string name="Order_number">Order number</string>
+    <string name="Order_number">Booking number</string>
     <string name="Course_name">Course name</string>
     <string name="Organisation">Organisation</string>
     <string name="Timetable">Timetable：</string>

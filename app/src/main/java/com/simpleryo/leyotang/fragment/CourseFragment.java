@@ -20,11 +20,15 @@ import com.simpleryo.leyotang.activity.MyMsgActivity;
 import com.simpleryo.leyotang.adapter.CalendarCourseAdapter;
 import com.simpleryo.leyotang.base.MyBaseProgressCallbackImpl;
 import com.simpleryo.leyotang.base.XLibraryLazyFragment;
+import com.simpleryo.leyotang.bean.BusEntity;
 import com.simpleryo.leyotang.bean.CalendarListBean;
 import com.simpleryo.leyotang.network.SimpleryoNetwork;
 import com.simpleryo.leyotang.utils.SharedPreferencesUtils;
 import com.umeng.analytics.MobclickAgent;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -70,6 +74,7 @@ public class CourseFragment extends XLibraryLazyFragment {
             mMainView = inflater
                     .inflate(R.layout.fragment_course, container, false);
             x.view().inject(this, mMainView);
+            EventBus.getDefault().register(this);
             isPrepared = true;
             lazyLoad();
         }
@@ -80,9 +85,16 @@ public class CourseFragment extends XLibraryLazyFragment {
         return mMainView;
     }
 
-    int year;
-    int month;
+    int mYear;
+    int mMonth;
     int day;
+    boolean isSwitch = false;
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 
     @Override
     protected void lazyLoad() {
@@ -92,30 +104,33 @@ public class CourseFragment extends XLibraryLazyFragment {
         iv_back.setVisibility(View.GONE);
         tv_name.setText(getActivity().getResources().getString(R.string.main_course));
         isLogin = SharedPreferencesUtils.getKeyBoolean("isLogin");//获取用户登录状态
-        year = calenar_view.getCurYear();
-        month = calenar_view.getCurMonth();
-        day=calenar_view.getCurDay();
-        tv_current_date.setText(year + "年" + month + "月");
+        mYear = calenar_view.getCurYear();
+        mMonth = calenar_view.getCurMonth();
+        day = calenar_view.getCurDay();
+        tv_current_date.setText(mYear + "年" + mMonth + "月");
         tv_current_day.setText(day + "");
-        tv_current_month.setText(month + "月");
+        tv_current_month.setText(mMonth + "月");
         lrecyclerview.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         calendarCourseAdapter = new CalendarCourseAdapter(getActivity());
         lRecyclerViewAdapter = new LRecyclerViewAdapter(calendarCourseAdapter);
         calenar_view.setOnMonthChangeListener(new CalendarView.OnMonthChangeListener() {
             @Override
             public void onMonthChange(int year, int month) {
+                isSwitch = true;
                 tv_current_month.setText(month + "月");
                 tv_current_date.setText(year + "年" + month + "月");
+                mYear =year;
+                mMonth = month;
                 lrecyclerview.setVisibility(View.VISIBLE);
                 tv_no_order.setVisibility(View.GONE);
-                if (calendarListBean!=null){
+                if (calendarListBean != null) {
                     for (CalendarListBean.DataBean dataBean : calendarListBean.getData()) {
                         String date = dataBean.getDateStr().split("-")[2];
                         schemes.add(getSchemeCalendar(year, month, Integer.parseInt(date), 0, ""));
                         calenar_view.setSchemeDate(schemes);
                     }
                 }
-                initData(year,month);
+                initData(year, month);
             }
         });
         calenar_view.setOnYearChangeListener(new CalendarView.OnYearChangeListener() {
@@ -127,9 +142,10 @@ public class CourseFragment extends XLibraryLazyFragment {
         calenar_view.setOnDateSelectedListener(new CalendarView.OnDateSelectedListener() {
             @Override
             public void onDateSelected(Calendar calendar, boolean isClick) {
-                if(isLogin){
+                if (isLogin) {
                     if (calendarListBean != null) {
                         if (calendarListBean.getCode().equalsIgnoreCase("0")) {
+                            day=calendar.getDay();
                             int day = calendar.getDay();
                             String currentDay;
                             if (day >= 1 && day <= 9) {
@@ -176,14 +192,14 @@ public class CourseFragment extends XLibraryLazyFragment {
         if (isLogin) {
             lrecyclerview.setVisibility(View.VISIBLE);
             tv_no_order.setVisibility(View.GONE);
-            initData(year,month);
+            initData(mYear, mMonth);
         } else {
             lrecyclerview.setVisibility(View.GONE);
             tv_no_order.setVisibility(View.VISIBLE);
-            if (calendarListBean!=null){
+            if (calendarListBean != null) {
                 for (CalendarListBean.DataBean dataBean : calendarListBean.getData()) {
                     String date = dataBean.getDateStr().split("-")[2];
-                    schemes.add(getSchemeCalendar(year, month, Integer.parseInt(date), 0, ""));
+                    schemes.add(getSchemeCalendar(mYear, mMonth, Integer.parseInt(date), 0, ""));
                     calenar_view.setSchemeDate(schemes);
                 }
             }
@@ -194,6 +210,47 @@ public class CourseFragment extends XLibraryLazyFragment {
     CalendarListBean calendarListBean;
     final List<Calendar> schemes = new ArrayList<>();
 
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void BusMain(BusEntity bus) {
+        if (bus.getType()==8001){
+            String currentDay;
+            if (day >= 1 && day <= 9) {
+                currentDay = "0" + day;
+            } else {
+                currentDay = String.valueOf(day);
+            }
+            String currentMonth;
+            if (mMonth >= 1 && mMonth <= 9) {
+                currentMonth = "0" + mMonth;
+            } else {
+                currentMonth = String.valueOf(mMonth);
+            }
+            String date = mYear + "-" + currentMonth + "-" + currentDay;
+            List<CalendarListBean.DataBean.CourseListBean> dataBeanList = courseList.get(date);
+            if (dataBeanList != null && dataBeanList.size() > 0) {
+                if (ordersBeanList != null && ordersBeanList.size() > 0) {
+                    ordersBeanList.clear();
+                }
+                tv_no_order.setVisibility(View.GONE);
+                lrecyclerview.setVisibility(View.VISIBLE);
+                for (CalendarListBean.DataBean.CourseListBean ordersBean : dataBeanList) {
+                    if (ordersBeanList.size() < 8) {
+                        ordersBeanList.add(ordersBean);
+                    }
+                }
+                calendarCourseAdapter.setDataList(ordersBeanList);
+                lrecyclerview.setAdapter(lRecyclerViewAdapter);
+                lrecyclerview.setLoadMoreEnabled(false);
+                lrecyclerview.setPullRefreshEnabled(false);
+                calendarCourseAdapter.notifyDataSetChanged();
+                lRecyclerViewAdapter.notifyDataSetChanged();
+            } else {
+                lrecyclerview.setVisibility(View.GONE);
+                tv_no_order.setVisibility(View.VISIBLE);
+            }
+        }
+    }
     public void initData(final int year, final int month) {
         SimpleryoNetwork.getCalendarOrderList(getActivity(), new MyBaseProgressCallbackImpl() {
             @Override
@@ -201,10 +258,11 @@ public class CourseFragment extends XLibraryLazyFragment {
                 super.onSuccess(info);
                 calendarListBean = info.getRetDetail(CalendarListBean.class);
                 if (calendarListBean.getCode().equalsIgnoreCase("0")) {
-                    if (schemes!=null&&schemes.size()>0){
+                    if (schemes != null && schemes.size() > 0) {
                         schemes.clear();
                     }
                     for (CalendarListBean.DataBean dataBean : calendarListBean.getData()) {
+                        courseList.put(dataBean.getDateStr(), dataBean.getCourses());
                         String date = dataBean.getDateStr().split("-")[2];
                         int day = calenar_view.getCurDay();
                         String currentDay;
@@ -239,9 +297,10 @@ public class CourseFragment extends XLibraryLazyFragment {
                                 calenar_view.setSchemeDate(schemes);
                             }
                         }
-                        courseList.put(dataBean.getDateStr(), dataBean.getCourses());
                     }
-
+                    if (isSwitch==true){
+                        EventBus.getDefault().post(new BusEntity(8001));
+                    }
                 }
             }
 
@@ -264,7 +323,7 @@ public class CourseFragment extends XLibraryLazyFragment {
         calendar.setYear(year);
         calendar.setMonth(month);
         calendar.setDay(day);
-        if (!text.equalsIgnoreCase("")){
+        if (!text.equalsIgnoreCase("")) {
             calendar.setSchemeColor(0xffff40ff);//如果单独标记颜色、则会使用这个颜色
             calendar.setScheme(text);
         }

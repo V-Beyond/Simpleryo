@@ -6,7 +6,8 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.okhttplib.HttpInfo;
-import com.simpleryo.leyotang.activity.MyNoticeActivity;
+import com.simpleryo.leyotang.activity.MainActivity;
+import com.simpleryo.leyotang.activity.MyMsgActivity;
 import com.simpleryo.leyotang.base.MyBaseProgressCallbackImpl;
 import com.simpleryo.leyotang.bean.BusEntity;
 import com.simpleryo.leyotang.bean.LoginBean;
@@ -21,6 +22,8 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Map;
+
 public class NotificationBroadcast extends BroadcastReceiver {
     public static final String EXTRA_KEY_ACTION = "ACTION";
     public static final String EXTRA_KEY_MSG = "MSG";
@@ -29,6 +32,7 @@ public class NotificationBroadcast extends BroadcastReceiver {
     public static final String ACTION_REFRESHTOKEN = "com.simpleryo.token";
     public static final int EXTRA_ACTION_NOT_EXIST = -1;
     private static final String TAG = NotificationBroadcast.class.getName();
+
     @Override
     public void onReceive(Context context, Intent intent) {
         EventBus.getDefault().register(this);
@@ -36,8 +40,8 @@ public class NotificationBroadcast extends BroadcastReceiver {
         int action = intent.getIntExtra(EXTRA_KEY_ACTION,
                 EXTRA_ACTION_NOT_EXIST);
         try {
-            Log.w("cc","onReceive："+message);
-            if(message!=null){
+            Log.w("cc", "onReceive：" + message);
+            if (message != null) {
                 UMessage msg = new UMessage(new JSONObject(message));
                 switch (action) {
                     case ACTION_DISMISS:
@@ -46,10 +50,27 @@ public class NotificationBroadcast extends BroadcastReceiver {
                         UTrack.getInstance(context).trackMsgDismissed(msg);
                         break;
                     case ACTION_CLICK:
-                        Log.i(TAG, "click notification");
-                        Intent myMsgIntent = new Intent(context, MyNoticeActivity.class);
-                        myMsgIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        context.startActivity(myMsgIntent);
+                        Map<String, String> extrs = msg.extra;
+//                courseClass 课程开课
+//                payComplete 支付完成
+//                sysMessage 系统消息
+                        if (extrs.get("type").equalsIgnoreCase("courseClass")) {
+                            Intent courseClass = new Intent(context, MainActivity.class);
+                            courseClass.putExtra("type", "push");
+                            courseClass.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            context.startActivity(courseClass);
+                        }
+                        if (extrs.get("type").equalsIgnoreCase("payComplete")) {
+                            Intent payComplete = new Intent(context, MainActivity.class);
+                            payComplete.putExtra("type", "push");
+                            payComplete.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            context.startActivity(payComplete);
+                        }
+                        if (extrs.get("type").equalsIgnoreCase("sysMessage")) {
+                            Intent sysMessage = new Intent(context, MyMsgActivity.class);
+                            sysMessage.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            context.startActivity(sysMessage);
+                        }
                         UTrack.getInstance(context).setClearPrevMessage(true);
                         MyNotificationService.oldMessage = null;
                         UTrack.getInstance(context).trackMsgClick(msg);
@@ -62,30 +83,31 @@ public class NotificationBroadcast extends BroadcastReceiver {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        String tokenAction=intent.getAction();
-        if (tokenAction.equalsIgnoreCase(ACTION_REFRESHTOKEN)){
-            String refreshToken= SharedPreferencesUtils.getKeyString("refreshToken");
-            Log.w("cc","refreshToken:"+refreshToken);
-            SimpleryoNetwork.refreshToken(context,new MyBaseProgressCallbackImpl(){
+        String tokenAction = intent.getAction();
+        if (tokenAction != null && tokenAction.equalsIgnoreCase(ACTION_REFRESHTOKEN)) {
+            String refreshToken = SharedPreferencesUtils.getKeyString("refreshToken");
+            Log.w("cc", "refreshToken:" + refreshToken);
+            SimpleryoNetwork.refreshToken(context, new MyBaseProgressCallbackImpl() {
                 @Override
                 public void onSuccess(HttpInfo info) {
                     super.onSuccess(info);
                     LoginBean loginBean = info.getRetDetail(LoginBean.class);
                     if (loginBean.getCode().equalsIgnoreCase("0")) {
-                        SharedPreferencesUtils.saveKeyString("refreshToken",loginBean.getData().getRefreshToken());
-                        SharedPreferencesUtils.saveKeyString("token",loginBean.getData().getToken());
+                        SharedPreferencesUtils.saveKeyString("refreshToken", loginBean.getData().getRefreshToken());
+                        SharedPreferencesUtils.saveKeyString("token", loginBean.getData().getToken());
                         EventBus.getDefault().post(new BusEntity(021));
-                    }else if (loginBean.getCode().equalsIgnoreCase("101")){
+                    } else if (loginBean.getCode().equalsIgnoreCase("101")) {
                         SharedPreferencesUtils.saveKeyBoolean("isLogin", false);
-                        SharedPreferencesUtils.saveKeyString("token","simpleryo");
+                        SharedPreferencesUtils.saveKeyString("token", "simpleryo");
                         EventBus.getDefault().post(new BusEntity(021));
                     }
                 }
+
                 @Override
                 public void onFailure(HttpInfo info) {
                     super.onFailure(info);
                 }
-            },refreshToken);
+            }, refreshToken);
         }
     }
 

@@ -16,6 +16,6 @@ public class UmengNotificationService extends UmengMessageService {
         intent1.setClass(context, MyNotificationService.class);
         intent1.putExtra("UmengMsg", message);
         context.startService(intent1);
-        Log.w("cc","onMessage:"+message);
+        Log.w("cc","UmengNotificationService:"+message);
     }
 }

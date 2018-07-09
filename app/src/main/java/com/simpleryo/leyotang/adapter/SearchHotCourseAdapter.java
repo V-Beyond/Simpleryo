@@ -84,15 +84,18 @@ public class SearchHotCourseAdapter extends BaseAdapter<CourseListBean.DataBeanX
         } else {
             ((HotCourseItemViewHolder) holder).iv_collection_star.setImageResource(R.mipmap.iv_collection_white_star);
         }
-        if (bean.getRecommends().get(0).getValue().equalsIgnoreCase("HOT")){
-            ((HotCourseItemViewHolder) holder).rl_collect.setBackgroundResource(R.mipmap.iv_collection_bg);
+        if (bean.getRecommends()!=null&&bean.getRecommends().size()>0){
+            if (bean.getRecommends().get(0).getValue().equalsIgnoreCase("HOT")){
+                ((HotCourseItemViewHolder) holder).rl_collect.setBackgroundResource(R.mipmap.iv_collection_bg);
+            }
+            else if (bean.getRecommends().get(0).getValue().equalsIgnoreCase("EXCELLENT")){
+                ((HotCourseItemViewHolder) holder).rl_collect.setBackgroundResource(R.mipmap.iv_collection_blue);
+            }
+            else if (bean.getRecommends().get(0).getValue().equalsIgnoreCase("OFFCIAL")){
+                ((HotCourseItemViewHolder) holder).rl_collect.setBackgroundResource(R.mipmap.iv_collection_ping);
+            }
         }
-       else if (bean.getRecommends().get(0).getValue().equalsIgnoreCase("EXCELLENT")){
-            ((HotCourseItemViewHolder) holder).rl_collect.setBackgroundResource(R.mipmap.iv_collection_blue);
-        }
-        else if (bean.getRecommends().get(0).getValue().equalsIgnoreCase("OFFCIAL")){
-            ((HotCourseItemViewHolder) holder).rl_collect.setBackgroundResource(R.mipmap.iv_collection_ping);
-        }
+
         ((HotCourseItemViewHolder) holder).rl_collect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

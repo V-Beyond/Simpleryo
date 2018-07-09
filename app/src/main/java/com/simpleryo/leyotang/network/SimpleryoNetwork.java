@@ -340,7 +340,24 @@ public class SimpleryoNetwork {
         }
         doHttpAsync(context, builder.build(), callback);
     }
-
+    /**
+     * 查询课程列表
+     *
+     * @param context
+     * @param callback
+     */
+    public static void getSearchCourse(Context context, Callback callback,  String name, int offset, int limit) {
+        HttpInfo.Builder builder = new HttpInfo.Builder();
+        builder.setUrl(httpUrl + "p/courses");
+        builder.setRequestType(RequestType.GET);
+        builder.addParam("token", getToken());
+        if (!name.equalsIgnoreCase("")) {
+            builder.addParam("name", name);//课程名
+        }
+        builder.addParam("offset", offset + "");
+        builder.addParam("limit", limit + "");
+        doHttpAsync(context, builder.build(), callback);
+    }
     /**
      * 修改用户信息
      *

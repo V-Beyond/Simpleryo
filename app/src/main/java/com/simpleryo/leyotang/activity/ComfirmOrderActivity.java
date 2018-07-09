@@ -264,7 +264,12 @@ public class ComfirmOrderActivity extends BaseActivity {
                 XActivityUtils.getInstance().popActivity(ComfirmOrderActivity.this);
                 break;
             case R.id.ll_course_time:
-                initCustomOptionPicker();
+                if (arrangeTimes!=null&&arrangeTimes.size()>0){
+                    initCustomOptionPicker();
+                }else{
+                    Toast.makeText(ComfirmOrderActivity.this, "暂无可预约时间", Toast.LENGTH_SHORT).show();
+                }
+
                 break;
             case R.id.iv_msg:
                 startActivity(new Intent(ComfirmOrderActivity.this, MyMsgActivity.class));

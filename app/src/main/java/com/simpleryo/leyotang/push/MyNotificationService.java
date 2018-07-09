@@ -68,16 +68,12 @@ public class MyNotificationService extends Service {
     }
 
     public PendingIntent getClickPendingIntent(Context context, UMessage msg) {
-        Log.w("cc","getClickPendingIntent:"+msg.getRaw().toString());
         Intent clickIntent = new Intent();
         clickIntent.setClass(context, NotificationBroadcast.class);
         clickIntent.putExtra(NotificationBroadcast.EXTRA_KEY_MSG,
                 msg.getRaw().toString());
         clickIntent.putExtra(NotificationBroadcast.EXTRA_KEY_ACTION,
                 NotificationBroadcast.ACTION_CLICK);
-//        Intent intent=new Intent(context, MyMsgActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        startActivity(intent);
         PendingIntent clickPendingIntent = PendingIntent.getBroadcast(context,
                 (int) (System.currentTimeMillis()),
                 clickIntent, PendingIntent.FLAG_CANCEL_CURRENT);
@@ -102,7 +98,7 @@ public class MyNotificationService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.w("cc","onDestroy");
+        Log.w("cc", "onDestroy");
     }
 
     @Override

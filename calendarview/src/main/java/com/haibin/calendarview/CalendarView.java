@@ -41,7 +41,7 @@ public class CalendarView extends FrameLayout {
     /**
      * 使用google官方推荐的方式抽取自定义属性
      */
-    private CustomCalendarViewDelegate mDelegate;
+    public CustomCalendarViewDelegate mDelegate;
 
     /**
      * 自定义自适应高度的ViewPager
@@ -51,7 +51,7 @@ public class CalendarView extends FrameLayout {
     /**
      * 日历周视图
      */
-    private WeekViewPager mWeekPager;
+    public WeekViewPager mWeekPager;
 
     /**
      * 星期栏的线

@@ -54,7 +54,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_marginBottom="41px"
-                    android:layout_marginLeft="58px"
+                    android:layout_marginLeft="20px"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -115,7 +115,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="7px"
-                        android:layout_marginRight="30px"
+                        android:layout_marginRight="20px"
                         android:drawablePadding="15px"
                         android:text="@string/collection"
                         android:textColor="@color/color_ffffff"
@@ -525,7 +525,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:background="@mipmap/iv_course_home"
+                        android:background="@drawable/shape_his_profile"
                         android:paddingLeft="20px"
                         android:paddingRight="20px"
                         android:gravity="center"

@@ -50,6 +50,8 @@ public class MyInfoActivity extends BaseActivity {
     TextView tv_constellation;
     @ViewInject(R.id.tv_intro)
     TextView tv_intro;
+    @ViewInject(R.id.tv_phone)
+    TextView tv_phone;
     String userId;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -159,6 +161,9 @@ public class MyInfoActivity extends BaseActivity {
                     gender=userInfoBean.getData().getGender();
                     loginName=userInfoBean.getData().getPhone();
                     des=userInfoBean.getData().getIntro();
+                    if (userInfoBean.getData().getPhone()!=null){
+                        tv_phone.setText(userInfoBean.getData().getPhone());
+                    }
                     if (userInfoBean.getData().getNickName()!=null){
                         tv_nickname.setText(userInfoBean.getData().getNickName());
                     }else{

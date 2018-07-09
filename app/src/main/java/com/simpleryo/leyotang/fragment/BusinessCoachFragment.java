@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
+import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.okhttplib.HttpInfo;
@@ -73,14 +74,24 @@ public class BusinessCoachFragment extends XLibraryLazyFragment {
         businessCoachAdapter = new BusinessCoachAdapter(getActivity());
         LRecyclerViewAdapter lRecyclerViewAdapter = new LRecyclerViewAdapter(businessCoachAdapter);
         lrecyclerview.setAdapter(lRecyclerViewAdapter);
-        lrecyclerview.setPullRefreshEnabled(false);
+        lrecyclerview.setPullRefreshEnabled(true);
         lrecyclerview.setLoadMoreEnabled(false);
         lrecyclerview.removeItemDecoration(divider);
         lrecyclerview.addItemDecoration(divider);
         lrecyclerview.setHasFixedSize(false);
+        lrecyclerview.setOnRefreshListener(onRefreshListener);
         initExcellentCourse();
         mHasLoadedOnce=true;
     }
+    private OnRefreshListener onRefreshListener = new OnRefreshListener() {
+        @Override
+        public void onRefresh() {
+            if (excellentListBeans != null && excellentListBeans.size() > 0) {
+                excellentListBeans.clear();
+            }
+            initExcellentCourse();
+        }
+    };
     public void initExcellentCourse() {
         SimpleryoNetwork.getCoachesByStoreId(getActivity(), new MyBaseProgressCallbackImpl() {
             @Override
@@ -94,6 +105,7 @@ public class BusinessCoachFragment extends XLibraryLazyFragment {
                         lrecyclerview.setEmptyView(empty_view);
                     }
                 }
+                lrecyclerview.refreshComplete(excellentListBeans.size());
             }
             @Override
             public void onFailure(HttpInfo info)   {

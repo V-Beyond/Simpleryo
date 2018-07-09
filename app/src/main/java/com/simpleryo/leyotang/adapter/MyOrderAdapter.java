@@ -193,15 +193,18 @@ public class MyOrderAdapter extends BaseMultiAdapter<MultipleItem> {
                         EventBus.getDefault().post(new BusEntity(001,position+"",dataBean));
                     }
                 });
-                if (dataBean.getRecommends().get(0).getValue().equalsIgnoreCase("HOT")){
-                    ((MyCollectionViewHolder) holder).rl_collect.setBackgroundResource(R.mipmap.iv_collection_bg);
+                if (dataBean.getRecommends()!=null&&dataBean.getRecommends().size()>0){
+                    if (dataBean.getRecommends().get(0).getValue().equalsIgnoreCase("HOT")){
+                        ((MyCollectionViewHolder) holder).rl_collect.setBackgroundResource(R.mipmap.iv_collection_bg);
+                    }
+                    else if (dataBean.getRecommends().get(0).getValue().equalsIgnoreCase("EXCELLENT")){
+                        ((MyCollectionViewHolder) holder).rl_collect.setBackgroundResource(R.mipmap.iv_collection_blue);
+                    }
+                    else if (dataBean.getRecommends().get(0).getValue().equalsIgnoreCase("OFFCIAL")){
+                        ((MyCollectionViewHolder) holder).rl_collect.setBackgroundResource(R.mipmap.iv_collection_ping);
+                    }
                 }
-                else if (dataBean.getRecommends().get(0).getValue().equalsIgnoreCase("EXCELLENT")){
-                    ((MyCollectionViewHolder) holder).rl_collect.setBackgroundResource(R.mipmap.iv_collection_blue);
-                }
-                else if (dataBean.getRecommends().get(0).getValue().equalsIgnoreCase("OFFCIAL")){
-                    ((MyCollectionViewHolder) holder).rl_collect.setBackgroundResource(R.mipmap.iv_collection_ping);
-                }
+
             }
         }
     }

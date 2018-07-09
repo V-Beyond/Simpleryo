@@ -174,6 +174,7 @@ public class SearchStoreFragment extends XLibraryLazyFragment {
                 @Override
                 public void onSuccess(HttpInfo info) {
                     super.onSuccess(info);
+                    mHasLoadedOnce=true;
                     StoreListBean orderListBean=info.getRetDetail(StoreListBean.class);
                     if (orderListBean.getCode().equalsIgnoreCase("0")){
                         if (orderListBeans!=null&&orderListBeans.size()>0){

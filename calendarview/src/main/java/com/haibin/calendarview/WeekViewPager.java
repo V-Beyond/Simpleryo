@@ -148,7 +148,7 @@ public final class WeekViewPager extends ViewPager {
     /**
      * 更新任意一个选择的日期
      */
-    void updateSelected(Calendar calendar, boolean smoothScroll) {
+  public   void updateSelected(Calendar calendar, boolean smoothScroll) {
         int position = Util.getWeekFromCalendarBetweenYearAndYear(calendar, mDelegate.getMinYear(), mDelegate.getMinYearMonth()) - 1;
         int curItem = getCurrentItem();
         if (curItem == position) {
