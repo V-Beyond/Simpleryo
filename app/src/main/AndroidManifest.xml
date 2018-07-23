@@ -347,7 +347,7 @@
                 <action android:name="com.huawei.intent.action.PUSH_STATE" />
             </intent-filter>
         </receiver>
-        <activity android:name=".push.MipushtActivity"
+        <activity android:name=".push.MipushActivity"
             android:launchMode="singleTask"
             android:exported="true"
             ></activity>
