@@ -1,0 +1,673 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="365px">
+
+                <ImageView
+                    android:id="@+id/iv_course_detail_img"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:alpha="0.3"
+                    android:background="@drawable/shape_course_gradient_with_radius" />
+
+                <TextView
+                    android:id="@+id/tv_course_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="56px"
+                    android:layout_marginTop="56px"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:text=""
+                    android:textColor="@color/color_ffffff"
+                    android:textSize="47px" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="41px"
+                    android:layout_marginLeft="20px"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:src="@mipmap/iv_ratingbar" />
+
+                    <TextView
+                        android:id="@+id/tv_goodreviewrate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="5px"
+                        android:text="好评率：0%"
+                        android:textColor="@color/color_ffffff"
+                        android:textSize="25px" />
+
+                    <View
+                        android:layout_width="2px"
+                        android:layout_height="30px"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="15px"
+                        android:background="#ff7e7e7e" />
+
+                    <TextView
+                        android:id="@+id/tv_popular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="15px"
+                        android:text="0个人正在学习"
+                        android:textColor="@color/color_ffffff"
+                        android:textSize="25px" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_collection"
+                    android:layout_width="wrap_content"
+                    android:layout_height="41px"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginBottom="41px"
+                    android:layout_marginRight="49px"
+                    android:background="@drawable/shape_register"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="30px"
+                        android:src="@mipmap/iv_collection_white" />
+
+                    <TextView
+                        android:id="@+id/tv_collection"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="7px"
+                        android:layout_marginRight="20px"
+                        android:drawablePadding="15px"
+                        android:text="@string/collection"
+                        android:textColor="@color/color_ffffff"
+                        android:textSize="23px" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36px"
+                android:background="@color/color_ffffff"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="43px"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="10px"
+                        android:layout_height="41px"
+                        android:layout_marginLeft="56px"
+                        android:background="#F32E59" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="14px"
+                        android:text="@string/course_detail"
+                        android:textColor="#373737"
+                        android:textSize="35px" />
+                </LinearLayout>
+
+                <WebView
+                    android:id="@+id/tv_course_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="79px"
+                    android:layout_marginRight="123px"
+                    android:layout_marginTop="25px"
+                    android:scrollbars="none"
+                    android:textColor="#373737"
+                    android:textSize="28px" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="77px"
+                    android:layout_marginRight="53px"
+                    android:layout_marginTop="44px"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="142px"
+                        android:layout_height="match_parent"
+                        android:background="#ffdca7"
+                        android:gravity="center"
+                        android:paddingBottom="13px"
+                        android:paddingTop="13px"
+                        android:text="@string/Training_time"
+                        android:textSize="25px" />
+
+                    <TextView
+                        android:id="@+id/tv_course_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#fde5cb"
+                        android:gravity="center"
+                        android:paddingBottom="13px"
+                        android:paddingTop="13px"
+                        android:text="------"
+                        android:textSize="25px" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="77px"
+                    android:layout_marginRight="53px"
+                    android:layout_marginTop="8px"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="142px"
+                        android:layout_height="match_parent"
+                        android:background="#ffdca7"
+                        android:gravity="center"
+                        android:paddingBottom="13px"
+                        android:paddingTop="13px"
+                        android:text="@string/Training_style"
+                        android:textSize="25px" />
+
+                    <TextView
+                        android:id="@+id/tv_course_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#fde5cb"
+                        android:gravity="center"
+                        android:paddingBottom="13px"
+                        android:paddingLeft="20px"
+                        android:paddingRight="20px"
+                        android:paddingTop="13px"
+                        android:text="-------"
+                        android:textSize="25px" />
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="50px"
+                    android:layout_marginLeft="57px"
+                    android:layout_marginRight="53px"
+                    android:layout_marginTop="53px">
+
+                    <TextView
+                        android:id="@+id/tv_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="0$"
+                        android:textColor="#FA0070"
+                        android:textSize="25px" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="20px"
+                        android:layout_marginRight="20px"
+                        android:layout_toLeftOf="@+id/tv_join_count"
+                        android:layout_toRightOf="@+id/tv_price"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="原价：0$/节课"
+                        android:textColor="#B9B9B9"
+                        android:textSize="25px" />
+
+                    <TextView
+                        android:id="@+id/tv_join_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="37px"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@mipmap/iv_join"
+                        android:gravity="center"
+                        android:paddingLeft="23px"
+                        android:paddingRight="23px"
+                        android:text="已有0人参加"
+                        android:textColor="@color/color_ffffff"
+                        android:textSize="25px" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36px"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="43px"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="10px"
+                        android:layout_height="41px"
+                        android:layout_marginLeft="56px"
+                        android:background="#F32E59" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="14px"
+                        android:text="@string/my_coupon"
+                        android:textColor="#373737"
+                        android:textSize="35px" />
+                </LinearLayout>
+
+                <include
+                    layout="@layout/layout_coupon_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="292px"
+                    android:layout_marginBottom="20px"
+                    android:layout_marginLeft="45px"
+                    android:layout_marginRight="40px"
+                    android:layout_marginTop="49px"></include>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36px"
+                android:background="@color/color_ffffff"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="43px"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="10px"
+                        android:layout_height="41px"
+                        android:layout_marginLeft="56px"
+                        android:background="#F32E59" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="14px"
+                        android:text="@string/institutional_information"
+                        android:textColor="#373737"
+                        android:textSize="35px" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/iv_business_course_img"
+                    android:layout_width="641px"
+                    android:layout_height="287px"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="30px"
+                    android:scaleType="fitXY" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="57px"
+                    android:layout_marginRight="57px"
+                    android:layout_marginTop="21px">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@mipmap/iv_course_time"
+                        android:drawablePadding="12px"
+                        android:gravity="center_vertical"
+                        android:text="周一到周五 18:00-20:00"
+                        android:textColor="#373737"
+                        android:textSize="25px"
+                        android:visibility="gone" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="20px"
+                            android:src="@mipmap/iv_authenticationed" />
+
+                        <TextView
+                            android:id="@+id/tv_store_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="5px"
+                            android:text="-----"
+                            android:textColor="#373737"
+                            android:textSize="21px" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="57px"
+                    android:layout_marginRight="57px"
+                    android:layout_marginTop="22px">
+
+                    <TextView
+                        android:id="@+id/tv_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@mipmap/iv_course_address"
+                        android:drawablePadding="12px"
+                        android:gravity="center_vertical"
+                        android:text="---------"
+                        android:textColor="#373737"
+                        android:textSize="25px" />
+
+                    <TextView
+                        android:id="@+id/tv_business_home"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:background="@drawable/shape_his_profile"
+                        android:gravity="center"
+                        android:paddingLeft="20px"
+                        android:paddingRight="20px"
+                        android:text="@string/his_her_profile"
+                        android:textColor="@color/color_ffffff"
+                        android:textSize="21px" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginLeft="33px"
+                    android:layout_marginRight="33px"
+                    android:layout_marginTop="29px"
+                    android:background="#7D7D7D"></View>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="37px"
+                    android:background="@color/color_ffffff"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="10px"
+                            android:layout_height="41px"
+                            android:layout_marginLeft="56px"
+                            android:background="#F32E59" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="14px"
+                            android:text="@string/coaching_information"
+                            android:textColor="#373737"
+                            android:textSize="35px" />
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="358px"
+                        android:layout_marginBottom="50px"
+                        android:layout_marginLeft="50px"
+                        android:layout_marginRight="50px"
+                        android:layout_marginTop="40px"
+                        android:background="@drawable/shape_coach_item"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10px"
+                            android:layout_toLeftOf="@+id/iv_coach_img"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:id="@+id/ll_top"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="30px"
+                                android:orientation="horizontal">
+
+                                <RelativeLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="60px"
+                                    android:layout_marginLeft="30px"
+                                    android:background="@drawable/shape_coach_item_ll_bg"
+                                    android:minWidth="150px"
+                                    android:orientation="horizontal"
+                                    android:paddingLeft="20px"
+                                    android:paddingRight="20px">
+
+                                    <TextView
+                                        android:id="@+id/tv_studentCount"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_centerInParent="true"
+                                        android:drawableLeft="@mipmap/iv_course_count"
+                                        android:drawablePadding="20px"
+                                        android:text="0"
+                                        android:textColor="@color/color_ffffff"
+                                        android:textSize="25px" />
+                                </RelativeLayout>
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="60px"
+                                    android:layout_marginLeft="10px"
+                                    android:background="@drawable/shape_coach_item_ll_bg"
+                                    android:orientation="horizontal"
+                                    android:paddingLeft="20px"
+                                    android:paddingRight="20px">
+
+                                    <RatingBar
+                                        android:id="@+id/rating_bar"
+                                        style="@style/coach_RadingStyle"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="20px"
+                                        android:layout_gravity="center_vertical"
+                                        android:clickable="false"
+                                        android:isIndicator="true"
+                                        android:minHeight="20px"
+                                        android:minWidth="20px"
+                                        android:numStars="5"
+                                        android:rating="0"
+                                        android:stepSize="1" />
+
+                                    <TextView
+                                        android:id="@+id/tv_point"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:layout_marginLeft="20px"
+                                        android:text="0.0"
+                                        android:textColor="@color/color_ffffff"
+                                        android:textSize="25px" />
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_below="@+id/ll_top"
+                                android:layout_marginBottom="10px">
+
+                                <TextView
+                                    android:id="@+id/tv_coach_name"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="30px"
+                                    android:layout_marginTop="50px"
+                                    android:text="-----"
+                                    android:textColor="@color/color_ffffff"
+                                    android:textSize="36px" />
+
+                                <TextView
+                                    android:id="@+id/tv_coach_intro"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:layout_below="@+id/tv_coach_name"
+                                    android:layout_marginLeft="30px"
+                                    android:layout_marginTop="15px"
+                                    android:lineSpacingExtra="15px"
+                                    android:scrollbars="none"
+                                    android:text="------"
+                                    android:textColor="@color/color_ffffff"
+                                    android:textSize="24px" />
+                            </RelativeLayout>
+                        </RelativeLayout>
+                        <ImageView
+                            android:id="@+id/iv_coach_img"
+                            android:layout_width="150px"
+                            android:layout_height="341px"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentRight="true"
+                            android:scaleType="fitXY" />
+                    </RelativeLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="58px"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="10px"
+                            android:layout_height="41px"
+                            android:layout_marginLeft="56px"
+                            android:background="#F32E59" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="14px"
+                            android:text="@string/qualification_certificate"
+                            android:textColor="#373737"
+                            android:textSize="35px" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/iv_qualification_certificate_img"
+                        android:layout_width="645px"
+                        android:layout_height="481px"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="49px"
+                        android:layout_marginLeft="52px"
+                        android:layout_marginRight="52px"
+                        android:layout_marginTop="29px"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/iv_business_certificate" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="31px"
+                android:background="@color/color_ffffff"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="50px"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="10px"
+                        android:layout_height="41px"
+                        android:layout_marginLeft="56px"
+                        android:background="#F32E59" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="14px"
+                        android:text="课程评价"
+                        android:textColor="#373737"
+                        android:textSize="35px" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:text="查看全部"
+                        android:layout_marginRight="34px"
+                        android:gravity="right"
+                        android:drawableRight="@mipmap/iv_right_more"
+                        android:drawablePadding="10px"
+                        android:textColor="#FF848484"
+                        android:textSize="24px"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginLeft="33px"
+                    android:layout_marginRight="33px"
+                    android:layout_marginTop="30px"
+                    android:background="#A7A7A7"></View>
+                <include layout="@layout/layout_course_remark_item"></include>
+                <include layout="@layout/layout_course_remark_item"></include>
+                <include layout="@layout/layout_course_remark_item"></include>
+                <com.github.jdsjlzx.recyclerview.LRecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="33px"
+                    android:layout_marginBottom="30px"
+                    android:visibility="gone"
+                    android:layout_marginRight="33px"
+                    android:layout_height="match_parent"></com.github.jdsjlzx.recyclerview.LRecyclerView>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

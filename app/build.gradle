@@ -92,4 +92,6 @@ dependencies {
     implementation project(':pickerview')
     //华为Push通道
     compile 'com.umeng.sdk:push-huawei:1.0.0'
+    //筛选菜单
+    compile 'com.github.dongjunkun:DropDownMenu:1.0.4'
 }

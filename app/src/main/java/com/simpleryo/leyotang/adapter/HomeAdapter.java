@@ -17,6 +17,7 @@ import com.simpleryo.leyotang.activity.AllCourseActivity;
 import com.simpleryo.leyotang.activity.BusinessHomeActivty;
 import com.simpleryo.leyotang.activity.CourseDetailActivity;
 import com.simpleryo.leyotang.activity.CourseListActivity;
+import com.simpleryo.leyotang.activity.CourseSearchActivity;
 import com.simpleryo.leyotang.activity.CourseTypeActivity;
 import com.simpleryo.leyotang.activity.MyNoticeActivity;
 import com.simpleryo.leyotang.bean.BusEntity;
@@ -270,6 +271,12 @@ public class HomeAdapter extends BaseMultiAdapter<MultipleItem> {
             });
             ((BannerViewHolder) holder).arcViewPager.mViewPager.start();
             ((BannerViewHolder) holder).arcViewPager.mViewPager.setIndicatorRes(R.drawable.indicator_normal, R.drawable.indicator_selected);
+            ((BannerViewHolder) holder).rl_search.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mContext.startActivity(new Intent(mContext, CourseSearchActivity.class));
+                }
+            });
         }
 
     }

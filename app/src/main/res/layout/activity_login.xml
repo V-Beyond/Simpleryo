@@ -86,7 +86,7 @@
 
     <RelativeLayout
         android:layout_width="490px"
-        android:layout_height="100px"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="37px">
 
@@ -94,26 +94,31 @@
             android:id="@+id/tv_register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginTop="20px"
-            android:text="@string/no_register_click"
+            android:text="@string/register_click"
             android:textColor="@color/color_ffffff"
-            android:textSize="22px" />
-
+            android:textSize="24px" />
         <TextView
-            android:id="@+id/tv_login"
+            android:id="@+id/forget_the_password"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:paddingRight="46px"
-            android:paddingLeft="46px"
-            android:paddingBottom="10px"
-            android:paddingTop="10px"
-            android:layout_centerVertical="true"
-            android:background="@drawable/shape_login"
-            android:gravity="center"
-            android:textSize="31px"
-            android:text="@string/sign_in"
-            android:textColor="@color/color_ffffff" />
+            android:textColor="@color/color_ffffff"
+            android:text="@string/forget_the_password"
+            android:textSize="24px"
+            android:layout_height="wrap_content" />
     </RelativeLayout>
+    <TextView
+        android:id="@+id/tv_login"
+        android:layout_width="490px"
+        android:layout_height="wrap_content"
+        android:paddingRight="46px"
+        android:layout_marginTop="70px"
+        android:paddingLeft="46px"
+        android:layout_gravity="center_horizontal"
+        android:paddingBottom="10px"
+        android:paddingTop="10px"
+        android:background="@drawable/shape_login"
+        android:gravity="center"
+        android:textSize="31px"
+        android:text="@string/sign_in"
+        android:textColor="@color/color_ffffff" />
 </LinearLayout>

@@ -39,6 +39,7 @@ import com.simpleryo.leyotang.activity.ComplaintProposalActivity;
 import com.simpleryo.leyotang.activity.LoginActivity;
 import com.simpleryo.leyotang.activity.MyAttentionActivity;
 import com.simpleryo.leyotang.activity.MyCollectionActivity;
+import com.simpleryo.leyotang.activity.MyCouponsActivity;
 import com.simpleryo.leyotang.activity.MyInfoActivity;
 import com.simpleryo.leyotang.activity.MyMsgActivity;
 import com.simpleryo.leyotang.activity.MyOrderActivity;
@@ -326,7 +327,7 @@ public class MyFragment extends XLibraryLazyFragment {
         EventBus.getDefault().post(new BusEntity(401));
     }
 
-    @Event(value = {R.id.iv_msg,R.id.tv_exit, R.id.ll_login, R.id.ll_use_help, R.id.ll_wait_pay, R.id.ll_comprehensive_evaluation, R.id.ll_contact_us, R.id.ll_my_course, R.id.iv_avatar, R.id.ll_my_info, R.id.ll_bind_account, R.id.ll_complaint, R.id.ll_my_attention, R.id.ll_collection}, type = View.OnClickListener.class)
+    @Event(value = {R.id.iv_msg,R.id.tv_exit, R.id.iv_coupons_more,R.id.ll_login, R.id.ll_use_help, R.id.ll_wait_pay, R.id.ll_comprehensive_evaluation, R.id.ll_contact_us, R.id.ll_my_course, R.id.iv_avatar, R.id.ll_my_info, R.id.ll_bind_account, R.id.ll_complaint, R.id.ll_my_attention, R.id.ll_collection}, type = View.OnClickListener.class)
     private void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_exit://退出
@@ -345,6 +346,12 @@ public class MyFragment extends XLibraryLazyFragment {
             case R.id.ll_wait_pay://待付款
                 if (isLogin) {
                     startActivity(new Intent(getActivity(), MyOrderActivity.class).putExtra("status", "NEW"));
+                } else {
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                }
+            case R.id.iv_coupons_more://优惠券
+                if (isLogin) {
+                    startActivity(new Intent(getActivity(), MyCouponsActivity.class));
                 } else {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                 }

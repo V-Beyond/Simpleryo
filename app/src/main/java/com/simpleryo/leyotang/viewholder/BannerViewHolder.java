@@ -1,6 +1,7 @@
 package com.simpleryo.leyotang.viewholder;
 
 import android.view.View;
+import android.widget.RelativeLayout;
 
 
 import com.simpleryo.leyotang.R;
@@ -16,6 +17,8 @@ import org.xutils.x;
 public class BannerViewHolder extends SuperViewHolder {
     @ViewInject(R.id.arc_viewpager)
     public ArcViewPager arcViewPager;
+    @ViewInject(R.id.rl_search)
+    public  RelativeLayout rl_search;
 
     public BannerViewHolder(View itemView) {
         super(itemView);

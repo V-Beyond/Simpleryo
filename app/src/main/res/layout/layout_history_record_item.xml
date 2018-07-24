@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+    <ImageView
+        android:layout_width="38dp"
+        android:scaleType="fitXY"
+        android:src="@mipmap/iv_splash"
+        android:layout_marginLeft="49px"
+        android:layout_marginTop="38px"
+        android:layout_marginBottom="38px"
+        android:layout_height="38dp" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="38px"
+        android:layout_marginLeft="24px"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="关于瑜伽课程的投诉"
+            android:textColor="#2D2D2D"
+            android:textSize="30px"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="2018-01-02"
+            android:textColor="#2D2D2D"
+            android:textSize="24px"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</LinearLayout>

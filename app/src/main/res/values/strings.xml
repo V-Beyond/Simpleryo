@@ -10,6 +10,8 @@
     <string name="contact_us">Contact Us</string>
     <string name="essential_information">Edit profile</string>
     <string name="my_order">My Order</string>
+    <string name="my_coupon">My Coupon</string>
+    <string name="exclusive_coupons">Exclusive coupons</string>
     <string name="my_collections">My Colletion</string>
     <string name="my_attentions">My Attention</string>
     <string name="my_service">My Service</string>
@@ -30,6 +32,8 @@
     <string name="edit_pwd">Please input a password</string>
     <string name="sign_in">Log in</string>
     <string name="no_register_click" ><u>Non-registered users please click</u></string>
+    <string name="register_click" >Register</string>
+    <string name="forget_the_password" >Forget the password?</string>
     <string name="course_price">person</string>
     <string name="my_msg">My news</string>
     <string name="all_course">All courses</string>
@@ -55,6 +59,7 @@
     <string name="notice">Notice</string>
     <string name="personal_center">My Profile</string>
     <string name="share">Share</string>
+    <string name="historical_records">Historical records</string>
     <string name="course_detail">CoueseDetail</string>
     <string name="exit">Log out</string>
     <string name="no_data">There is no more data on this page</string>

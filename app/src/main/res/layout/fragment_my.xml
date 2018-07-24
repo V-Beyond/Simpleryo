@@ -277,6 +277,40 @@
                     android:background="@drawable/shape_my_item"
                     android:gravity="center_vertical"
                     android:paddingLeft="59px"
+                    android:text="@string/my_coupon"
+                    android:textColor="@color/color_ffffff" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:background="@color/color_ffffff"
+                    android:layout_height="136px">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="@string/exclusive_coupons"
+                        android:textColor="#414141"
+                        android:gravity="center"
+                        android:layout_marginLeft="60px"
+                        android:drawablePadding="10px"
+                        android:drawableLeft="@mipmap/iv_coupon"
+                        android:layout_centerVertical="true"
+                        android:textSize="33px"
+                        android:layout_height="wrap_content" />
+                    <ImageView
+                        android:id="@+id/iv_coupons_more"
+                        android:layout_width="wrap_content"
+                        android:src="@mipmap/iv_coupons_more"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="34px"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="88px"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="47px"
+                    android:background="@drawable/shape_my_item"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="59px"
                     android:text="@string/my_service"
                     android:textColor="@color/color_ffffff" />
 

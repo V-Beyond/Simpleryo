@@ -43,10 +43,13 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
     }
 
-    @Event(value = {R.id.tv_register, R.id.tv_login}, type = View.OnClickListener.class)
+    @Event(value = {R.id.tv_register, R.id.tv_login,R.id.forget_the_password}, type = View.OnClickListener.class)
     private void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_register://注册
+                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+                break;
+            case R.id.forget_the_password://忘记密码
                 startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
                 break;
             case R.id.tv_login://登录

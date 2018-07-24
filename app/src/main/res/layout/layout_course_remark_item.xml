@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="45px"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="31px"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_coach_img"
+            android:layout_width="33dp"
+            android:layout_height="33dp"
+            android:layout_marginLeft="18px"
+            android:scaleType="fitXY"
+            android:src="@mipmap/iv_splash" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15px"
+            android:layout_toRightOf="@+id/iv_coach_img"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="二楼后座"
+                android:textColor="#373737"
+                android:textSize="30px" />
+            <RatingBar
+                android:id="@+id/rating_bar"
+                style="@style/remark_RadingStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="20px"
+                android:layout_gravity="center_vertical"
+                android:clickable="false"
+                android:isIndicator="true"
+                android:minHeight="20px"
+                android:minWidth="20px"
+                android:rating="5"
+                android:stepSize="1" />
+        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="18px"
+            android:layout_marginTop="23px"
+            android:text="2018-07-24"
+            android:textColor="#848484"
+            android:textSize="24px" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50px"
+        android:layout_marginRight="18px"
+        android:layout_marginTop="39px"
+        android:text="课程非常好，讲的非常详细。课程非常好，讲的非常详细。"
+        android:textColor="#373737"
+        android:textSize="28px" />
+</LinearLayout>
