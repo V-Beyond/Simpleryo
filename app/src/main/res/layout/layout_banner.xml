@@ -1,36 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="480px"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <com.simpleryo.leyotang.view.ArcViewPager
         android:id="@+id/arc_viewpager"
         android:layout_width="match_parent"
-        android:layout_height="450px"></com.simpleryo.leyotang.view.ArcViewPager>
+        android:layout_height="420px"></com.simpleryo.leyotang.view.ArcViewPager>
     <RelativeLayout
         android:id="@+id/rl_search"
         android:layout_width="match_parent"
-        android:layout_height="60px"
-        android:layout_marginLeft="48px"
-        android:layout_alignParentBottom="true"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="390px"
+        android:layout_marginLeft="22px"
         android:layout_marginRight="22px"
-        android:layout_toLeftOf="@+id/iv_msg"
         android:background="@drawable/shape_my">
         <TextView
-            android:layout_width="414px"
+            android:layout_width="match_parent"
             android:layout_centerVertical="true"
-            android:layout_height="45px"
-            android:layout_toRightOf="@+id/iv_home_search"
+            android:layout_height="60px"
             android:drawablePadding="15px"
-            android:layout_toLeftOf="@+id/tv_cancel"
             android:drawableLeft="@mipmap/iv_home_search_gray"
             android:layout_marginLeft="25px"
             android:gravity="center_vertical"
             android:textColor="#FFC2C2C2"
             android:textSize="24px"
             android:text="搜索"
-            android:layout_marginRight="12px"
             />
     </RelativeLayout>
 </RelativeLayout>

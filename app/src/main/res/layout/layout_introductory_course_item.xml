@@ -7,7 +7,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="306px"
+        android:layout_height="360px"
         android:orientation="vertical">
         <RelativeLayout
             android:layout_width="match_parent"
@@ -65,8 +65,7 @@
                 android:id="@+id/ll_progress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="28px"
+                android:layout_above="@+id/tv_collection_count"
                 android:layout_marginLeft="28px"
                 android:orientation="horizontal">
 
@@ -89,7 +88,19 @@
                     android:textColor="@color/color_ffffff"
                     android:textSize="@dimen/percent_size" />
             </LinearLayout>
-
+            <TextView
+                android:id="@+id/tv_collection_count"
+                android:layout_width="wrap_content"
+                android:text="2人收藏"
+                android:gravity="center"
+                android:drawablePadding="10px"
+                android:layout_alignParentBottom="true"
+                android:textColor="@color/white"
+                android:layout_marginBottom="20px"
+                android:textSize="24px"
+                android:layout_marginLeft="28px"
+                android:drawableLeft="@mipmap/iv_course_item_collected"
+                android:layout_height="wrap_content" />
             <RelativeLayout
                 android:id="@+id/rl_collect"
                 android:layout_width="wrap_content"
@@ -106,6 +117,12 @@
                     android:src="@mipmap/iv_collection_white_star"
                     android:layout_height="wrap_content" />
             </RelativeLayout>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_marginRight="20px"
+                android:src="@mipmap/iv_course_item_coupon"
+                android:layout_alignParentRight="true"
+                android:layout_height="wrap_content" />
         </RelativeLayout>
 
     </LinearLayout>

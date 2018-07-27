@@ -82,31 +82,6 @@
                     android:layout_height="match_parent"
                     android:background="#EEEEEE"
                     android:orientation="vertical">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20px"
-                        android:layout_marginRight="20px"
-                        android:layout_marginTop="34px">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/Total_amount_of_the_order"
-                            android:textColor="#373737"
-                            android:textSize="33px" />
-
-                        <TextView
-                            android:id="@+id/tv_total_price"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:text="-------$"
-                            android:textColor="#F32E59"
-                            android:textSize="33px" />
-                    </RelativeLayout>
-
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -134,7 +109,6 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="38px"
                         android:layout_marginLeft="20px"
                         android:layout_marginRight="20px"
                         android:layout_marginTop="27px">
@@ -155,6 +129,54 @@
                             android:textColor="#777777"
                             android:textSize="33px" />
                     </RelativeLayout>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20px"
+                        android:layout_marginRight="20px"
+                        android:layout_marginTop="27px">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="优惠券"
+                            android:textColor="#373737"
+                            android:textSize="33px" />
+
+                        <TextView
+                            android:id="@+id/tv_coupon_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:text="-50$"
+                            android:textColor="#6C6C6C"
+                            android:textSize="33px" />
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20px"
+                        android:layout_marginBottom="38px"
+                        android:layout_marginRight="20px"
+                        android:layout_marginTop="27px">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/Total_amount_of_the_order"
+                            android:textColor="#373737"
+                            android:textSize="33px" />
+
+                        <TextView
+                            android:id="@+id/tv_total_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:text="-------$"
+                            android:textColor="#F32E59"
+                            android:textSize="33px" />
+                    </RelativeLayout>
+
                 </LinearLayout>
             </LinearLayout>
 

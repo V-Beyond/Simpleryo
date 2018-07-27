@@ -1,17 +1,25 @@
 package com.simpleryo.leyotang.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.okhttplib.HttpInfo;
 import com.simpleryo.leyotang.R;
 import com.simpleryo.leyotang.activity.CourseSearchActivity;
@@ -22,6 +30,7 @@ import com.simpleryo.leyotang.base.MyBaseProgressCallbackImpl;
 import com.simpleryo.leyotang.base.XLibraryLazyFragment;
 import com.simpleryo.leyotang.bean.BusEntity;
 import com.simpleryo.leyotang.bean.CodeBean;
+import com.simpleryo.leyotang.bean.CurrentAddressInfo;
 import com.simpleryo.leyotang.bean.HomeDataBean;
 import com.simpleryo.leyotang.bean.MultipleItem;
 import com.simpleryo.leyotang.network.SimpleryoNetwork;
@@ -49,6 +58,8 @@ import java.util.List;
 public class HomeFragment extends XLibraryLazyFragment {
     @ViewInject(R.id.lrecyclerview)
     LRecyclerView lrecyclerview;
+    @ViewInject(R.id.tv_address)
+    TextView tv_address;
     HomeAdapter homeAdapter;
     LRecyclerViewAdapter lRecyclerViewAdapter;
     private List<MultipleItem> mItemModels = new ArrayList<>();
@@ -105,10 +116,36 @@ public class HomeFragment extends XLibraryLazyFragment {
         lrecyclerview.setHasFixedSize(true);
         lrecyclerview.setLoadMoreEnabled(false);
         lrecyclerview.setOnRefreshListener(onRefreshListener);
-//        getCourseType();
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
+        @SuppressLint("MissingPermission") Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
+        locationResult.addOnCompleteListener(getActivity(), new OnCompleteListener<Location>() {
+            @Override
+            public void onComplete(@NonNull Task<Location> task) {
+                if (task.isSuccessful()) {
+                    mLastKnownLocation = task.getResult();
+                    if (mLastKnownLocation != null) {
+                        //获取当前位置信息
+                        SimpleryoNetwork.getAddressInfo(getActivity(), new MyBaseProgressCallbackImpl() {
+                            @Override
+                            public void onSuccess(HttpInfo info) {
+                                super.onSuccess(info);
+                                CurrentAddressInfo currentAddressInfo = info.getRetDetail(CurrentAddressInfo.class);
+                                if (currentAddressInfo.getStatus().equalsIgnoreCase("OK")) {
+                                    tv_address.setText(currentAddressInfo.getResults().get(0).getFormatted_address().split(" ")[0]);
+                                }
+                            }
+                        }, mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude());
+                    } else {
+                        tv_address.setText("暂无地址");
+                    }
+                } else {
+                    tv_address.setText("暂无地址");
+                }
+            }
+        });
     }
     SimpleryoNetwork simpleryoNetwork;
-
+    private FusedLocationProviderClient mFusedLocationProviderClient;
     private OnRefreshListener onRefreshListener = new OnRefreshListener() {
         @Override
         public void onRefresh() {
@@ -116,6 +153,9 @@ public class HomeFragment extends XLibraryLazyFragment {
         }
     };
 
+
+
+    private Location mLastKnownLocation;
 
     public void getCourseType() {
         simpleryoNetwork.getHomeCourse(getActivity(), new MyBaseProgressCallbackImpl() {
@@ -163,19 +203,37 @@ public class HomeFragment extends XLibraryLazyFragment {
                             excellentListBeans.clear();
                         }
                         for (HomeDataBean.DataBeanX.CoursesBeanX coursesBeanList : homeDataBean.getData().getCourses()) {
-                            if (coursesBeanList.getTag().getId().equalsIgnoreCase("HOT")) {
+//                            if (coursesBeanList.getTag().getSpaceCode().equalsIgnoreCase("HOT")) {
+//                                item = new MultipleItem(MultipleItem.HOMEHOTCOURSE);
+//                                mItemModels.add(item);
+//                                hotCourseList.add(coursesBeanList);
+//                                homeAdapter.setOrderListBeans(coursesBeanList);
+//                            }
+//                            if (coursesBeanList.getTag().getSpaceCode().equalsIgnoreCase("RECOMMEND")) {
+//                                item = new MultipleItem(MultipleItem.HOMEEXCELLENT);
+//                                mItemModels.add(item);
+//                                excellentListBeans.add(coursesBeanList);
+//                                homeAdapter.setExcellentListBeans(coursesBeanList);
+//                            }
+//                            if (coursesBeanList.getTag().getSpaceCode().equalsIgnoreCase("OFFCIAL")) {
+//                                item = new MultipleItem(MultipleItem.HOMEINTRODUCTORYCOURSE);
+//                                mItemModels.add(item);
+//                                introductoryListBeans.add(coursesBeanList);
+//                                homeAdapter.setIntroductoryListBeans(coursesBeanList);
+//                            }
+                            if (coursesBeanList.getTag().getName().equalsIgnoreCase("热门课程")) {
                                 item = new MultipleItem(MultipleItem.HOMEHOTCOURSE);
                                 mItemModels.add(item);
                                 hotCourseList.add(coursesBeanList);
                                 homeAdapter.setOrderListBeans(coursesBeanList);
                             }
-                            if (coursesBeanList.getTag().getId().equalsIgnoreCase("EXCELLENT")) {
+                            if (coursesBeanList.getTag().getName().equalsIgnoreCase("精品课程")) {
                                 item = new MultipleItem(MultipleItem.HOMEEXCELLENT);
                                 mItemModels.add(item);
                                 excellentListBeans.add(coursesBeanList);
                                 homeAdapter.setExcellentListBeans(coursesBeanList);
                             }
-                            if (coursesBeanList.getTag().getId().equalsIgnoreCase("OFFCIAL")) {
+                            if (coursesBeanList.getTag().getName().equalsIgnoreCase("官方推荐")) {
                                 item = new MultipleItem(MultipleItem.HOMEINTRODUCTORYCOURSE);
                                 mItemModels.add(item);
                                 introductoryListBeans.add(coursesBeanList);
