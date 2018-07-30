@@ -219,6 +219,7 @@
                 android:layout_marginLeft="60px"
                 android:layout_marginRight="60px"
                 android:layout_marginTop="40px"
+                android:layout_marginBottom="40px"
                 android:background="@drawable/shape_business_radio_group"
                 android:orientation="horizontal">
 
@@ -249,6 +250,19 @@
                     android:button="@null"
                     android:gravity="center"
                     android:text="@string/his_her_tutor"
+                    android:textColor="@color/color_ffffff" />
+                <RadioButton
+                    android:id="@+id/radio_btn_coupon"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="2px"
+                    android:layout_marginRight="1px"
+                    android:layout_marginTop="2px"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_business_radio_coach"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="@string/his_her_coupons"
                     android:textColor="@color/color_ffffff" />
             </RadioGroup>
         </android.support.design.widget.AppBarLayout>

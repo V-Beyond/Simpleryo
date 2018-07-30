@@ -136,6 +136,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="23px"
                 android:layout_marginRight="23px"
+                android:layout_marginBottom="30px"
                 android:layout_marginTop="40px"
                 android:background="@drawable/shape_coach_home_list_bg"
                 android:orientation="vertical">
@@ -173,6 +174,27 @@
                     android:layout_marginLeft="29px"
                     android:layout_marginRight="24px"
                     android:layout_marginTop="18px"></com.github.jdsjlzx.recyclerview.LRecyclerView>
+
+                <include
+                    layout="@layout/layout_hot_course_item"
+                    android:layout_width="match_parent"    android:layout_marginLeft="29px"
+                    android:layout_marginRight="24px"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30px"></include>
+
+                <include
+                    layout="@layout/layout_hot_course_item"
+                    android:layout_width="match_parent"    android:layout_marginLeft="29px"
+                    android:layout_marginRight="24px"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30px"></include>
+
+                <include
+                    layout="@layout/layout_hot_course_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"    android:layout_marginLeft="29px"
+                    android:layout_marginRight="24px"
+                    android:layout_marginTop="30px"></include>
             </LinearLayout>
 
         </LinearLayout>

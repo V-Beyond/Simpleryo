@@ -2,13 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="57px"
-    android:layout_marginRight="55px"
     android:orientation="vertical">
 
     <com.github.jdsjlzx.recyclerview.LRecyclerView
         android:id="@+id/lrecyclerview"
         android:layout_width="match_parent"
         android:layout_marginTop="38px"
+        android:layout_marginLeft="57px"
+        android:layout_marginRight="55px"
         android:layout_height="wrap_content"></com.github.jdsjlzx.recyclerview.LRecyclerView>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_marginTop="62px"
+        android:id="@+id/iv_coupons_img"
+        android:layout_marginLeft="22px"
+        android:layout_marginRight="22px"
+        android:scaleType="fitXY"
+        android:layout_height="262px" />
 </LinearLayout>

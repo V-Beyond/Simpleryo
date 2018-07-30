@@ -106,7 +106,7 @@ public class CourseDetailActivity extends BaseActivity    {
     RelativeLayout tv_reservations;
     boolean hasCollect;//是否收藏
     public Transformation transformation = new RoundedTransformationBuilder()
-            .cornerRadius(10)
+            .cornerRadius(30)
             .oval(false)
             .build();
     public final static String CSS_STYLE = "<style>* {font-size:14px;line-height:20px;}p {color:#373737;font-size:12px}</style>";
@@ -262,7 +262,7 @@ public class CourseDetailActivity extends BaseActivity    {
                             tv_studentCount.setText(coachBean.getStudentCount() + "");
                             rating_bar.setRating(coachBean.getPoint());
                             tv_point.setText(coachBean.getPoint() + "");
-                            Picasso.with(CourseDetailActivity.this).load(coachBean.getAvatarUrl()).into(iv_coach_img);
+                            Picasso.with(CourseDetailActivity.this).load(coachBean.getAvatarUrl()).transform(transformation).into(iv_coach_img);
                             tv_coach_intro.setText(coachBean.getIntro());
                         } else {
                             tv_coach_intro.setText("暂无介绍");
@@ -345,11 +345,14 @@ public class CourseDetailActivity extends BaseActivity    {
     boolean isLogin;
     String storeId;
 
-    @Event(value = {R.id.iv_back, R.id.tv_reservations, R.id.tv_share, R.id.tv_business_home, R.id.ll_collection, R.id.tv_to_home, R.id.tv_to_use_help}, type = View.OnClickListener.class)
+    @Event(value = {R.id.iv_back, R.id.tv_reservations,R.id.tv_more, R.id.tv_share, R.id.tv_business_home, R.id.ll_collection, R.id.tv_to_home, R.id.tv_to_use_help}, type = View.OnClickListener.class)
     private void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
                 XActivityUtils.getInstance().popActivity(CourseDetailActivity.this);
+                break;
+            case R.id.tv_more:
+                startActivity(new Intent(CourseDetailActivity.this,CoachHomeActivity.class));
                 break;
             case R.id.tv_to_home:
                 Intent intent2 = new Intent(CourseDetailActivity.this, MainActivity.class);

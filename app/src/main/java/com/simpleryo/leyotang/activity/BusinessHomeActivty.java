@@ -66,8 +66,11 @@ public class BusinessHomeActivty extends BaseActivity {
         businessCourseFragment.setArguments(bundle);
         BusinessCoachFragment businessCoachFragment=new BusinessCoachFragment();
         businessCoachFragment.setArguments(bundle);
+        BusinessCoachFragment businessCoachFragment1=new BusinessCoachFragment();
+        businessCoachFragment1.setArguments(bundle);
         fragments.add(businessCourseFragment);
         fragments.add(businessCoachFragment);
+        fragments.add(businessCoachFragment1);
         mAdapter = new FragMentAdapter<XLibraryLazyFragment>(
                 getSupportFragmentManager(), fragments);
         view_pager_main.setAdapter(mAdapter);
@@ -122,6 +125,9 @@ public class BusinessHomeActivty extends BaseActivity {
                 break;
             case R.id.radio_btn_coach:
                 view_pager_main.setCurrentItem(1);
+                break;
+            case R.id.radio_btn_coupon:
+                view_pager_main.setCurrentItem(2);
                 break;
             default:
                 break;

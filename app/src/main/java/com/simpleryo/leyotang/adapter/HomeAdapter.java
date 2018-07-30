@@ -262,6 +262,7 @@ public class HomeAdapter extends BaseMultiAdapter<MultipleItem> {
 
                 }
             });
+            Picasso.with(mContext).load("https://simpleryo-china.oss-cn-hangzhou.aliyuncs.com/file/2f229263ec0d1914dac90b73ff0abfc8").into(((CourseTypeViewHolder) holder).iv_coupons_img);
         } else if (holder instanceof BannerViewHolder) {
             ((BannerViewHolder) holder).arcViewPager.mViewPager.setPages(images, new MZHolderCreator<BannerItemViewHolder>() {
                 @Override

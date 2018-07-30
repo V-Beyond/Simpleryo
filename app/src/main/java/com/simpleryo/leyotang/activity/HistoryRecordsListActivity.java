@@ -67,7 +67,7 @@ public class HistoryRecordsListActivity extends BaseActivity {
         lRecyclerViewAdapter = new LRecyclerViewAdapter(searchHotCourseAdapter);
         lrecyclerview.setAdapter(lRecyclerViewAdapter);
         lrecyclerview.setLoadMoreEnabled(false);
-        lrecyclerview.setPullRefreshEnabled(true);
+        lrecyclerview.setPullRefreshEnabled(false);
         lrecyclerview.setOnRefreshListener(onRefreshListener);
         lRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override

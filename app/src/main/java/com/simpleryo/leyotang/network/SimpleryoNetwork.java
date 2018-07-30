@@ -804,7 +804,79 @@ public class SimpleryoNetwork {
                 .build(), callback);
     }
 
+    /**
+     * 查询优惠券类型列表
+     * @param context
+     * @param callback
+     */
+    public static void cardcoupontypes(Context context, MyBaseProgressCallbackImpl callback,int offset,int limit) {
+        doHttpAsync(context, HttpInfo.Builder()
+                .setUrl(httpUrl + "coupon/cardcoupontypes")
+                .addParam("token", getToken())//添加接口参数
+                .setRequestType(RequestType.GET)//设置请求方式
+                .addParam("offset", offset + "")
+                .addParam("limit", limit + "")
+                .build(), callback);
+    }
 
+    /**
+     * 查询优惠券列表
+     * @param context
+     * @param callback
+     */
+    public static void tickets(Context context, MyBaseProgressCallbackImpl callback,String status,String couponId,int offset,int limit) {
+        doHttpAsync(context, HttpInfo.Builder()
+                .setUrl(httpUrl + "coupon/tickets")
+                .setRequestType(RequestType.GET)//设置请求方式
+                .addParam("token", getToken())//添加接口参数
+                .addParam("status", status)
+                .addParam("couponId", couponId)
+                .addParam("offset", offset + "")
+                .addParam("limit", limit + "")
+                .build(), callback);
+    }
+    /**
+     * 领取券
+     * @param context
+     * @param callback
+     */
+    public static void cardcoupontypes(Context context, MyBaseProgressCallbackImpl callback,String id) {
+        doHttpAsync(context, HttpInfo.Builder()
+                .setUrl(httpUrl + "/coupon/cardcoupontypes/"+id+"/tickets")
+                .setRequestType(RequestType.PUT)//设置请求方式
+                .addParam("token", getToken())//添加接口参数
+                .build(), callback);
+    }
+
+    /**
+     * GET /coupon/tickets/{id} 用户查询领取券详情
+     * @param context
+     * @param callback
+     */
+    public static void tickets(Context context, MyBaseProgressCallbackImpl callback,String id) {
+        doHttpAsync(context, HttpInfo.Builder()
+                .setUrl(httpUrl + "coupon/tickets?id="+id)
+                .setRequestType(RequestType.GET)//设置请求方式
+                .addParam("token", getToken())//添加接口参数
+                .build(), callback);
+    }
+    /**
+     * /coupon/available/tickets
+     查询可用优惠券
+     * @param context
+     * @param callback
+     */
+    public static void availableTickets(Context context, MyBaseProgressCallbackImpl callback,String storeId,String courseId,int offset,int limit) {
+        doHttpAsync(context, HttpInfo.Builder()
+                .setUrl(httpUrl + "coupon/available/tickets")
+                .setRequestType(RequestType.GET)//设置请求方式
+                .addParam("token", getToken())//添加接口参数
+                .addParam("storeId", storeId)
+                .addParam("courseId", courseId)
+                .addParam("offset", offset + "")
+                .addParam("limit", limit + "")
+                .build(), callback);
+    }
     /**
      * 异步请求
      *

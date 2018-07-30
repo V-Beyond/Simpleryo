@@ -194,6 +194,9 @@ public class CourseFragment extends XLibraryLazyFragment {
             tv_no_order.setVisibility(View.GONE);
             initData(mYear, mMonth);
         } else {
+
+//            CalendarEventUtils.addCalendarEvent(getActivity(),"新普乐优日程提醒","新普乐优",System.currentTimeMillis());
+//        CalendarEventUtils.deleteCalendarEvent(getActivity(),"新普乐优日程提醒");
             lrecyclerview.setVisibility(View.GONE);
             tv_no_order.setVisibility(View.VISIBLE);
             if (calendarListBean != null) {
@@ -311,9 +314,6 @@ public class CourseFragment extends XLibraryLazyFragment {
                 tv_no_order.setVisibility(View.VISIBLE);
             }
         }, year, month);
-
-//        CalendarEventUtils.addCalendarEvent(getActivity(),"新普乐优日程提醒","",System.currentTimeMillis());
-//        CalendarEventUtils.deleteCalendarEvent(getActivity(),"新普乐优日程提醒");
     }
 
 
