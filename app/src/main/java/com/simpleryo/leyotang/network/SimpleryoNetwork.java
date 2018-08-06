@@ -321,22 +321,29 @@ public class SimpleryoNetwork {
      * @param context
      * @param callback
      */
-    public static void getCourse(Context context, Callback callback, String storeId, String name, String tagId1, String tagId3) {
+    public static void getCourse(Context context, Callback callback, String storeId, String name, String tagId1,String tagId2, String tagId3,String coachId) {
         HttpInfo.Builder builder = new HttpInfo.Builder();
         builder.setUrl(httpUrl + "p/courses");
         builder.setRequestType(RequestType.GET);
         builder.addParam("token", getToken());
+        if (!coachId.equalsIgnoreCase("")){
+            builder.addParam("coachId",coachId);
+        }
         if (!storeId.equalsIgnoreCase("")) {
             builder.addParam("storeId", storeId);//商家id
         }
         if (!name.equalsIgnoreCase("")) {
             builder.addParam("name", name);//课程名
         }
-        if (!tagId3.equalsIgnoreCase("")) {
-            builder.addParam("tagId3", tagId3);
-        }
         if (!tagId1.equalsIgnoreCase("")) {
             builder.addParam("tagId1", tagId1);
+        }
+
+        if (!tagId2.equalsIgnoreCase("")) {
+            builder.addParam("tagId2", tagId2);
+        }
+        if (!tagId3.equalsIgnoreCase("")) {
+            builder.addParam("tagId3", tagId3);
         }
         doHttpAsync(context, builder.build(), callback);
     }
@@ -453,6 +460,20 @@ public class SimpleryoNetwork {
                 .setRequestType(RequestType.GET)//设置请求方式
                 .addParam("token", getToken())//添加接口参数
                 .addParam("storeId", storeId)
+                .build(), callback);
+    }
+    /**
+     * 根据id查询教练信息
+     *
+     * @param context
+     * @param callback
+     * @param id
+     */
+    public static void getCoacheInfoById(Context context, MyBaseProgressCallbackImpl callback, String id) {
+        doHttpAsync(context, HttpInfo.Builder()
+                .setUrl(httpUrl + "u/coaches/"+id)
+                .setRequestType(RequestType.GET)//设置请求方式
+                .addParam("token", getToken())//添加接口参数
                 .build(), callback);
     }
 
@@ -805,18 +826,22 @@ public class SimpleryoNetwork {
     }
 
     /**
-     * 查询优惠券类型列表
+     * GET /coupon/tickets
+     查询我的优惠券列表或某类型券领取情况
      * @param context
      * @param callback
      */
-    public static void cardcoupontypes(Context context, MyBaseProgressCallbackImpl callback,int offset,int limit) {
-        doHttpAsync(context, HttpInfo.Builder()
-                .setUrl(httpUrl + "coupon/cardcoupontypes")
-                .addParam("token", getToken())//添加接口参数
-                .setRequestType(RequestType.GET)//设置请求方式
-                .addParam("offset", offset + "")
-                .addParam("limit", limit + "")
-                .build(), callback);
+    public static void tickets(Context context, MyBaseProgressCallbackImpl callback,String status,int offset,int limit) {
+        HttpInfo.Builder builder=new HttpInfo.Builder();
+        builder.setUrl(httpUrl + "coupon/tickets");
+        builder.setRequestType(RequestType.GET);//设置请求方式
+        builder.addParam("token", getToken());//添加接口参数
+        if (!status.equalsIgnoreCase("")){
+            builder.addParam("status", status);
+        }
+        builder.addParam("offset", offset + "");
+        builder.addParam("limit", limit + "");
+        doHttpAsync(context,builder .build(), callback);
     }
 
     /**
@@ -824,16 +849,32 @@ public class SimpleryoNetwork {
      * @param context
      * @param callback
      */
-    public static void tickets(Context context, MyBaseProgressCallbackImpl callback,String status,String couponId,int offset,int limit) {
-        doHttpAsync(context, HttpInfo.Builder()
-                .setUrl(httpUrl + "coupon/tickets")
-                .setRequestType(RequestType.GET)//设置请求方式
-                .addParam("token", getToken())//添加接口参数
-                .addParam("status", status)
-                .addParam("couponId", couponId)
-                .addParam("offset", offset + "")
-                .addParam("limit", limit + "")
-                .build(), callback);
+    public static void cardcoupontypes(Context context, MyBaseProgressCallbackImpl callback,String status,String storeId,String category,String channel,String lowAmount,String upAmount,int offset,int limit) {
+        HttpInfo.Builder builder=new HttpInfo.Builder();
+        builder.setUrl(httpUrl + "coupon/cardcoupontypes");
+        builder.setRequestType(RequestType.GET);//设置请求方式
+        builder.addParam("token", getToken());//添加接口参数
+        if (!status.equalsIgnoreCase("")){
+            builder.addParam("status", status);
+        }
+        if (!storeId.equalsIgnoreCase("")){
+            builder.addParam("storeId", storeId);
+        }
+        if (!category.equalsIgnoreCase("")){
+            builder.addParam("category", category);
+        }
+        if (!channel.equalsIgnoreCase("")){
+            builder.addParam("channel", channel);
+        }
+        if (!lowAmount.equalsIgnoreCase("")){
+            builder.addParam("lowAmount", lowAmount);
+        }
+        if (!upAmount.equalsIgnoreCase("")){
+            builder.addParam("upAmount", upAmount);
+        }
+        builder .addParam("offset", offset + "");
+        builder.addParam("limit", limit + "");
+        doHttpAsync(context, builder.build(), callback);
     }
     /**
      * 领取券
@@ -853,7 +894,7 @@ public class SimpleryoNetwork {
      * @param context
      * @param callback
      */
-    public static void tickets(Context context, MyBaseProgressCallbackImpl callback,String id) {
+    public static void ticketsDetailById(Context context, MyBaseProgressCallbackImpl callback,String id) {
         doHttpAsync(context, HttpInfo.Builder()
                 .setUrl(httpUrl + "coupon/tickets?id="+id)
                 .setRequestType(RequestType.GET)//设置请求方式
@@ -875,6 +916,23 @@ public class SimpleryoNetwork {
                 .addParam("courseId", courseId)
                 .addParam("offset", offset + "")
                 .addParam("limit", limit + "")
+                .build(), callback);
+    }
+
+
+    /**
+     *GET /c/tags
+     查询标签
+     * @param context
+     * @param callback
+     */
+    public static void tags(Context context, MyBaseProgressCallbackImpl callback,String spaceCode,String parentId) {
+        doHttpAsync(context, HttpInfo.Builder()
+                .setUrl(httpUrl + "c/tags")
+                .setRequestType(RequestType.GET)//设置请求方式
+                .addParam("token", getToken())//添加接口参数
+                .addParam("spaceCode", spaceCode)
+                .addParam("parentId", parentId)
                 .build(), callback);
     }
     /**

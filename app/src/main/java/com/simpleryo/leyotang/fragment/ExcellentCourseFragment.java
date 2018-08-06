@@ -134,7 +134,7 @@ public class ExcellentCourseFragment extends XLibraryLazyFragment {
                     lrecyclerview.refreshComplete(hotCourseList.size());
                 }
             }
-        }, "", "", "", "EXCELLENT");
+        }, "", "", "", "EXCELLENT","","");
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void BusMain(BusEntity bus) {

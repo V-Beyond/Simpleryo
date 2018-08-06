@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shape_hot_course"
+    android:orientation="vertical">
+    <include
+        android:id="@+id/top_layout"
+        layout="@layout/common_top_layout" />
+
+    <com.simpleryo.leyotang.view.DropDownMenu
+        android:id="@+id/dropDownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:ddmaskColor="@color/mask_color"
+        app:ddmenuBackgroundColor="@color/white"
+        app:ddmenuMenuHeightPercent="0.5"
+        app:ddmenuSelectedIcon="@mipmap/drop_down_selected_icon"
+        app:ddmenuTextSize="13sp"
+        app:ddmenuUnselectedIcon="@mipmap/drop_down_unselected_icon"
+        app:ddtextSelectedColor="#FFF32E59"
+        app:ddtextUnselectedColor="#FF5A5A5A"
+        app:ddunderlineColor="#FAF8FF">
+    </com.simpleryo.leyotang.view.DropDownMenu>
+
+
+</LinearLayout>

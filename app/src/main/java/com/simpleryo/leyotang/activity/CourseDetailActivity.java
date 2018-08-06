@@ -259,6 +259,7 @@ public class CourseDetailActivity extends BaseActivity    {
                         tv_coach_intro.setBackgroundColor(0);
                         CourdeDetailBean.DataBeanX.CoachBean coachBean = courdeDetailBean.getData().getCoach();
                         if (coachBean != null) {
+                            coachId=coachBean.getId();
                             tv_studentCount.setText(coachBean.getStudentCount() + "");
                             rating_bar.setRating(coachBean.getPoint());
                             tv_point.setText(coachBean.getPoint() + "");
@@ -287,7 +288,7 @@ public class CourseDetailActivity extends BaseActivity    {
             }, courseId);
         }
     }
-
+    String coachId;
     boolean isFollow;//商家是否关注
 
     /**
@@ -352,7 +353,7 @@ public class CourseDetailActivity extends BaseActivity    {
                 XActivityUtils.getInstance().popActivity(CourseDetailActivity.this);
                 break;
             case R.id.tv_more:
-                startActivity(new Intent(CourseDetailActivity.this,CoachHomeActivity.class));
+                startActivity(new Intent(CourseDetailActivity.this,CoachHomeActivity.class).putExtra("coachId",coachId));
                 break;
             case R.id.tv_to_home:
                 Intent intent2 = new Intent(CourseDetailActivity.this, MainActivity.class);

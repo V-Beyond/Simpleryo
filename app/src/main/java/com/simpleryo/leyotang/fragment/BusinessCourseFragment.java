@@ -134,7 +134,7 @@ public class BusinessCourseFragment extends XLibraryLazyFragment {
             public void onFailure(HttpInfo info)   {
 
             }
-        },storeId,"","","");
+        },storeId,"","","","","");
         lrecyclerview.setFocusable(false);
     }
 

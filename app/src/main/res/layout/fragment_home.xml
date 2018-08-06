@@ -15,7 +15,7 @@
         <TextView
             android:id="@+id/tv_address"
             android:layout_width="wrap_content"
-            android:text="中铁中环时代广场"
+            android:text="暂无地址"
             android:layout_centerVertical="true"
             android:textColor="@color/white"
             android:drawableLeft="@mipmap/iv_current_location"

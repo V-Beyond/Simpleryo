@@ -68,6 +68,8 @@
         android:roundIcon="@mipmap/iv_app_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-data android:name="android.max_aspect"
+            android:value="2.1"/>
         <activity
             android:name="com.simpleryo.leyotang.activity.SplashActivity"
             android:theme="@style/AppTheme.Splash"
@@ -156,6 +158,10 @@
         <activity android:name="com.simpleryo.leyotang.activity.MyCouponsActivity"
             android:screenOrientation="portrait"/>
         <activity android:name="com.simpleryo.leyotang.activity.CoachHomeActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.simpleryo.leyotang.activity.CouponsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.simpleryo.leyotang.activity.CourseFilterActivity"
             android:screenOrientation="portrait"/>
         <!-- 添加自适应布局的设计尺寸-->
         <meta-data

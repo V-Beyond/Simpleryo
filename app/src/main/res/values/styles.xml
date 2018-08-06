@@ -8,9 +8,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
     <style name="AppTheme.Splash" parent="AppTheme">
-        <item name="android:windowBackground">@mipmap/iv_splash</item>
+            <item name="android:windowIsTranslucent">true</item>
+            <item name="android:windowContentOverlay">@android:color/white</item>
+            <item name="android:windowNoTitle">true</item>
+            <item name="android:screenOrientation">portrait</item>
         <item name="android:windowFullscreen">true</item>
-        <item name="android:windowNoTitle">true</item>
     </style>
     <style name="my_but_type_style">
         <item name="android:layout_width">match_parent</item>

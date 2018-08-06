@@ -57,7 +57,15 @@ public class ExcellentCourseAdapter extends BaseAdapter<HomeDataBean.DataBeanX.C
                 ((ExcellentCourseItemViewHolder) holder).tv_price.setText("免费预约");
             }
         }
+        if (bean.isHasCardCoupon()){
+            ((ExcellentCourseItemViewHolder) holder).iv_course_item_coupon.setVisibility(View.VISIBLE);
+        }
+        if (bean.getDistance()!=null){
+            ((ExcellentCourseItemViewHolder) holder).tv_distance.setVisibility(View.VISIBLE);
+            ((ExcellentCourseItemViewHolder) holder).tv_distance.setText(bean.getDistance());
+        }
         ((ExcellentCourseItemViewHolder) holder).tv_popular.setText(collectCount+" people");
+        ((ExcellentCourseItemViewHolder) holder).tv_collection_count.setText(collectCount+"人收藏");
         // 创建一个数值格式化对象
         NumberFormat numberFormat = NumberFormat.getInstance();
         // 设置精确到小数点后2位
@@ -67,11 +75,11 @@ public class ExcellentCourseAdapter extends BaseAdapter<HomeDataBean.DataBeanX.C
         ((ExcellentCourseItemViewHolder) holder).horizontal_progressbar.setProgress((int) percent);
         ((ExcellentCourseItemViewHolder) holder).tv_percent.setText(bean.getClassCount()+"/"+totalCount);
         if (bean.isHasCollect()){
-            ((ExcellentCourseItemViewHolder) holder).iv_collection_star.setImageResource(R.mipmap.iv_collection_star);
+            ((ExcellentCourseItemViewHolder) holder).iv_collection_course.setImageResource(R.mipmap.iv_course_item_collected);
         }else{
-            ((ExcellentCourseItemViewHolder) holder).iv_collection_star.setImageResource(R.mipmap.iv_collection_white_star);
+            ((ExcellentCourseItemViewHolder) holder).iv_collection_course.setImageResource(R.mipmap.iv_course_item_uncollect);
         }
-        ((ExcellentCourseItemViewHolder) holder).rl_collect.setOnClickListener(new View.OnClickListener() {
+        ((ExcellentCourseItemViewHolder) holder).iv_collection_course.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 EventBus.getDefault().post(new BusEntity(121,bean));//收藏or取消收藏

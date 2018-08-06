@@ -15,10 +15,11 @@ import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.simpleryo.leyotang.R;
 import com.simpleryo.leyotang.activity.AllCourseActivity;
 import com.simpleryo.leyotang.activity.BusinessHomeActivty;
+import com.simpleryo.leyotang.activity.CouponsActivity;
 import com.simpleryo.leyotang.activity.CourseDetailActivity;
+import com.simpleryo.leyotang.activity.CourseFilterActivity;
 import com.simpleryo.leyotang.activity.CourseListActivity;
 import com.simpleryo.leyotang.activity.CourseSearchActivity;
-import com.simpleryo.leyotang.activity.CourseTypeActivity;
 import com.simpleryo.leyotang.activity.MyNoticeActivity;
 import com.simpleryo.leyotang.bean.BusEntity;
 import com.simpleryo.leyotang.bean.HomeDataBean;
@@ -162,7 +163,7 @@ public class HomeAdapter extends BaseMultiAdapter<MultipleItem> {
             ((IntroductoryCourseViewHolder) holder).item_more_rihgt_more.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    context.startActivity(new Intent(mContext, CourseTypeActivity.class).putExtra("type", "introductory"));
+                    context.startActivity(new Intent(mContext, CourseFilterActivity.class).putExtra("type", "introductory").putExtra("tagId3",introductoryListBeans.getTag().getId()));
                 }
             });
 
@@ -195,7 +196,7 @@ public class HomeAdapter extends BaseMultiAdapter<MultipleItem> {
             ((HotCourseViewHolder) holder).item_more_rihgt_more.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    context.startActivity(new Intent(mContext, CourseTypeActivity.class).putExtra("type", "hot"));
+                    context.startActivity(new Intent(mContext, CourseFilterActivity.class).putExtra("type", "hot").putExtra("tagId3",orderListBeans.getTag().getId()));
                 }
             });
         } else if (holder instanceof ExcellentCourseViewHolder) {//精选课程
@@ -221,7 +222,7 @@ public class HomeAdapter extends BaseMultiAdapter<MultipleItem> {
             ((ExcellentCourseViewHolder) holder).item_more_rihgt_more.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    context.startActivity(new Intent(mContext, CourseTypeActivity.class).putExtra("type", "excellent"));
+                    context.startActivity(new Intent(mContext, CourseFilterActivity.class).putExtra("type", "excellent").putExtra("tagId3",excellentListBeans.getTag().getId()));
                 }
             });
             lRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
@@ -260,6 +261,12 @@ public class HomeAdapter extends BaseMultiAdapter<MultipleItem> {
                         context.startActivity(intent);
                     }
 
+                }
+            });
+            ((CourseTypeViewHolder) holder).iv_coupons_img.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mContext.startActivity(new Intent(mContext, CouponsActivity.class));
                 }
             });
             Picasso.with(mContext).load("https://simpleryo-china.oss-cn-hangzhou.aliyuncs.com/file/2f229263ec0d1914dac90b73ff0abfc8").into(((CourseTypeViewHolder) holder).iv_coupons_img);

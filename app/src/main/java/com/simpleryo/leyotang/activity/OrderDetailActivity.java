@@ -141,23 +141,25 @@ public class OrderDetailActivity extends BaseActivity {
                 merchantReference=orderDetailBean.getData().getNo();
                 productName=orderDetailBean.getData().getCourseName();
                  status = orderDetailBean.getData().getStatus();
-                if (status.equalsIgnoreCase("NEW")) {
-                    rl_bottom.setVisibility(View.VISIBLE);
-                }
-                if (status.equalsIgnoreCase("PAYED")) {
-                    rl_bottom.setVisibility(View.GONE);
-                }
-                if (status.equalsIgnoreCase("RECEIVED")) {
-                    rl_bottom.setVisibility(View.VISIBLE);
-                    tv_detail.setVisibility(View.GONE);
-                    tv_order_remark.setText(getResources().getString(R.string.To_evaluate));
-                }
-                if (status.equalsIgnoreCase("COMPLETED")) {
-                    rl_bottom.setVisibility(View.GONE);
-                }
-                if (status.equalsIgnoreCase("CANCALLED")) {
-                    rl_bottom.setVisibility(View.GONE);
-                }
+                 if (status!=null){
+                     if (status.equalsIgnoreCase("NEW")) {
+                         rl_bottom.setVisibility(View.VISIBLE);
+                     }
+                     if (status.equalsIgnoreCase("PAYED")) {
+                         rl_bottom.setVisibility(View.GONE);
+                     }
+                     if (status.equalsIgnoreCase("RECEIVED")) {
+                         rl_bottom.setVisibility(View.VISIBLE);
+                         tv_detail.setVisibility(View.GONE);
+                         tv_order_remark.setText(getResources().getString(R.string.To_evaluate));
+                     }
+                     if (status.equalsIgnoreCase("COMPLETED")) {
+                         rl_bottom.setVisibility(View.GONE);
+                     }
+                     if (status.equalsIgnoreCase("CANCALLED")) {
+                         rl_bottom.setVisibility(View.GONE);
+                     }
+                 }
                 if (orderDetailBean.getData().getCoach() != null) {
                     tv_coach_name.setText(getResources().getString(R.string.tutor)+"：" + orderDetailBean.getData().getCoach().getName());
                     Picasso.with(OrderDetailActivity.this).load(orderDetailBean.getData().getCoach().getAvatarUrl()).transform(transformation).into(iv_coach_img);

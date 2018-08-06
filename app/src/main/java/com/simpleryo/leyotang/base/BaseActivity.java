@@ -2,7 +2,9 @@ package com.simpleryo.leyotang.base;
 
 import android.os.Bundle;
 
+import com.makeramen.roundedimageview.RoundedTransformationBuilder;
 import com.simpleryo.leyotang.utils.XActivityUtils;
+import com.squareup.picasso.Transformation;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
 import com.zhy.autolayout.AutoLayoutActivity;
@@ -18,6 +20,14 @@ import org.xutils.x;
 public class BaseActivity extends AutoLayoutActivity {
     private final String mPageName = "BaseActivity";
     public  boolean isLogin;//是否登录
+    public Transformation transformation = new RoundedTransformationBuilder()
+            .cornerRadiusDp(30)
+            .oval(true)
+            .build();
+    public Transformation raduisTransformation = new RoundedTransformationBuilder()
+            .cornerRadius(20)
+            .oval(false)
+            .build();
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

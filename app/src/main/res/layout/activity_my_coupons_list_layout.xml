@@ -24,6 +24,7 @@
             android:layout_marginBottom="2px"
             android:layout_marginLeft="5px"
             android:layout_marginTop="2px"
+            android:checked="true"
             android:layout_weight="1"
             android:background="@drawable/selector_coupons_shape"
             android:button="@null"
@@ -57,11 +58,27 @@
             android:text="已失效"
             android:textColor="@color/white" />
     </RadioGroup>
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="20px"
+        android:layout_marginRight="20px"
+        android:orientation="vertical">
+        <com.github.jdsjlzx.recyclerview.LRecyclerView
+            android:id="@+id/lrecyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="24px"></com.github.jdsjlzx.recyclerview.LRecyclerView>
+        <include
+            android:id="@+id/empty_view"
+            layout="@layout/layout_empty"
+            android:visibility="gone"/>
+    </LinearLayout>
         <com.simpleryo.leyotang.view.NoScrollViewPager
             android:id="@+id/view_pager_main"
             android:layout_width="match_parent"
             android:layout_marginBottom="50px"
+            android:visibility="gone"
             android:layout_marginLeft="20px"
             android:layout_marginRight="20px"
             android:layout_marginTop="28px"

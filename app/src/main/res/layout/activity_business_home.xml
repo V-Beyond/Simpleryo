@@ -215,7 +215,7 @@
             <RadioGroup
                 android:id="@+id/radio_group_main"
                 android:layout_width="match_parent"
-                android:layout_height="80px"
+                android:layout_height="90px"
                 android:layout_marginLeft="60px"
                 android:layout_marginRight="60px"
                 android:layout_marginTop="40px"

@@ -289,7 +289,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="14px"
-                        android:text="@string/my_coupon"
+                        android:text="@string/coupon"
                         android:textColor="#373737"
                         android:textSize="35px" />
                 </LinearLayout>

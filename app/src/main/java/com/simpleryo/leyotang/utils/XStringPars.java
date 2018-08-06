@@ -145,7 +145,20 @@ public class XStringPars {
         re_StrTime = sdf.format(new Date(lcc_time));
         return re_StrTime;
     }
-
+    /**
+     * 时间戳转为时间(年月日，时分秒)
+     *
+     * @param cc_time 时间戳
+     * @return
+     */
+    public static String getCouponTime(String cc_time) {
+        String re_StrTime = null;
+        //同理也可以转为其它样式的时间格式.例如："yyyy/MM/dd HH:mm"
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        long lcc_time = Long.valueOf(cc_time);
+        re_StrTime = sdf.format(new Date(lcc_time));
+        return re_StrTime;
+    }
     /**
      * md5加密
      *

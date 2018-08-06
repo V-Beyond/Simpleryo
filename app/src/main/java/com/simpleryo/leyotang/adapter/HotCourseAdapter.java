@@ -57,7 +57,15 @@ public class HotCourseAdapter extends BaseAdapter<HomeDataBean.DataBeanX.Courses
                 ((HotCourseItemViewHolder) holder).tv_price.setText("免费预约");
             }
         }
+        if (bean.isHasCardCoupon()){
+            ((HotCourseItemViewHolder) holder).iv_course_item_coupon.setVisibility(View.VISIBLE);
+        }
+        if (bean.getDistance()!=null){
+            ((HotCourseItemViewHolder) holder).tv_distance.setVisibility(View.VISIBLE);
+            ((HotCourseItemViewHolder) holder).tv_distance.setText(bean.getDistance());
+        }
         ((HotCourseItemViewHolder) holder).tv_popular.setText(collectCount+" people");
+        ((HotCourseItemViewHolder) holder).tv_collection_count.setText(collectCount+"人收藏");
         // 创建一个数值格式化对象
         NumberFormat numberFormat = NumberFormat.getInstance();
         // 设置精确到小数点后2位
@@ -68,11 +76,11 @@ public class HotCourseAdapter extends BaseAdapter<HomeDataBean.DataBeanX.Courses
         ((HotCourseItemViewHolder) holder).horizontal_progressbar.setProgress((int) percent);
         ((HotCourseItemViewHolder) holder).tv_percent.setText(classCount+"/"+totalCount);
         if (bean.isHasCollect()){
-            ((HotCourseItemViewHolder) holder).iv_collection_star.setImageResource(R.mipmap.iv_collection_star);
+            ((HotCourseItemViewHolder) holder).iv_collection_course.setImageResource(R.mipmap.iv_course_item_collected);
         }else{
-            ((HotCourseItemViewHolder) holder).iv_collection_star.setImageResource(R.mipmap.iv_collection_white_star);
+            ((HotCourseItemViewHolder) holder).iv_collection_course.setImageResource(R.mipmap.iv_course_item_uncollect);
         }
-        ((HotCourseItemViewHolder) holder).rl_collect.setOnClickListener(new View.OnClickListener() {
+        ((HotCourseItemViewHolder) holder).iv_collection_course.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 EventBus.getDefault().post(new BusEntity(121,bean));//收藏or取消收藏

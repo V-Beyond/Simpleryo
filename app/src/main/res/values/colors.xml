@@ -3,6 +3,8 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="drop_down_selected">#FFF32E59</color>
+    <color name="drop_down_unselected">#FF5A5A5A</color>
     <color name="color_ffffff">#ffffff</color>
     <color name="black">#000000</color>
     <color name="color_transparent">#00000000</color>
@@ -44,4 +46,10 @@
 
     <color name="page3_start_color">#75539F</color>
     <color name="page3_end_color">#A87CB7</color>
+    <color name="mask_color">#88888888</color>
+    <color name="check_bg">#f2f2f2</color>
+    <color name="un_press_color">#9C27B0</color>
+    <color name="white">#ffffff</color>
+    <color name="gray">#cccccc</color>
+
 </resources>

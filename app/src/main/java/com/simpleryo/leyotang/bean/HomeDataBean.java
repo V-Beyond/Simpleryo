@@ -322,6 +322,7 @@ public class HomeDataBean extends BaseResult {
                 private String tagId1;
                 private String tagId2;
                 private String intro;
+                private String distance;
                 private String storeName;
                 private String coachId;
                 private boolean enable;
@@ -341,6 +342,23 @@ public class HomeDataBean extends BaseResult {
                 private List<RecommendsBean> recommends;
                 private int upperLimit;
                 private String type;
+                private boolean hasCardCoupon;
+
+                public boolean isHasCardCoupon() {
+                    return hasCardCoupon;
+                }
+
+                public void setHasCardCoupon(boolean hasCardCoupon) {
+                    this.hasCardCoupon = hasCardCoupon;
+                }
+
+                public String getDistance() {
+                    return distance;
+                }
+
+                public void setDistance(String distance) {
+                    this.distance = distance;
+                }
 
                 private ArrayList<Arrange> arranges;
 

@@ -32,6 +32,14 @@ public class IntroductoryCourseItemViewHolder extends SuperViewHolder {
   public ProgressBar horizontal_progressbar;
   @ViewInject(R.id.tv_percent)
   public TextView tv_percent;
+  @ViewInject(R.id.tv_collection_count)
+  public TextView tv_collection_count;
+  @ViewInject(R.id.iv_course_item_coupon)
+  public ImageView iv_course_item_coupon;
+  @ViewInject(R.id.tv_distance)
+  public TextView tv_distance;
+  @ViewInject(R.id.iv_collection_course)
+  public  ImageView iv_collection_course;
     public IntroductoryCourseItemViewHolder(View itemView) {
         super(itemView);
         x.view().inject(this,itemView);

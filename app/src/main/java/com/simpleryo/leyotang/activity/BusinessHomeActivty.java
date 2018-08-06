@@ -18,6 +18,7 @@ import com.simpleryo.leyotang.base.XLibraryLazyFragment;
 import com.simpleryo.leyotang.bean.StoreDetailBean;
 import com.simpleryo.leyotang.fragment.BusinessCoachFragment;
 import com.simpleryo.leyotang.fragment.BusinessCourseFragment;
+import com.simpleryo.leyotang.fragment.CouponFragment;
 import com.simpleryo.leyotang.network.SimpleryoNetwork;
 import com.simpleryo.leyotang.utils.XActivityUtils;
 import com.simpleryo.leyotang.view.ArcViewCover;
@@ -66,11 +67,11 @@ public class BusinessHomeActivty extends BaseActivity {
         businessCourseFragment.setArguments(bundle);
         BusinessCoachFragment businessCoachFragment=new BusinessCoachFragment();
         businessCoachFragment.setArguments(bundle);
-        BusinessCoachFragment businessCoachFragment1=new BusinessCoachFragment();
-        businessCoachFragment1.setArguments(bundle);
+        CouponFragment couponFragment=new CouponFragment();
+        couponFragment.setArguments(bundle);
         fragments.add(businessCourseFragment);
         fragments.add(businessCoachFragment);
-        fragments.add(businessCoachFragment1);
+        fragments.add(couponFragment);
         mAdapter = new FragMentAdapter<XLibraryLazyFragment>(
                 getSupportFragmentManager(), fragments);
         view_pager_main.setAdapter(mAdapter);

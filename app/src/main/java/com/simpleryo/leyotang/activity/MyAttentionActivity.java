@@ -40,8 +40,6 @@ public class MyAttentionActivity extends BaseActivity {
     TextView tv_name;
     @ViewInject(R.id.lrecyclerview)
     LRecyclerView lrecyclerview;
-    @ViewInject(R.id.empty_view)
-            View empty_view;
     LRecyclerViewAdapter lRecyclerViewAdapter;
     MyOrderAdapter myOrderAdapter;
     private List<MultipleItem> mItemModels = new ArrayList<>();

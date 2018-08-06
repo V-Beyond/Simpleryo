@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/ll_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="50px"
+        android:layout_marginLeft="20px"
+        android:layout_marginRight="20px"
+        android:layout_marginTop="28px"
+        android:orientation="vertical">
+
+        <com.github.jdsjlzx.recyclerview.LRecyclerView
+            android:id="@+id/lrecyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></com.github.jdsjlzx.recyclerview.LRecyclerView>
+
+        <include
+            android:id="@+id/empty_view"
+            layout="@layout/layout_empty"
+            android:visibility="gone" />
+    </LinearLayout>
+</LinearLayout>

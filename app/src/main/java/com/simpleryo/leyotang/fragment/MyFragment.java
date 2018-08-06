@@ -349,6 +349,7 @@ public class MyFragment extends XLibraryLazyFragment {
                 } else {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                 }
+                break;
             case R.id.iv_coupons_more://优惠券
                 if (isLogin) {
                     startActivity(new Intent(getActivity(), MyCouponsActivity.class));
