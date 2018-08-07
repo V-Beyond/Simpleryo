@@ -7,19 +7,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/shape_hot_course"
+        android:background="@color/white"
         android:orientation="vertical">
 
         <include android:id="@+id/top_layout" layout="@layout/common_top_layout" />
-        <include layout="@layout/layout_history_record_item"></include>
-        <include layout="@layout/layout_history_record_item"></include>
-        <include layout="@layout/layout_history_record_item"></include>
         <com.github.jdsjlzx.recyclerview.LRecyclerView
             android:id="@+id/lrecyclerview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="20px"
-            android:layout_marginRight="20px"
+            android:layout_marginLeft="47px"
+            android:layout_marginRight="47px"
             android:layout_marginTop="24px"></com.github.jdsjlzx.recyclerview.LRecyclerView>
         <include
             android:id="@+id/empty_view"

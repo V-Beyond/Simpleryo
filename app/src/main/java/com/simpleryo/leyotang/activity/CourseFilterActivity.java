@@ -108,12 +108,6 @@ public class CourseFilterActivity extends BaseActivity {
         lrecyclerview.setLoadMoreEnabled(false);
         lrecyclerview.setPullRefreshEnabled(true);
         lrecyclerview.setOnRefreshListener(onRefreshListener);
-        lRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                startActivity(new Intent(CourseFilterActivity.this, CourseDetailActivity.class).putExtra("courseId", hotCourseList.get(position).getId()));
-            }
-        });
         lrecyclerview.forceToRefresh();
         getTags();
     }
@@ -345,19 +339,25 @@ public class CourseFilterActivity extends BaseActivity {
                         }
                         courseListTypeAdapter.setDataList(mItemModels);
                         lRecyclerViewAdapter.notifyDataSetChanged();
+                        lRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                startActivity(new Intent(CourseFilterActivity.this, CourseDetailActivity.class).putExtra("courseId", hotCourseList.get(position).getId()));
+                            }
+                        });
                     } else {
-//                        if (hotCourseList != null && hotCourseList.size() > 0) {
-//                            hotCourseList.clear();
-//                        }
-//                        if (mItemModels != null && mItemModels.size() > 0) {
-//                            mItemModels.clear();
-//                        }
-//                        courseListTypeAdapter = new CourseListTypeAdapter(CourseFilterActivity.this);
-//                        lRecyclerViewAdapter = new LRecyclerViewAdapter(courseListTypeAdapter);
-//                        lrecyclerview.setAdapter(lRecyclerViewAdapter);
                         if (hotCourseList.size()>0){
                             lrecyclerview.setNoMore(true);
                         }else{
+                            if (hotCourseList != null && hotCourseList.size() > 0) {
+                                hotCourseList.clear();
+                            }
+                            if (mItemModels != null && mItemModels.size() > 0) {
+                                mItemModels.clear();
+                            }
+                            courseListTypeAdapter = new CourseListTypeAdapter(CourseFilterActivity.this);
+                            lRecyclerViewAdapter = new LRecyclerViewAdapter(courseListTypeAdapter);
+                            lrecyclerview.setAdapter(lRecyclerViewAdapter);
                             lrecyclerview.setEmptyView(mEmptyView);//设置在setAdapter之前才能生效
                         }
                     }

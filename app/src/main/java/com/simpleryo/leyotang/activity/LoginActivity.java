@@ -47,10 +47,10 @@ public class LoginActivity extends BaseActivity {
     private void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_register://注册
-                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+                startActivity(new Intent(LoginActivity.this, RegisterActivity.class).putExtra("type","register"));
                 break;
             case R.id.forget_the_password://忘记密码
-                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+                startActivity(new Intent(LoginActivity.this, RegisterActivity.class).putExtra("type","forget"));
                 break;
             case R.id.tv_login://登录
                 account = edittext_account.getText().toString().trim();

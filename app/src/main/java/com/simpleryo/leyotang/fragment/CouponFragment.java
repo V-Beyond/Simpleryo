@@ -138,7 +138,7 @@ public class CouponFragment extends XLibraryLazyFragment {
                 textView.setText("数据一不小心走丢了，请稍后回来");
                 lrecyclerview.setEmptyView(mEmptyView);
             }
-        },"",storeId,"","","","",offset,limit);
+        },"",storeId,"","","","",offset,limit,"","");
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updateCollect(BusEntity bus) {

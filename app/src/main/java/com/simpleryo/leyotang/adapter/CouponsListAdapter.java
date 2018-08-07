@@ -61,7 +61,7 @@ public class CouponsListAdapter extends BaseAdapter<CouponsListBean.DataBean> {
                 ((CouponsItemViewHolder) holder).tv_limit.setText("[无门槛]");
             }
             ((CouponsItemViewHolder) holder).tv_count.setText(typeBean.getRetrieveCounter()+"/"+typeBean.getTotalCounter()+"人已领");
-            String date= XStringPars.getCouponTime(typeBean.getStartTime())+" - "+XStringPars.getCouponTime(typeBean.getEndTime());
+            String date= XStringPars.getCouponTime(typeBean.getStartTime()+"")+" - "+XStringPars.getCouponTime(typeBean.getEndTime()+"");
             ((CouponsItemViewHolder) holder).tv_time.setText("有效期至:"+date);
             ((CouponsItemViewHolder) holder).tv_coupon_name.setText(typeBean.getName());
         }

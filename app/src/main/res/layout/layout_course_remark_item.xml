@@ -2,8 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginRight="33px"
-    android:layout_marginLeft="33px"
     android:paddingBottom="45px"
     android:orientation="vertical">
 
@@ -18,7 +16,7 @@
             android:layout_height="33dp"
             android:layout_marginLeft="18px"
             android:scaleType="fitXY"
-            android:src="@mipmap/iv_splash" />
+            />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -28,6 +26,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="二楼后座"
@@ -47,6 +46,7 @@
                 android:stepSize="1" />
         </LinearLayout>
         <TextView
+            android:id="@+id/tv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -58,12 +58,20 @@
     </RelativeLayout>
 
     <TextView
+        android:id="@+id/tv_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="50px"
+        android:layout_marginLeft="18px"
         android:layout_marginRight="18px"
         android:layout_marginTop="39px"
         android:text="课程非常好，讲的非常详细。课程非常好，讲的非常详细。"
         android:textColor="#373737"
         android:textSize="28px" />
+    <com.simpleryo.leyotang.view.MultiImageView
+        android:id="@+id/multi_image"
+        android:layout_marginLeft="18px"
+        android:layout_marginRight="18px"
+        android:layout_marginTop="39px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></com.simpleryo.leyotang.view.MultiImageView>
 </LinearLayout>

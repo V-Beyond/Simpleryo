@@ -13,7 +13,7 @@ import com.okhttplib.HttpInfo;
 import com.simpleryo.leyotang.R;
 import com.simpleryo.leyotang.base.BaseActivity;
 import com.simpleryo.leyotang.base.MyBaseProgressCallbackImpl;
-import com.simpleryo.leyotang.bean.CodeBean;
+import com.simpleryo.leyotang.bean.BaseResult;
 import com.simpleryo.leyotang.bean.RegisterBean;
 import com.simpleryo.leyotang.network.SimpleryoNetwork;
 import com.simpleryo.leyotang.utils.XActivityUtils;
@@ -52,10 +52,19 @@ public class RegisterActivity extends BaseActivity{
     String password;//密码
     String comfirmPassWord;//确认密码
     public TimeCount mTime;
+    String type;
+    String typeCode;
+    String loginName="";
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mTime = new TimeCount(60000, 1000);
+        type=getIntent().getStringExtra("type");
+        if (type.equalsIgnoreCase("register")){
+            typeCode="REGIST";
+        }else if(type.equalsIgnoreCase("forget")){
+            typeCode="UPDATE_PASSWORD";
+        }
     }
 
     @Event(value = {R.id.tv_register, R.id.tv_get_code}, type = View.OnClickListener.class)
@@ -126,9 +135,16 @@ public class RegisterActivity extends BaseActivity{
                 break;
             case R.id.tv_get_code://获取验证码
                 phone = edittext_phone.getText().toString().trim();
+                loginName=edittext_email.getText().toString().trim();
                 if (phone.isEmpty()) {
                     makeText(RegisterActivity.this, "手机不能为空", LENGTH_SHORT).show();
                     return;
+                }
+                if(type.equalsIgnoreCase("forget")){
+                    if (loginName.isEmpty()) {
+                        makeText(RegisterActivity.this, "登录名不能为空", LENGTH_SHORT).show();
+                        return;
+                    }
                 }
 //                if (!XStringPars.isMobileNO(phone)) {
 //                    makeText(RegisterActivity.this, "请输入正确的手机号", LENGTH_SHORT).show();
@@ -139,7 +155,7 @@ public class RegisterActivity extends BaseActivity{
                     @Override
                     public void onSuccess(HttpInfo info)  {
                         loadingDialog.dismiss();
-                        CodeBean codeBean = info.getRetDetail(CodeBean.class);
+                        BaseResult codeBean = info.getRetDetail(BaseResult.class);
                         if (codeBean.getCode().equalsIgnoreCase("0")) {
                             makeText(RegisterActivity.this, "验证码发送成功，请注意查收", LENGTH_SHORT).show();
                         }else{
@@ -149,10 +165,11 @@ public class RegisterActivity extends BaseActivity{
                     }
                     @Override
                     public void onFailure(HttpInfo info){
+                        loadingDialog.dismiss();
                         makeText(RegisterActivity.this, "发送失败", LENGTH_SHORT).show();
                         handler.sendEmptyMessage(6);
                     }
-                }, phone);
+                }, phone,typeCode,loginName);
                 break;
         }
     }

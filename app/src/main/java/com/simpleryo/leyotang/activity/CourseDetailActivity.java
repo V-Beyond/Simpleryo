@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
@@ -13,14 +14,21 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
+import com.github.jdsjlzx.recyclerview.LRecyclerView;
+import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.makeramen.roundedimageview.RoundedTransformationBuilder;
 import com.okhttplib.HttpInfo;
 import com.simpleryo.leyotang.R;
+import com.simpleryo.leyotang.adapter.CouponsListAdapter;
+import com.simpleryo.leyotang.adapter.RemarkListAdapter;
 import com.simpleryo.leyotang.base.BaseActivity;
 import com.simpleryo.leyotang.base.MyBaseProgressCallbackImpl;
 import com.simpleryo.leyotang.bean.BusEntity;
 import com.simpleryo.leyotang.bean.CodeBean;
+import com.simpleryo.leyotang.bean.CouponsListBean;
 import com.simpleryo.leyotang.bean.CourdeDetailBean;
+import com.simpleryo.leyotang.bean.CourseRemarkListBean;
 import com.simpleryo.leyotang.bean.StoreDetailBean;
 import com.simpleryo.leyotang.fragment.ShareDialogFragment;
 import com.simpleryo.leyotang.network.SimpleryoNetwork;
@@ -42,6 +50,9 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author huanglei
@@ -104,6 +115,21 @@ public class CourseDetailActivity extends BaseActivity    {
     TextView tv_comfirm_pay;
     @ViewInject(R.id.tv_reservations)
     RelativeLayout tv_reservations;
+
+    @ViewInject(R.id.lrecyclerview)
+    LRecyclerView lrecyclerview;
+    @ViewInject(R.id.empty_view)
+    private View mEmptyView;
+    @ViewInject(R.id.coupon_empty_view)
+    View coupon_empty_view;
+    @ViewInject(R.id.coupon_recycerview)
+    LRecyclerView coupon_recycerview;
+    LRecyclerViewAdapter lRecyclerViewAdapter;
+    LRecyclerViewAdapter couponLrcecyerAdapter;
+    RemarkListAdapter remarkListAdapter;
+    List<CourseRemarkListBean.DataBean> dataBeanArrayList = new ArrayList<>();
+    CouponsListAdapter couponsListAdapter;
+    ArrayList<CouponsListBean.DataBean> couponList = new ArrayList<>();
     boolean hasCollect;//是否收藏
     public Transformation transformation = new RoundedTransformationBuilder()
             .cornerRadius(30)
@@ -121,7 +147,104 @@ public class CourseDetailActivity extends BaseActivity    {
         EventBus.getDefault().register(this);//注册EventBus
         courseId = getIntent().getStringExtra("courseId");
         isLogin = SharedPreferencesUtils.getKeyBoolean("isLogin");
+        DividerDecoration divider = new DividerDecoration.Builder(this)
+                .setHeight(1f)
+                .setColorResource(R.color.color_a7a7a7)
+                .build();
+        lrecyclerview.addItemDecoration(divider);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 1) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        };
+        lrecyclerview.setLayoutManager(gridLayoutManager);
+        remarkListAdapter = new RemarkListAdapter(CourseDetailActivity.this);
+        lRecyclerViewAdapter = new LRecyclerViewAdapter(remarkListAdapter);
+        lrecyclerview.setAdapter(lRecyclerViewAdapter);
+        lrecyclerview.setLoadMoreEnabled(false);
+        lrecyclerview.setPullRefreshEnabled(false);
+
+        GridLayoutManager gridLayoutManager11 = new GridLayoutManager(this, 1) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        };
+        coupon_recycerview.setLayoutManager(gridLayoutManager11);
+        couponsListAdapter = new CouponsListAdapter(CourseDetailActivity.this);
+        couponLrcecyerAdapter = new LRecyclerViewAdapter(couponsListAdapter);
+        coupon_recycerview.setAdapter(couponLrcecyerAdapter);
+        coupon_recycerview.setLoadMoreEnabled(false);
+        coupon_recycerview.setPullRefreshEnabled(false);
+        getCoupon();
+        getRemarkList();
 //        UmengTool.getSignature(this);
+    }
+    //获取优惠券列表
+    public void getCoupon(){
+        SimpleryoNetwork.cardcoupontypes(CourseDetailActivity.this, new MyBaseProgressCallbackImpl() {
+            @Override
+            public void onSuccess(HttpInfo info) {
+                super.onSuccess(info);
+                CouponsListBean myCouponListBean = info.getRetDetail(CouponsListBean.class);
+                if (myCouponListBean.getCode().equalsIgnoreCase("0")) {
+                    if (myCouponListBean.getData() != null && myCouponListBean.getData().size() > 0) {
+                        if (couponList != null && couponList.size() > 0) {
+                            couponList.clear();
+                        }
+                        couponList.addAll(myCouponListBean.getData());
+                        couponsListAdapter.setDataList(couponList);
+                        couponLrcecyerAdapter.notifyDataSetChanged();
+                    } else {
+                        if (couponList.size()>0){
+                            lrecyclerview.setNoMore(true);
+                        }else{
+                            if (couponList != null&& couponList.size() > 0) {
+                                couponList.clear();
+                            }
+                            couponsListAdapter = new CouponsListAdapter(CourseDetailActivity.this);
+                            couponLrcecyerAdapter = new LRecyclerViewAdapter(couponsListAdapter);
+                            coupon_recycerview.setAdapter(couponLrcecyerAdapter);
+                            TextView textView = coupon_empty_view.findViewById(R.id.tv_tips);
+                            textView.setText("该课程暂无优惠券");
+                            coupon_recycerview.setEmptyView(coupon_empty_view);//设置在setAdapter之前才能生效
+                        }
+                    }
+                }
+                coupon_recycerview.refreshComplete(couponList.size());
+            }
+
+            @Override
+            public void onFailure(HttpInfo info) {
+                super.onFailure(info);
+                TextView textView = coupon_empty_view.findViewById(R.id.tv_tips);
+                textView.setText("数据一不小心走丢了，请稍后回来");
+                coupon_recycerview.setEmptyView(coupon_empty_view);
+            }
+        }, courseId,"","", "", "", "", 0, 9,"","");
+    }
+    //获取课程评价列表
+    public void getRemarkList(){
+        SimpleryoNetwork.comments(CourseDetailActivity.this,new MyBaseProgressCallbackImpl(){
+            @Override
+            public void onSuccess(HttpInfo info) {
+                super.onSuccess(info);
+                CourseRemarkListBean courseRemarkListBean = info.getRetDetail(CourseRemarkListBean.class);
+                if (courseRemarkListBean.getCode().equalsIgnoreCase("0")) {
+                    if (courseRemarkListBean.getData()!=null&&courseRemarkListBean.getData().size()>0){
+                        dataBeanArrayList.addAll(courseRemarkListBean.getData());
+                        remarkListAdapter.setDataList(dataBeanArrayList);
+                    }else {
+                        TextView textView = coupon_empty_view.findViewById(R.id.tv_tips);
+                        textView.setText("该课程暂无评价");
+                        lrecyclerview.setEmptyView(mEmptyView);//设置在setAdapter之前才能生效
+                    }
+                    lrecyclerview.refreshComplete(dataBeanArrayList.size());
+                    lRecyclerViewAdapter.notifyDataSetChanged();
+                }
+            }
+        },courseId);
     }
 
     @Override
@@ -187,7 +310,7 @@ public class CourseDetailActivity extends BaseActivity    {
             shareFaceBook(SHARE_MEDIA.FACEBOOK);
         }
         if (bus.getType() == 222) {
-            getStoreDetail(storeId);
+            getStoreDetail(storeId);//获取商家详情
         }
         if (bus.getType() == 113) {//获取课程详情
             SimpleryoNetwork.getCourseDetail(CourseDetailActivity.this, new MyBaseProgressCallbackImpl(CourseDetailActivity.this) {
@@ -346,7 +469,7 @@ public class CourseDetailActivity extends BaseActivity    {
     boolean isLogin;
     String storeId;
 
-    @Event(value = {R.id.iv_back, R.id.tv_reservations,R.id.tv_more, R.id.tv_share, R.id.tv_business_home, R.id.ll_collection, R.id.tv_to_home, R.id.tv_to_use_help}, type = View.OnClickListener.class)
+    @Event(value = {R.id.iv_back, R.id.tv_reservations,R.id.tv_more,R.id.tv_remark_more, R.id.tv_share, R.id.tv_business_home, R.id.ll_collection, R.id.tv_to_home, R.id.tv_to_use_help}, type = View.OnClickListener.class)
     private void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
@@ -354,6 +477,9 @@ public class CourseDetailActivity extends BaseActivity    {
                 break;
             case R.id.tv_more:
                 startActivity(new Intent(CourseDetailActivity.this,CoachHomeActivity.class).putExtra("coachId",coachId));
+                break;
+            case R.id.tv_remark_more:
+                startActivity(new Intent(CourseDetailActivity.this,CourseRemarkListActivity.class).putExtra("courseId",courseId));
                 break;
             case R.id.tv_to_home:
                 Intent intent2 = new Intent(CourseDetailActivity.this, MainActivity.class);

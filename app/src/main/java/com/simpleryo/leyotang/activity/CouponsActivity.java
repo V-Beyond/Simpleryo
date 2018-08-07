@@ -75,7 +75,6 @@ public class CouponsActivity extends BaseActivity {
         iv_msg.setVisibility(View.GONE);
         tv_name.setText(getResources().getString(R.string.coupon));
         ll_content = view.findViewById(R.id.ll_content);
-
         getTags();
         DividerDecoration divider = new DividerDecoration.Builder(CouponsActivity.this)
                 .setHeight(30f)
@@ -90,7 +89,6 @@ public class CouponsActivity extends BaseActivity {
         lrecyclerview.setPullRefreshEnabled(true);
         lrecyclerview.setOnRefreshListener(onRefreshListener);
         lrecyclerview.forceToRefresh();
-
     }
 
     int offset = 0;
@@ -120,6 +118,9 @@ public class CouponsActivity extends BaseActivity {
     String category="";
     //获取优惠券列表
     public void tickets() {
+        if (dataBeanArrayList != null && dataBeanArrayList.size() > 0) {
+            dataBeanArrayList.clear();
+        }
         SimpleryoNetwork.cardcoupontypes(CouponsActivity.this, new MyBaseProgressCallbackImpl() {
             @Override
             public void onSuccess(HttpInfo info) {
@@ -132,16 +133,22 @@ public class CouponsActivity extends BaseActivity {
                         }
                         dataBeanArrayList.addAll(myCouponListBean.getData());
                         couponsListAdapter.setDataList(dataBeanArrayList);
+                        lRecyclerViewAdapter.notifyDataSetChanged();
                     } else {
-                        if (dataBeanArrayList.size() > 0) {
+                        if (dataBeanArrayList.size()>0){
                             lrecyclerview.setNoMore(true);
-                        } else {
+                        }else{
+                            if (dataBeanArrayList != null&& dataBeanArrayList.size() > 0) {
+                                dataBeanArrayList.clear();
+                            }
+                            couponsListAdapter = new CouponsListAdapter(CouponsActivity.this);
+                            lRecyclerViewAdapter = new LRecyclerViewAdapter(couponsListAdapter);
+                            lrecyclerview.setAdapter(lRecyclerViewAdapter);
                             lrecyclerview.setEmptyView(mEmptyView);//设置在setAdapter之前才能生效
                         }
                     }
                 }
                 lrecyclerview.refreshComplete(dataBeanArrayList.size());
-                lRecyclerViewAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -151,7 +158,7 @@ public class CouponsActivity extends BaseActivity {
                 textView.setText("数据一不小心走丢了，请稍后回来");
                 lrecyclerview.setEmptyView(mEmptyView);
             }
-        }, "","",category, channel, lowAmount, upAmount, offset, limit);
+        }, "","",category, channel, lowAmount, upAmount, offset, limit,tagId1,tagId2);
     }
 
     ListView cityView;
@@ -188,6 +195,8 @@ public class CouponsActivity extends BaseActivity {
                 mDropDownMenu.closeMenu();
                 channel="";
                 category="";
+                tagId2="";
+                tagId1="";
                 tickets();
             }
         });
@@ -213,6 +222,7 @@ public class CouponsActivity extends BaseActivity {
 //                tagId2=childDataList.get(position).getId();
                 channel="";
                 category="";
+                tagId2=childDataList.get(position).getId();
                 mDropDownMenu.setTabText(childDataList.get(position).getName());
                 mDropDownMenu.closeMenu();
                 tickets();
@@ -224,6 +234,8 @@ public class CouponsActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ageAdapter.setCheckItem(position);
                 channel="";
+                tagId2="";
+                tagId1="";
                 String categoryName = preferential_type[position];
                 mDropDownMenu.setTabText(categoryName);
                 mDropDownMenu.closeMenu();
@@ -248,6 +260,8 @@ public class CouponsActivity extends BaseActivity {
                 mDropDownMenu.setTabText(channelName);
                 mDropDownMenu.closeMenu();
                 category="";
+                tagId2="";
+                tagId1="";
                 if (channelName.equalsIgnoreCase("全部")) {
                     channel = "";
                 }
@@ -263,7 +277,8 @@ public class CouponsActivity extends BaseActivity {
         //init dropdownview
         mDropDownMenu.setDropDownMenu(Arrays.asList(headers), popupViews, view);
     }
-
+    String tagId2="";
+    String tagId1="";
     String parentId = "";//二级分类的父id
     ArrayList<TagsListBean.DataBean> dataBeans = new ArrayList<>();
     ArrayList<TagsListBean.DataBean> childDataList = new ArrayList<>();
@@ -315,6 +330,8 @@ public class CouponsActivity extends BaseActivity {
                         upAmount="";
                         channel="";
                         category="";
+                        tagId2="";
+                        tagId1=dataBeans.get(position).getId();
                         tickets();
                     }
                 }

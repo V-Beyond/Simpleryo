@@ -3,6 +3,7 @@ package com.simpleryo.leyotang.bean;
 import org.xutils.http.annotation.HttpResponse;
 
 import java.util.List;
+
 /**
  * @ClassNname：CouponsListBean.java
  * @Describe 优惠券列表实体类
@@ -13,8 +14,8 @@ import java.util.List;
 public class CouponsListBean extends BaseResult {
 
     /**
-     * data : [{"id":"5b66803a511831226d406647","mid":"01","storeId":"5b5608c451183107612cf15f","creatorId":"5b5608c451183107612cf160","creationTime":1533444154883,"name":"5元代金券","imageUri":"https://simpleryo-china.oss-cn-hangzhou.aliyuncs.com/file/849eb764a1e6606acd825bfbc9d5726e","startTime":1533398400000,"endTime":1536076800000,"limitAmount":-1,"enable":true,"discount":null,"subtractAmount":500,"totalCounter":1,"consumeCounter":0,"retrieveCounter":1,"expireCounter":null,"retrieved":true,"category":"CASH","notes":null,"firstCourseTypes":null,"secondCourseTypes":null,"store":{"id":"5b5608c451183107612cf15f","name":"微信小程序实战训练营"},"courses":[]},{"id":"5b6567c351183112561f5fc1","mid":"01","storeId":null,"creatorId":"system","creationTime":1533372355816,"name":"7折优惠券","imageUri":"https://simpleryo-china.oss-cn-hangzhou.aliyuncs.com/file/849eb764a1e6606acd825bfbc9d5726e","startTime":1533312000000,"endTime":1535817600000,"limitAmount":-1,"enable":true,"discount":70,"subtractAmount":null,"totalCounter":100,"consumeCounter":0,"retrieveCounter":1,"expireCounter":null,"retrieved":true,"category":"DISCOUNT","notes":null,"firstCourseTypes":null,"secondCourseTypes":null,"store":null,"courses":[]},{"id":"5b6557545118310d7ec208bd","mid":"01","storeId":null,"creatorId":"system","creationTime":1533368148753,"name":"试试","imageUri":"https://simpleryo-china.oss-cn-hangzhou.aliyuncs.com/file/849eb764a1e6606acd825bfbc9d5726e","startTime":1533312000000,"endTime":1535126400000,"limitAmount":100,"enable":true,"discount":null,"subtractAmount":100,"totalCounter":1,"consumeCounter":0,"retrieveCounter":0,"expireCounter":null,"retrieved":false,"category":"CASH","notes":null,"firstCourseTypes":null,"secondCourseTypes":null,"store":null,"courses":[]},{"id":"5b654cc05118310d7ec208bb","mid":"01","storeId":"5b5608c451183107612cf15f","creatorId":"5b5608c451183107612cf160","creationTime":1533365440377,"name":"试试6","imageUri":"https://simpleryo-china.oss-cn-hangzhou.aliyuncs.com/file/849eb764a1e6606acd825bfbc9d5726e","startTime":1533139200000,"endTime":1535904000000,"limitAmount":100,"enable":true,"discount":null,"subtractAmount":90,"totalCounter":6,"consumeCounter":0,"retrieveCounter":1,"expireCounter":null,"retrieved":true,"category":"CASH","notes":null,"firstCourseTypes":null,"secondCourseTypes":null,"store":{"id":"5b5608c451183107612cf15f","name":"微信小程序实战训练营"},"courses":[]}]
-     * count : 4
+     * data : [{"id":"5b682d6551183108293afc16","mid":"01","storeId":"5b5608c451183107612cf15f","creatorId":"5b5608c451183107612cf160","creationTime":1533554021588,"name":"具体课程券","imageUri":"https://simpleryo-china.oss-cn-hangzhou.aliyuncs.com/file/909125fb51bfd9b618c584306c57e3f1","startTime":1533661200000,"endTime":1538240400000,"limitAmount":-1,"enable":true,"discount":null,"subtractAmount":1000,"totalCounter":15,"consumeCounter":0,"retrieveCounter":0,"expireCounter":null,"retrieved":false,"category":"CASH","notes":null,"firstCourseTypes":{"id":"5b5607d651183107612cf15b","name":"IT课程"},"secondCourseTypes":{"id":"5b666323511831226d406644","name":"开发"},"store":{"id":"5b5608c451183107612cf15f","name":"微信小程序实战训练营"},"courses":[{"id":"5b67e0865118317498214a59","name":"C语言基础教学"}]},{"id":"5b682d1851183108293afc15","mid":"01","storeId":"5b5608c451183107612cf15f","creatorId":"5b5608c451183107612cf160","creationTime":1533553944758,"name":"具体课程专用券","imageUri":"https://simpleryo-china.oss-cn-hangzhou.aliyuncs.com/file/8fa2354ea8fa6ca355bda74fc34011a8","startTime":1533661200000,"endTime":1538240400000,"limitAmount":-1,"enable":true,"discount":89,"subtractAmount":null,"totalCounter":15,"consumeCounter":0,"retrieveCounter":0,"expireCounter":null,"retrieved":false,"category":"DISCOUNT","notes":null,"firstCourseTypes":{"id":"5b5607d651183107612cf15b","name":"IT课程"},"secondCourseTypes":{"id":"5b666323511831226d406644","name":"开发"},"store":{"id":"5b5608c451183107612cf15f","name":"微信小程序实战训练营"},"courses":[{"id":"5b67e0865118317498214a59","name":"C语言基础教学"}]},{"id":"5b66803a511831226d406647","mid":"01","storeId":"5b5608c451183107612cf15f","creatorId":"5b5608c451183107612cf160","creationTime":1533444154883,"name":"5元代金券","imageUri":"https://simpleryo-china.oss-cn-hangzhou.aliyuncs.com/file/849eb764a1e6606acd825bfbc9d5726e","startTime":1533398400000,"endTime":1536076800000,"limitAmount":-1,"enable":true,"discount":null,"subtractAmount":500,"totalCounter":1,"consumeCounter":0,"retrieveCounter":1,"expireCounter":null,"retrieved":false,"category":"CASH","notes":null,"firstCourseTypes":null,"secondCourseTypes":null,"store":{"id":"5b5608c451183107612cf15f","name":"微信小程序实战训练营"},"courses":[]},{"id":"5b6567c351183112561f5fc1","mid":"01","storeId":null,"creatorId":"system","creationTime":1533372355816,"name":"7折优惠券","imageUri":"https://simpleryo-china.oss-cn-hangzhou.aliyuncs.com/file/849eb764a1e6606acd825bfbc9d5726e","startTime":1533312000000,"endTime":1535817600000,"limitAmount":-1,"enable":true,"discount":70,"subtractAmount":null,"totalCounter":100,"consumeCounter":0,"retrieveCounter":1,"expireCounter":null,"retrieved":false,"category":"DISCOUNT","notes":null,"firstCourseTypes":null,"secondCourseTypes":null,"store":null,"courses":[]},{"id":"5b6557545118310d7ec208bd","mid":"01","storeId":null,"creatorId":"system","creationTime":1533368148753,"name":"试试","imageUri":"https://simpleryo-china.oss-cn-hangzhou.aliyuncs.com/file/849eb764a1e6606acd825bfbc9d5726e","startTime":1533312000000,"endTime":1535126400000,"limitAmount":100,"enable":true,"discount":null,"subtractAmount":100,"totalCounter":1,"consumeCounter":0,"retrieveCounter":0,"expireCounter":null,"retrieved":false,"category":"CASH","notes":null,"firstCourseTypes":null,"secondCourseTypes":null,"store":null,"courses":[]},{"id":"5b654cc05118310d7ec208bb","mid":"01","storeId":"5b5608c451183107612cf15f","creatorId":"5b5608c451183107612cf160","creationTime":1533365440377,"name":"试试6","imageUri":"https://simpleryo-china.oss-cn-hangzhou.aliyuncs.com/file/849eb764a1e6606acd825bfbc9d5726e","startTime":1533139200000,"endTime":1535904000000,"limitAmount":100,"enable":true,"discount":null,"subtractAmount":90,"totalCounter":6,"consumeCounter":0,"retrieveCounter":1,"expireCounter":null,"retrieved":false,"category":"CASH","notes":null,"firstCourseTypes":null,"secondCourseTypes":null,"store":{"id":"5b5608c451183107612cf15f","name":"微信小程序实战训练营"},"courses":[]}]
+     * count : 6
      */
 
     private int count;
@@ -38,30 +39,30 @@ public class CouponsListBean extends BaseResult {
 
     public static class DataBean {
         /**
-         * id : 5b66803a511831226d406647
+         * id : 5b682d6551183108293afc16
          * mid : 01
          * storeId : 5b5608c451183107612cf15f
          * creatorId : 5b5608c451183107612cf160
-         * creationTime : 1533444154883
-         * name : 5元代金券
-         * imageUri : https://simpleryo-china.oss-cn-hangzhou.aliyuncs.com/file/849eb764a1e6606acd825bfbc9d5726e
-         * startTime : 1533398400000
-         * endTime : 1536076800000
+         * creationTime : 1533554021588
+         * name : 具体课程券
+         * imageUri : https://simpleryo-china.oss-cn-hangzhou.aliyuncs.com/file/909125fb51bfd9b618c584306c57e3f1
+         * startTime : 1533661200000
+         * endTime : 1538240400000
          * limitAmount : -1
          * enable : true
          * discount : null
-         * subtractAmount : 500
-         * totalCounter : 1
+         * subtractAmount : 1000
+         * totalCounter : 15
          * consumeCounter : 0
-         * retrieveCounter : 1
+         * retrieveCounter : 0
          * expireCounter : null
-         * retrieved : true
+         * retrieved : false
          * category : CASH
          * notes : null
-         * firstCourseTypes : null
-         * secondCourseTypes : null
+         * firstCourseTypes : {"id":"5b5607d651183107612cf15b","name":"IT课程"}
+         * secondCourseTypes : {"id":"5b666323511831226d406644","name":"开发"}
          * store : {"id":"5b5608c451183107612cf15f","name":"微信小程序实战训练营"}
-         * courses : []
+         * courses : [{"id":"5b67e0865118317498214a59","name":"C语言基础教学"}]
          */
 
         private String id;
@@ -71,8 +72,8 @@ public class CouponsListBean extends BaseResult {
         private long creationTime;
         private String name;
         private String imageUri;
-        private String startTime;
-        private String endTime;
+        private long startTime;
+        private long endTime;
         private int limitAmount;
         private boolean enable;
         private String discount;
@@ -84,10 +85,10 @@ public class CouponsListBean extends BaseResult {
         private boolean retrieved;
         private String category;
         private String notes;
-        private String firstCourseTypes;
-        private String secondCourseTypes;
+        private FirstCourseTypesBean firstCourseTypes;
+        private SecondCourseTypesBean secondCourseTypes;
         private StoreBean store;
-        private List<?> courses;
+        private List<CoursesBean> courses;
 
         public String getId() {
             return id;
@@ -145,19 +146,19 @@ public class CouponsListBean extends BaseResult {
             this.imageUri = imageUri;
         }
 
-        public String getStartTime() {
+        public long getStartTime() {
             return startTime;
         }
 
-        public void setStartTime(String startTime) {
+        public void setStartTime(long startTime) {
             this.startTime = startTime;
         }
 
-        public String getEndTime() {
+        public long getEndTime() {
             return endTime;
         }
 
-        public void setEndTime(String endTime) {
+        public void setEndTime(long endTime) {
             this.endTime = endTime;
         }
 
@@ -249,19 +250,19 @@ public class CouponsListBean extends BaseResult {
             this.notes = notes;
         }
 
-        public String getFirstCourseTypes() {
+        public FirstCourseTypesBean getFirstCourseTypes() {
             return firstCourseTypes;
         }
 
-        public void setFirstCourseTypes(String firstCourseTypes) {
+        public void setFirstCourseTypes(FirstCourseTypesBean firstCourseTypes) {
             this.firstCourseTypes = firstCourseTypes;
         }
 
-        public String getSecondCourseTypes() {
+        public SecondCourseTypesBean getSecondCourseTypes() {
             return secondCourseTypes;
         }
 
-        public void setSecondCourseTypes(String secondCourseTypes) {
+        public void setSecondCourseTypes(SecondCourseTypesBean secondCourseTypes) {
             this.secondCourseTypes = secondCourseTypes;
         }
 
@@ -273,18 +274,96 @@ public class CouponsListBean extends BaseResult {
             this.store = store;
         }
 
-        public List<?> getCourses() {
+        public List<CoursesBean> getCourses() {
             return courses;
         }
 
-        public void setCourses(List<?> courses) {
+        public void setCourses(List<CoursesBean> courses) {
             this.courses = courses;
+        }
+
+        public static class FirstCourseTypesBean {
+            /**
+             * id : 5b5607d651183107612cf15b
+             * name : IT课程
+             */
+
+            private String id;
+            private String name;
+
+            public String getId() {
+                return id;
+            }
+
+            public void setId(String id) {
+                this.id = id;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+        }
+
+        public static class SecondCourseTypesBean {
+            /**
+             * id : 5b666323511831226d406644
+             * name : 开发
+             */
+
+            private String id;
+            private String name;
+
+            public String getId() {
+                return id;
+            }
+
+            public void setId(String id) {
+                this.id = id;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
         }
 
         public static class StoreBean {
             /**
              * id : 5b5608c451183107612cf15f
              * name : 微信小程序实战训练营
+             */
+
+            private String id;
+            private String name;
+
+            public String getId() {
+                return id;
+            }
+
+            public void setId(String id) {
+                this.id = id;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+        }
+
+        public static class CoursesBean {
+            /**
+             * id : 5b67e0865118317498214a59
+             * name : C语言基础教学
              */
 
             private String id;

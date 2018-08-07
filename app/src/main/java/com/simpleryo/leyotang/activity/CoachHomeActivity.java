@@ -3,7 +3,7 @@ package com.simpleryo.leyotang.activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -76,7 +76,13 @@ public class CoachHomeActivity extends BaseActivity {
                 .setColorResource(R.color.color_transparent)
                 .build();
         lrecyclerview.addItemDecoration(divider);
-        lrecyclerview.setLayoutManager(new LinearLayoutManager(this));
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 1) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        };
+        lrecyclerview.setLayoutManager(gridLayoutManager);
         courseListTypeAdapter = new CourseListTypeAdapter(CoachHomeActivity.this);
         lRecyclerViewAdapter = new LRecyclerViewAdapter(courseListTypeAdapter);
         lrecyclerview.setAdapter(lRecyclerViewAdapter);
@@ -155,7 +161,7 @@ public class CoachHomeActivity extends BaseActivity {
                     }
                     tv_course_count.setText("Ta的课程 / "+hotCourseList.size()+"节");
                     lrecyclerview.refreshComplete(hotCourseList.size());
-                    lRecyclerViewAdapter.notifyDataSetChanged();
+                    courseListTypeAdapter.notifyDataSetChanged();
                 }
             }
 

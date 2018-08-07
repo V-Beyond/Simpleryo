@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none">
@@ -293,15 +293,18 @@
                         android:textColor="#373737"
                         android:textSize="35px" />
                 </LinearLayout>
-
-                <include
-                    layout="@layout/layout_coupon_item"
+                <com.github.jdsjlzx.recyclerview.LRecyclerView
                     android:layout_width="match_parent"
-                    android:layout_height="292px"
+                    android:id="@+id/coupon_recycerview"
                     android:layout_marginBottom="20px"
                     android:layout_marginLeft="45px"
                     android:layout_marginRight="40px"
-                    android:layout_marginTop="49px"></include>
+                    android:layout_marginTop="49px"
+                    android:layout_height="wrap_content"></com.github.jdsjlzx.recyclerview.LRecyclerView>
+                <include
+                    android:id="@+id/coupon_empty_view"
+                    layout="@layout/layout_empty"
+                    android:visibility="gone" />
             </LinearLayout>
 
             <LinearLayout
@@ -633,7 +636,7 @@
 
                     <TextView
                         android:layout_width="10px"
-                        android:layout_height="33px"
+                        android:layout_height="41px"
                         android:layout_marginLeft="33px"
                         android:background="#F32E59" />
 
@@ -647,6 +650,7 @@
                         android:textSize="35px" />
 
                     <TextView
+                        android:id="@+id/tv_remark_more"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="34px"
@@ -666,20 +670,21 @@
                     android:layout_marginTop="30px"
                     android:background="#A7A7A7"></View>
 
-                <include layout="@layout/layout_course_remark_item"></include>
-
-                <include layout="@layout/layout_course_remark_item"></include>
-
-                <include layout="@layout/layout_course_remark_item"></include>
-
                 <com.github.jdsjlzx.recyclerview.LRecyclerView
+                    android:id="@+id/lrecyclerview"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="30px"
                     android:layout_marginBottom="30px"
+                    android:minHeight="300px"
                     android:layout_marginLeft="33px"
                     android:layout_marginRight="33px"
-                    android:visibility="gone"></com.github.jdsjlzx.recyclerview.LRecyclerView>
+                    ></com.github.jdsjlzx.recyclerview.LRecyclerView>
+                <include
+                    android:id="@+id/empty_view"
+                    layout="@layout/layout_empty"
+                    android:visibility="gone" />
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 </LinearLayout>

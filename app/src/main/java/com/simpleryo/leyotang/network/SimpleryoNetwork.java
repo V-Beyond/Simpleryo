@@ -150,12 +150,16 @@ public class SimpleryoNetwork {
      * @param callback
      * @param phone
      */
-    public static void userGetCode(Context context, Callback callback, String phone) {
-        doHttpAsync(context, HttpInfo.Builder()
-                .setUrl(httpUrl + "u/phones/" + phone)
-                .setRequestType(RequestType.GET)//设置请求方式
-                .addParam("token", getToken())//添加接口参数
-                .build(), callback);
+    public static void userGetCode(Context context, Callback callback, String phone,String typeCode,String loginName) {
+        HttpInfo.Builder builder=new HttpInfo.Builder();
+        builder.setUrl(httpUrl + "u/phones/" + phone);
+        builder.setRequestType(RequestType.GET);//设置请求方式
+        builder.addParam("token", getToken());
+        builder.addParam("typeCode", typeCode);
+        if (!loginName.equalsIgnoreCase("")){
+            builder.addParam("loginName", loginName);
+        }
+        doHttpAsync(context,builder.build(), callback);
     }
 
     /**
@@ -804,6 +808,19 @@ public class SimpleryoNetwork {
     }
 
     /**
+     * 查询评论
+     * @param context
+     * @param callback
+     * @param resourceId
+     */
+    public static void comments(Context context, MyBaseProgressCallbackImpl callback, String resourceId) {
+        doHttpAsync(context, HttpInfo.Builder()
+                .setUrl(httpUrl + "r/" + resourceId + "/comments?token=" + getToken())
+                .setRequestType(RequestType.GET)//设置请求方式
+                .addParam("typeCode","COURSE")
+                .build(), callback);
+    }
+    /**
      * 投诉建议
      *
      * @param context
@@ -824,7 +841,49 @@ public class SimpleryoNetwork {
                 .addParamJson(jsonObject.toString())
                 .build(), callback);
     }
-
+    /**
+     * POST /s/contents/{id}/replies
+     *回复评论
+     * @param context
+     * @param callback
+     * @param body
+     * @param imageUrls
+     */
+    public static void replyComplaint(Context context, MyBaseProgressCallbackImpl callback, String id,String body, JsonArray imageUrls) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("body", body);
+        Log.w("cc", "json:" + jsonObject.toString());
+        doHttpAsync(context, HttpInfo.Builder()
+                .setUrl(httpUrl + "s/contents/"+id+"/replies?token=" + getToken())
+                .setRequestType(RequestType.POST)//设置请求方式
+                .addParamJson(jsonObject.toString())
+                .build(), callback);
+    }
+    /**
+     * 投诉建议记录
+     *
+     * @param context
+     * @param callback
+     */
+    public static void getComplaintList(Context context, MyBaseProgressCallbackImpl callback) {
+        doHttpAsync(context, HttpInfo.Builder()
+                .setUrl(httpUrl + "s/contents?token=" + getToken())
+                .setRequestType(RequestType.GET)//设置请求方式
+                .addParam("typeCode","COMPLAINT")
+                .build(), callback);
+    }
+    /**
+     * 投诉建详情
+     *
+     * @param context
+     * @param callback
+     */
+    public static void getComplaintDetail(Context context, MyBaseProgressCallbackImpl callback,String id) {
+        doHttpAsync(context, HttpInfo.Builder()
+                .setUrl(httpUrl + "s/contents/"+id+"?token=" + getToken())
+                .setRequestType(RequestType.GET)//设置请求方式
+                .build(), callback);
+    }
     /**
      * GET /coupon/tickets
      查询我的优惠券列表或某类型券领取情况
@@ -849,13 +908,13 @@ public class SimpleryoNetwork {
      * @param context
      * @param callback
      */
-    public static void cardcoupontypes(Context context, MyBaseProgressCallbackImpl callback,String status,String storeId,String category,String channel,String lowAmount,String upAmount,int offset,int limit) {
+    public static void cardcoupontypes(Context context, MyBaseProgressCallbackImpl callback,String courseId,String storeId,String category,String channel,String lowAmount,String upAmount,int offset,int limit, String tagId1,String tagId2) {
         HttpInfo.Builder builder=new HttpInfo.Builder();
         builder.setUrl(httpUrl + "coupon/cardcoupontypes");
         builder.setRequestType(RequestType.GET);//设置请求方式
         builder.addParam("token", getToken());//添加接口参数
-        if (!status.equalsIgnoreCase("")){
-            builder.addParam("status", status);
+        if (!courseId.equalsIgnoreCase("")){
+            builder.addParam("courseId", courseId);
         }
         if (!storeId.equalsIgnoreCase("")){
             builder.addParam("storeId", storeId);
@@ -871,6 +930,12 @@ public class SimpleryoNetwork {
         }
         if (!upAmount.equalsIgnoreCase("")){
             builder.addParam("upAmount", upAmount);
+        }
+        if (!tagId1.equalsIgnoreCase("")) {
+            builder.addParam("tagId1", tagId1);
+        }
+        if (!tagId2.equalsIgnoreCase("")) {
+            builder.addParam("tagId2", tagId2);
         }
         builder .addParam("offset", offset + "");
         builder.addParam("limit", limit + "");
