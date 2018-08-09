@@ -14,7 +14,7 @@ import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.okhttplib.HttpInfo;
 import com.simpleryo.leyotang.R;
-import com.simpleryo.leyotang.adapter.ComplaintkListAdapter;
+import com.simpleryo.leyotang.adapter.ComplaintListAdapter;
 import com.simpleryo.leyotang.base.BaseActivity;
 import com.simpleryo.leyotang.base.MyBaseProgressCallbackImpl;
 import com.simpleryo.leyotang.bean.BusEntity;
@@ -49,7 +49,7 @@ public class HistoryRecordsListActivity extends BaseActivity {
     @ViewInject(R.id.lrecyclerview)
     LRecyclerView lrecyclerview;
     LRecyclerViewAdapter lRecyclerViewAdapter;
-    ComplaintkListAdapter complaintkListAdapter;
+    ComplaintListAdapter complaintkListAdapter;
     @ViewInject(R.id.empty_view)
     private View mEmptyView;
     List<ComplainListBean.DataBean> dataBeanArrayList = new ArrayList<>();
@@ -65,7 +65,7 @@ public class HistoryRecordsListActivity extends BaseActivity {
                 .build();
         lrecyclerview.addItemDecoration(divider);
         lrecyclerview.setLayoutManager(new LinearLayoutManager(this));
-        complaintkListAdapter = new ComplaintkListAdapter(HistoryRecordsListActivity.this);
+        complaintkListAdapter = new ComplaintListAdapter(HistoryRecordsListActivity.this);
         lRecyclerViewAdapter = new LRecyclerViewAdapter(complaintkListAdapter);
         lrecyclerview.setAdapter(lRecyclerViewAdapter);
         lrecyclerview.setLoadMoreEnabled(false);
@@ -108,6 +108,11 @@ public class HistoryRecordsListActivity extends BaseActivity {
                     lrecyclerview.refreshComplete(dataBeanArrayList.size());
                     lRecyclerViewAdapter.notifyDataSetChanged();
                 }
+            }
+
+            @Override
+            public void onFailure(HttpInfo info) {
+                super.onFailure(info);
             }
         });
     }

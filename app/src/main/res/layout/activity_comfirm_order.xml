@@ -46,9 +46,9 @@
                     android:layout_marginLeft="56px"
                     android:layout_marginRight="20px"
                     android:layout_marginTop="56px"
-                    android:text="Private Yoga"
-                    android:maxLines="2"
                     android:ellipsize="end"
+                    android:maxLines="2"
+                    android:text="Private Yoga"
                     android:textColor="@color/color_ffffff"
                     android:textSize="47px" />
 
@@ -295,6 +295,7 @@
                         android:layout_marginLeft="6px"
                         android:src="@mipmap/iv_count_increase" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="80px"
@@ -306,21 +307,21 @@
                         android:layout_width="220px"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:textSize="38px"
                         android:layout_marginLeft="79px"
-                        android:text="@string/reservation" />
+                        android:text="@string/reservation"
+                        android:textSize="38px" />
 
                     <EditText
                         android:id="@+id/edittext_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:textSize="38px"
-                        android:singleLine="true"
-                        android:padding="10px"
                         android:layout_marginRight="79px"
                         android:background="@drawable/shape_rectangle_edittext"
-                        android:hint="@string/Required_name" />
+                        android:hint="@string/Required_name"
+                        android:padding="10px"
+                        android:singleLine="true"
+                        android:textSize="38px" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -335,105 +336,143 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="79px"
-                        android:textSize="38px"
-                        android:text="@string/cell_phone_number" />
+                        android:text="@string/cell_phone_number"
+                        android:textSize="38px" />
 
                     <EditText
                         android:id="@+id/edittext_phone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:singleLine="true"
-                        android:inputType="number"
-                        android:padding="10px"
-                        android:textSize="38px"
                         android:layout_marginRight="79px"
                         android:background="@drawable/shape_rectangle_edittext"
-                        android:hint="@string/Required_phone" />
+                        android:hint="@string/Required_phone"
+                        android:inputType="number"
+                        android:padding="10px"
+                        android:singleLine="true"
+                        android:textSize="38px" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/ll_course_time"
                     android:layout_width="match_parent"
                     android:layout_height="80px"
                     android:layout_marginTop="30px"
-                    android:visibility="gone"
                     android:background="@color/color_ffffff"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="220px"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="79px"
                         android:layout_gravity="center_vertical"
-                        android:textSize="38px"
-                        android:text="@string/Booking_time" />
+                        android:layout_marginLeft="79px"
+                        android:text="@string/Booking_time"
+                        android:textSize="38px" />
+
                     <TextView
                         android:id="@+id/radigroup_time"
                         android:layout_width="match_parent"
-                        android:layout_marginRight="79px"
-                        android:gravity="center"
-                        android:background="@drawable/shape_radio_unselect"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        android:layout_marginRight="79px"
+                        android:background="@drawable/shape_radio_unselect"
+                        android:gravity="center"
+                        android:orientation="vertical"
                         android:paddingBottom="10px"
                         android:paddingTop="10px"
                         android:text="@string/book_time"
-                        android:textSize="38px"
-                        android:orientation="vertical"
-                        android:layout_height="wrap_content"/>
+                        android:textSize="38px" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30px"
                     android:background="@color/color_ffffff"
+                    android:layout_marginBottom="30px"
                     android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="220px"
                         android:layout_height="wrap_content"
-                        android:textSize="38px"
                         android:layout_marginLeft="79px"
-                        android:text="@string/remarks" />
+                        android:text="@string/remarks"
+                        android:textSize="38px" />
 
                     <EditText
                         android:id="@+id/edittext_remark"
                         android:layout_width="match_parent"
                         android:layout_height="300px"
                         android:layout_gravity="center_vertical"
-                        android:singleLine="true"
-                        android:padding="10px"
-                        android:gravity="top|left"
-                        android:textSize="38px"
                         android:layout_marginRight="79px"
                         android:background="@drawable/shape_rectangle_edittext"
-                        android:hint="" />
+                        android:gravity="top|left"
+                        android:hint=""
+                        android:padding="10px"
+                        android:singleLine="true"
+                        android:textSize="38px" />
                 </LinearLayout>
+            </LinearLayout>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="103px"
+                android:layout_marginTop="39px"
+                android:background="@color/color_ffffff">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="60px"
+                    android:gravity="center"
+                    android:text="@string/coupon"
+                    android:textColor="#FF3A3A3A"
+                    android:textSize="33px" />
 
                 <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_marginTop="39px"
-                    android:background="@color/color_ffffff"
-                    android:layout_height="103px">
+                    android:id="@+id/rl_available"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true">
+
                     <TextView
+                        android:id="@+id/tv_coupon_count"
                         android:layout_width="wrap_content"
-                        android:text="@string/coupon"
-                        android:textColor="#FF3A3A3A"
-                        android:gravity="center"
-                        android:layout_marginLeft="60px"
+                        android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:textSize="33px"
-                        android:layout_height="wrap_content" />
+                        android:layout_marginRight="15px"
+                        android:layout_toLeftOf="@+id/iv_coupons_more"
+                        android:background="@drawable/shape_available_coupon_count"
+                        android:drawableLeft="@mipmap/iv_available_left"
+                        android:drawablePadding="10px"
+                        android:gravity="center"
+                        android:paddingBottom="10px"
+                        android:paddingLeft="20px"
+                        android:paddingRight="20px"
+                        android:paddingTop="10px"
+                        android:text="暂无优惠券可用"
+                        android:textColor="#FFFFFEFE"
+                        android:textSize="18px" />
+
                     <ImageView
                         android:id="@+id/iv_coupons_more"
                         android:layout_width="wrap_content"
-                        android:src="@mipmap/iv_coupons_more"
-                        android:layout_centerVertical="true"
+                        android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
                         android:layout_marginRight="34px"
-                        android:layout_height="wrap_content" />
+                        android:src="@mipmap/iv_coupons_more" />
                 </RelativeLayout>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="39px"
+                android:background="@color/white"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/tv_total_price"
@@ -450,8 +489,8 @@
                     android:id="@+id/radio_group_pay"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="79px"
                     android:layout_marginBottom="30px"
+                    android:layout_marginLeft="79px"
                     android:layout_marginTop="30px"
                     android:orientation="vertical">
 

@@ -73,6 +73,8 @@ public class CouponFragment extends XLibraryLazyFragment {
     @Override
     public void onResume() {
         super.onResume();
+        //是否允许嵌套滑动
+        lrecyclerview.setNestedScrollingEnabled(false);
         DividerDecoration divider = new DividerDecoration.Builder(getActivity())
                 .setHeight(30f)
                 .setColorResource(R.color.color_transparent)

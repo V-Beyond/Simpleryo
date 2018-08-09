@@ -140,11 +140,11 @@ public class MultiImageView extends LinearLayout {
 			addView(createImageView(0, false));
 		} else {
 			int allCount = imagesList.size();
-			if(allCount == 4){
-				MAX_PER_ROW_COUNT = 2;
-			}else{
-				MAX_PER_ROW_COUNT = 3;
-			}
+//			if(allCount == 4){
+//				MAX_PER_ROW_COUNT = 2;
+//			}else{
+//				MAX_PER_ROW_COUNT = 3;
+//			}
 			int rowCount = allCount / MAX_PER_ROW_COUNT
 					+ (allCount % MAX_PER_ROW_COUNT > 0 ? 1 : 0);// 行数
 			for (int rowCursor = 0; rowCursor < rowCount; rowCursor++) {

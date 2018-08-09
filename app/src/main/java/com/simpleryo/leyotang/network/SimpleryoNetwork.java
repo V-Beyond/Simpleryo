@@ -56,6 +56,7 @@ public class SimpleryoNetwork {
 
     /**
      * 使用refreshToken
+     *
      * @param context
      * @param callback
      * @param refreshToken
@@ -64,29 +65,32 @@ public class SimpleryoNetwork {
         doHttpAsync(context, HttpInfo.Builder()
                 .setUrl(httpUrl + "u/token/refresh")
                 .setRequestType(RequestType.PUT)//设置请求方式
-                .addParam("refreshToken",refreshToken)//添加接口参数
+                .addParam("refreshToken", refreshToken)//添加接口参数
                 .build(), callback);
     }
 
     /**
      * 获取微信getAccess_token
+     *
      * @param context
      * @param callback
      * @param httpUrl
      */
-    public static void getAccess_token(Context context, Callback callback,String httpUrl) {
+    public static void getAccess_token(Context context, Callback callback, String httpUrl) {
         doHttpAsync(context, HttpInfo.Builder()
                 .setUrl(httpUrl)
                 .setRequestType(RequestType.GET)//设置请求方式
                 .build(), callback);
     }
+
     /**
      * 获取微信用户信息
+     *
      * @param context
      * @param callback
      * @param httpUrl
      */
-    public static void getUserMsg(Context context, Callback callback,String httpUrl) {
+    public static void getUserMsg(Context context, Callback callback, String httpUrl) {
         doHttpAsync(context, HttpInfo.Builder()
                 .setUrl(httpUrl)
                 .setRequestType(RequestType.GET)//设置请求方式
@@ -95,13 +99,14 @@ public class SimpleryoNetwork {
 
     /**
      * 绑定第三方账号
+     *
      * @param context
      * @param callback
      * @param id
      * @param thirdNo
      * @param typeCode
      */
-    public static void bindAccount(Context context, Callback callback,String id,String thirdNo,String typeCode) {
+    public static void bindAccount(Context context, Callback callback, String id, String thirdNo, String typeCode) {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("thirdNo", thirdNo);//第三方用户唯一标识
@@ -109,13 +114,14 @@ public class SimpleryoNetwork {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Log.w("cc", "注册json：" + jsonObject.toString()+"用户id："+id);
+        Log.w("cc", "注册json：" + jsonObject.toString() + "用户id：" + id);
         doHttpAsync(context, HttpInfo.Builder()
-                .setUrl(httpUrl + "u/users/"+id+"/bind/account?token=" + getToken())
+                .setUrl(httpUrl + "u/users/" + id + "/bind/account?token=" + getToken())
                 .setRequestType(RequestType.POST)//设置请求方式
                 .addParamJson(jsonObject.toString())
                 .build(), callback);
     }
+
     /**
      * 用户注册
      *
@@ -138,7 +144,7 @@ public class SimpleryoNetwork {
         }
         Log.w("cc", "注册json：" + jsonObject.toString());
         doHttpAsync(context, HttpInfo.Builder()
-                .setUrl(httpUrl + "u/users?token="+getToken())
+                .setUrl(httpUrl + "u/users?token=" + getToken())
                 .setRequestType(RequestType.POST)//设置请求方式
                 .addParamJson(jsonObject.toString())//添加接口参数
                 .build(), callback);
@@ -150,16 +156,16 @@ public class SimpleryoNetwork {
      * @param callback
      * @param phone
      */
-    public static void userGetCode(Context context, Callback callback, String phone,String typeCode,String loginName) {
-        HttpInfo.Builder builder=new HttpInfo.Builder();
+    public static void userGetCode(Context context, Callback callback, String phone, String typeCode, String loginName) {
+        HttpInfo.Builder builder = new HttpInfo.Builder();
         builder.setUrl(httpUrl + "u/phones/" + phone);
         builder.setRequestType(RequestType.GET);//设置请求方式
         builder.addParam("token", getToken());
         builder.addParam("typeCode", typeCode);
-        if (!loginName.equalsIgnoreCase("")){
+        if (!loginName.equalsIgnoreCase("")) {
             builder.addParam("loginName", loginName);
         }
-        doHttpAsync(context,builder.build(), callback);
+        doHttpAsync(context, builder.build(), callback);
     }
 
     /**
@@ -227,7 +233,7 @@ public class SimpleryoNetwork {
      * @param quantity
      * @param totalAmt
      */
-    public static void createOrder(Context context, Callback callback, String coachId, String storeId, String courseId, String courseName, String payType, int quantity, int unitPrice, int totalAmt, int payAmt,String name,String phone,String remark,String aboutArrangeId) {
+    public static void createOrder(Context context, Callback callback, String coachId, String storeId, String courseId, String courseName, String payType, int quantity, int unitPrice, int totalAmt, int payAmt, String name, String phone, String remark, String aboutArrangeId, String ticketId, String discountAmt) {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("coachId", coachId);
@@ -243,7 +249,9 @@ public class SimpleryoNetwork {
             jsonObject.put("userName", name);
             jsonObject.put("userPhone", phone);
             jsonObject.put("userRemark", remark);
-            jsonObject.put("aboutArrangeId",aboutArrangeId);
+            jsonObject.put("aboutArrangeId", aboutArrangeId);
+            jsonObject.put("ticketId", ticketId);
+            jsonObject.put("discountAmt", discountAmt);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -254,6 +262,7 @@ public class SimpleryoNetwork {
                 .addParamJson(jsonObject.toString())
                 .build(), callback);
     }
+
     /**
      * 修改订单
      *
@@ -264,7 +273,7 @@ public class SimpleryoNetwork {
      * @param quantity
      * @param totalAmt
      */
-    public static void updateOrder(Context context, Callback callback, String orderId,String coachId, String storeId, String courseId, String courseName, String payType, int quantity, int unitPrice, int totalAmt, int payAmt,String name,String phone,String remark,String aboutArrangeId,String creationDate) {
+    public static void updateOrder(Context context, Callback callback, String orderId, String coachId, String storeId, String courseId, String courseName, String payType, int quantity, int unitPrice, int totalAmt, int payAmt, String name, String phone, String remark, String aboutArrangeId, String creationDate) {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("coachId", coachId);
@@ -280,18 +289,19 @@ public class SimpleryoNetwork {
             jsonObject.put("userName", name);
             jsonObject.put("userPhone", phone);
             jsonObject.put("userRemark", remark);
-            jsonObject.put("aboutArrangeId",aboutArrangeId);
-            jsonObject.put("creationDate",creationDate);
+            jsonObject.put("aboutArrangeId", aboutArrangeId);
+            jsonObject.put("creationDate", creationDate);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         Log.w("cc", "订单json：" + jsonObject.toString());
         doHttpAsync(context, HttpInfo.Builder()
-                .setUrl(httpUrl + "o/orders/"+orderId+"?token=" + getToken())
+                .setUrl(httpUrl + "o/orders/" + orderId + "?token=" + getToken())
                 .setRequestType(RequestType.PUT)//设置请求方式
                 .addParamJson(jsonObject.toString())
                 .build(), callback);
     }
+
     /**
      * 记录订单
      *
@@ -325,13 +335,13 @@ public class SimpleryoNetwork {
      * @param context
      * @param callback
      */
-    public static void getCourse(Context context, Callback callback, String storeId, String name, String tagId1,String tagId2, String tagId3,String coachId) {
+    public static void getCourse(Context context, Callback callback, String storeId, String name, String tagId1, String tagId2, String tagId3, String coachId) {
         HttpInfo.Builder builder = new HttpInfo.Builder();
         builder.setUrl(httpUrl + "p/courses");
         builder.setRequestType(RequestType.GET);
         builder.addParam("token", getToken());
-        if (!coachId.equalsIgnoreCase("")){
-            builder.addParam("coachId",coachId);
+        if (!coachId.equalsIgnoreCase("")) {
+            builder.addParam("coachId", coachId);
         }
         if (!storeId.equalsIgnoreCase("")) {
             builder.addParam("storeId", storeId);//商家id
@@ -351,13 +361,14 @@ public class SimpleryoNetwork {
         }
         doHttpAsync(context, builder.build(), callback);
     }
+
     /**
      * 查询课程列表
      *
      * @param context
      * @param callback
      */
-    public static void getSearchCourse(Context context, Callback callback,  String name, int offset, int limit) {
+    public static void getSearchCourse(Context context, Callback callback, String name, int offset, int limit) {
         HttpInfo.Builder builder = new HttpInfo.Builder();
         builder.setUrl(httpUrl + "p/courses");
         builder.setRequestType(RequestType.GET);
@@ -369,6 +380,7 @@ public class SimpleryoNetwork {
         builder.addParam("limit", limit + "");
         doHttpAsync(context, builder.build(), callback);
     }
+
     /**
      * 修改用户信息
      *
@@ -466,6 +478,7 @@ public class SimpleryoNetwork {
                 .addParam("storeId", storeId)
                 .build(), callback);
     }
+
     /**
      * 根据id查询教练信息
      *
@@ -475,7 +488,7 @@ public class SimpleryoNetwork {
      */
     public static void getCoacheInfoById(Context context, MyBaseProgressCallbackImpl callback, String id) {
         doHttpAsync(context, HttpInfo.Builder()
-                .setUrl(httpUrl + "u/coaches/"+id)
+                .setUrl(httpUrl + "u/coaches/" + id)
                 .setRequestType(RequestType.GET)//设置请求方式
                 .addParam("token", getToken())//添加接口参数
                 .build(), callback);
@@ -512,6 +525,7 @@ public class SimpleryoNetwork {
                 .addParam("limit", limit + "")
                 .build(), callback);
     }
+
     /**
      * 关注门店
      *
@@ -719,7 +733,7 @@ public class SimpleryoNetwork {
      * @param context
      * @param callback
      */
-    public static void getMessageList(Context context, MyBaseProgressCallbackImpl callback,int offset, int limit) {
+    public static void getMessageList(Context context, MyBaseProgressCallbackImpl callback, int offset, int limit) {
         doHttpAsync(context, HttpInfo.Builder()
                 .setUrl(httpUrl + "s/contents")
                 .setRequestType(RequestType.GET)//设置请求方式
@@ -809,6 +823,7 @@ public class SimpleryoNetwork {
 
     /**
      * 查询评论
+     *
      * @param context
      * @param callback
      * @param resourceId
@@ -817,9 +832,10 @@ public class SimpleryoNetwork {
         doHttpAsync(context, HttpInfo.Builder()
                 .setUrl(httpUrl + "r/" + resourceId + "/comments?token=" + getToken())
                 .setRequestType(RequestType.GET)//设置请求方式
-                .addParam("typeCode","COURSE")
+                .addParam("typeCode", "COURSE")
                 .build(), callback);
     }
+
     /**
      * 投诉建议
      *
@@ -830,7 +846,7 @@ public class SimpleryoNetwork {
      */
     public static void addComplaint(Context context, MyBaseProgressCallbackImpl callback, String body, JsonArray imageUrls) {
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("title", "新普乐android端投诉建议");
+        jsonObject.addProperty("title", "LeYoTown客户端android投诉建议");
         jsonObject.addProperty("body", body);
         jsonObject.add("imageUrls", imageUrls);
         jsonObject.addProperty("typeCode", "COMPLAINT");
@@ -841,24 +857,40 @@ public class SimpleryoNetwork {
                 .addParamJson(jsonObject.toString())
                 .build(), callback);
     }
+
     /**
      * POST /s/contents/{id}/replies
-     *回复评论
+     * 回复评论
+     *
      * @param context
      * @param callback
      * @param body
-     * @param imageUrls
      */
-    public static void replyComplaint(Context context, MyBaseProgressCallbackImpl callback, String id,String body, JsonArray imageUrls) {
+    public static void replyComplaint(Context context, MyBaseProgressCallbackImpl callback, String id, String body) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("body", body);
         Log.w("cc", "json:" + jsonObject.toString());
         doHttpAsync(context, HttpInfo.Builder()
-                .setUrl(httpUrl + "s/contents/"+id+"/replies?token=" + getToken())
+                .setUrl(httpUrl + "s/contents/" + id + "/replies?token=" + getToken())
                 .setRequestType(RequestType.POST)//设置请求方式
                 .addParamJson(jsonObject.toString())
                 .build(), callback);
     }
+
+    /**
+     * GET /s/contents/{id}/replies
+     * 回复评论
+     *
+     * @param context
+     * @param callback
+     */
+    public static void getReplyComplaint(Context context, MyBaseProgressCallbackImpl callback, String id) {
+        doHttpAsync(context, HttpInfo.Builder()
+                .setUrl(httpUrl + "s/contents/" + id + "/replies?token=" + getToken())
+                .setRequestType(RequestType.GET)//设置请求方式
+                .build(), callback);
+    }
+
     /**
      * 投诉建议记录
      *
@@ -869,66 +901,70 @@ public class SimpleryoNetwork {
         doHttpAsync(context, HttpInfo.Builder()
                 .setUrl(httpUrl + "s/contents?token=" + getToken())
                 .setRequestType(RequestType.GET)//设置请求方式
-                .addParam("typeCode","COMPLAINT")
+                .addParam("typeCode", "COMPLAINT")
                 .build(), callback);
     }
+
     /**
      * 投诉建详情
      *
      * @param context
      * @param callback
      */
-    public static void getComplaintDetail(Context context, MyBaseProgressCallbackImpl callback,String id) {
+    public static void getComplaintDetail(Context context, MyBaseProgressCallbackImpl callback, String id) {
         doHttpAsync(context, HttpInfo.Builder()
-                .setUrl(httpUrl + "s/contents/"+id+"?token=" + getToken())
+                .setUrl(httpUrl + "s/contents/" + id + "?token=" + getToken())
                 .setRequestType(RequestType.GET)//设置请求方式
                 .build(), callback);
     }
+
     /**
      * GET /coupon/tickets
-     查询我的优惠券列表或某类型券领取情况
+     * 查询我的优惠券列表或某类型券领取情况
+     *
      * @param context
      * @param callback
      */
-    public static void tickets(Context context, MyBaseProgressCallbackImpl callback,String status,int offset,int limit) {
-        HttpInfo.Builder builder=new HttpInfo.Builder();
+    public static void tickets(Context context, MyBaseProgressCallbackImpl callback, String status, int offset, int limit) {
+        HttpInfo.Builder builder = new HttpInfo.Builder();
         builder.setUrl(httpUrl + "coupon/tickets");
         builder.setRequestType(RequestType.GET);//设置请求方式
         builder.addParam("token", getToken());//添加接口参数
-        if (!status.equalsIgnoreCase("")){
+        if (!status.equalsIgnoreCase("")) {
             builder.addParam("status", status);
         }
         builder.addParam("offset", offset + "");
         builder.addParam("limit", limit + "");
-        doHttpAsync(context,builder .build(), callback);
+        doHttpAsync(context, builder.build(), callback);
     }
 
     /**
      * 查询优惠券列表
+     *
      * @param context
      * @param callback
      */
-    public static void cardcoupontypes(Context context, MyBaseProgressCallbackImpl callback,String courseId,String storeId,String category,String channel,String lowAmount,String upAmount,int offset,int limit, String tagId1,String tagId2) {
-        HttpInfo.Builder builder=new HttpInfo.Builder();
+    public static void cardcoupontypes(Context context, MyBaseProgressCallbackImpl callback, String courseId, String storeId, String category, String channel, String lowAmount, String upAmount, int offset, int limit, String tagId1, String tagId2) {
+        HttpInfo.Builder builder = new HttpInfo.Builder();
         builder.setUrl(httpUrl + "coupon/cardcoupontypes");
         builder.setRequestType(RequestType.GET);//设置请求方式
         builder.addParam("token", getToken());//添加接口参数
-        if (!courseId.equalsIgnoreCase("")){
+        if (!courseId.equalsIgnoreCase("")) {
             builder.addParam("courseId", courseId);
         }
-        if (!storeId.equalsIgnoreCase("")){
+        if (!storeId.equalsIgnoreCase("")) {
             builder.addParam("storeId", storeId);
         }
-        if (!category.equalsIgnoreCase("")){
+        if (!category.equalsIgnoreCase("")) {
             builder.addParam("category", category);
         }
-        if (!channel.equalsIgnoreCase("")){
+        if (!channel.equalsIgnoreCase("")) {
             builder.addParam("channel", channel);
         }
-        if (!lowAmount.equalsIgnoreCase("")){
+        if (!lowAmount.equalsIgnoreCase("")) {
             builder.addParam("lowAmount", lowAmount);
         }
-        if (!upAmount.equalsIgnoreCase("")){
+        if (!upAmount.equalsIgnoreCase("")) {
             builder.addParam("upAmount", upAmount);
         }
         if (!tagId1.equalsIgnoreCase("")) {
@@ -937,18 +973,20 @@ public class SimpleryoNetwork {
         if (!tagId2.equalsIgnoreCase("")) {
             builder.addParam("tagId2", tagId2);
         }
-        builder .addParam("offset", offset + "");
+        builder.addParam("offset", offset + "");
         builder.addParam("limit", limit + "");
         doHttpAsync(context, builder.build(), callback);
     }
+
     /**
      * 领取券
+     *
      * @param context
      * @param callback
      */
-    public static void cardcoupontypes(Context context, MyBaseProgressCallbackImpl callback,String id) {
+    public static void getCardcouponById(Context context, MyBaseProgressCallbackImpl callback, String id) {
         doHttpAsync(context, HttpInfo.Builder()
-                .setUrl(httpUrl + "/coupon/cardcoupontypes/"+id+"/tickets")
+                .setUrl(httpUrl + "/coupon/cardcoupontypes/" + id + "/tickets")
                 .setRequestType(RequestType.PUT)//设置请求方式
                 .addParam("token", getToken())//添加接口参数
                 .build(), callback);
@@ -956,42 +994,45 @@ public class SimpleryoNetwork {
 
     /**
      * GET /coupon/tickets/{id} 用户查询领取券详情
+     *
      * @param context
      * @param callback
      */
-    public static void ticketsDetailById(Context context, MyBaseProgressCallbackImpl callback,String id) {
+    public static void ticketsDetailById(Context context, MyBaseProgressCallbackImpl callback, String id) {
         doHttpAsync(context, HttpInfo.Builder()
-                .setUrl(httpUrl + "coupon/tickets?id="+id)
+                .setUrl(httpUrl + "coupon/tickets?id=" + id)
                 .setRequestType(RequestType.GET)//设置请求方式
                 .addParam("token", getToken())//添加接口参数
                 .build(), callback);
     }
+
     /**
      * /coupon/available/tickets
-     查询可用优惠券
+     * 查询可用优惠券
+     *
      * @param context
      * @param callback
      */
-    public static void availableTickets(Context context, MyBaseProgressCallbackImpl callback,String storeId,String courseId,int offset,int limit) {
+    public static void availableTickets(Context context, MyBaseProgressCallbackImpl callback, String storeId, String courseId, int quantity) {
         doHttpAsync(context, HttpInfo.Builder()
                 .setUrl(httpUrl + "coupon/available/tickets")
                 .setRequestType(RequestType.GET)//设置请求方式
                 .addParam("token", getToken())//添加接口参数
                 .addParam("storeId", storeId)
                 .addParam("courseId", courseId)
-                .addParam("offset", offset + "")
-                .addParam("limit", limit + "")
+                .addParam("quantity", quantity + "")
                 .build(), callback);
     }
 
 
     /**
-     *GET /c/tags
-     查询标签
+     * GET /c/tags
+     * 查询标签
+     *
      * @param context
      * @param callback
      */
-    public static void tags(Context context, MyBaseProgressCallbackImpl callback,String spaceCode,String parentId) {
+    public static void tags(Context context, MyBaseProgressCallbackImpl callback, String spaceCode, String parentId) {
         doHttpAsync(context, HttpInfo.Builder()
                 .setUrl(httpUrl + "c/tags")
                 .setRequestType(RequestType.GET)//设置请求方式
@@ -1000,6 +1041,7 @@ public class SimpleryoNetwork {
                 .addParam("parentId", parentId)
                 .build(), callback);
     }
+
     /**
      * 异步请求
      *

@@ -14,8 +14,8 @@ import java.util.List;
 public class MyCouponListBean extends BaseResult {
 
     /**
-     * data : [{"type":{"id":"5b6567c351183112561f5fc1","mid":"01","storeId":null,"creatorId":"system","creationTime":1533372355816,"name":"7折优惠券","imageUri":"https://simpleryo-china.oss-cn-hangzhou.aliyuncs.com/file/849eb764a1e6606acd825bfbc9d5726e","startTime":1533312000000,"endTime":1535817600000,"limitAmount":-1,"enable":true,"discount":70,"subtractAmount":null,"totalCounter":100,"consumeCounter":0,"retrieveCounter":1,"expireCounter":null,"retrieved":null,"category":"DISCOUNT","notes":null,"firstCourseTypes":null,"secondCourseTypes":null,"store":null,"courses":[]},"status":"UNUSED","creationTime":1533380687977,"consumeTime":null,"creator":{"id":"5b56bcec51183107612cf161","nickName":"小李君","avatarUrl":"http://simpleryo-china.oss-cn-hangzhou.aliyuncs.com/file/c6d7c644da5452c777ec283f6fba7069","name":null,"phone":null,"address":null}},{"type":{"id":"5b654cc05118310d7ec208bb","mid":"01","storeId":"5b5608c451183107612cf15f","creatorId":"5b5608c451183107612cf160","creationTime":1533365440377,"name":"试试6","imageUri":"https://simpleryo-china.oss-cn-hangzhou.aliyuncs.com/file/849eb764a1e6606acd825bfbc9d5726e","startTime":1533139200000,"endTime":1535904000000,"limitAmount":100,"enable":true,"discount":null,"subtractAmount":90,"totalCounter":6,"consumeCounter":0,"retrieveCounter":1,"expireCounter":null,"retrieved":null,"category":"CASH","notes":null,"firstCourseTypes":null,"secondCourseTypes":null,"store":{"id":"5b5608c451183107612cf15f","name":"微信小程序实战训练营"},"courses":[]},"status":"UNUSED","creationTime":1533378360072,"consumeTime":null,"creator":{"id":"5b56bcec51183107612cf161","nickName":"小李君","avatarUrl":"http://simpleryo-china.oss-cn-hangzhou.aliyuncs.com/file/c6d7c644da5452c777ec283f6fba7069","name":null,"phone":null,"address":null}}]
-     * count : 2
+     * data : [{"type":{"id":"5b682d6551183108293afc16","mid":"01","storeId":"5b5608c451183107612cf15f","creatorId":"5b5608c451183107612cf160","creationTime":1533554021588,"name":"具体课程券","imageUri":"https://simpleryo-china.oss-cn-hangzhou.aliyuncs.com/file/909125fb51bfd9b618c584306c57e3f1","startTime":1533661200000,"endTime":1538240400000,"limitAmount":-1,"enable":true,"discount":null,"subtractAmount":1000,"totalCounter":15,"consumeCounter":0,"retrieveCounter":1,"expireCounter":null,"retrieved":null,"category":"CASH","notes":null,"firstCourseTypes":{"id":"5b5607d651183107612cf15b","name":"IT课程"},"secondCourseTypes":{"id":"5b666323511831226d406644","name":"开发"},"store":{"id":"5b5608c451183107612cf15f","name":"微信小程序实战训练营"},"courses":[{"id":"5b67e0865118317498214a59","name":"C语言基础教学"}]},"status":"UNUSED","id":"5b6a544551183146edb56ef9","creationTime":1533695045527,"consumeTime":null,"creator":{"id":"5b5fbfe75118310c41f3a657","nickName":"WongLeoi","avatarUrl":"http://p.simpleryo.com/file/1f1d7de9c8f14087d87902079e85dba2","name":"WongLeoi","phone":null,"address":null}}]
+     * count : 1
      */
 
     private int count;
@@ -39,16 +39,18 @@ public class MyCouponListBean extends BaseResult {
 
     public static class DataBean {
         /**
-         * type : {"id":"5b6567c351183112561f5fc1","mid":"01","storeId":null,"creatorId":"system","creationTime":1533372355816,"name":"7折优惠券","imageUri":"https://simpleryo-china.oss-cn-hangzhou.aliyuncs.com/file/849eb764a1e6606acd825bfbc9d5726e","startTime":1533312000000,"endTime":1535817600000,"limitAmount":-1,"enable":true,"discount":70,"subtractAmount":null,"totalCounter":100,"consumeCounter":0,"retrieveCounter":1,"expireCounter":null,"retrieved":null,"category":"DISCOUNT","notes":null,"firstCourseTypes":null,"secondCourseTypes":null,"store":null,"courses":[]}
+         * type : {"id":"5b682d6551183108293afc16","mid":"01","storeId":"5b5608c451183107612cf15f","creatorId":"5b5608c451183107612cf160","creationTime":1533554021588,"name":"具体课程券","imageUri":"https://simpleryo-china.oss-cn-hangzhou.aliyuncs.com/file/909125fb51bfd9b618c584306c57e3f1","startTime":1533661200000,"endTime":1538240400000,"limitAmount":-1,"enable":true,"discount":null,"subtractAmount":1000,"totalCounter":15,"consumeCounter":0,"retrieveCounter":1,"expireCounter":null,"retrieved":null,"category":"CASH","notes":null,"firstCourseTypes":{"id":"5b5607d651183107612cf15b","name":"IT课程"},"secondCourseTypes":{"id":"5b666323511831226d406644","name":"开发"},"store":{"id":"5b5608c451183107612cf15f","name":"微信小程序实战训练营"},"courses":[{"id":"5b67e0865118317498214a59","name":"C语言基础教学"}]}
          * status : UNUSED
-         * creationTime : 1533380687977
+         * id : 5b6a544551183146edb56ef9
+         * creationTime : 1533695045527
          * consumeTime : null
-         * creator : {"id":"5b56bcec51183107612cf161","nickName":"小李君","avatarUrl":"http://simpleryo-china.oss-cn-hangzhou.aliyuncs.com/file/c6d7c644da5452c777ec283f6fba7069","name":null,"phone":null,"address":null}
+         * creator : {"id":"5b5fbfe75118310c41f3a657","nickName":"WongLeoi","avatarUrl":"http://p.simpleryo.com/file/1f1d7de9c8f14087d87902079e85dba2","name":"WongLeoi","phone":null,"address":null}
          */
 
         private TypeBean type;
         private String status;
-        private String creationTime;
+        private String id;
+        private long creationTime;
         private String consumeTime;
         private CreatorBean creator;
 
@@ -68,11 +70,19 @@ public class MyCouponListBean extends BaseResult {
             this.status = status;
         }
 
-        public String getCreationTime() {
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public long getCreationTime() {
             return creationTime;
         }
 
-        public void setCreationTime(String creationTime) {
+        public void setCreationTime(long creationTime) {
             this.creationTime = creationTime;
         }
 
@@ -94,45 +104,45 @@ public class MyCouponListBean extends BaseResult {
 
         public static class TypeBean {
             /**
-             * id : 5b6567c351183112561f5fc1
+             * id : 5b682d6551183108293afc16
              * mid : 01
-             * storeId : null
-             * creatorId : system
-             * creationTime : 1533372355816
-             * name : 7折优惠券
-             * imageUri : https://simpleryo-china.oss-cn-hangzhou.aliyuncs.com/file/849eb764a1e6606acd825bfbc9d5726e
-             * startTime : 1533312000000
-             * endTime : 1535817600000
+             * storeId : 5b5608c451183107612cf15f
+             * creatorId : 5b5608c451183107612cf160
+             * creationTime : 1533554021588
+             * name : 具体课程券
+             * imageUri : https://simpleryo-china.oss-cn-hangzhou.aliyuncs.com/file/909125fb51bfd9b618c584306c57e3f1
+             * startTime : 1533661200000
+             * endTime : 1538240400000
              * limitAmount : -1
              * enable : true
-             * discount : 70
-             * subtractAmount : null
-             * totalCounter : 100
+             * discount : null
+             * subtractAmount : 1000
+             * totalCounter : 15
              * consumeCounter : 0
              * retrieveCounter : 1
              * expireCounter : null
              * retrieved : null
-             * category : DISCOUNT
+             * category : CASH
              * notes : null
-             * firstCourseTypes : null
-             * secondCourseTypes : null
-             * store : null
-             * courses : []
+             * firstCourseTypes : {"id":"5b5607d651183107612cf15b","name":"IT课程"}
+             * secondCourseTypes : {"id":"5b666323511831226d406644","name":"开发"}
+             * store : {"id":"5b5608c451183107612cf15f","name":"微信小程序实战训练营"}
+             * courses : [{"id":"5b67e0865118317498214a59","name":"C语言基础教学"}]
              */
 
             private String id;
             private String mid;
             private String storeId;
             private String creatorId;
-            private String creationTime;
+            private long creationTime;
             private String name;
             private String imageUri;
-            private String startTime;
-            private String endTime;
+            private long startTime;
+            private long endTime;
             private int limitAmount;
             private boolean enable;
-            private int discount;
-            private String subtractAmount;
+            private String discount;
+            private int subtractAmount;
             private int totalCounter;
             private int consumeCounter;
             private int retrieveCounter;
@@ -140,10 +150,10 @@ public class MyCouponListBean extends BaseResult {
             private String retrieved;
             private String category;
             private String notes;
-            private String firstCourseTypes;
-            private String secondCourseTypes;
+            private FirstCourseTypesBean firstCourseTypes;
+            private SecondCourseTypesBean secondCourseTypes;
             private StoreBean store;
-            private List<?> courses;
+            private List<CoursesBean> courses;
 
             public String getId() {
                 return id;
@@ -177,11 +187,11 @@ public class MyCouponListBean extends BaseResult {
                 this.creatorId = creatorId;
             }
 
-            public String getCreationTime() {
+            public long getCreationTime() {
                 return creationTime;
             }
 
-            public void setCreationTime(String creationTime) {
+            public void setCreationTime(long creationTime) {
                 this.creationTime = creationTime;
             }
 
@@ -201,19 +211,19 @@ public class MyCouponListBean extends BaseResult {
                 this.imageUri = imageUri;
             }
 
-            public String getStartTime() {
+            public long getStartTime() {
                 return startTime;
             }
 
-            public void setStartTime(String startTime) {
+            public void setStartTime(long startTime) {
                 this.startTime = startTime;
             }
 
-            public String getEndTime() {
+            public long getEndTime() {
                 return endTime;
             }
 
-            public void setEndTime(String endTime) {
+            public void setEndTime(long endTime) {
                 this.endTime = endTime;
             }
 
@@ -233,19 +243,19 @@ public class MyCouponListBean extends BaseResult {
                 this.enable = enable;
             }
 
-            public int getDiscount() {
+            public String getDiscount() {
                 return discount;
             }
 
-            public void setDiscount(int discount) {
+            public void setDiscount(String discount) {
                 this.discount = discount;
             }
 
-            public String getSubtractAmount() {
+            public int getSubtractAmount() {
                 return subtractAmount;
             }
 
-            public void setSubtractAmount(String subtractAmount) {
+            public void setSubtractAmount(int subtractAmount) {
                 this.subtractAmount = subtractAmount;
             }
 
@@ -305,19 +315,19 @@ public class MyCouponListBean extends BaseResult {
                 this.notes = notes;
             }
 
-            public String getFirstCourseTypes() {
+            public FirstCourseTypesBean getFirstCourseTypes() {
                 return firstCourseTypes;
             }
 
-            public void setFirstCourseTypes(String firstCourseTypes) {
+            public void setFirstCourseTypes(FirstCourseTypesBean firstCourseTypes) {
                 this.firstCourseTypes = firstCourseTypes;
             }
 
-            public String getSecondCourseTypes() {
+            public SecondCourseTypesBean getSecondCourseTypes() {
                 return secondCourseTypes;
             }
 
-            public void setSecondCourseTypes(String secondCourseTypes) {
+            public void setSecondCourseTypes(SecondCourseTypesBean secondCourseTypes) {
                 this.secondCourseTypes = secondCourseTypes;
             }
 
@@ -329,40 +339,125 @@ public class MyCouponListBean extends BaseResult {
                 this.store = store;
             }
 
-            public List<?> getCourses() {
+            public List<CoursesBean> getCourses() {
                 return courses;
             }
 
-            public void setCourses(List<?> courses) {
+            public void setCourses(List<CoursesBean> courses) {
                 this.courses = courses;
             }
+
+            public static class FirstCourseTypesBean {
+                /**
+                 * id : 5b5607d651183107612cf15b
+                 * name : IT课程
+                 */
+
+                private String id;
+                private String name;
+
+                public String getId() {
+                    return id;
+                }
+
+                public void setId(String id) {
+                    this.id = id;
+                }
+
+                public String getName() {
+                    return name;
+                }
+
+                public void setName(String name) {
+                    this.name = name;
+                }
+            }
+
+            public static class SecondCourseTypesBean {
+                /**
+                 * id : 5b666323511831226d406644
+                 * name : 开发
+                 */
+
+                private String id;
+                private String name;
+
+                public String getId() {
+                    return id;
+                }
+
+                public void setId(String id) {
+                    this.id = id;
+                }
+
+                public String getName() {
+                    return name;
+                }
+
+                public void setName(String name) {
+                    this.name = name;
+                }
+            }
+
+            public static class StoreBean {
+                /**
+                 * id : 5b5608c451183107612cf15f
+                 * name : 微信小程序实战训练营
+                 */
+
+                private String id;
+                private String name;
+
+                public String getId() {
+                    return id;
+                }
+
+                public void setId(String id) {
+                    this.id = id;
+                }
+
+                public String getName() {
+                    return name;
+                }
+
+                public void setName(String name) {
+                    this.name = name;
+                }
+            }
+
+            public static class CoursesBean {
+                /**
+                 * id : 5b67e0865118317498214a59
+                 * name : C语言基础教学
+                 */
+
+                private String id;
+                private String name;
+
+                public String getId() {
+                    return id;
+                }
+
+                public void setId(String id) {
+                    this.id = id;
+                }
+
+                public String getName() {
+                    return name;
+                }
+
+                public void setName(String name) {
+                    this.name = name;
+                }
+            }
         }
-        public class StoreBean{
-            private String id;
-            private String name;
 
-            public String getId() {
-                return id;
-            }
-
-            public void setId(String id) {
-                this.id = id;
-            }
-
-            public String getName() {
-                return name;
-            }
-
-            public void setName(String name) {
-                this.name = name;
-            }
-        }
         public static class CreatorBean {
             /**
-             * id : 5b56bcec51183107612cf161
-             * nickName : 小李君
-             * avatarUrl : http://simpleryo-china.oss-cn-hangzhou.aliyuncs.com/file/c6d7c644da5452c777ec283f6fba7069
-             * name : null
+             * id : 5b5fbfe75118310c41f3a657
+             * nickName : WongLeoi
+             * avatarUrl : http://p.simpleryo.com/file/1f1d7de9c8f14087d87902079e85dba2
+             * name : WongLeoi
              * phone : null
              * address : null
              */

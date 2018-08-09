@@ -11,6 +11,7 @@
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_below="@+id/top_layout"
+        android:layout_above="@+id/ll_bottom"
         android:layout_height="match_parent">
 
         <LinearLayout
@@ -77,32 +78,55 @@
                 android:layout_marginTop="30px"></com.simpleryo.leyotang.view.MultiImageView>
 
             <com.github.jdsjlzx.recyclerview.LRecyclerView
+                android:id="@+id/lrecyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="23px"
                 android:layout_marginRight="19px"
+                android:paddingBottom="30px"
                 android:layout_marginTop="43px"
-                android:background="#1C1C1C"></com.github.jdsjlzx.recyclerview.LRecyclerView>
+                android:background="#F7F7F7"></com.github.jdsjlzx.recyclerview.LRecyclerView>
+            <include
+                android:id="@+id/empty_view"
+                layout="@layout/layout_empty"
+                android:visibility="gone"/>
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/ll_bottom"
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:background="#E5E5E5"
         android:layout_height="110px">
         <EditText
             android:id="@+id/edittext_reply"
             android:layout_width="match_parent"
             android:background="@color/white"
+            android:layout_toLeftOf="@+id/tv_commit"
             android:layout_marginRight="23px"
             android:hint="回复评论"
             android:textSize="24px"
+            android:layout_centerVertical="true"
             android:padding="10px"
             android:layout_marginLeft="23px"
             android:layout_gravity="center_vertical"
             android:layout_height="62px" />
-    </LinearLayout>
+        <TextView
+            android:id="@+id/tv_commit"
+            android:layout_width="120px"
+            android:text="发送"
+            android:layout_marginRight="23px"
+            android:textColor="@color/white"
+            android:textSize="33px"
+            android:gravity="center"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/shape_available_coupon_count"
+            android:layout_height="62px" />
+    </RelativeLayout>
 
 </RelativeLayout>

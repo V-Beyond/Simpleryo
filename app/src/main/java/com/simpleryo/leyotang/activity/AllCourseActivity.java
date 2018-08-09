@@ -62,8 +62,8 @@ public class AllCourseActivity extends BaseActivity {
         lRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Intent intent=new Intent(AllCourseActivity.this,CourseListActivity.class);
-                intent.putExtra("type",courseTypetBeans.get(position).getName());
+                Intent intent=new Intent(AllCourseActivity.this,CourseFilterActivity.class);
+                intent.putExtra("tagId3","");
                 intent.putExtra("tagId1",courseTypetBeans.get(position).getId());
                 startActivity(intent);
             }

@@ -24,6 +24,7 @@ import com.simpleryo.leyotang.adapter.CouponsListAdapter;
 import com.simpleryo.leyotang.adapter.RemarkListAdapter;
 import com.simpleryo.leyotang.base.BaseActivity;
 import com.simpleryo.leyotang.base.MyBaseProgressCallbackImpl;
+import com.simpleryo.leyotang.bean.BaseResult;
 import com.simpleryo.leyotang.bean.BusEntity;
 import com.simpleryo.leyotang.bean.CodeBean;
 import com.simpleryo.leyotang.bean.CouponsListBean;
@@ -53,6 +54,8 @@ import org.xutils.view.annotation.ViewInject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.simpleryo.leyotang.utils.EventBusType.GETCOUPON;
 
 /**
  * @author huanglei
@@ -164,7 +167,6 @@ public class CourseDetailActivity extends BaseActivity    {
         lrecyclerview.setAdapter(lRecyclerViewAdapter);
         lrecyclerview.setLoadMoreEnabled(false);
         lrecyclerview.setPullRefreshEnabled(false);
-
         GridLayoutManager gridLayoutManager11 = new GridLayoutManager(this, 1) {
             @Override
             public boolean canScrollVertically() {
@@ -224,6 +226,33 @@ public class CourseDetailActivity extends BaseActivity    {
             }
         }, courseId,"","", "", "", "", 0, 9,"","");
     }
+    //根据优惠券id领取优惠券
+    public void getCouponById(String id ){
+        SimpleryoNetwork.getCardcouponById(CourseDetailActivity.this,new MyBaseProgressCallbackImpl(CourseDetailActivity.this){
+            @Override
+            public void onSuccess(HttpInfo info) {
+                super.onSuccess(info);
+                loadingDialog.dismiss();
+                BaseResult baseResult=info.getRetDetail(BaseResult.class);
+                if (baseResult.getCode().equalsIgnoreCase("0")) {
+                    Toast.makeText(CourseDetailActivity.this,"领取成功",Toast.LENGTH_SHORT).show();
+                }else   if (baseResult.getCode().equalsIgnoreCase("1")) {
+                    Toast.makeText(CourseDetailActivity.this,baseResult.getMsg(),Toast.LENGTH_SHORT).show();
+                }else   if (baseResult.getCode().equalsIgnoreCase("2")) {
+                    Toast.makeText(CourseDetailActivity.this,baseResult.getMsg(),Toast.LENGTH_SHORT).show();
+                }
+                getCoupon();
+            }
+            @Override
+            public void onFailure(HttpInfo info) {
+                super.onFailure(info);
+                loadingDialog.dismiss();
+            }
+        },id);
+    }
+
+
+
     //获取课程评价列表
     public void getRemarkList(){
         SimpleryoNetwork.comments(CourseDetailActivity.this,new MyBaseProgressCallbackImpl(){
@@ -236,7 +265,7 @@ public class CourseDetailActivity extends BaseActivity    {
                         dataBeanArrayList.addAll(courseRemarkListBean.getData());
                         remarkListAdapter.setDataList(dataBeanArrayList);
                     }else {
-                        TextView textView = coupon_empty_view.findViewById(R.id.tv_tips);
+                        TextView textView = mEmptyView.findViewById(R.id.tv_tips);
                         textView.setText("该课程暂无评价");
                         lrecyclerview.setEmptyView(mEmptyView);//设置在setAdapter之前才能生效
                     }
@@ -289,6 +318,9 @@ public class CourseDetailActivity extends BaseActivity    {
     String coverUrl;
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updateCollect(BusEntity bus) {
+        if (bus.getType()==GETCOUPON){
+            getCouponById(bus.getContent());
+        }
         if (bus.getType() == 701) {//微信
             if (umShareAPI.isInstall(CourseDetailActivity.this,SHARE_MEDIA.WEIXIN)) {
                 share(SHARE_MEDIA.WEIXIN);

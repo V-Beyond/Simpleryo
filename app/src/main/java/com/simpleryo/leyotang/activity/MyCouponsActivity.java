@@ -20,17 +20,24 @@ import com.simpleryo.leyotang.adapter.MyCouponsListAdapter;
 import com.simpleryo.leyotang.base.BaseActivity;
 import com.simpleryo.leyotang.base.MyBaseProgressCallbackImpl;
 import com.simpleryo.leyotang.base.XLibraryLazyFragment;
+import com.simpleryo.leyotang.bean.BusEntity;
 import com.simpleryo.leyotang.bean.MyCouponListBean;
 import com.simpleryo.leyotang.fragment.CouponFragment;
 import com.simpleryo.leyotang.network.SimpleryoNetwork;
 import com.simpleryo.leyotang.utils.XActivityUtils;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.simpleryo.leyotang.utils.EventBusType.MYCOUPONSELECT;
+import static com.simpleryo.leyotang.utils.EventBusType.SELECTCOUPON;
 
 /**
  * @author huanglei
@@ -56,12 +63,21 @@ public class MyCouponsActivity extends BaseActivity {
     String type = "UNUSED";
     @ViewInject(R.id.empty_view)
     private View mEmptyView;
+    String category;
+    String storeId;
+    String courseId;
+    int count;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         iv_msg.setVisibility(View.GONE);
         tv_name.setText(getResources().getString(R.string.coupon));
+        category = getIntent().getStringExtra("type");
+        storeId = getIntent().getStringExtra("storeId");
+        courseId = getIntent().getStringExtra("courseId");
+        count=getIntent().getIntExtra("count",0);
         Bundle bundle = new Bundle();
         bundle.putString("type", "UNUSED");
         CouponFragment couponFragment = new CouponFragment();
@@ -86,7 +102,7 @@ public class MyCouponsActivity extends BaseActivity {
                 .build();
         lrecyclerview.addItemDecoration(divider);
         lrecyclerview.setLayoutManager(new LinearLayoutManager(MyCouponsActivity.this));
-        myCouponsListAdapter = new MyCouponsListAdapter(MyCouponsActivity.this);
+        myCouponsListAdapter = new MyCouponsListAdapter(MyCouponsActivity.this,category);
         lRecyclerViewAdapter = new LRecyclerViewAdapter(myCouponsListAdapter);
         lrecyclerview.setAdapter(lRecyclerViewAdapter);
         lrecyclerview.setOnRefreshListener(onRefreshListener);
@@ -121,40 +137,76 @@ public class MyCouponsActivity extends BaseActivity {
      * 获取我的优惠券列表
      */
     public void tickets() {
-        SimpleryoNetwork.tickets(MyCouponsActivity.this, new MyBaseProgressCallbackImpl() {
-            @Override
-            public void onSuccess(HttpInfo info) {
-                super.onSuccess(info);
-                MyCouponListBean myCouponListBean = info.getRetDetail(MyCouponListBean.class);
-                if (myCouponListBean.getCode().equalsIgnoreCase("0")) {
-                    if (myCouponListBean.getData() != null && myCouponListBean.getData().size() > 0) {
-                        if (dataBeanArrayList != null && dataBeanArrayList.size() > 0) {
-                            dataBeanArrayList.clear();
-                        }
-                        dataBeanArrayList.addAll(myCouponListBean.getData());
-                        myCouponsListAdapter.setDataList(dataBeanArrayList);
-                    } else {
-                        if (dataBeanArrayList.size() > 0) {
-                            lrecyclerview.setNoMore(true);
+        if (category.equalsIgnoreCase("my")) {//个人中心进入我的优惠券
+            SimpleryoNetwork.tickets(MyCouponsActivity.this, new MyBaseProgressCallbackImpl() {
+                @Override
+                public void onSuccess(HttpInfo info) {
+                    super.onSuccess(info);
+                    MyCouponListBean myCouponListBean = info.getRetDetail(MyCouponListBean.class);
+                    if (myCouponListBean.getCode().equalsIgnoreCase("0")) {
+                        if (myCouponListBean.getData() != null && myCouponListBean.getData().size() > 0) {
+                            if (dataBeanArrayList != null && dataBeanArrayList.size() > 0) {
+                                dataBeanArrayList.clear();
+                            }
+                            dataBeanArrayList.addAll(myCouponListBean.getData());
+                            myCouponsListAdapter.setDataList(dataBeanArrayList);
                         } else {
-                            lrecyclerview.setEmptyView(mEmptyView);//设置在setAdapter之前才能生效
-                            myCouponsListAdapter = new MyCouponsListAdapter(MyCouponsActivity.this);
-                            lRecyclerViewAdapter = new LRecyclerViewAdapter(myCouponsListAdapter);
-                            lrecyclerview.setAdapter(lRecyclerViewAdapter);
+                            if (dataBeanArrayList.size() > 0) {
+                                lrecyclerview.setNoMore(true);
+                            } else {
+                                lrecyclerview.setEmptyView(mEmptyView);//设置在setAdapter之前才能生效
+                                myCouponsListAdapter = new MyCouponsListAdapter(MyCouponsActivity.this,category);
+                                lRecyclerViewAdapter = new LRecyclerViewAdapter(myCouponsListAdapter);
+                                lrecyclerview.setAdapter(lRecyclerViewAdapter);
+                            }
                         }
                     }
+                    lrecyclerview.refreshComplete(dataBeanArrayList.size());
+                    lRecyclerViewAdapter.notifyDataSetChanged();
                 }
-                lrecyclerview.refreshComplete(dataBeanArrayList.size());
-                lRecyclerViewAdapter.notifyDataSetChanged();
-            }
-            @Override
-            public void onFailure(HttpInfo info) {
-                super.onFailure(info);
-                TextView textView = mEmptyView.findViewById(R.id.tv_tips);
-                textView.setText("数据一不小心走丢了，请稍后回来");
-                lrecyclerview.setEmptyView(mEmptyView);
-            }
-        }, type, offset, limit);
+
+                @Override
+                public void onFailure(HttpInfo info) {
+                    super.onFailure(info);
+                    TextView textView = mEmptyView.findViewById(R.id.tv_tips);
+                    textView.setText("数据一不小心走丢了，请稍后回来");
+                    lrecyclerview.setEmptyView(mEmptyView);
+                }
+            }, type, offset, limit);
+        } else if (category.equalsIgnoreCase("order")) {//下单页面进入我的优惠券
+            SimpleryoNetwork.availableTickets(MyCouponsActivity.this, new MyBaseProgressCallbackImpl() {
+                @Override
+                public void onSuccess(HttpInfo info) {
+                    super.onSuccess(info);
+                    MyCouponListBean myCouponListBean = info.getRetDetail(MyCouponListBean.class);
+                    if (myCouponListBean.getCode().equalsIgnoreCase("0")) {
+                        if (myCouponListBean.getData() != null && myCouponListBean.getData().size() > 0) {
+                            if (dataBeanArrayList != null && dataBeanArrayList.size() > 0) {
+                                dataBeanArrayList.clear();
+                            }
+                            dataBeanArrayList.addAll(myCouponListBean.getData());
+                            myCouponsListAdapter.setDataList(dataBeanArrayList);
+                        } else {
+                            if (dataBeanArrayList.size() > 0) {
+                                lrecyclerview.setNoMore(true);
+                            } else {
+                                lrecyclerview.setEmptyView(mEmptyView);//设置在setAdapter之前才能生效
+                                myCouponsListAdapter = new MyCouponsListAdapter(MyCouponsActivity.this,category);
+                                lRecyclerViewAdapter = new LRecyclerViewAdapter(myCouponsListAdapter);
+                                lrecyclerview.setAdapter(lRecyclerViewAdapter);
+                            }
+                        }
+                    }
+                    lrecyclerview.refreshComplete(dataBeanArrayList.size());
+                    lRecyclerViewAdapter.notifyDataSetChanged();
+                }
+                @Override
+                public void onFailure(HttpInfo info) {
+                    super.onFailure(info);
+                }
+            }, storeId, courseId,count);
+        }
+
     }
 
     @Event(value = {R.id.radio_group_main}, type = RadioGroup.OnCheckedChangeListener.class)
@@ -180,6 +232,23 @@ public class MyCouponsActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void updateCollect(BusEntity bus) {
+        if (bus.getType() == MYCOUPONSELECT) {
+            String coupon=bus.getCoupon();
+            if (bus.getContent().equalsIgnoreCase("CASH")){//现金券
+                EventBus.getDefault().post(new BusEntity(SELECTCOUPON, "CASH", coupon));
+            }  else if (bus.getContent().equalsIgnoreCase("DISCOUNT")){//折扣券
+                EventBus.getDefault().post(new BusEntity(SELECTCOUPON, "DISCOUNT", coupon));
+            }
+            XActivityUtils.getInstance().popActivity(MyCouponsActivity.this);
+        }
+    }
     @Event(value = {R.id.iv_back}, type = View.OnClickListener.class)
     private void onClick(View view) {
         switch (view.getId()) {

@@ -560,6 +560,8 @@
                                 android:layout_marginTop="15px"
                                 android:lineSpacingExtra="15px"
                                 android:scrollbars="none"
+                                android:maxLines="2"
+                                android:ellipsize="end"
                                 android:text="------"
                                 android:textColor="@color/color_ffffff"
                                 android:textSize="24px" />

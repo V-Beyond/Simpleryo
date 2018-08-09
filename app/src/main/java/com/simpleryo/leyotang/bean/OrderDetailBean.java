@@ -38,6 +38,8 @@ public class OrderDetailBean extends BaseResult {
         private String courseId;
         private String courseName;
         private String imageUrl;
+        private String ticketId;
+        private String discountAmt;
         private int unitPrice;
         private int quantity;
         private int totalAmt;
@@ -56,6 +58,22 @@ public class OrderDetailBean extends BaseResult {
         private  String userRemark;
         private  boolean arrangeFlag;
         private  String classTime;
+
+        public String getTicketId() {
+            return ticketId;
+        }
+
+        public void setTicketId(String ticketId) {
+            this.ticketId = ticketId;
+        }
+
+        public String getDiscountAmt() {
+            return discountAmt;
+        }
+
+        public void setDiscountAmt(String discountAmt) {
+            this.discountAmt = discountAmt;
+        }
 
         public String getClassTime() {
             return classTime;

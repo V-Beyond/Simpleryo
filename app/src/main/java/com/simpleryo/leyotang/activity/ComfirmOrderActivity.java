@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +28,7 @@ import com.simpleryo.leyotang.base.MyBaseProgressCallbackImpl;
 import com.simpleryo.leyotang.bean.BusEntity;
 import com.simpleryo.leyotang.bean.CourdeDetailBean;
 import com.simpleryo.leyotang.bean.CreateOrderBean;
+import com.simpleryo.leyotang.bean.MyCouponListBean;
 import com.simpleryo.leyotang.network.SimpleryoNetwork;
 import com.simpleryo.leyotang.push.NotificationBroadcast;
 import com.simpleryo.leyotang.utils.XActivityUtils;
@@ -48,6 +50,8 @@ import org.xutils.view.annotation.ViewInject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import static com.simpleryo.leyotang.utils.EventBusType.SELECTCOUPON;
 
 /**
  * @author huanglei
@@ -83,6 +87,10 @@ public class ComfirmOrderActivity extends BaseActivity {
     EditText edittext_phone;
     @ViewInject(R.id.edittext_remark)
     EditText edittext_remark;
+    @ViewInject(R.id.tv_coupon_count)
+    TextView tv_coupon_count;
+    @ViewInject(R.id.rl_available)
+    RelativeLayout rl_available;
     String name;
     String phone;
     String remark;
@@ -127,7 +135,29 @@ public class ComfirmOrderActivity extends BaseActivity {
     ArrayList<String> arrangeTimes = new ArrayList<>();
     String arrangeTime;
     boolean isSingle = false;
+    MyCouponListBean myCouponListBean;
+    //获取优惠券列表
+    public void getCoupon(){
+        SimpleryoNetwork.availableTickets(ComfirmOrderActivity.this, new MyBaseProgressCallbackImpl() {
+            @Override
+            public void onSuccess(HttpInfo info) {
+                super.onSuccess(info);
+                 myCouponListBean = info.getRetDetail(MyCouponListBean.class);
+                if (myCouponListBean.getCode().equalsIgnoreCase("0")) {
+                    if (myCouponListBean.getData() != null && myCouponListBean.getData().size() > 0) {
+                        tv_coupon_count.setText(myCouponListBean.getCount()+"张优惠券可用");
+                    }else{
+                        rl_available.setClickable(false);
+                    }
+                }
+            }
 
+            @Override
+            public void onFailure(HttpInfo info) {
+                super.onFailure(info);
+            }
+        }, storeId,courseId,count);
+    }
     /**
      * 获取课程详情
      */
@@ -199,6 +229,7 @@ public class ComfirmOrderActivity extends BaseActivity {
                             }
                         }
                     }
+                    getCoupon();//获取课程优惠券
                 }
             }
 
@@ -257,11 +288,24 @@ public class ComfirmOrderActivity extends BaseActivity {
         pvCustomOptions.show();
     }
 
-    @Event(value = {R.id.iv_back, R.id.iv_msg, R.id.iv_count_reduce, R.id.iv_count_increase, R.id.rl_pay, R.id.ll_course_time}, type = View.OnClickListener.class)
+    @Event(value = {R.id.iv_back, R.id.iv_msg, R.id.rl_available,R.id.iv_count_reduce, R.id.iv_count_increase, R.id.rl_pay, R.id.ll_course_time}, type = View.OnClickListener.class)
     private void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
                 XActivityUtils.getInstance().popActivity(ComfirmOrderActivity.this);
+                break;
+            case R.id.rl_available:
+                Intent intent=new Intent(ComfirmOrderActivity.this, MyCouponsActivity.class);
+                intent.putExtra("type","order");
+                intent.putExtra("storeId",storeId);
+                intent.putExtra("courseId",courseId);
+                intent.putExtra("count",count);
+                startActivity(intent);
+//                Bundle bundle=new Bundle();
+//                bundle.putSerializable("couponlist",myCouponListBean);
+//                CustomBottomSheetDialog customBottomSheetDialog=new CustomBottomSheetDialog();
+//                customBottomSheetDialog.setArguments(bundle);
+//                customBottomSheetDialog.show(getSupportFragmentManager(),"customBottomSheetDialog");
                 break;
             case R.id.ll_course_time:
                 if (arrangeTimes!=null&&arrangeTimes.size()>0){
@@ -281,13 +325,29 @@ public class ComfirmOrderActivity extends BaseActivity {
                 } else {
                     Toast.makeText(ComfirmOrderActivity.this, "订单数量不能小于1", Toast.LENGTH_SHORT).show();
                 }
-                total_price = count * price;
+                if (isUseCoupon){
+                    if (couponType==1){
+                        total_price = count * price-cashCoupon;
+                    }else if (couponType==2){
+                        total_price = (int) (count * price*discount);
+                    }
+                }else{
+                    total_price = count * price;
+                }
                 tv_total_price.setText(getResources().getString(R.string.total_course) + XStringPars.foramtPrice(total_price * 1) + "$");
                 break;
             case R.id.iv_count_increase://增加
                 count += 1;
                 et_count.setText(count + "");
-                total_price = count * price;
+                if (isUseCoupon){
+                    if (couponType==1){
+                        total_price = count * price-cashCoupon;
+                    }else if (couponType==2){
+                        total_price = (int) (count * price*discount);
+                    }
+                }else{
+                    total_price = count * price;
+                }
                 tv_total_price.setText(getResources().getString(R.string.total_course)  + XStringPars.foramtPrice(total_price * 1) + "$");
                 break;
             case R.id.rl_pay://支付
@@ -350,7 +410,7 @@ public class ComfirmOrderActivity extends BaseActivity {
                         super.onFailure(info);
                         loadingDialog.dismiss();
                     }
-                }, coachId, storeId, courseId, courseName, payType, count, price, total_price, total_price, name, phone, remark, aboutArrangeId);
+                }, coachId, storeId, courseId, courseName, payType, count, price, total_price, total_price, name, phone, remark, aboutArrangeId,ticketId,discountAmt);
                 break;
         }
     }
@@ -433,6 +493,10 @@ public class ComfirmOrderActivity extends BaseActivity {
 
         LatipayAPI.sendRequest(req);
     }
+    //是否使用优惠券
+    boolean isUseCoupon=false;
+    String ticketId="";//优惠券id
+    String discountAmt="";//优惠价格
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updateCollect(BusEntity bus) {
         if (bus.getType() == 0222) {
@@ -453,7 +517,29 @@ public class ComfirmOrderActivity extends BaseActivity {
                 XActivityUtils.getInstance().popActivity(ComfirmOrderActivity.this);
             }
         }
+        if (bus.getType()==SELECTCOUPON){
+            isUseCoupon=true;//使用优惠券
+            String coupon=bus.getCoupon().split("-")[0];
+            ticketId=bus.getCoupon().split("-")[1];
+            if (bus.getContent().equalsIgnoreCase("CASH")){//现金券
+                couponType=1;
+                cashCoupon=Integer.parseInt(coupon);
+                total_price=(price*count-cashCoupon);
+                discountAmt=coupon;
+                tv_coupon_count.setText("-"+cashCoupon*0.01+"$");//减多少现金
+            }  else if (bus.getContent().equalsIgnoreCase("DISCOUNT")){//折扣券
+                couponType=2;
+                discount=Double.valueOf(coupon)/100;
+                total_price= (int) (price*count*discount);
+                tv_coupon_count.setText(discount+"折");//打多少折扣
+                discountAmt=(price*count- (int) (price*count*(Double.valueOf(coupon))/100))+"";
+            }
+            tv_total_price.setText( getResources().getString(R.string.total_course)+XStringPars.foramtPrice(total_price * 1) + "$");
+        }
     }
+    int couponType;//优惠券类型 1：现金券 2：折扣券
+    int cashCoupon;//现金券金额
+    double discount;//折扣券折扣
 
     /**
      * 支付宝支付

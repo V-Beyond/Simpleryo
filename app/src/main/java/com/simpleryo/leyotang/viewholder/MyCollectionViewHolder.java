@@ -17,23 +17,35 @@ import org.xutils.x;
 
 public class MyCollectionViewHolder extends SuperViewHolder {
     @ViewInject(R.id.iv_collection_img)
-  public  ImageView iv_collection_img;
+    public ImageView iv_collection_img;
     @ViewInject(R.id.tv_collection_name)
-    public  TextView tv_collection_name;
+    public TextView tv_collection_name;
     @ViewInject(R.id.tv_price)
     public TextView tv_price;
     @ViewInject(R.id.rl_collect)
-    public  RelativeLayout rl_collect;
+    public RelativeLayout rl_collect;
     @ViewInject(R.id.iv_collection_star)
-    public  ImageView iv_collection_star;
+    public ImageView iv_collection_star;
     @ViewInject(R.id.tv_collection_count)
     public TextView tv_collection_count;
-  @ViewInject(R.id.horizontal_progressbar)
-  public ProgressBar horizontal_progressbar;
-  @ViewInject(R.id.tv_percent)
-  public TextView tv_percent;
+    @ViewInject(R.id.horizontal_progressbar)
+    public ProgressBar horizontal_progressbar;
+    @ViewInject(R.id.tv_percent)
+    public TextView tv_percent;
+
+
+
+    @ViewInject(R.id.tv_collection_count_txt)
+    public TextView tv_collection_count_txt;
+    @ViewInject(R.id.iv_course_item_coupon)
+    public ImageView iv_course_item_coupon;
+    @ViewInject(R.id.tv_distance)
+    public TextView tv_distance;
+    @ViewInject(R.id.iv_collection_course)
+    public  ImageView iv_collection_course;
+
     public MyCollectionViewHolder(View itemView) {
         super(itemView);
-        x.view().inject(this,itemView);
+        x.view().inject(this, itemView);
     }
 }

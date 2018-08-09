@@ -7,32 +7,31 @@
         android:id="@+id/iv_coach_img"
         android:layout_width="50dp"
         android:scaleType="fitXY"
-        android:src="@mipmap/iv_splash"
         android:layout_marginTop="38px"
         android:layout_marginBottom="38px"
         android:layout_height="50dp" />
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:orientation="vertical"
         android:layout_marginTop="38px"
         android:layout_marginLeft="24px"
-        android:layout_height="wrap_content">
+        android:layout_height="50dp">
         <TextView
             android:id="@+id/tv_content"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:text="关于瑜伽课程的投诉"
             android:textColor="#2D2D2D"
-            android:maxLines="2"
+            android:maxLines="1"
             android:ellipsize="end"
             android:textSize="30px"
             android:layout_height="wrap_content" />
         <TextView
             android:id="@+id/tv_time"
             android:layout_width="wrap_content"
+            android:layout_alignParentBottom="true"
             android:text="2018-01-02"
             android:textColor="#2D2D2D"
-            android:layout_marginTop="10px"
             android:textSize="24px"
             android:layout_height="wrap_content" />
-    </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>

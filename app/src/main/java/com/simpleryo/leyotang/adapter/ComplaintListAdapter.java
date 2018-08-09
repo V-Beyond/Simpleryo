@@ -20,9 +20,9 @@ import com.squareup.picasso.Picasso;
  * @date 2017/11/10 18:55
  */
 
-public class ComplaintkListAdapter extends BaseAdapter<ComplainListBean.DataBean> {
+public class ComplaintListAdapter extends BaseAdapter<ComplainListBean.DataBean> {
 
-    public ComplaintkListAdapter(Context context) {
+    public ComplaintListAdapter(Context context) {
         super(context);
     }
 

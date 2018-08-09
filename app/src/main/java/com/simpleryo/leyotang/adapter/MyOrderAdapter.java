@@ -187,7 +187,13 @@ public class MyOrderAdapter extends BaseMultiAdapter<MultipleItem> {
                 ((MyCollectionViewHolder) holder).horizontal_progressbar.setProgress((int) percent);
                 ((MyCollectionViewHolder) holder).tv_percent.setText(dataBean.getClassCount()+"/"+totalCount);
                 ((MyCollectionViewHolder) holder).tv_collection_count.setText(collectCount+"  people");
-                ((MyCollectionViewHolder) holder).rl_collect.setOnClickListener(new View.OnClickListener() {
+                ((MyCollectionViewHolder) holder).tv_collection_count_txt.setText(collectCount+"人收藏");
+                if (dataBean.isHasCollect()){
+                    ((MyCollectionViewHolder) holder).iv_collection_course.setImageResource(R.mipmap.iv_course_item_collected);
+                }else{
+                    ((MyCollectionViewHolder) holder).iv_collection_course.setImageResource(R.mipmap.iv_course_item_uncollect);
+                }
+                ((MyCollectionViewHolder) holder).iv_collection_course.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         EventBus.getDefault().post(new BusEntity(001,position+"",dataBean));

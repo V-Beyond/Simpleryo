@@ -76,14 +76,22 @@ public class RegisterActivity extends BaseActivity{
                 code = edittext_code.getText().toString().trim();
                 password = edittext_password.getText().toString().trim();
                 comfirmPassWord = edittext_comfirm_password.getText().toString().trim();
-                if (email.isEmpty()) {
-                    Toast.makeText(RegisterActivity.this, "邮箱不能为空", Toast.LENGTH_SHORT).show();
-                    return;
+                if(type.equalsIgnoreCase("forget")){
+                    if (loginName.isEmpty()) {
+                        makeText(RegisterActivity.this, "登录名不能为空", LENGTH_SHORT).show();
+                        return;
+                    }
+                }else{
+                    if (email.isEmpty()) {
+                        Toast.makeText(RegisterActivity.this, "邮箱不能为空", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if (!XStringPars.isEmail(email)) {
+                        Toast.makeText(RegisterActivity.this, "邮箱格式不正确", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                 }
-                if (!XStringPars.isEmail(email)) {
-                    Toast.makeText(RegisterActivity.this, "邮箱格式不正确", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+
                 if (phone.isEmpty()) {
                     Toast.makeText(RegisterActivity.this, "手机不能为空", Toast.LENGTH_SHORT).show();
                     return;

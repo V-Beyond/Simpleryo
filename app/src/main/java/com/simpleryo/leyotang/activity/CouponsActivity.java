@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
@@ -23,12 +24,17 @@ import com.simpleryo.leyotang.adapter.GirdDropDownAdapter;
 import com.simpleryo.leyotang.adapter.ListDropDownAdapter;
 import com.simpleryo.leyotang.base.BaseActivity;
 import com.simpleryo.leyotang.base.MyBaseProgressCallbackImpl;
+import com.simpleryo.leyotang.bean.BaseResult;
+import com.simpleryo.leyotang.bean.BusEntity;
 import com.simpleryo.leyotang.bean.CouponsListBean;
 import com.simpleryo.leyotang.bean.TagsListBean;
 import com.simpleryo.leyotang.network.SimpleryoNetwork;
 import com.simpleryo.leyotang.utils.XActivityUtils;
 import com.simpleryo.leyotang.view.DropDownMenu;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
@@ -36,6 +42,8 @@ import org.xutils.view.annotation.ViewInject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static com.simpleryo.leyotang.utils.EventBusType.GETCOUPON;
 
 /**
  * @author huanglei
@@ -69,6 +77,7 @@ public class CouponsActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         view = LayoutInflater.from(this).inflate(R.layout.layout_coupons_list_content, null);
         lrecyclerview = view.findViewById(R.id.lrecyclerview);
         mEmptyView = view.findViewById(R.id.empty_view);
@@ -113,9 +122,48 @@ public class CouponsActivity extends BaseActivity {
         }
     };
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void updateCollect(BusEntity bus) {
+        if (bus.getType()==GETCOUPON){
+            getCouponById(bus.getContent());
+        }
+    }
+
+
     String upAmount = "";
     String lowAmount = "";
     String category="";
+    public void getCouponById(String id ){
+        SimpleryoNetwork.getCardcouponById(CouponsActivity.this,new MyBaseProgressCallbackImpl(CouponsActivity.this){
+            @Override
+            public void onSuccess(HttpInfo info) {
+                super.onSuccess(info);
+                loadingDialog.dismiss();
+                BaseResult baseResult=info.getRetDetail(BaseResult.class);
+                if (baseResult.getCode().equalsIgnoreCase("0")) {
+                    Toast.makeText(CouponsActivity.this,"领取成功",Toast.LENGTH_SHORT).show();
+                }else   if (baseResult.getCode().equalsIgnoreCase("1")) {
+                    Toast.makeText(CouponsActivity.this,baseResult.getMsg(),Toast.LENGTH_SHORT).show();
+                }else   if (baseResult.getCode().equalsIgnoreCase("2")) {
+                    Toast.makeText(CouponsActivity.this,baseResult.getMsg(),Toast.LENGTH_SHORT).show();
+                }
+                lrecyclerview.forceToRefresh();
+            }
+            @Override
+            public void onFailure(HttpInfo info) {
+                super.onFailure(info);
+                loadingDialog.dismiss();
+            }
+        },id);
+    }
+
+
     //获取优惠券列表
     public void tickets() {
         if (dataBeanArrayList != null && dataBeanArrayList.size() > 0) {

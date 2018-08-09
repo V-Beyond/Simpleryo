@@ -15,6 +15,7 @@ public class BusEntity {
     HomeDataBean.DataBeanX.CoursesBeanX.CoursesBean coursesBean;
     CourseListBean.DataBeanX courseListBean;
     boolean isCollect;
+    String coupon;//折扣或者现金券
     public BusEntity() {
     }
 
@@ -29,9 +30,24 @@ public class BusEntity {
     public void setType(int type) {
         this.type = type;
     }
+
+    public String getCoupon() {
+        return coupon;
+    }
+
+    public void setCoupon(String coupon) {
+        this.coupon = coupon;
+    }
+
     public BusEntity(int type, String content) {
         this.type = type;
         this.content = content;
+    }
+
+    public BusEntity(int type, String content, String coupon) {
+        this.type = type;
+        this.content = content;
+        this.coupon = coupon;
     }
 
     public BusEntity(int type, String content, boolean isCollect) {

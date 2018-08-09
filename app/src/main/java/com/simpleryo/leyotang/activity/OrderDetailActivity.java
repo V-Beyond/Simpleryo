@@ -64,6 +64,8 @@ public class OrderDetailActivity extends BaseActivity {
     TextView  tv_buyer_phone;
     @ViewInject(R.id.tv_buyer_remark)
     TextView  tv_buyer_remark;
+    @ViewInject(R.id.tv_coupon_count)
+            TextView tv_coupon_count;
     Transformation transformation = new RoundedTransformationBuilder()
             .cornerRadius(30)
             .borderWidth(5)
@@ -130,6 +132,11 @@ public class OrderDetailActivity extends BaseActivity {
                 tv_order_number.setText(getResources().getString(R.string.Order_number)+"：" + orderDetailBean.getData().getId());
                 tv_buyer_name.setText(orderDetailBean.getData().getUserName());
                 tv_buyer_phone.setText(orderDetailBean.getData().getUserPhone());
+                if (orderDetailBean.getData().getDiscountAmt()!=null){
+                    tv_coupon_count.setText("-"+Integer.parseInt(orderDetailBean.getData().getDiscountAmt())*0.01+"$");
+                }else{
+                    tv_coupon_count.setText("未使用优惠券");
+                }
                 if (orderDetailBean.getData().getUserRemark()!=null){
                     tv_buyer_remark.setText(orderDetailBean.getData().getUserRemark());
                 }else{

@@ -77,20 +77,28 @@ public class CourseFilterActivity extends BaseActivity {
     List<CourseListBean.DataBeanX> hotCourseList = new ArrayList<>();
     private List<MultipleItem> mItemModels = new ArrayList<>();
     String type;
-
+    String tagId3="";
+    String tagId2="";
+    String tagId1="";
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
-        type = getIntent().getStringExtra("type");
+        tagId1 = getIntent().getStringExtra("tagId1");
         tagId3 = getIntent().getStringExtra("tagId3");
-        if (type.equalsIgnoreCase("hot")) {//热门
-            tv_name.setText("热门课程");
-        } else if (type.equalsIgnoreCase("excellent")) {//精选
-            tv_name.setText("精品课程");
-        } else if (type.equalsIgnoreCase("introductory")) {//推荐
-            tv_name.setText("官方课程");
+        if (tagId1==null){
+            tagId1="";
         }
+        if (tagId3==null){
+            tagId3="";
+        }
+//        if (type.equalsIgnoreCase("hot")) {//热门
+            tv_name.setText("服务列表");
+//        } else if (type.equalsIgnoreCase("excellent")) {//精选
+//            tv_name.setText("精品课程");
+//        } else if (type.equalsIgnoreCase("introductory")) {//推荐
+//            tv_name.setText("官方课程");
+//        }
 
         view = LayoutInflater.from(this).inflate(R.layout.layout_course_list_content, null);
         lrecyclerview = view.findViewById(R.id.lrecyclerview);
@@ -309,9 +317,7 @@ public class CourseFilterActivity extends BaseActivity {
             initData();
         }
     };
-    String tagId3="";
-    String tagId2="";
-    String tagId1="";
+
 
     public void initData() {
         if (hotCourseList != null && hotCourseList.size() > 0) {

@@ -55,6 +55,8 @@ public class CoachHomeActivity extends BaseActivity {
     String coachId;
     @ViewInject(R.id.ll_skills)
     LinearLayout ll_skills;
+    @ViewInject(R.id.tv_goodreviewrate)
+    TextView tv_goodreviewrate;
     @ViewInject(R.id.lrecyclerview)
     LRecyclerView lrecyclerview;
     @ViewInject(R.id.empty_view)
@@ -112,6 +114,7 @@ public class CoachHomeActivity extends BaseActivity {
                     tv_coach_name.setText(coachDetailBean.getData().getNickName());
                     tv_coach_years.setText("教龄：" + coachDetailBean.getData().getWorkLife());
                     tv_des.setText(coachDetailBean.getData().getIntro());
+                    tv_goodreviewrate.setText("好评率："+coachDetailBean.getData().getPoint()+"%");
                     tv_store_status.setText(coachDetailBean.getData().getStoreName());
                     if (coachDetailBean.getData().getSkills()!=null&&coachDetailBean.getData().getSkills().size()>0){
                         for (CoachDetailBean.DataBean.SkillsBean skillsBean:coachDetailBean.getData().getSkills()){

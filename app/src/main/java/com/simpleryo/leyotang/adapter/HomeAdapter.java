@@ -18,7 +18,6 @@ import com.simpleryo.leyotang.activity.BusinessHomeActivty;
 import com.simpleryo.leyotang.activity.CouponsActivity;
 import com.simpleryo.leyotang.activity.CourseDetailActivity;
 import com.simpleryo.leyotang.activity.CourseFilterActivity;
-import com.simpleryo.leyotang.activity.CourseListActivity;
 import com.simpleryo.leyotang.activity.CourseSearchActivity;
 import com.simpleryo.leyotang.activity.MyNoticeActivity;
 import com.simpleryo.leyotang.bean.BusEntity;
@@ -163,7 +162,7 @@ public class HomeAdapter extends BaseMultiAdapter<MultipleItem> {
             ((IntroductoryCourseViewHolder) holder).item_more_rihgt_more.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    context.startActivity(new Intent(mContext, CourseFilterActivity.class).putExtra("type", "introductory").putExtra("tagId3",introductoryListBeans.getTag().getId()));
+                    context.startActivity(new Intent(mContext, CourseFilterActivity.class).putExtra("tagId1", "").putExtra("tagId3",introductoryListBeans.getTag().getId()));
                 }
             });
 
@@ -196,7 +195,7 @@ public class HomeAdapter extends BaseMultiAdapter<MultipleItem> {
             ((HotCourseViewHolder) holder).item_more_rihgt_more.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    context.startActivity(new Intent(mContext, CourseFilterActivity.class).putExtra("type", "hot").putExtra("tagId3",orderListBeans.getTag().getId()));
+                    context.startActivity(new Intent(mContext, CourseFilterActivity.class).putExtra("tagId1", "").putExtra("tagId3",orderListBeans.getTag().getId()));
                 }
             });
         } else if (holder instanceof ExcellentCourseViewHolder) {//精选课程
@@ -222,7 +221,7 @@ public class HomeAdapter extends BaseMultiAdapter<MultipleItem> {
             ((ExcellentCourseViewHolder) holder).item_more_rihgt_more.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    context.startActivity(new Intent(mContext, CourseFilterActivity.class).putExtra("type", "excellent").putExtra("tagId3",excellentListBeans.getTag().getId()));
+                    context.startActivity(new Intent(mContext, CourseFilterActivity.class).putExtra("tagId1", "").putExtra("tagId3",excellentListBeans.getTag().getId()));
                 }
             });
             lRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
@@ -253,9 +252,12 @@ public class HomeAdapter extends BaseMultiAdapter<MultipleItem> {
                     if (position == 7) {
                         Intent intent = new Intent(mContext, AllCourseActivity.class);
                         context.startActivity(intent);
-
                     } else {
-                        Intent intent = new Intent(mContext, CourseListActivity.class);
+//                        Intent intent = new Intent(mContext, CourseListActivity.class);
+//                        intent.putExtra("type", courseTypetBeans.get(position).getName());
+//                        intent.putExtra("tagId1", courseTypetBeans.get(position).getId());
+//                        context.startActivity(intent);
+                        Intent intent = new Intent(mContext, CourseFilterActivity.class);
                         intent.putExtra("type", courseTypetBeans.get(position).getName());
                         intent.putExtra("tagId1", courseTypetBeans.get(position).getId());
                         context.startActivity(intent);
