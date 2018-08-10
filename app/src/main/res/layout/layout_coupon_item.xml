@@ -18,7 +18,7 @@
         android:layout_toRightOf="@+id/iv_coupons_img"
         android:layout_marginTop="41px"
         android:layout_marginLeft="13px"
-        android:layout_height="wrap_content">
+        android:layout_height="56dp">
         <TextView
             android:id="@+id/tv_store_name"
             android:layout_width="wrap_content"
@@ -29,6 +29,7 @@
         <TextView
             android:id="@+id/tv_coupon_name"
             android:layout_width="wrap_content"
+            android:layout_marginTop="11px"
             android:text="此处为优惠券名称"
             android:textColor="@color/white"
             android:textSize="30px"
@@ -39,6 +40,7 @@
             android:text="[ 满399可用 ]"
             android:textSize="24px"
             android:textColor="@color/white"
+            android:layout_marginTop="24px"
             android:layout_height="wrap_content" />
     </LinearLayout>
     <TextView

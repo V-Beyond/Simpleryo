@@ -48,6 +48,11 @@ public abstract class ListBaseAdapter<T> extends RecyclerView.Adapter<SuperViewH
         }
 
     }
+    //不重写这个方法，获取的数据会混乱不堪
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
 
     public abstract int getLayoutId();
 

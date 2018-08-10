@@ -46,6 +46,8 @@ public class RegisterActivity extends BaseActivity{
     EditText edittext_comfirm_password;
     @ViewInject(R.id.tv_get_code)
     TextView tv_get_code;
+    @ViewInject(R.id.tv_register)
+    TextView tv_register;
     String email;//邮箱
     String phone;//手机号
     String code;//验证码
@@ -62,8 +64,12 @@ public class RegisterActivity extends BaseActivity{
         type=getIntent().getStringExtra("type");
         if (type.equalsIgnoreCase("register")){
             typeCode="REGIST";
+            edittext_email.setHint(getResources().getString(R.string.mailbox_account));
+            tv_register.setText(getResources().getString(R.string.register));
         }else if(type.equalsIgnoreCase("forget")){
             typeCode="UPDATE_PASSWORD";
+            edittext_email.setHint(getResources().getString(R.string.login_name));
+            tv_register.setText(getResources().getString(R.string.change_pwd));
         }
     }
 
@@ -76,12 +82,13 @@ public class RegisterActivity extends BaseActivity{
                 code = edittext_code.getText().toString().trim();
                 password = edittext_password.getText().toString().trim();
                 comfirmPassWord = edittext_comfirm_password.getText().toString().trim();
+                loginName=edittext_email.getText().toString().trim();
                 if(type.equalsIgnoreCase("forget")){
                     if (loginName.isEmpty()) {
                         makeText(RegisterActivity.this, "登录名不能为空", LENGTH_SHORT).show();
                         return;
                     }
-                }else{
+                }else  if (type.equalsIgnoreCase("register")){
                     if (email.isEmpty()) {
                         Toast.makeText(RegisterActivity.this, "邮箱不能为空", Toast.LENGTH_SHORT).show();
                         return;
@@ -120,26 +127,47 @@ public class RegisterActivity extends BaseActivity{
                     Toast.makeText(RegisterActivity.this, "请输入6位以上密码", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
-                SimpleryoNetwork.userRegister(RegisterActivity.this, new MyBaseProgressCallbackImpl(RegisterActivity.this) {
-                    @Override
-                    public void onSuccess(HttpInfo info)   {
-                        loadingDialog.dismiss();
-                        RegisterBean registerBean = info.getRetDetail(RegisterBean.class);
-                        if (registerBean.getCode().equalsIgnoreCase("0")){
-                            Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
-//                            startActivity(new Intent(RegisterActivity.this,LoginActivity.class));
-                            XActivityUtils.getInstance().popActivity(RegisterActivity.this);
-                        }else{
-                            Toast.makeText(RegisterActivity.this, registerBean.getMsg(), Toast.LENGTH_SHORT).show();
+                if(type.equalsIgnoreCase("forget")){//修改密码
+                    SimpleryoNetwork.updatePwd(RegisterActivity.this, new MyBaseProgressCallbackImpl(RegisterActivity.this) {
+                        @Override
+                        public void onSuccess(HttpInfo info)   {
+                            loadingDialog.dismiss();
+                            BaseResult registerBean = info.getRetDetail(BaseResult.class);
+                            if (registerBean.getCode().equalsIgnoreCase("0")){
+                                Toast.makeText(RegisterActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
+                                XActivityUtils.getInstance().popActivity(RegisterActivity.this);
+                            }else{
+                                Toast.makeText(RegisterActivity.this, registerBean.getMsg(), Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    }
-                    @Override
-                    public void onFailure(HttpInfo info)   {
-                        loadingDialog.dismiss();
-                        Toast.makeText(RegisterActivity.this, "注册失败", Toast.LENGTH_SHORT).show();
-                    }
-                }, email, phone, code, password);
+                        @Override
+                        public void onFailure(HttpInfo info)   {
+                            loadingDialog.dismiss();
+                            Toast.makeText(RegisterActivity.this, "修改失败", Toast.LENGTH_SHORT).show();
+                        }
+                    }, loginName, password,code,phone);
+                }else  if (type.equalsIgnoreCase("register")){//注册
+                    SimpleryoNetwork.userRegister(RegisterActivity.this, new MyBaseProgressCallbackImpl(RegisterActivity.this) {
+                        @Override
+                        public void onSuccess(HttpInfo info)   {
+                            loadingDialog.dismiss();
+                            RegisterBean registerBean = info.getRetDetail(RegisterBean.class);
+                            if (registerBean.getCode().equalsIgnoreCase("0")){
+                                Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
+//                            startActivity(new Intent(RegisterActivity.this,LoginActivity.class));
+                                XActivityUtils.getInstance().popActivity(RegisterActivity.this);
+                            }else{
+                                Toast.makeText(RegisterActivity.this, registerBean.getMsg(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        @Override
+                        public void onFailure(HttpInfo info)   {
+                            loadingDialog.dismiss();
+                            Toast.makeText(RegisterActivity.this, "注册失败", Toast.LENGTH_SHORT).show();
+                        }
+                    }, email, phone, code, password);
+                }
+
                 break;
             case R.id.tv_get_code://获取验证码
                 phone = edittext_phone.getText().toString().trim();

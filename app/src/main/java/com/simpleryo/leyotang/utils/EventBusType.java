@@ -13,5 +13,9 @@ public class EventBusType {
     public static  final int SELECTCOUPON=2002;
     //我的优惠券列表选择
     public static  final int MYCOUPONSELECT=2003;
+    //相册
+    public static  final int PHOTO=2004;
+    //相机
+    public static  final int CAMERA=2005;
 
 }

@@ -62,7 +62,7 @@ public abstract class BaseMultiAdapter<T extends MultiItemEntity> extends Recycl
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         course_price=context.getResources().getString(R.string.course_price);
     }
-
+    //不重写这个方法，获取的数据会混乱不堪
     @Override
     public int getItemViewType(int position) {
         Object item = mDataList.get(position);

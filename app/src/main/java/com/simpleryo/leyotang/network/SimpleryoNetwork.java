@@ -165,6 +165,7 @@ public class SimpleryoNetwork {
         if (!loginName.equalsIgnoreCase("")) {
             builder.addParam("loginName", loginName);
         }
+        builder.addParam("role","NORMAL");//用户角色  ROOT 为超级管理员，ADMIN为管理员，STORE_ADMIN为商家管理员,NORMAL 为APP用户 ,
         doHttpAsync(context, builder.build(), callback);
     }
 
@@ -184,7 +185,7 @@ public class SimpleryoNetwork {
             e.printStackTrace();
         }
         doHttpAsync(context, HttpInfo.Builder()
-                .setUrl(httpUrl + "u/account/login")
+                .setUrl(httpUrl + "u/account/login?role=NORMAL")
                 .setRequestType(RequestType.POST)//设置请求方式
                 .addParamJson(jsonObject.toString())//添加接口参数
                 .build(), callback);
@@ -335,7 +336,7 @@ public class SimpleryoNetwork {
      * @param context
      * @param callback
      */
-    public static void getCourse(Context context, Callback callback, String storeId, String name, String tagId1, String tagId2, String tagId3, String coachId) {
+    public static void getCourse(Context context, Callback callback, String storeId, String name, String tagId1, String tagId2, String tagId3, String coachId,double lat,double lng,String distance) {
         HttpInfo.Builder builder = new HttpInfo.Builder();
         builder.setUrl(httpUrl + "p/courses");
         builder.setRequestType(RequestType.GET);
@@ -358,6 +359,15 @@ public class SimpleryoNetwork {
         }
         if (!tagId3.equalsIgnoreCase("")) {
             builder.addParam("tagId3", tagId3);
+        }
+        if (lat!=0.00) {
+            builder.addParam("lat", lat+"");
+        }
+        if (lng!=0.00) {
+            builder.addParam("lng", lng+"");
+        }
+        if (!distance.equalsIgnoreCase("")) {
+            builder.addParam("distance", distance);
         }
         doHttpAsync(context, builder.build(), callback);
     }
@@ -413,7 +423,30 @@ public class SimpleryoNetwork {
                 .addParamJson(jsonObject.toString())//添加接口参数
                 .build(), callback);
     }
-
+    /**
+     * /u/account
+     更改密码
+     *
+     * @param context
+     * @param callback
+     */
+    public static void updatePwd(Context context, MyBaseProgressCallbackImpl callback, String loginName,String password,String msgAuthCode,String phone) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("loginName", loginName);
+            jsonObject.put("password", password);
+            jsonObject.put("phone",phone);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.w("cc", "json:" + jsonObject.toString());
+        doHttpAsync(context, HttpInfo.Builder()
+                .setUrl(httpUrl + "u/account?role=NORMAL&msgAuthCode=" +msgAuthCode+"&token="+getToken())
+                .setRequestEncoding(Encoding.UTF_8)
+                .setRequestType(RequestType.PUT)//设置请求方式
+                .addParamJson(jsonObject.toString())//添加接口参数
+                .build(), callback);
+    }
     /**
      * 根据课程状态查询购买课程列表
      *

@@ -116,7 +116,10 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<SuperViewHolde
             notifyItemRangeInserted(lastIndex, list.size());
         }
     }
-
+    //不重写这个方法，获取的数据会混乱不堪
+    public int getItemViewType(int position) {
+        return position;
+    }
     public void remove(int position) {
         this.listData.remove(position);
         notifyItemRemoved(position);

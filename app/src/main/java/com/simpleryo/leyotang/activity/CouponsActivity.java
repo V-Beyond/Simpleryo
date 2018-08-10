@@ -1,5 +1,6 @@
 package com.simpleryo.leyotang.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
@@ -29,6 +30,7 @@ import com.simpleryo.leyotang.bean.BusEntity;
 import com.simpleryo.leyotang.bean.CouponsListBean;
 import com.simpleryo.leyotang.bean.TagsListBean;
 import com.simpleryo.leyotang.network.SimpleryoNetwork;
+import com.simpleryo.leyotang.utils.SharedPreferencesUtils;
 import com.simpleryo.leyotang.utils.XActivityUtils;
 import com.simpleryo.leyotang.view.DropDownMenu;
 
@@ -123,6 +125,12 @@ public class CouponsActivity extends BaseActivity {
     };
 
     @Override
+    public void onResume() {
+        super.onResume();
+        isLogin = SharedPreferencesUtils.getKeyBoolean("isLogin");//获取用户登录状态
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
@@ -130,8 +138,13 @@ public class CouponsActivity extends BaseActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updateCollect(BusEntity bus) {
-        if (bus.getType()==GETCOUPON){
-            getCouponById(bus.getContent());
+        if (bus.getType()==GETCOUPON){//领取券
+            if (isLogin){//是否登录
+                getCouponById(bus.getContent());
+            }else{
+                startActivity(new Intent(CouponsActivity.this,LoginActivity.class));
+            }
+
         }
     }
 

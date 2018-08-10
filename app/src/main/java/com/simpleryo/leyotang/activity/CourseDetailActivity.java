@@ -319,7 +319,12 @@ public class CourseDetailActivity extends BaseActivity    {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updateCollect(BusEntity bus) {
         if (bus.getType()==GETCOUPON){
-            getCouponById(bus.getContent());
+            if (isLogin) {
+                getCouponById(bus.getContent());
+            } else {
+                Intent intent = new Intent(CourseDetailActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
         }
         if (bus.getType() == 701) {//微信
             if (umShareAPI.isInstall(CourseDetailActivity.this,SHARE_MEDIA.WEIXIN)) {

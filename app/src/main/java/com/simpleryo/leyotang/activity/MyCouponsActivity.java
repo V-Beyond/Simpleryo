@@ -164,7 +164,6 @@ public class MyCouponsActivity extends BaseActivity {
                     lrecyclerview.refreshComplete(dataBeanArrayList.size());
                     lRecyclerViewAdapter.notifyDataSetChanged();
                 }
-
                 @Override
                 public void onFailure(HttpInfo info) {
                     super.onFailure(info);

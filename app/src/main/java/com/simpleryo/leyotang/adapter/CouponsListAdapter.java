@@ -63,9 +63,10 @@ public class CouponsListAdapter extends BaseAdapter<CouponsListBean.DataBean> {
                     }
                 });
             }
-
             if (typeBean.getImageUri() != null) {
-                Picasso.with(mContext).load(typeBean.getImageUri()).transform(raduisTransformation).into(((CouponsItemViewHolder) holder).iv_coupons_img);
+                Picasso.with(mContext).load(typeBean.getImageUri()).transform(raduisTransformation).error(R.mipmap.iv_app_logo).into(((CouponsItemViewHolder) holder).iv_coupons_img);
+            }else{
+                Picasso.with(mContext).load(R.mipmap.iv_app_logo).transform(transformation).into(((CouponsItemViewHolder) holder).iv_coupons_img);
             }
             if (typeBean.getStore() != null) {
                 ((CouponsItemViewHolder) holder).rl_item.setBackgroundResource(R.mipmap.iv_coupon_blue_bg);
@@ -90,7 +91,6 @@ public class CouponsListAdapter extends BaseAdapter<CouponsListBean.DataBean> {
             ((CouponsItemViewHolder) holder).tv_coupon_name.setText(typeBean.getName());
         }
     }
-
     @Override
     public int getItemCount() {
         return listData == null ? 0 : listData.size();

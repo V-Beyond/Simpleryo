@@ -35,6 +35,8 @@
 
     <string name="mailbox_account">邮箱账号</string>
     <string name="register">注 册</string>
+    <string name="change_pwd">修改密码</string>
+    <string name="login_name">登录名</string>
     <!-- 登录-->
     <string name="welcome_tips">您好，欢迎登陆新普乐优</string>
     <string name="edit_account">请输入账号</string>

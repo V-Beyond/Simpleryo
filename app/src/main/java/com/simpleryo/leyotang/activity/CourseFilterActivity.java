@@ -48,7 +48,7 @@ import java.util.List;
 /**
  * @author huanglei
  * @ClassNname：MyCourse.java
- * @Describe 课程列表页面
+ * @Describe 课程筛选列表页面
  * @time 2018/3/19 13:28
  */
 @ContentView(R.layout.activity_course_filter_list)
@@ -58,17 +58,20 @@ public class CourseFilterActivity extends BaseActivity {
     @ViewInject(R.id.iv_msg)
     ImageView iv_msg;
     @ViewInject(R.id.dropDownMenu)
-    DropDownMenu mDropDownMenu;
+    DropDownMenu mDropDownMenu;//筛选菜单
     LinearLayout ll_content;
     private String headers[] = {"课程分类", "附近", "组合排序"};
     private List<View> popupViews = new ArrayList<>();
-
+    //一级分类列表适配器
     private GirdDropDownAdapter cityAdapter;
+    //二级分类列表适配器
     private GirdDropDownAdapter girdDropDownAdapter;
-    private ListDropDownAdapter ageAdapter;
-    private ListDropDownAdapter sexAdapter;
-    private String near[] = {"500米", "1km", "3km", "5km", "10km"};
-    private String distribution_type[] = {"最新发布", "好评优先", "价格实惠"};
+    //距离列表适配器
+    private ListDropDownAdapter distanceListViewAdapter;
+    //组合排序适配器
+    private ListDropDownAdapter combinationAdapter;
+    private String distanceArrays[] = {"500米", "1km", "3km", "5km", "10km"};
+    private String combinationArrays[] = {"最新发布", "好评优先", "价格实惠"};
     View view;
     LRecyclerView lrecyclerview;
     private View mEmptyView;
@@ -76,30 +79,29 @@ public class CourseFilterActivity extends BaseActivity {
     CourseListTypeAdapter courseListTypeAdapter;
     List<CourseListBean.DataBeanX> hotCourseList = new ArrayList<>();
     private List<MultipleItem> mItemModels = new ArrayList<>();
-    String type;
-    String tagId3="";
-    String tagId2="";
-    String tagId1="";
+    String tagId3 = "";//官方推荐，热销，精品等tagId
+    String tagId2 = "";//二级分类id
+    String tagId1 = "";//一级分类id
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
         tagId1 = getIntent().getStringExtra("tagId1");
         tagId3 = getIntent().getStringExtra("tagId3");
-        if (tagId1==null){
-            tagId1="";
+        if (tagId1 == null) {
+            tagId1 = "";
         }
-        if (tagId3==null){
-            tagId3="";
+        if (tagId3 == null) {
+            tagId3 = "";
         }
 //        if (type.equalsIgnoreCase("hot")) {//热门
-            tv_name.setText("服务列表");
+        tv_name.setText("服务列表");
 //        } else if (type.equalsIgnoreCase("excellent")) {//精选
 //            tv_name.setText("精品课程");
 //        } else if (type.equalsIgnoreCase("introductory")) {//推荐
 //            tv_name.setText("官方课程");
 //        }
-
         view = LayoutInflater.from(this).inflate(R.layout.layout_course_list_content, null);
         lrecyclerview = view.findViewById(R.id.lrecyclerview);
         mEmptyView = view.findViewById(R.id.empty_view);
@@ -119,9 +121,10 @@ public class CourseFilterActivity extends BaseActivity {
         lrecyclerview.forceToRefresh();
         getTags();
     }
+
     //init city menu
-    ListView cityView;
-    ListView pop_listview_center;
+    ListView cityView;//一级分类列表
+    ListView pop_listview_center;//二级分类列表
 
     private void initView() {
         View menView = LayoutInflater.from(this).inflate(R.layout.layout_two_list, null);
@@ -129,55 +132,65 @@ public class CourseFilterActivity extends BaseActivity {
         cityView = (ListView) menView.findViewById(R.id.pop_listview_left);
         pop_listview_center = (ListView) menView.findViewById(R.id.pop_listview_center);
         //init age menu
-        final ListView ageView = new ListView(this);
-        ageView.setDividerHeight(0);
-        ageAdapter = new ListDropDownAdapter(this, Arrays.asList(near));
-        ageView.setAdapter(ageAdapter);
+        final ListView distanceListView = new ListView(this);
+        distanceListView.setDividerHeight(0);
+        distanceListViewAdapter = new ListDropDownAdapter(this, Arrays.asList(distanceArrays));
+        distanceListView.setAdapter(distanceListViewAdapter);
 
         //init sex menu
-        final ListView sexView = new ListView(this);
-        sexView.setDividerHeight(0);
-        sexAdapter = new ListDropDownAdapter(this, Arrays.asList(distribution_type));
-        sexView.setAdapter(sexAdapter);
+        final ListView combinationListView = new ListView(this);
+        combinationListView.setDividerHeight(0);
+        combinationAdapter = new ListDropDownAdapter(this, Arrays.asList(combinationArrays));
+        combinationListView.setAdapter(combinationAdapter);
         //init popupViews
         popupViews.add(menView);
-        popupViews.add(ageView);
-        popupViews.add(sexView);
+        popupViews.add(distanceListView);
+        popupViews.add(combinationListView);
         //add item click event
         cityView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 cityAdapter.setCheckItem(position);
-                getChildTags(dataBeans.get(position).getId(),position);
+                getChildTags(dataBeans.get(position).getId(), position);
             }
         });
         pop_listview_center.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 girdDropDownAdapter.setCheckItem(position);
-                tagId1="";
-                tagId3="";
-                tagId2=childDataList.get(position).getId();
+                tagId1 = "";
+                tagId3 = "";
+                lat = 0.00;//维度
+                lng = 0.00;//经度
+                distance = "";
+                tagId2 = childDataList.get(position).getId();
                 mDropDownMenu.setTabText(childDataList.get(position).getName());
                 mDropDownMenu.closeMenu();
                 initData();
             }
         });
-
-        ageView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        //距离选择事件
+        distanceListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ageAdapter.setCheckItem(position);
-                mDropDownMenu.setTabText(near[position]);
+                tagId1 = "";
+                tagId3 = "";
+                tagId2 = "";
+                lat = 31.23;//维度
+                lng = 121.47;//经度
+                distance = "100";
+                distanceListViewAdapter.setCheckItem(position);
+                mDropDownMenu.setTabText(distanceArrays[position]);
                 mDropDownMenu.closeMenu();
+                initData();
             }
         });
-
-        sexView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        //组合排序
+        combinationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                sexAdapter.setCheckItem(position);
-                mDropDownMenu.setTabText(distribution_type[position]);
+                combinationAdapter.setCheckItem(position);
+                mDropDownMenu.setTabText(combinationArrays[position]);
                 mDropDownMenu.closeMenu();
             }
         });
@@ -204,6 +217,7 @@ public class CourseFilterActivity extends BaseActivity {
     String parentId = "";
     ArrayList<TagsListBean.DataBean> dataBeans = new ArrayList<>();
     ArrayList<TagsListBean.DataBean> childDataList = new ArrayList<>();
+    //获取一级分类列表
     public void getTags() {
         SimpleryoNetwork.tags(CourseFilterActivity.this, new MyBaseProgressCallbackImpl() {
             @Override
@@ -213,7 +227,7 @@ public class CourseFilterActivity extends BaseActivity {
                 TagsListBean tagsListBean = info.getRetDetail(TagsListBean.class);
                 if (tagsListBean.getCode().equalsIgnoreCase("0")) {
                     if (tagsListBean.getData() != null && tagsListBean.getData().size() > 0) {
-                        if (dataBeans!=null&&dataBeans.size()>0){
+                        if (dataBeans != null && dataBeans.size() > 0) {
                             dataBeans.clear();
                         }
                         dataBeans.addAll(tagsListBean.getData());
@@ -225,7 +239,7 @@ public class CourseFilterActivity extends BaseActivity {
             }
         }, "COURSE_TYPE", parentId);
     }
-
+    //根据一级分类获取二级分类列表
     public void getChildTags(String parentId, final int position) {
         SimpleryoNetwork.tags(CourseFilterActivity.this, new MyBaseProgressCallbackImpl() {
             @Override
@@ -235,20 +249,23 @@ public class CourseFilterActivity extends BaseActivity {
                 if (tagsListBean.getCode().equalsIgnoreCase("0")) {
                     if (tagsListBean.getData() != null && tagsListBean.getData().size() > 0) {
                         pop_listview_center.setVisibility(View.VISIBLE);
-                        if (childDataList!=null&&childDataList.size()>0){
+                        if (childDataList != null && childDataList.size() > 0) {
                             childDataList.clear();
                         }
                         childDataList.addAll(tagsListBean.getData());
                         girdDropDownAdapter = new GirdDropDownAdapter(CourseFilterActivity.this, childDataList, 1);
                         pop_listview_center.setDividerHeight(0);
                         pop_listview_center.setAdapter(girdDropDownAdapter);
-                    }else{
+                    } else {
                         pop_listview_center.setVisibility(View.INVISIBLE);
                         mDropDownMenu.setTabText(dataBeans.get(position).getName());
                         mDropDownMenu.closeMenu();
-                        tagId3="";
-                        tagId2="";
-                        tagId1=dataBeans.get(position).getId();
+                        tagId3 = "";
+                        tagId2 = "";
+                        lat = 0.00;//维度
+                        lng = 0.00;//经度
+                        distance = "";
+                        tagId1 = dataBeans.get(position).getId();
                         initData();
                     }
                 }
@@ -318,7 +335,10 @@ public class CourseFilterActivity extends BaseActivity {
         }
     };
 
-
+    double lat = 0.00;//维度
+    double lng = 0.00;//经度
+    String distance = "";//距离
+    //获取课程列表
     public void initData() {
         if (hotCourseList != null && hotCourseList.size() > 0) {
             hotCourseList.clear();
@@ -352,9 +372,9 @@ public class CourseFilterActivity extends BaseActivity {
                             }
                         });
                     } else {
-                        if (hotCourseList.size()>0){
+                        if (hotCourseList.size() > 0) {
                             lrecyclerview.setNoMore(true);
-                        }else{
+                        } else {
                             if (hotCourseList != null && hotCourseList.size() > 0) {
                                 hotCourseList.clear();
                             }
@@ -370,6 +390,7 @@ public class CourseFilterActivity extends BaseActivity {
                     lrecyclerview.refreshComplete(hotCourseList.size());
                 }
             }
+
             @Override
             public void onFailure(HttpInfo info) {
                 super.onFailure(info);
@@ -377,7 +398,7 @@ public class CourseFilterActivity extends BaseActivity {
                 textView.setText("数据一不小心走丢了，请稍后回来");
                 lrecyclerview.setEmptyView(mEmptyView);
             }
-        }, "", "", tagId1,tagId2, tagId3, "");
+        }, "", "", tagId1, tagId2, tagId3, "", lat, lng, distance);
     }
 
     @Event(value = {R.id.iv_back, R.id.iv_msg}, type = View.OnClickListener.class)

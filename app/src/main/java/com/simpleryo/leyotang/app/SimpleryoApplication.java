@@ -3,7 +3,9 @@ package com.simpleryo.leyotang.app;
 import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 import android.widget.RemoteViews;
@@ -69,6 +71,11 @@ public class SimpleryoApplication extends MultiDexApplication {
         InAppMessageManager.getInstance(this).setInAppMsgDebugMode(true);
         initUpush();
         HuaWeiRegister.register(SimpleryoApplication.this);
+        //建议在application 的onCreate()的方法中调用
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+            StrictMode.setVmPolicy(builder.build());
+        }
     }
 
     private void initUpush() {

@@ -2,13 +2,14 @@ package com.simpleryo.leyotang.fragment;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,7 +50,6 @@ import com.simpleryo.leyotang.base.XLibraryLazyFragment;
 import com.simpleryo.leyotang.bean.BusEntity;
 import com.simpleryo.leyotang.bean.UserInfoBean;
 import com.simpleryo.leyotang.network.SimpleryoNetwork;
-import com.simpleryo.leyotang.utils.PhotoUtils;
 import com.simpleryo.leyotang.utils.SharedPreferencesUtils;
 import com.simpleryo.leyotang.utils.XStringPars;
 import com.simpleryo.leyotang.view.LoadingDialog;
@@ -65,8 +65,12 @@ import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import static android.app.Activity.RESULT_OK;
+import static com.simpleryo.leyotang.utils.EventBusType.CAMERA;
+import static com.simpleryo.leyotang.utils.EventBusType.PHOTO;
 
 /**
  * @author huanglei
@@ -99,6 +103,15 @@ public class MyFragment extends XLibraryLazyFragment {
     private static final int CODE_GALLERY_REQUEST = 0xa0;
     private static final int CODE_CAMERA_REQUEST = 0xa1;
     private static final int CODE_RESULT_REQUEST = 0xa2;
+    //相册请求码
+    private static final int ALBUM_REQUEST_CODE = 1;
+    //相机请求码
+    private static final int CAMERA_REQUEST_CODE = 2;
+    //剪裁请求码
+    private static final int CROP_REQUEST_CODE = 3;
+    //调用照相机返回图片文件
+    private File tempFile;
+
     private File fileUri = new File(Environment.getExternalStorageDirectory().getPath() + "/avatar.jpg");
     private File fileCropUri = new File(Environment.getExternalStorageDirectory().getPath() + "/crop_avatar.jpg");
     private Uri imageUri;
@@ -174,29 +187,31 @@ public class MyFragment extends XLibraryLazyFragment {
     String starSign;
     String des;
     boolean isBindWechat;
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updateSex(BusEntity bus) {
-        if (bus.getType()==1001){
+        if (bus.getType() == 1001) {
             SharedPreferencesUtils.saveKeyBoolean("isLogin", false);
-            SharedPreferencesUtils.saveKeyString("token","simpleryo");
-            startActivity(new Intent(getActivity(),LoginActivity.class));
+            SharedPreferencesUtils.saveKeyString("token", "simpleryo");
+            startActivity(new Intent(getActivity(), LoginActivity.class));
         }
-        if (bus.getType()==402){
-            Log.w("cc","uploadAvataPath:"+uploadAvataPath);
+        if (bus.getType() == 402) {
+            Log.w("cc", "uploadAvataPath:" + uploadAvataPath);
             SimpleryoNetwork.updateInfo(getActivity(), new MyBaseProgressCallbackImpl(getActivity()) {
                 @Override
-                public void onSuccess(HttpInfo info)  {
+                public void onSuccess(HttpInfo info) {
                     loadingDialog.dismiss();
-                    Toast.makeText(getActivity(),"修改成功",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "修改成功", Toast.LENGTH_SHORT).show();
                     EventBus.getDefault().post(new BusEntity(401));
                 }
+
                 @Override
-                public void onFailure(HttpInfo info)  {
+                public void onFailure(HttpInfo info) {
                     loadingDialog.dismiss();
                 }
-            },userId,emmail,bus.getContent(),loginName,gender,starSign,des,uploadAvataPath);
+            }, userId, emmail, bus.getContent(), loginName, gender, starSign, des, uploadAvataPath);
         }
-        if (bus.getType()==401){
+        if (bus.getType() == 401) {
             isLogin = SharedPreferencesUtils.getKeyBoolean("isLogin");//获取用户登录状态
             userId = SharedPreferencesUtils.getKeyString("userId");
             if (isLogin) {
@@ -207,12 +222,12 @@ public class MyFragment extends XLibraryLazyFragment {
                         super.onSuccess(info);
                         mHasLoadedOnce = true;
                         UserInfoBean userInfoBean = info.getRetDetail(UserInfoBean.class);
-                        if (userInfoBean.getCode().equalsIgnoreCase("0")){
-                            emmail=userInfoBean.getData().getEmail();
-                            gender=userInfoBean.getData().getGender();
-                            loginName=userInfoBean.getData().getPhone();
-                            starSign=userInfoBean.getData().getStarSign();
-                            des=userInfoBean.getData().getIntro();
+                        if (userInfoBean.getCode().equalsIgnoreCase("0")) {
+                            emmail = userInfoBean.getData().getEmail();
+                            gender = userInfoBean.getData().getGender();
+                            loginName = userInfoBean.getData().getPhone();
+                            starSign = userInfoBean.getData().getStarSign();
+                            des = userInfoBean.getData().getIntro();
                             if (userInfoBean.getData().getAvatarUrl() != null) {
                                 Picasso.with(getActivity().getApplicationContext()).load(userInfoBean.getData().getAvatarUrl()).transform(transformation).into(iv_avatar);
                             } else {
@@ -233,10 +248,10 @@ public class MyFragment extends XLibraryLazyFragment {
                             } else {
                                 tv_nickname.setText("暂无昵称");
                             }
-                            if (userInfoBean.getData().getThirdNos()!=null&&userInfoBean.getData().getThirdNos().size()>0){
-                                SharedPreferencesUtils.saveKeyBoolean("isBindWechat",true);
-                            }else{
-                                SharedPreferencesUtils.saveKeyBoolean("isBindWechat",false);
+                            if (userInfoBean.getData().getThirdNos() != null && userInfoBean.getData().getThirdNos().size() > 0) {
+                                SharedPreferencesUtils.saveKeyBoolean("isBindWechat", true);
+                            } else {
+                                SharedPreferencesUtils.saveKeyBoolean("isBindWechat", false);
                             }
                         }
 
@@ -247,10 +262,11 @@ public class MyFragment extends XLibraryLazyFragment {
                 tv_nickname.setText(getResources().getString(R.string.no_login));
                 tv_collection.setText("0");
                 tv_attention.setText("0");
-                Picasso.with(getActivity().getApplicationContext()).load("http://p2.so.qhmsg.com/bdr/_240_/t0118ff1cab46ddba27.jpg").transform(transformation).into(iv_avatar);
+                Picasso.with(getActivity()).load(R.mipmap.iv_app_logo).transform(transformation).into(iv_avatar);
+//                Picasso.with(getActivity().getApplicationContext()).load("http://p2.so.qhmsg.com/bdr/_240_/t0118ff1cab46ddba27.jpg").transform(transformation).into(iv_avatar);
             }
         }
-        if (bus.getType()==403){
+        if (bus.getType() == 403) {
 //            dialog = ProgressDialog.show(getActivity(), null, "上传中，请稍后", false, true);
             if (loadingDialog == null) {
                 loadingDialog = new LoadingDialog(getActivity());
@@ -259,8 +275,14 @@ public class MyFragment extends XLibraryLazyFragment {
                 loadingDialog.showDialog();
             }
         }
-        if (bus.getType()==404){
+        if (bus.getType() == 404) {
 
+        }
+        if (bus.getType() == PHOTO) {
+            getPicFromAlbm();
+        }
+        if (bus.getType() == CAMERA) {
+            getPicFromCamera();
         }
     }
 
@@ -269,8 +291,10 @@ public class MyFragment extends XLibraryLazyFragment {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
+
     String uploadAvataPath;
     public LoadingDialog loadingDialog;//加载提示框
+
     public void uploadImg(String filePath) {
         final String fileName = "file/" + XStringPars.md5("simpleryo_android_" + System.currentTimeMillis());
         // 构造上传请求
@@ -280,13 +304,13 @@ public class MyFragment extends XLibraryLazyFragment {
             @Override
             public void onProgress(PutObjectRequest request, long currentSize, long totalSize) {
 //                EventBus.getDefault().post(new BusEntity(403));
-                Log.w("cc","上传进度:"+currentSize+"/"+totalSize);
+                Log.w("cc", "上传进度:" + currentSize + "/" + totalSize);
             }
         });
-    OSSAsyncTask ossAsyncTask= oss.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
+        OSSAsyncTask ossAsyncTask = oss.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
             @Override
             public void onSuccess(PutObjectRequest request, PutObjectResult result) {
-                uploadAvataPath=SimpleryoNetwork.imgUrl+fileName;
+                uploadAvataPath = SimpleryoNetwork.imgUrl + fileName;
                 EventBus.getDefault().post(new BusEntity(402));
             }
 
@@ -327,12 +351,12 @@ public class MyFragment extends XLibraryLazyFragment {
         EventBus.getDefault().post(new BusEntity(401));
     }
 
-    @Event(value = {R.id.iv_msg,R.id.tv_exit, R.id.iv_coupons_more,R.id.ll_login, R.id.ll_use_help, R.id.ll_wait_pay, R.id.ll_comprehensive_evaluation, R.id.ll_contact_us, R.id.ll_my_course, R.id.iv_avatar, R.id.ll_my_info, R.id.ll_bind_account, R.id.ll_complaint, R.id.ll_my_attention, R.id.ll_collection}, type = View.OnClickListener.class)
+    @Event(value = {R.id.iv_msg, R.id.tv_exit, R.id.iv_coupons_more, R.id.ll_login, R.id.ll_use_help, R.id.ll_wait_pay, R.id.ll_comprehensive_evaluation, R.id.ll_contact_us, R.id.ll_my_course, R.id.iv_avatar, R.id.ll_my_info, R.id.ll_bind_account, R.id.ll_complaint, R.id.ll_my_attention, R.id.ll_collection}, type = View.OnClickListener.class)
     private void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_exit://退出
-                ExitDialogFragment exitDialogFragment=new ExitDialogFragment();
-                exitDialogFragment.show(getFragmentManager(),"exitDialogFragment");
+                ExitDialogFragment exitDialogFragment = new ExitDialogFragment();
+                exitDialogFragment.show(getFragmentManager(), "exitDialogFragment");
                 break;
             case R.id.iv_msg://消息
                 startActivity(new Intent(getActivity(), MyMsgActivity.class));
@@ -352,11 +376,11 @@ public class MyFragment extends XLibraryLazyFragment {
                 break;
             case R.id.iv_coupons_more://优惠券
                 if (isLogin) {
-                    Intent intent=new Intent(getActivity(), MyCouponsActivity.class);
-                    intent.putExtra("type","my");
-                    intent.putExtra("storeId","");
-                    intent.putExtra("courseId","");
-                    intent.putExtra("count",0);
+                    Intent intent = new Intent(getActivity(), MyCouponsActivity.class);
+                    intent.putExtra("type", "my");
+                    intent.putExtra("storeId", "");
+                    intent.putExtra("courseId", "");
+                    intent.putExtra("count", 0);
                     startActivity(intent);
                 } else {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
@@ -414,50 +438,146 @@ public class MyFragment extends XLibraryLazyFragment {
                 break;
             case R.id.iv_avatar:
                 if (isLogin) {
-                    Intent i = new Intent(
-                            Intent.ACTION_PICK,
-                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
-                    startActivityForResult(i, CODE_GALLERY_REQUEST);
+//                    Intent i = new Intent(
+//                            Intent.ACTION_PICK,
+//                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//
+//                    startActivityForResult(i, CODE_GALLERY_REQUEST);
+                    AvatarBottomSheetDialog avatarBottomSheetDialog = new AvatarBottomSheetDialog();
+                    avatarBottomSheetDialog.show(getChildFragmentManager(), "avatarBottomSheetDialog");
                 } else {
+//                    AvatarBottomSheetDialog avatarBottomSheetDialog = new AvatarBottomSheetDialog();
+//                    avatarBottomSheetDialog.show(getChildFragmentManager(), "avatarBottomSheetDialog");
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                 }
                 break;
         }
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                //相机返回
-                case CODE_CAMERA_REQUEST:
-                    cropImageUri = Uri.fromFile(fileCropUri);
-                    Picasso.with(getActivity().getApplicationContext()).load(cropImageUri).transform(transformation).into(iv_avatar);
+//                //相机返回
+//                case CODE_CAMERA_REQUEST:
+//                    cropImageUri = Uri.fromFile(fileCropUri);
+//                    Picasso.with(getActivity().getApplicationContext()).load(cropImageUri).transform(transformation).into(iv_avatar);
+//                    break;
+//                //相册返回
+//                case CODE_GALLERY_REQUEST:
+//                    Uri selectedImage = data.getData();
+//                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
+//
+//                    Cursor cursor = getActivity().getContentResolver().query(selectedImage,
+//                            filePathColumn, null, null, null);
+//                    cursor.moveToFirst();
+//                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+//                    String filePath = cursor.getString(columnIndex);
+//                    cursor.close();
+//                    Log.w("cc", "filePath:" + filePath);
+//                    uploadImg(filePath);
+////                    Picasso.with(getContext().getApplicationContext()).load(newUri).transform(transformation).into(iv_avatar);
+//                    break;
+//                //裁剪返回
+//                case CODE_RESULT_REQUEST:
+//                    Bitmap bitmap = PhotoUtils.getBitmapFromUri(cropImageUri, getActivity());
+//                    if (bitmap != null) {
+//                        Picasso.with(getActivity().getApplicationContext()).load("http://p0.so.qhmsg.com/bdr/_240_/t01eb2a6c6319b04655.jpg").transform(transformation).into(iv_avatar);
+//                    }
+//                    break;
+                case CAMERA_REQUEST_CODE:   //调用相机后返回
+                    if (resultCode == RESULT_OK) {
+                        //用相机返回的照片去调用剪裁也需要对Uri进行处理
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            Uri contentUri = FileProvider.getUriForFile(getActivity(), "com.simpleryo.leyotang.fileprovider", tempFile);
+                            cropPhoto(contentUri);
+                        } else {
+                            cropPhoto(Uri.fromFile(tempFile));
+                        }
+                    }
                     break;
-                //相册返回
-                case CODE_GALLERY_REQUEST:
-                    Uri selectedImage = data.getData();
-                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
-
-                    Cursor cursor = getActivity().getContentResolver().query(selectedImage,
-                            filePathColumn, null, null, null);
-                    cursor.moveToFirst();
-                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                    String filePath = cursor.getString(columnIndex);
-                    cursor.close();
-                    Log.w("cc", "filePath:" + filePath);
-                    uploadImg(filePath);
-//                    Picasso.with(getContext().getApplicationContext()).load(newUri).transform(transformation).into(iv_avatar);
+                case ALBUM_REQUEST_CODE:    //调用相册后返回
+                    if (resultCode == RESULT_OK) {
+                        Uri uri = data.getData();
+                        cropPhoto(uri);
+                    }
                     break;
-                //裁剪返回
-                case CODE_RESULT_REQUEST:
-                    Bitmap bitmap = PhotoUtils.getBitmapFromUri(cropImageUri, getActivity());
-                    if (bitmap != null) {
-                        Picasso.with(getActivity().getApplicationContext()).load("http://p0.so.qhmsg.com/bdr/_240_/t01eb2a6c6319b04655.jpg").transform(transformation).into(iv_avatar);
+                case CROP_REQUEST_CODE:     //调用剪裁后返回
+                    Bundle bundle = data.getExtras();
+                    if (bundle != null) {
+                        //在这里获得了剪裁后的Bitmap对象，可以用于上传
+                        Bitmap image = bundle.getParcelable("data");
+                        //设置到ImageView上
+                        //也可以进行一些保存、压缩等操作后上传
+                        String path = saveImage("avatar",image);
+                        uploadImg(path);
                     }
                     break;
             }
         }
+    }
+    /**
+     * 从相机获取图片
+     */
+    private void getPicFromCamera() {
+        //用于保存调用相机拍照后所生成的文件
+        tempFile = new File(Environment.getExternalStorageDirectory().getPath(), System.currentTimeMillis() + ".jpg");
+        //跳转到调用系统相机
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        //判断版本
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {   //如果在Android7.0以上,使用FileProvider获取Uri
+            intent.setFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            Uri contentUri = FileProvider.getUriForFile(getActivity(), "com.simpleryo.leyotang.fileprovider", tempFile);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, contentUri);
+        } else {    //否则使用Uri.fromFile(file)方法获取Uri
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempFile));
+        }
+        startActivityForResult(intent, CAMERA_REQUEST_CODE);
+    }
+
+    /**
+     * 从相册获取图片
+     */
+    private void getPicFromAlbm() {
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        photoPickerIntent.setType("image/*");
+        startActivityForResult(photoPickerIntent, ALBUM_REQUEST_CODE);
+    }
+
+    /**
+     * 裁剪图片
+     */
+    private void cropPhoto(Uri uri) {
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        intent.setDataAndType(uri, "image/*");
+        intent.putExtra("crop", "true");
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);
+        intent.putExtra("outputX", 300);
+        intent.putExtra("outputY", 300);
+        intent.putExtra("return-data", true);
+        startActivityForResult(intent, CROP_REQUEST_CODE);
+    }
+
+    public String saveImage(String name, Bitmap bmp) {
+        File appDir = new File(Environment.getExternalStorageDirectory().getPath());
+        if (!appDir.exists()) {
+            appDir.mkdir();
+        }
+        String fileName = name + ".jpg";
+        File file = new File(appDir, fileName);
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            bmp.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.flush();
+            fos.close();
+            return file.getAbsolutePath();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
