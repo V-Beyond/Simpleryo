@@ -254,10 +254,10 @@ public class CouponsActivity extends BaseActivity {
                 lowAmount=edittext_low.getText().toString().trim();
                 upAmount=edittext_up.getText().toString().trim();
                 mDropDownMenu.closeMenu();
-                channel="";
-                category="";
-                tagId2="";
-                tagId1="";
+//                channel="";
+//                category="";
+//                tagId2="";
+//                tagId1="";
                 tickets();
             }
         });
@@ -281,8 +281,8 @@ public class CouponsActivity extends BaseActivity {
 //                tagId1="";
 //                tagId3="";
 //                tagId2=childDataList.get(position).getId();
-                channel="";
-                category="";
+//                channel="";
+//                category="";
                 tagId2=childDataList.get(position).getId();
                 mDropDownMenu.setTabText(childDataList.get(position).getName());
                 mDropDownMenu.closeMenu();
@@ -294,9 +294,9 @@ public class CouponsActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ageAdapter.setCheckItem(position);
-                channel="";
-                tagId2="";
-                tagId1="";
+//                channel="";
+//                tagId2="";
+//                tagId1="";
                 String categoryName = preferential_type[position];
                 mDropDownMenu.setTabText(categoryName);
                 mDropDownMenu.closeMenu();
@@ -320,9 +320,9 @@ public class CouponsActivity extends BaseActivity {
                 String channelName = distribution_type[position];
                 mDropDownMenu.setTabText(channelName);
                 mDropDownMenu.closeMenu();
-                category="";
-                tagId2="";
-                tagId1="";
+//                category="";
+//                tagId2="";
+//                tagId1="";
                 if (channelName.equalsIgnoreCase("全部")) {
                     channel = "";
                 }
@@ -387,11 +387,11 @@ public class CouponsActivity extends BaseActivity {
                         pop_listview_center.setVisibility(View.INVISIBLE);
                         mDropDownMenu.setTabText(dataBeans.get(position).getName());
                         mDropDownMenu.closeMenu();
-                        lowAmount="";
-                        upAmount="";
-                        channel="";
-                        category="";
-                        tagId2="";
+//                        lowAmount="";
+//                        upAmount="";
+//                        channel="";
+//                        category="";
+//                        tagId2="";
                         tagId1=dataBeans.get(position).getId();
                         tickets();
                     }

@@ -70,7 +70,7 @@ public class CourseFilterActivity extends BaseActivity {
     private ListDropDownAdapter distanceListViewAdapter;
     //组合排序适配器
     private ListDropDownAdapter combinationAdapter;
-    private String distanceArrays[] = {"500米", "1km", "3km", "5km", "10km"};
+    private String distanceArrays[] = {"500m", "1km", "3km", "5km", "10km"};
     private String combinationArrays[] = {"最新发布", "好评优先", "价格实惠"};
     View view;
     LRecyclerView lrecyclerview;

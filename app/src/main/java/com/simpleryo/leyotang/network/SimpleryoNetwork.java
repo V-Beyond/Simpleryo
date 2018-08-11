@@ -139,6 +139,8 @@ public class SimpleryoNetwork {
             jsonObject.put("msgAuthCode", code);//验证码
             jsonObject.put("password", password);//密码
             jsonObject.put("loginName", phone);//登录名
+            jsonObject.put("loginName", phone);//登录名
+            jsonObject.put("role", "NORMAL");//用户角色  ROOT 为超级管理员，ADMIN为管理员，STORE_ADMIN为商家管理员,NORMAL 为APP用户 ,
         } catch (JSONException e) {
             e.printStackTrace();
         }
