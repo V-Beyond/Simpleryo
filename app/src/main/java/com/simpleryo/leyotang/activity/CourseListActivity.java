@@ -176,7 +176,7 @@ public class CourseListActivity extends BaseActivity {
                 textView.setText("数据一不小心走丢了，请稍后回来");
                 lrecyclerview.setEmptyView(mEmptyView);
             }
-        }, "", "", tagId1, "","","",0.00,0.00,"");
+        }, "", "", tagId1, "","","",0.00,0.00,"",0,0,0);
     }
 
     @Event(value = {R.id.iv_back,R.id.iv_msg}, type = View.OnClickListener.class)

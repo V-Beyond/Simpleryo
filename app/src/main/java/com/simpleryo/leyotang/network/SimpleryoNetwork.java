@@ -338,7 +338,7 @@ public class SimpleryoNetwork {
      * @param context
      * @param callback
      */
-    public static void getCourse(Context context, Callback callback, String storeId, String name, String tagId1, String tagId2, String tagId3, String coachId,double lat,double lng,String distance) {
+    public static void getCourse(Context context, Callback callback, String storeId, String name, String tagId1, String tagId2, String tagId3, String coachId,double lat,double lng,String distance,int publishTime,int goodReview,int price) {
         HttpInfo.Builder builder = new HttpInfo.Builder();
         builder.setUrl(httpUrl + "p/courses");
         builder.setRequestType(RequestType.GET);
@@ -370,6 +370,15 @@ public class SimpleryoNetwork {
         }
         if (!distance.equalsIgnoreCase("")) {
             builder.addParam("distance", distance);
+        }
+        if (publishTime!=0) {
+            builder.addParam("publishTime", publishTime+"");
+        }
+        if (goodReview!=0) {
+            builder.addParam("goodReview", goodReview+"");
+        }
+        if (price!=0) {
+            builder.addParam("price", price+"");
         }
         doHttpAsync(context, builder.build(), callback);
     }

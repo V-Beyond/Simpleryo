@@ -93,8 +93,28 @@ public class CourseListBean extends BaseResult {
         private AddressBean address;
         private CoachBean coach;
         private List<RecommendsBean> recommends;
+        private  boolean hasCardCoupon;
+        private String distance;
+
+        public String getDistance() {
+            return distance;
+        }
+
+        public void setDistance(String distance) {
+            this.distance = distance;
+        }
+
         private  int upperLimit;
         private String type;
+
+        public boolean isHasCardCoupon() {
+            return hasCardCoupon;
+        }
+
+        public void setHasCardCoupon(boolean hasCardCoupon) {
+            this.hasCardCoupon = hasCardCoupon;
+        }
+
         private ArrayList<HomeDataBean.DataBeanX.CoursesBeanX.CoursesBean.Arrange> arranges;
 
         public ArrayList<HomeDataBean.DataBeanX.CoursesBeanX.CoursesBean.Arrange> getArranges() {

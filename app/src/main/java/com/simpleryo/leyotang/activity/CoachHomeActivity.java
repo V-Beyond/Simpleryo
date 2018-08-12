@@ -175,7 +175,7 @@ public class CoachHomeActivity extends BaseActivity {
                 textView.setText("数据一不小心走丢了，请稍后回来");
                 lrecyclerview.setEmptyView(mEmptyView);
             }
-        }, "", "", "", "","", coachId,0.00,0.00,"");
+        }, "", "", "", "","", coachId,0.00,0.00,"",0,0,0);
     }
 
     @Event(value = {R.id.iv_back, R.id.iv_msg, R.id.tv_business_home}, type = View.OnClickListener.class)

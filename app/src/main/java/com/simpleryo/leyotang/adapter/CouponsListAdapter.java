@@ -69,8 +69,13 @@ public class CouponsListAdapter extends BaseAdapter<CouponsListBean.DataBean> {
                 Picasso.with(mContext).load(R.mipmap.iv_app_logo).transform(transformation).into(((CouponsItemViewHolder) holder).iv_coupons_img);
             }
             if (typeBean.getStore() != null) {
-                ((CouponsItemViewHolder) holder).rl_item.setBackgroundResource(R.mipmap.iv_coupon_blue_bg);
-                ((CouponsItemViewHolder) holder).tv_store_name.setText(typeBean.getStore().getName());
+               if(typeBean.getCourses()!=null&&typeBean.getCourses().size()>0){
+                   ((CouponsItemViewHolder) holder).rl_item.setBackgroundResource(R.mipmap.iv_coupon_orange_bg);
+                   ((CouponsItemViewHolder) holder).tv_store_name.setText(typeBean.getStore().getName());
+               }else{
+                   ((CouponsItemViewHolder) holder).rl_item.setBackgroundResource(R.mipmap.iv_coupon_blue_bg);
+                   ((CouponsItemViewHolder) holder).tv_store_name.setText(typeBean.getStore().getName());
+               }
             } else {
                 ((CouponsItemViewHolder) holder).rl_item.setBackgroundResource(R.mipmap.iv_coupon_red_bg);
                 ((CouponsItemViewHolder) holder).tv_store_name.setText("乐友堂(LeYoTown)");

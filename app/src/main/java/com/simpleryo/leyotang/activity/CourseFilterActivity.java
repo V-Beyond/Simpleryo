@@ -163,6 +163,9 @@ public class CourseFilterActivity extends BaseActivity {
                 lat = 0.00;//维度
                 lng = 0.00;//经度
                 distance = "";
+                publishTime=0;
+                goodReview=0;
+                price=0;
                 tagId2 = childDataList.get(position).getId();
                 mDropDownMenu.setTabText(childDataList.get(position).getName());
                 mDropDownMenu.closeMenu();
@@ -178,7 +181,22 @@ public class CourseFilterActivity extends BaseActivity {
                 tagId2 = "";
                 lat = 31.23;//维度
                 lng = 121.47;//经度
-                distance = "100";
+                publishTime=0;
+                goodReview=0;
+                price=0;
+                if (distanceArrays[position].equalsIgnoreCase("500m")){
+                    distance = "500";
+                }else if (distanceArrays[position].equalsIgnoreCase("1km")){
+                    distance = "1000";
+                }else if (distanceArrays[position].equalsIgnoreCase("3km")){
+                    distance = "3000";
+                }
+                else if (distanceArrays[position].equalsIgnoreCase("5km")){
+                    distance = "5000";
+                }
+                else if (distanceArrays[position].equalsIgnoreCase("10km")){
+                    distance = "10000";
+                }
                 distanceListViewAdapter.setCheckItem(position);
                 mDropDownMenu.setTabText(distanceArrays[position]);
                 mDropDownMenu.closeMenu();
@@ -189,9 +207,23 @@ public class CourseFilterActivity extends BaseActivity {
         combinationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                tagId3 = "";
+//                tagId1="";
+//                tagId2 = "";
+//                lat = 0.00;//维度
+//                lng = 0.00;//经度
+//                distance = "";
+                if (combinationArrays[position].equalsIgnoreCase("最新发布")){
+                    publishTime=-1;
+                }else if (combinationArrays[position].equalsIgnoreCase("好评优先")){
+                    goodReview=-1;
+                }else if (combinationArrays[position].equalsIgnoreCase("价格实惠")){
+                    price=1;
+                }
                 combinationAdapter.setCheckItem(position);
                 mDropDownMenu.setTabText(combinationArrays[position]);
                 mDropDownMenu.closeMenu();
+                initData();
             }
         });
         //init dropdownview
@@ -265,6 +297,9 @@ public class CourseFilterActivity extends BaseActivity {
                         lat = 0.00;//维度
                         lng = 0.00;//经度
                         distance = "";
+                        publishTime=0;
+                        goodReview=0;
+                        price=0;
                         tagId1 = dataBeans.get(position).getId();
                         initData();
                     }
@@ -338,6 +373,9 @@ public class CourseFilterActivity extends BaseActivity {
     double lat = 0.00;//维度
     double lng = 0.00;//经度
     String distance = "";//距离
+    int publishTime=0;
+    int goodReview=0;
+    int price =0;
     //获取课程列表
     public void initData() {
         if (hotCourseList != null && hotCourseList.size() > 0) {
@@ -398,7 +436,7 @@ public class CourseFilterActivity extends BaseActivity {
                 textView.setText("数据一不小心走丢了，请稍后回来");
                 lrecyclerview.setEmptyView(mEmptyView);
             }
-        }, "", "", tagId1, tagId2, tagId3, "", lat, lng, distance);
+        }, "", "", tagId1, tagId2, tagId3, "", lat, lng, distance,publishTime,goodReview,price);
     }
 
     @Event(value = {R.id.iv_back, R.id.iv_msg}, type = View.OnClickListener.class)

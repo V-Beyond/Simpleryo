@@ -77,12 +77,6 @@ public class BusinessCourseAdapter extends BaseAdapter<CourseListBean.DataBeanX>
         }else{
             ((ExcellentCourseItemViewHolder) holder).iv_collection_star.setImageResource(R.mipmap.iv_collection_white_star);
         }
-        ((ExcellentCourseItemViewHolder) holder).rl_collect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                EventBus.getDefault().post(new BusEntity(1003,bean.getId(),bean.isHasCollect()));//收藏or取消收藏
-            }
-        });
         if(bean.getPrice()!=0){
             ((ExcellentCourseItemViewHolder) holder).tv_price.setText(XStringPars.foramtPrice(Integer.valueOf(bean.getPrice()))+"$/"+course_price);
         }else{
@@ -92,8 +86,6 @@ public class BusinessCourseAdapter extends BaseAdapter<CourseListBean.DataBeanX>
                 ((ExcellentCourseItemViewHolder) holder).tv_price.setText("免费预约");
             }
         }
-
-
         int collectCount=bean.getCollectCount();
         ((ExcellentCourseItemViewHolder) holder).tv_popular.setText(collectCount+" people");
 
@@ -105,7 +97,32 @@ public class BusinessCourseAdapter extends BaseAdapter<CourseListBean.DataBeanX>
         float percent= (float)bean.getClassCount() / (float)totalCount*100;
         ((ExcellentCourseItemViewHolder) holder).horizontal_progressbar.setProgress((int) percent);
         ((ExcellentCourseItemViewHolder) holder).tv_percent.setText(bean.getClassCount()+"/"+totalCount);
+        ((ExcellentCourseItemViewHolder) holder).tv_collection_count.setText(collectCount+"人收藏");
+        if (bean.isHasCardCoupon()){
+            ((ExcellentCourseItemViewHolder) holder).iv_course_item_coupon.setVisibility(View.VISIBLE);
+        }
+        if (bean.getDistance()!=null){
+            ((ExcellentCourseItemViewHolder) holder).tv_distance.setVisibility(View.VISIBLE);
+            ((ExcellentCourseItemViewHolder) holder).tv_distance.setText(bean.getDistance());
+        }
+        if (bean.isHasCollect()){
+            ((ExcellentCourseItemViewHolder) holder).iv_collection_course.setImageResource(R.mipmap.iv_course_item_collected);
+        }else{
+            ((ExcellentCourseItemViewHolder) holder).iv_collection_course.setImageResource(R.mipmap.iv_course_item_uncollect);
+        }
+        ((ExcellentCourseItemViewHolder) holder).iv_collection_course.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EventBus.getDefault().post(new BusEntity(1003,bean.getId(),bean.isHasCollect()));//收藏or取消收藏
+            }
+        });
 
+//        ((ExcellentCourseItemViewHolder) holder).rl_collect.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                EventBus.getDefault().post(new BusEntity(1003,bean.getId(),bean.isHasCollect()));//收藏or取消收藏
+//            }
+//        });
     }
     @Override
     public int getItemCount() {

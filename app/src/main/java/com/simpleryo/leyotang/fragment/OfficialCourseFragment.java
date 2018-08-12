@@ -132,7 +132,7 @@ public class OfficialCourseFragment extends XLibraryLazyFragment {
                     lrecyclerview.refreshComplete(hotCourseList.size());
                 }
             }
-        },"","","","OFFCIAL","","",0.00,0.00,"");
+        },"","","","OFFCIAL","","",0.00,0.00,"",0,0,0);
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void BusMain(BusEntity bus) {

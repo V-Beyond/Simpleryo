@@ -63,8 +63,13 @@ public class MyCouponsListAdapter extends BaseAdapter<MyCouponListBean.DataBean>
                 ((CouponsItemViewHolder) holder).tv_to_use.setTextColor(Color.parseColor("#FF80740E"));
                 ((CouponsItemViewHolder) holder).tv_to_use.setBackgroundResource(R.drawable.shape_use_coupon);
                 if (dataBean.getType().getStore() != null) {
-                    ((CouponsItemViewHolder) holder).rl_item.setBackgroundResource(R.mipmap.iv_coupon_blue_bg);
-                    ((CouponsItemViewHolder) holder).tv_store_name.setText(dataBean.getType().getStore().getName());
+                    if(dataBean.getType().getCourses()!=null&&dataBean.getType().getCourses().size()>0){
+                        ((CouponsItemViewHolder) holder).rl_item.setBackgroundResource(R.mipmap.iv_coupon_orange_bg);
+                        ((CouponsItemViewHolder) holder).tv_store_name.setText(dataBean.getType().getStore().getName());
+                    }else{
+                        ((CouponsItemViewHolder) holder).rl_item.setBackgroundResource(R.mipmap.iv_coupon_blue_bg);
+                        ((CouponsItemViewHolder) holder).tv_store_name.setText(dataBean.getType().getStore().getName());
+                    }
                 } else {
                     ((CouponsItemViewHolder) holder).rl_item.setBackgroundResource(R.mipmap.iv_coupon_red_bg);
                     ((CouponsItemViewHolder) holder).tv_store_name.setText("乐友堂(LeYoTown)");

@@ -89,6 +89,15 @@ public class CourseListTypeAdapter extends BaseMultiAdapter<MultipleItem> {
             });
             ((HotCourseItemViewHolder) holder).horizontal_progressbar.setProgress((int) percent);
             ((HotCourseItemViewHolder) holder).tv_percent.setText(classCount+"/"+totalCount);
+            if (bean.getCourseListBean().isHasCardCoupon()){
+                ((HotCourseItemViewHolder) holder).iv_course_item_coupon.setVisibility(View.VISIBLE);
+            }else{
+                ((HotCourseItemViewHolder) holder).iv_course_item_coupon.setVisibility(View.GONE);
+            }
+            if (bean.getCourseListBean().getDistance()!=null){
+                ((HotCourseItemViewHolder) holder).tv_distance.setVisibility(View.VISIBLE);
+                ((HotCourseItemViewHolder) holder).tv_distance.setText(bean.getCourseListBean().getDistance());
+            }
         }
         if (holder instanceof ExcellentCourseItemViewHolder){//精品
             Picasso.with(mContext).load(coverUrl).transform(raduisTransformation).into(((ExcellentCourseItemViewHolder) holder).iv_collection_img);
