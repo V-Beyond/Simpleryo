@@ -382,7 +382,58 @@ public class SimpleryoNetwork {
         }
         doHttpAsync(context, builder.build(), callback);
     }
+    /**
+     * 查询课程列表
+     *
+     * @param context
+     * @param callback
+     */
+    public static void getCourseBy(Context context, Callback callback,int offset,int  limit,String storeId, String name, String tagId1, String tagId2, String tagId3, String coachId,double lat,double lng,String distance,int publishTime,int goodReview,int price) {
+        HttpInfo.Builder builder = new HttpInfo.Builder();
+        builder.setUrl(httpUrl + "p/courses");
+        builder.setRequestType(RequestType.GET);
+        builder.addParam("token", getToken());
+        builder.addParam("offset", offset + "");
+        builder.addParam("limit", limit + "");
+        if (!coachId.equalsIgnoreCase("")) {
+            builder.addParam("coachId", coachId);
+        }
+        if (!storeId.equalsIgnoreCase("")) {
+            builder.addParam("storeId", storeId);//商家id
+        }
+        if (!name.equalsIgnoreCase("")) {
+            builder.addParam("name", name);//课程名
+        }
+        if (!tagId1.equalsIgnoreCase("")) {
+            builder.addParam("tagId1", tagId1);
+        }
 
+        if (!tagId2.equalsIgnoreCase("")) {
+            builder.addParam("tagId2", tagId2);
+        }
+        if (!tagId3.equalsIgnoreCase("")) {
+            builder.addParam("tagId3", tagId3);
+        }
+        if (lat!=0.00) {
+            builder.addParam("lat", lat+"");
+        }
+        if (lng!=0.00) {
+            builder.addParam("lng", lng+"");
+        }
+        if (!distance.equalsIgnoreCase("")) {
+            builder.addParam("distance", distance);
+        }
+        if (publishTime!=0) {
+            builder.addParam("publishTime", publishTime+"");
+        }
+        if (goodReview!=0) {
+            builder.addParam("goodReview", goodReview+"");
+        }
+        if (price!=0) {
+            builder.addParam("price", price+"");
+        }
+        doHttpAsync(context, builder.build(), callback);
+    }
     /**
      * 查询课程列表
      *
@@ -1005,10 +1056,10 @@ public class SimpleryoNetwork {
         if (!channel.equalsIgnoreCase("")) {
             builder.addParam("channel", channel);
         }
-        if (!lowAmount.equalsIgnoreCase("")) {
+        if (!lowAmount.equalsIgnoreCase("0")) {
             builder.addParam("lowAmount", lowAmount);
         }
-        if (!upAmount.equalsIgnoreCase("")) {
+        if (!upAmount.equalsIgnoreCase("0")) {
             builder.addParam("upAmount", upAmount);
         }
         if (!tagId1.equalsIgnoreCase("")) {

@@ -48,6 +48,7 @@ import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -322,6 +323,7 @@ public class ComfirmOrderActivity extends BaseActivity {
                 if (count > 1) {
                     count -= 1;
                     et_count.setText(count + "");
+                    getCoupon();
                 } else {
                     Toast.makeText(ComfirmOrderActivity.this, "订单数量不能小于1", Toast.LENGTH_SHORT).show();
                 }
@@ -348,6 +350,7 @@ public class ComfirmOrderActivity extends BaseActivity {
                 }else{
                     total_price = count * price;
                 }
+                getCoupon();
                 tv_total_price.setText(getResources().getString(R.string.total_course)  + XStringPars.foramtPrice(total_price * 1) + "$");
                 break;
             case R.id.rl_pay://支付
@@ -526,12 +529,13 @@ public class ComfirmOrderActivity extends BaseActivity {
                 cashCoupon=Integer.parseInt(coupon);
                 total_price=(price*count-cashCoupon);
                 discountAmt=coupon;
-                tv_coupon_count.setText("-"+cashCoupon*0.01+"$");//减多少现金
+                tv_coupon_count.setText("-"+new DecimalFormat("0.00").format(cashCoupon*0.01)+"$");//减多少现金
             }  else if (bus.getContent().equalsIgnoreCase("DISCOUNT")){//折扣券
                 couponType=2;
                 discount=Double.valueOf(coupon)/100;
+                tv_coupon_count.setText("-"+new DecimalFormat("0.00").format((price-(int) (price*count*discount))*0.01)+"$");//减多少现金
                 total_price= (int) (price*count*discount);
-                tv_coupon_count.setText(discount+"折");//打多少折扣
+                cashCoupon=Integer.parseInt(coupon);
                 discountAmt=(price*count- (int) (price*count*(Double.valueOf(coupon))/100))+"";
             }
             tv_total_price.setText( getResources().getString(R.string.total_course)+XStringPars.foramtPrice(total_price * 1) + "$");

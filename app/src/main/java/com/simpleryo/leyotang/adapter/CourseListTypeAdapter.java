@@ -74,7 +74,17 @@ public class CourseListTypeAdapter extends BaseMultiAdapter<MultipleItem> {
         if (holder instanceof HotCourseItemViewHolder){//热门
             Picasso.with(mContext).load(coverUrl).transform(raduisTransformation).into(((HotCourseItemViewHolder) holder).iv_collection_img);
             ((HotCourseItemViewHolder) holder).tv_collection_name.setText(bean.getCourseListBean().getName());
-            ((HotCourseItemViewHolder) holder).tv_price.setText(XStringPars.foramtPrice(price)+"$/"+course_price);
+//            ((HotCourseItemViewHolder) holder).tv_price.setText(XStringPars.foramtPrice(price)+"$/"+course_price);
+            if(bean.getCourseListBean().getPrice()!=0){
+                ((HotCourseItemViewHolder) holder).tv_price.setText(XStringPars.foramtPrice(Integer.valueOf(bean.getCourseListBean().getPrice()))+"$/"+course_price);
+            }else{
+                if (bean.getCourseListBean().getType().equalsIgnoreCase("series")){
+                    ((HotCourseItemViewHolder) holder).tv_price.setText("免费购买");
+                }else if(bean.getCourseListBean().getType().equalsIgnoreCase("single")){
+                    ((HotCourseItemViewHolder) holder).tv_price.setText("免费预约");
+                }
+            }
+
             ((HotCourseItemViewHolder) holder).tv_popular.setText(classCount+" people");
             if (hasCollect){
                 ((HotCourseItemViewHolder) holder).iv_collection_star.setImageResource(R.mipmap.iv_collection_star);

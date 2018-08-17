@@ -95,13 +95,24 @@ public class SearchHotCourseAdapter extends BaseAdapter<CourseListBean.DataBeanX
                 ((HotCourseItemViewHolder) holder).rl_collect.setBackgroundResource(R.mipmap.iv_collection_ping);
             }
         }
-
-        ((HotCourseItemViewHolder) holder).rl_collect.setOnClickListener(new View.OnClickListener() {
+        if (bean.isHasCollect()){
+            ((HotCourseItemViewHolder) holder).iv_collection_course.setImageResource(R.mipmap.iv_course_item_collected);
+        }else{
+            ((HotCourseItemViewHolder) holder).iv_collection_course.setImageResource(R.mipmap.iv_course_item_uncollect);
+        }
+        ((HotCourseItemViewHolder) holder).iv_collection_course.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 EventBus.getDefault().post(new BusEntity(33, bean.getId(), bean.isHasCollect()));//取消收藏
             }
         });
+
+//        ((HotCourseItemViewHolder) holder).rl_collect.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                EventBus.getDefault().post(new BusEntity(33, bean.getId(), bean.isHasCollect()));//取消收藏
+//            }
+//        });
     }
 
     @Override

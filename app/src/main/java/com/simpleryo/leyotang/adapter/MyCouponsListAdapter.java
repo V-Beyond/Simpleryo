@@ -19,6 +19,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.text.DecimalFormat;
+
 import static com.simpleryo.leyotang.utils.EventBusType.MYCOUPONSELECT;
 
 
@@ -59,13 +61,10 @@ public class MyCouponsListAdapter extends BaseAdapter<MyCouponListBean.DataBean>
         if (holder instanceof CouponsItemViewHolder) {
             final MyCouponListBean.DataBean dataBean = listData.get(position);
             if (dataBean.getStatus().equalsIgnoreCase("UNUSED")) {
-                ((CouponsItemViewHolder) holder).tv_to_use.setText("去使用");
-                ((CouponsItemViewHolder) holder).tv_to_use.setTextColor(Color.parseColor("#FF80740E"));
-                ((CouponsItemViewHolder) holder).tv_to_use.setBackgroundResource(R.drawable.shape_use_coupon);
                 if (dataBean.getType().getStore() != null) {
                     if(dataBean.getType().getCourses()!=null&&dataBean.getType().getCourses().size()>0){
                         ((CouponsItemViewHolder) holder).rl_item.setBackgroundResource(R.mipmap.iv_coupon_orange_bg);
-                        ((CouponsItemViewHolder) holder).tv_store_name.setText(dataBean.getType().getStore().getName());
+                        ((CouponsItemViewHolder) holder).tv_store_name.setText(dataBean.getType().getCourses().get(0).getName());
                     }else{
                         ((CouponsItemViewHolder) holder).rl_item.setBackgroundResource(R.mipmap.iv_coupon_blue_bg);
                         ((CouponsItemViewHolder) holder).tv_store_name.setText(dataBean.getType().getStore().getName());
@@ -74,6 +73,9 @@ public class MyCouponsListAdapter extends BaseAdapter<MyCouponListBean.DataBean>
                     ((CouponsItemViewHolder) holder).rl_item.setBackgroundResource(R.mipmap.iv_coupon_red_bg);
                     ((CouponsItemViewHolder) holder).tv_store_name.setText("乐友堂(LeYoTown)");
                 }
+                ((CouponsItemViewHolder) holder).tv_to_use.setText("去使用");
+                ((CouponsItemViewHolder) holder).tv_to_use.setTextColor(Color.parseColor("#FF80740E"));
+                ((CouponsItemViewHolder) holder).tv_to_use.setBackgroundResource(R.drawable.shape_use_coupon);
                 ((CouponsItemViewHolder) holder).tv_to_use.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -89,6 +91,15 @@ public class MyCouponsListAdapter extends BaseAdapter<MyCouponListBean.DataBean>
                     }
                 });
             } else if (dataBean.getStatus().equalsIgnoreCase("USED")) {
+                if (dataBean.getType().getStore() != null) {
+                    if(dataBean.getType().getCourses()!=null&&dataBean.getType().getCourses().size()>0){
+                        ((CouponsItemViewHolder) holder).tv_store_name.setText(dataBean.getType().getCourses().get(0).getName());
+                    }else{
+                        ((CouponsItemViewHolder) holder).tv_store_name.setText(dataBean.getType().getStore().getName());
+                    }
+                } else {
+                    ((CouponsItemViewHolder) holder).tv_store_name.setText("乐友堂(LeYoTown)");
+                }
                 ((CouponsItemViewHolder) holder).tv_to_use.setBackgroundResource(R.drawable.shape_used_coupon);
                 ((CouponsItemViewHolder) holder).rl_item.setBackgroundResource(R.mipmap.iv_coupon_gray_bg);
                 ((CouponsItemViewHolder) holder).tv_to_use.setText("已使用");
@@ -96,6 +107,15 @@ public class MyCouponsListAdapter extends BaseAdapter<MyCouponListBean.DataBean>
                 ((CouponsItemViewHolder) holder).tv_to_use.setFocusable(false);
                 ((CouponsItemViewHolder) holder).tv_to_use.setClickable(false);
             } else if (dataBean.getStatus().equalsIgnoreCase("EXPIRED")) {
+                if (dataBean.getType().getStore() != null) {
+                    if(dataBean.getType().getCourses()!=null&&dataBean.getType().getCourses().size()>0){
+                        ((CouponsItemViewHolder) holder).tv_store_name.setText(dataBean.getType().getCourses().get(0).getName());
+                    }else{
+                        ((CouponsItemViewHolder) holder).tv_store_name.setText(dataBean.getType().getStore().getName());
+                    }
+                } else {
+                    ((CouponsItemViewHolder) holder).tv_store_name.setText("乐友堂(LeYoTown)");
+                }
                 ((CouponsItemViewHolder) holder).tv_to_use.setBackgroundResource(R.drawable.shape_used_coupon);
                 ((CouponsItemViewHolder) holder).rl_item.setBackgroundResource(R.mipmap.iv_coupon_gray_bg);
                 ((CouponsItemViewHolder) holder).tv_to_use.setText("已失效");
@@ -104,12 +124,12 @@ public class MyCouponsListAdapter extends BaseAdapter<MyCouponListBean.DataBean>
                 Picasso.with(mContext).load(dataBean.getType().getImageUri()).transform(raduisTransformation).error(R.mipmap.iv_app_logo).into(((CouponsItemViewHolder) holder).iv_coupons_img);
             }
             if (dataBean.getType().getCategory().equalsIgnoreCase("DISCOUNT")) {
-                ((CouponsItemViewHolder) holder).tv_content.setText(Double.valueOf(dataBean.getType().getDiscount()) * 0.1 + "折");
+                ((CouponsItemViewHolder) holder).tv_content.setText(new DecimalFormat("0.00").format(Double.valueOf(dataBean.getType().getDiscount()) * 0.1) + "折");
             } else if (dataBean.getType().getCategory().equalsIgnoreCase("CASH")) {
-                ((CouponsItemViewHolder) holder).tv_content.setText(dataBean.getType().getSubtractAmount() * 0.01 + "");
+                ((CouponsItemViewHolder) holder).tv_content.setText(new DecimalFormat("0.00").format(dataBean.getType().getSubtractAmount() * 0.01) + "");
             }
             if (dataBean.getType().getLimitAmount() > 0) {
-                ((CouponsItemViewHolder) holder).tv_limit.setText("[满" + dataBean.getType().getLimitAmount() + "元可用]");
+                ((CouponsItemViewHolder) holder).tv_limit.setText("[满" + dataBean.getType().getLimitAmount()/100 + "元可用]");
             } else {
                 ((CouponsItemViewHolder) holder).tv_limit.setText("[无门槛]");
             }

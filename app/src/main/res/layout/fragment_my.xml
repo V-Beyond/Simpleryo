@@ -296,12 +296,13 @@
                         android:layout_height="wrap_content" />
                     <ImageView
                         android:id="@+id/iv_coupons_more"
-                        android:layout_width="wrap_content"
+                        android:layout_width="80px"
                         android:src="@mipmap/iv_coupons_more"
                         android:layout_centerVertical="true"
+                        android:padding="20px"
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="34px"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="80px" />
                 </RelativeLayout>
                 <TextView
                     android:layout_width="match_parent"

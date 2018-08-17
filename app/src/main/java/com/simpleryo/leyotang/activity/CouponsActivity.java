@@ -96,14 +96,16 @@ public class CouponsActivity extends BaseActivity {
         couponsListAdapter = new CouponsListAdapter(CouponsActivity.this);
         lRecyclerViewAdapter = new LRecyclerViewAdapter(couponsListAdapter);
         lrecyclerview.setAdapter(lRecyclerViewAdapter);
-        lrecyclerview.setLoadMoreEnabled(false);
+        lrecyclerview.setLoadMoreEnabled(true);
         lrecyclerview.setPullRefreshEnabled(true);
+        lrecyclerview.setOnLoadMoreListener(onLoadMoreListener);
         lrecyclerview.setOnRefreshListener(onRefreshListener);
         lrecyclerview.forceToRefresh();
     }
 
     int offset = 0;
     int limit = 9;
+    //刷新
     private OnRefreshListener onRefreshListener = new OnRefreshListener() {
         @Override
         public void onRefresh() {
@@ -115,6 +117,7 @@ public class CouponsActivity extends BaseActivity {
             tickets();
         }
     };
+    //加载更多
     private OnLoadMoreListener onLoadMoreListener = new OnLoadMoreListener() {
         @Override
         public void onLoadMore() {
@@ -149,9 +152,10 @@ public class CouponsActivity extends BaseActivity {
     }
 
 
-    String upAmount = "";
-    String lowAmount = "";
+    String upAmount = "0";
+    String lowAmount = "0";
     String category="";
+    //通过id领取优惠券
     public void getCouponById(String id ){
         SimpleryoNetwork.getCardcouponById(CouponsActivity.this,new MyBaseProgressCallbackImpl(CouponsActivity.this){
             @Override
@@ -179,9 +183,6 @@ public class CouponsActivity extends BaseActivity {
 
     //获取优惠券列表
     public void tickets() {
-        if (dataBeanArrayList != null && dataBeanArrayList.size() > 0) {
-            dataBeanArrayList.clear();
-        }
         SimpleryoNetwork.cardcoupontypes(CouponsActivity.this, new MyBaseProgressCallbackImpl() {
             @Override
             public void onSuccess(HttpInfo info) {
@@ -189,9 +190,6 @@ public class CouponsActivity extends BaseActivity {
                 CouponsListBean myCouponListBean = info.getRetDetail(CouponsListBean.class);
                 if (myCouponListBean.getCode().equalsIgnoreCase("0")) {
                     if (myCouponListBean.getData() != null && myCouponListBean.getData().size() > 0) {
-                        if (dataBeanArrayList != null && dataBeanArrayList.size() > 0) {
-                            dataBeanArrayList.clear();
-                        }
                         dataBeanArrayList.addAll(myCouponListBean.getData());
                         couponsListAdapter.setDataList(dataBeanArrayList);
                         lRecyclerViewAdapter.notifyDataSetChanged();
@@ -219,7 +217,7 @@ public class CouponsActivity extends BaseActivity {
                 textView.setText("数据一不小心走丢了，请稍后回来");
                 lrecyclerview.setEmptyView(mEmptyView);
             }
-        }, "","",category, channel, lowAmount, upAmount, offset, limit,tagId1,tagId2);
+        }, "","",category, channel, Integer.valueOf(lowAmount)*100+"", Integer.valueOf(upAmount)*100+"", offset, limit,tagId1,tagId2);
     }
 
     ListView cityView;
@@ -258,6 +256,11 @@ public class CouponsActivity extends BaseActivity {
 //                category="";
 //                tagId2="";
 //                tagId1="";
+                if (dataBeanArrayList != null && dataBeanArrayList.size() > 0) {
+                    dataBeanArrayList.clear();
+                }
+                offset=0;
+                limit=9;
                 tickets();
             }
         });
@@ -271,7 +274,21 @@ public class CouponsActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 cityAdapter.setCheckItem(position);
-                getChildTags(dataBeans.get(position).getId(), position);
+                if (position==0){
+                    pop_listview_center.setVisibility(View.VISIBLE);
+                    if (childDataList != null && childDataList.size() > 0) {
+                        childDataList.clear();
+                    }
+                    TagsListBean.DataBean mDataBean=new TagsListBean.DataBean();
+                    mDataBean.setName("全部课程");
+                    childDataList.add(mDataBean);
+                    girdDropDownAdapter = new GirdDropDownAdapter(CouponsActivity.this, childDataList, 1);
+                    pop_listview_center.setDividerHeight(0);
+                    pop_listview_center.setAdapter(girdDropDownAdapter);
+                }else{
+                    getChildTags(dataBeans.get(position).getId(), position);
+                }
+
             }
         });
         pop_listview_center.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -283,9 +300,18 @@ public class CouponsActivity extends BaseActivity {
 //                tagId2=childDataList.get(position).getId();
 //                channel="";
 //                category="";
-                tagId2=childDataList.get(position).getId();
+                if (position==0){
+                    tagId2 = "";
+                }else{
+                    tagId2=childDataList.get(position).getId();
+                }
                 mDropDownMenu.setTabText(childDataList.get(position).getName());
                 mDropDownMenu.closeMenu();
+                if (dataBeanArrayList != null && dataBeanArrayList.size() > 0) {
+                    dataBeanArrayList.clear();
+                }
+                offset=0;
+                limit=9;
                 tickets();
             }
         });
@@ -309,6 +335,11 @@ public class CouponsActivity extends BaseActivity {
                 if (categoryName.equalsIgnoreCase("折扣券")) {
                     category = "DISCOUN";
                 }
+                if (dataBeanArrayList != null && dataBeanArrayList.size() > 0) {
+                    dataBeanArrayList.clear();
+                }
+                offset=0;
+                limit=9;
                 tickets();
             }
         });
@@ -332,6 +363,11 @@ public class CouponsActivity extends BaseActivity {
                 if (channelName.equalsIgnoreCase("商家发放")) {
                     channel = "STORE";
                 }
+                if (dataBeanArrayList != null && dataBeanArrayList.size() > 0) {
+                    dataBeanArrayList.clear();
+                }
+                offset=0;
+                limit=9;
                 tickets();
             }
         });
@@ -356,7 +392,12 @@ public class CouponsActivity extends BaseActivity {
                         if (dataBeans != null && dataBeans.size() > 0) {
                             dataBeans.clear();
                         }
-                        dataBeans.addAll(tagsListBean.getData());
+                        TagsListBean.DataBean mDataBean=new TagsListBean.DataBean();
+                        mDataBean.setName("全部行业");
+                        dataBeans.add(mDataBean);
+                        for (TagsListBean.DataBean dataBean:tagsListBean.getData()){
+                            dataBeans.add(dataBean);
+                        }
                         cityAdapter = new GirdDropDownAdapter(CouponsActivity.this, dataBeans, 0);
                         cityView.setDividerHeight(0);
                         cityView.setAdapter(cityAdapter);
@@ -393,6 +434,11 @@ public class CouponsActivity extends BaseActivity {
 //                        category="";
 //                        tagId2="";
                         tagId1=dataBeans.get(position).getId();
+                        if (dataBeanArrayList != null && dataBeanArrayList.size() > 0) {
+                            dataBeanArrayList.clear();
+                        }
+                        offset=0;
+                        limit=9;
                         tickets();
                     }
                 }

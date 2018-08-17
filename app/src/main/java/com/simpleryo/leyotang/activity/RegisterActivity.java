@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gyf.barlibrary.ImmersionBar;
 import com.okhttplib.HttpInfo;
 import com.simpleryo.leyotang.R;
 import com.simpleryo.leyotang.base.BaseActivity;
@@ -60,6 +61,11 @@ public class RegisterActivity extends BaseActivity{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ImmersionBar.with(this)
+                .statusBarColor(R.color.color_transparent)
+                .navigationBarWithKitkatEnable(false)
+                .fullScreen(false)
+                .init();
         mTime = new TimeCount(60000, 1000);
         type=getIntent().getStringExtra("type");
         if (type.equalsIgnoreCase("register")){

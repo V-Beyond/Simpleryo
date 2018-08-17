@@ -506,13 +506,13 @@ public class CourseDetailActivity extends BaseActivity    {
     boolean isLogin;
     String storeId;
 
-    @Event(value = {R.id.iv_back, R.id.tv_reservations,R.id.tv_more,R.id.tv_remark_more, R.id.tv_share, R.id.tv_business_home, R.id.ll_collection, R.id.tv_to_home, R.id.tv_to_use_help}, type = View.OnClickListener.class)
+    @Event(value = {R.id.iv_back, R.id.tv_reservations,R.id.rl_coach,R.id.tv_remark_more, R.id.tv_share, R.id.tv_business_home, R.id.ll_collection, R.id.tv_to_home, R.id.tv_to_use_help}, type = View.OnClickListener.class)
     private void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
                 XActivityUtils.getInstance().popActivity(CourseDetailActivity.this);
                 break;
-            case R.id.tv_more:
+            case R.id.rl_coach:
                 startActivity(new Intent(CourseDetailActivity.this,CoachHomeActivity.class).putExtra("coachId",coachId));
                 break;
             case R.id.tv_remark_more:

@@ -51,6 +51,7 @@
                 android:id="@+id/iv_collection"
                 android:layout_width="wrap_content"
                 android:layout_marginBottom="4px"
+                android:visibility="gone"
                 android:layout_marginLeft="28px"
                 android:src="@mipmap/iv_collection"
                 android:layout_height="wrap_content" />
@@ -59,6 +60,7 @@
                 android:layout_width="wrap_content"
                 android:layout_marginLeft="8px"
                 android:text="-----"
+                android:visibility="gone"
                 android:layout_above="@+id/ll_progress"
                 android:layout_toRightOf="@+id/iv_collection"
                 android:textSize="@dimen/percent_size"

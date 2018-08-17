@@ -106,8 +106,9 @@ public class MyCouponsActivity extends BaseActivity {
         lRecyclerViewAdapter = new LRecyclerViewAdapter(myCouponsListAdapter);
         lrecyclerview.setAdapter(lRecyclerViewAdapter);
         lrecyclerview.setOnRefreshListener(onRefreshListener);
-        lrecyclerview.setLoadMoreEnabled(false);
+        lrecyclerview.setLoadMoreEnabled(true);
         lrecyclerview.setPullRefreshEnabled(true);
+        lrecyclerview.setOnLoadMoreListener(onLoadMoreListener);
         lrecyclerview.forceToRefresh();
     }
 

@@ -455,6 +455,7 @@
                     </LinearLayout>
 
                     <RelativeLayout
+                        android:id="@+id/rl_coach"
                         android:layout_width="match_parent"
                         android:layout_height="243px"
                         android:layout_marginBottom="50px"
@@ -568,12 +569,15 @@
                         </LinearLayout>
                         <TextView
                             android:id="@+id/tv_more"
+                            android:visibility="gone"
                             android:layout_width="wrap_content"
                             android:text="查看更多"
                             android:textColor="@color/white"
                             android:textSize="24px"
                             android:layout_marginRight="12px"
                             android:layout_alignParentRight="true"
+                            android:drawablePadding="10px"
+                            android:drawableRight="@mipmap/iv_white_right_more"
                             android:layout_marginBottom="30px"
                             android:layout_alignParentBottom="true"
                             android:layout_height="wrap_content" />

@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.gyf.barlibrary.ImmersionBar;
 import com.okhttplib.HttpInfo;
 import com.simpleryo.leyotang.R;
 import com.simpleryo.leyotang.base.BaseActivity;
@@ -41,6 +42,11 @@ public class LoginActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ImmersionBar.with(this)
+                .statusBarColor(R.color.color_transparent)
+                .navigationBarWithKitkatEnable(false)
+                .fullScreen(false)
+                .init();
     }
 
     @Event(value = {R.id.tv_register, R.id.tv_login,R.id.forget_the_password}, type = View.OnClickListener.class)

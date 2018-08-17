@@ -101,14 +101,14 @@
                     android:id="@+id/iv_authenticationed"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
+                    android:layout_centerVertical="true"
                     android:src="@mipmap/iv_authenticationed" />
 
                 <TextView
                     android:id="@+id/tv_store_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="5px"
                     android:layout_toRightOf="@+id/iv_authenticationed"
                     android:text="-----"

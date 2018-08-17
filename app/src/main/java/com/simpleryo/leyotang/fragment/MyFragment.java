@@ -3,6 +3,7 @@ package com.simpleryo.leyotang.fragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -65,6 +66,7 @@ import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -100,9 +102,6 @@ public class MyFragment extends XLibraryLazyFragment {
     TextView tv_attention;
     @ViewInject(R.id.tv_nickname)
     TextView tv_nickname;
-    private static final int CODE_GALLERY_REQUEST = 0xa0;
-    private static final int CODE_CAMERA_REQUEST = 0xa1;
-    private static final int CODE_RESULT_REQUEST = 0xa2;
     //相册请求码
     private static final int ALBUM_REQUEST_CODE = 1;
     //相机请求码
@@ -111,13 +110,6 @@ public class MyFragment extends XLibraryLazyFragment {
     private static final int CROP_REQUEST_CODE = 3;
     //调用照相机返回图片文件
     private File tempFile;
-
-    private File fileUri = new File(Environment.getExternalStorageDirectory().getPath() + "/avatar.jpg");
-    private File fileCropUri = new File(Environment.getExternalStorageDirectory().getPath() + "/crop_avatar.jpg");
-    private Uri imageUri;
-    private Uri cropImageUri;
-    private static final int OUTPUT_X = 200;
-    private static final int OUTPUT_Y = 200;
 
 
     @Override
@@ -137,15 +129,6 @@ public class MyFragment extends XLibraryLazyFragment {
             parent.removeView(mMainView);
         }
         return mMainView;
-    }
-
-    /**
-     * 获取内置SD卡路径
-     *
-     * @return
-     */
-    public String getInnerSDCardPath() {
-        return Environment.getExternalStorageDirectory().getPath();
     }
 
     OSS oss;
@@ -438,16 +421,9 @@ public class MyFragment extends XLibraryLazyFragment {
                 break;
             case R.id.iv_avatar:
                 if (isLogin) {
-//                    Intent i = new Intent(
-//                            Intent.ACTION_PICK,
-//                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//
-//                    startActivityForResult(i, CODE_GALLERY_REQUEST);
                     AvatarBottomSheetDialog avatarBottomSheetDialog = new AvatarBottomSheetDialog();
                     avatarBottomSheetDialog.show(getChildFragmentManager(), "avatarBottomSheetDialog");
                 } else {
-//                    AvatarBottomSheetDialog avatarBottomSheetDialog = new AvatarBottomSheetDialog();
-//                    avatarBottomSheetDialog.show(getChildFragmentManager(), "avatarBottomSheetDialog");
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                 }
                 break;
@@ -459,33 +435,6 @@ public class MyFragment extends XLibraryLazyFragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-//                //相机返回
-//                case CODE_CAMERA_REQUEST:
-//                    cropImageUri = Uri.fromFile(fileCropUri);
-//                    Picasso.with(getActivity().getApplicationContext()).load(cropImageUri).transform(transformation).into(iv_avatar);
-//                    break;
-//                //相册返回
-//                case CODE_GALLERY_REQUEST:
-//                    Uri selectedImage = data.getData();
-//                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
-//
-//                    Cursor cursor = getActivity().getContentResolver().query(selectedImage,
-//                            filePathColumn, null, null, null);
-//                    cursor.moveToFirst();
-//                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-//                    String filePath = cursor.getString(columnIndex);
-//                    cursor.close();
-//                    Log.w("cc", "filePath:" + filePath);
-//                    uploadImg(filePath);
-////                    Picasso.with(getContext().getApplicationContext()).load(newUri).transform(transformation).into(iv_avatar);
-//                    break;
-//                //裁剪返回
-//                case CODE_RESULT_REQUEST:
-//                    Bitmap bitmap = PhotoUtils.getBitmapFromUri(cropImageUri, getActivity());
-//                    if (bitmap != null) {
-//                        Picasso.with(getActivity().getApplicationContext()).load("http://p0.so.qhmsg.com/bdr/_240_/t01eb2a6c6319b04655.jpg").transform(transformation).into(iv_avatar);
-//                    }
-//                    break;
                 case CAMERA_REQUEST_CODE:   //调用相机后返回
                     if (resultCode == RESULT_OK) {
                         //用相机返回的照片去调用剪裁也需要对Uri进行处理
@@ -504,15 +453,17 @@ public class MyFragment extends XLibraryLazyFragment {
                     }
                     break;
                 case CROP_REQUEST_CODE:     //调用剪裁后返回
-                    Bundle bundle = data.getExtras();
-                    if (bundle != null) {
-                        //在这里获得了剪裁后的Bitmap对象，可以用于上传
-                        Bitmap image = bundle.getParcelable("data");
-                        //设置到ImageView上
-                        //也可以进行一些保存、压缩等操作后上传
-                        String path = saveImage("avatar",image);
-                        uploadImg(path);
+                    Bitmap image = null;
+                    try {
+                        image = BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(uritempFile));
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
                     }
+                    //设置到ImageView上
+                    //也可以进行一些保存、压缩等操作后上传
+                    String path = saveImage("avatar",image);
+                    Log.w("cc","path>>>"+path);
+                    uploadImg(path);
                     break;
             }
         }
@@ -544,7 +495,7 @@ public class MyFragment extends XLibraryLazyFragment {
         photoPickerIntent.setType("image/*");
         startActivityForResult(photoPickerIntent, ALBUM_REQUEST_CODE);
     }
-
+    Uri  uritempFile;
     /**
      * 裁剪图片
      */
@@ -558,10 +509,18 @@ public class MyFragment extends XLibraryLazyFragment {
         intent.putExtra("aspectY", 1);
         intent.putExtra("outputX", 300);
         intent.putExtra("outputY", 300);
-        intent.putExtra("return-data", true);
+        /**
+         * 此方法返回的图片只能是小图片（sumsang测试为高宽160px的图片）
+         * 故只保存图片Uri，调用时将Uri转换为Bitmap，此方法还可解决miui系统不能return data的问题
+         */
+        intent.putExtra("return-data", false);
+        //裁剪后的图片Uri路径，uritempFile为Uri类变量
+        uritempFile = Uri.parse("file://" + "/" + Environment.getExternalStorageDirectory().getPath() + "/" + "small.jpg");
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, uritempFile);
+        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
         startActivityForResult(intent, CROP_REQUEST_CODE);
     }
-
+    //保存图片
     public String saveImage(String name, Bitmap bmp) {
         File appDir = new File(Environment.getExternalStorageDirectory().getPath());
         if (!appDir.exists()) {

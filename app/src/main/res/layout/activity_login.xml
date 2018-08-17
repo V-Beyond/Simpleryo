@@ -5,6 +5,8 @@
     android:background="@mipmap/iv_login_backgroud"
     android:orientation="vertical"
     android:paddingLeft="80px"
+    android:fitsSystemWindows="true"
+    android:clipToPadding="false"
     android:paddingRight="80px">
 
     <TextView

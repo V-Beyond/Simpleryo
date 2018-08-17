@@ -9,7 +9,7 @@
         android:id="@+id/iv_coupons_img"
         android:layout_width="56dp"
         android:layout_height="56dp"
-        android:layout_marginLeft="32px"
+        android:layout_marginLeft="30px"
         android:layout_marginTop="41px"
         android:scaleType="fitXY" />
     <LinearLayout
@@ -50,7 +50,7 @@
         android:textSize="102px"
         android:layout_alignParentRight="true"
         android:textColor="@color/white"
-        android:layout_marginRight="64px"
+        android:layout_marginRight="30px"
         android:layout_height="wrap_content" />
     <TextView
         android:id="@+id/tv_count"
@@ -59,7 +59,7 @@
         android:textSize="22px"
         android:layout_alignParentRight="true"
         android:textColor="@color/white"
-        android:layout_marginRight="64px"
+        android:layout_marginRight="30px"
         android:layout_marginTop="133px"
         android:layout_height="wrap_content" />
     <TextView

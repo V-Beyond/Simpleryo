@@ -51,6 +51,7 @@
                 android:id="@+id/iv_collection"
                 android:layout_width="wrap_content"
                 android:layout_marginBottom="4px"
+                android:visibility="gone"
                 android:layout_marginLeft="28px"
                 android:src="@mipmap/iv_love_blue"
                 android:layout_height="wrap_content" />
@@ -58,6 +59,7 @@
                 android:id="@+id/tv_popular"
                 android:layout_width="wrap_content"
                 android:layout_marginLeft="8px"
+                android:visibility="gone"
                 android:text="100 thousand people"
                 android:layout_above="@+id/ll_progress"
                 android:layout_toRightOf="@+id/iv_collection"
