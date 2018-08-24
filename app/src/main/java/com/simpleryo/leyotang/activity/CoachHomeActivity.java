@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
@@ -15,16 +16,22 @@ import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.okhttplib.HttpInfo;
 import com.simpleryo.leyotang.R;
-import com.simpleryo.leyotang.adapter.CourseListTypeAdapter;
+import com.simpleryo.leyotang.adapter.CoachCourseAdapter;
 import com.simpleryo.leyotang.base.BaseActivity;
 import com.simpleryo.leyotang.base.MyBaseProgressCallbackImpl;
+import com.simpleryo.leyotang.bean.BusEntity;
 import com.simpleryo.leyotang.bean.CoachDetailBean;
+import com.simpleryo.leyotang.bean.CodeBean;
 import com.simpleryo.leyotang.bean.CourseListBean;
 import com.simpleryo.leyotang.bean.MultipleItem;
 import com.simpleryo.leyotang.network.SimpleryoNetwork;
+import com.simpleryo.leyotang.utils.SharedPreferencesUtils;
 import com.simpleryo.leyotang.utils.XActivityUtils;
 import com.squareup.picasso.Picasso;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
@@ -64,13 +71,14 @@ public class CoachHomeActivity extends BaseActivity {
     @ViewInject(R.id.tv_course_count)
             TextView tv_course_count;
     LRecyclerViewAdapter lRecyclerViewAdapter;
-    CourseListTypeAdapter courseListTypeAdapter;
+    CoachCourseAdapter courseListTypeAdapter;
     List<CourseListBean.DataBeanX> hotCourseList = new ArrayList<>();
     private List<MultipleItem> mItemModels = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         tv_name.setText("个人主页");
         coachId = getIntent().getStringExtra("coachId");
         DividerDecoration divider = new DividerDecoration.Builder(this)
@@ -85,7 +93,7 @@ public class CoachHomeActivity extends BaseActivity {
             }
         };
         lrecyclerview.setLayoutManager(gridLayoutManager);
-        courseListTypeAdapter = new CourseListTypeAdapter(CoachHomeActivity.this);
+        courseListTypeAdapter = new CoachCourseAdapter(CoachHomeActivity.this);
         lRecyclerViewAdapter = new LRecyclerViewAdapter(courseListTypeAdapter);
         lrecyclerview.setAdapter(lRecyclerViewAdapter);
         lrecyclerview.setLoadMoreEnabled(false);
@@ -100,6 +108,66 @@ public class CoachHomeActivity extends BaseActivity {
         initData();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        isLogin = SharedPreferencesUtils.getKeyBoolean("isLogin");//获取用户登录状态
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void updateCollect(BusEntity bus) {
+        if (bus.getType() == 1314) {
+            if (isLogin) {
+                CourseListBean.DataBeanX dataBeanX = bus.getCourseListBean();
+                boolean isCollect = dataBeanX.isHasCollect();
+                if (isCollect) {//取消收藏
+                    SimpleryoNetwork.disCollectCourse(CoachHomeActivity.this, new MyBaseProgressCallbackImpl(CoachHomeActivity.this) {
+                        @Override
+                        public void onSuccess(HttpInfo info) {
+                            super.onSuccess(info);
+                            loadingDialog.dismiss();
+                            CodeBean createOrderBean = info.getRetDetail(CodeBean.class);
+                            if (createOrderBean.getCode().equalsIgnoreCase("0")) {
+                                initData();
+                                Toast.makeText(CoachHomeActivity.this, "取消收藏成功", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(CoachHomeActivity.this, createOrderBean.getMsg(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(HttpInfo info) {
+                            super.onFailure(info);
+                            loadingDialog.dismiss();
+                        }
+                    }, dataBeanX.getId());
+                } else {//收藏
+                    SimpleryoNetwork.collectCourse(CoachHomeActivity.this, new MyBaseProgressCallbackImpl(CoachHomeActivity.this) {
+                        @Override
+                        public void onSuccess(HttpInfo info) {
+                            super.onSuccess(info);
+                            loadingDialog.dismiss();
+                            CodeBean createOrderBean = info.getRetDetail(CodeBean.class);
+                            if (createOrderBean.getCode().equalsIgnoreCase("0")) {
+                                initData();
+                                Toast.makeText(CoachHomeActivity.this, "收藏成功", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(CoachHomeActivity.this, createOrderBean.getMsg(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }, dataBeanX.getId());
+                }
+            } else {
+                startActivity(new Intent(CoachHomeActivity.this, LoginActivity.class));
+            }
+        }
+    }
     String storeId;
 
     public void getCoacheInfoById() {

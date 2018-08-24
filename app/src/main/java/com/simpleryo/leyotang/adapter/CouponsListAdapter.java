@@ -3,6 +3,10 @@ package com.simpleryo.leyotang.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -94,8 +98,14 @@ public class CouponsListAdapter extends BaseAdapter<CouponsListBean.DataBean> {
                 ((CouponsItemViewHolder) holder).tv_store_name.setText("乐友堂(LeYoTown)");
             }
             if (typeBean.getCategory().equalsIgnoreCase("DISCOUNT")) {
+                ((CouponsItemViewHolder) holder).tv_dolloar.setVisibility(View.GONE);
                 ((CouponsItemViewHolder) holder).tv_content.setText(new DecimalFormat("0.00").format(Double.valueOf(typeBean.getDiscount())*0.1)+ "折");
             } else if (typeBean.getCategory().equalsIgnoreCase("CASH")) {
+                Spannable string = new SpannableString("$");
+// 斜体加粗（中文斜体好像没有什么效果）
+                string.setSpan(new StyleSpan(Typeface.BOLD_ITALIC), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                ((CouponsItemViewHolder) holder).tv_dolloar.setText(string);
+                ((CouponsItemViewHolder) holder).tv_dolloar.setVisibility(View.VISIBLE);
                 ((CouponsItemViewHolder) holder).tv_content.setText(new DecimalFormat("0.00").format(typeBean.getSubtractAmount()*0.01) + "");
             }
             if (typeBean.getLimitAmount() > 0) {

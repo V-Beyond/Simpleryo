@@ -6,6 +6,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.simpleryo.leyotang.R;
+import com.zhy.autolayout.utils.AutoUtils;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -33,8 +34,11 @@ public class CouponsItemViewHolder extends SuperViewHolder {
     public  TextView tv_content;
     @ViewInject(R.id.rl_item)
     public RelativeLayout rl_item;
+    @ViewInject(R.id.tv_dolloar)
+    public  TextView tv_dolloar;
     public CouponsItemViewHolder(View itemView) {
         super(itemView);
         x.view().inject(this, itemView);
+        AutoUtils.auto(itemView);
     }
 }

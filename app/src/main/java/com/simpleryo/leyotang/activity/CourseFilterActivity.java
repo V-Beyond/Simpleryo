@@ -153,18 +153,32 @@ public class CourseFilterActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 cityAdapter.setCheckItem(position);
-                if (position==0){
-                    pop_listview_center.setVisibility(View.VISIBLE);
-                    if (childDataList != null && childDataList.size() > 0) {
-                        childDataList.clear();
-                    }
-                    TagsListBean.DataBean mDataBean=new TagsListBean.DataBean();
-                    mDataBean.setName("全部课程");
-                    childDataList.add(mDataBean);
-                    girdDropDownAdapter = new GirdDropDownAdapter(CourseFilterActivity.this, childDataList, 1);
-                    pop_listview_center.setDividerHeight(0);
-                    pop_listview_center.setAdapter(girdDropDownAdapter);
-                }else{
+                tagId3="";
+                if (position == 0) {
+                    tagId1 = "";
+                    tagId3 = "";
+                    lat = 0.00;//维度
+                    lng = 0.00;//经度
+                    distance = "";
+                    publishTime = 0;
+                    goodReview = 0;
+                    price = 0;
+                    tagId2 = "";
+//                    pop_listview_center.setVisibility(View.VISIBLE);
+//                    if (childDataList != null && childDataList.size() > 0) {
+//                        childDataList.clear();
+//                    }
+//                    TagsListBean.DataBean mDataBean = new TagsListBean.DataBean();
+//                    mDataBean.setName("全部课程");
+//                    childDataList.add(mDataBean);
+//                    girdDropDownAdapter = new GirdDropDownAdapter(CourseFilterActivity.this, childDataList, 1);
+//                    pop_listview_center.setDividerHeight(0);
+//                    pop_listview_center.setAdapter(girdDropDownAdapter);
+                    mDropDownMenu.setTabText("全部");
+                    mDropDownMenu.closeMenu();
+                    lrecyclerview.forceToRefresh();
+                } else {
+                    tagId1 = dataBeans.get(position).getId();
                     getChildTags(dataBeans.get(position).getId(), position);
                 }
 
@@ -174,17 +188,25 @@ public class CourseFilterActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 girdDropDownAdapter.setCheckItem(position);
-                tagId1 = "";
-                tagId3 = "";
-                lat = 0.00;//维度
-                lng = 0.00;//经度
-                distance = "";
-                publishTime=0;
-                goodReview=0;
-                price=0;
-                if (position==0){
+//                tagId1 = "";
+//                tagId3 = "";
+//                lat = 0.00;//维度
+//                lng = 0.00;//经度
+//                distance = "";
+//                publishTime=0;
+//                goodReview=0;
+//                price=0;
+                if (position == 0) {
+                    tagId1 = "";
+                    tagId3 = "";
+                    lat = 0.00;//维度
+                    lng = 0.00;//经度
+                    distance = "";
+                    publishTime = 0;
+                    goodReview = 0;
+                    price = 0;
                     tagId2 = "";
-                }else{
+                } else {
                     tagId2 = childDataList.get(position).getId();
                 }
                 mDropDownMenu.setTabText(childDataList.get(position).getName());
@@ -195,32 +217,31 @@ public class CourseFilterActivity extends BaseActivity {
                 if (hotCourseList != null && hotCourseList.size() > 0) {
                     hotCourseList.clear();
                 }
-                initData();
+                lrecyclerview.forceToRefresh();
             }
         });
         //距离选择事件
         distanceListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                tagId1 = "";
-                tagId3 = "";
-                tagId2 = "";
-                lat = 31.23;//维度
-                lng = 121.47;//经度
-                publishTime=0;
-                goodReview=0;
-                price=0;
-                if (distanceArrays[position].equalsIgnoreCase("500m")){
+//                tagId1 = "";
+//                tagId3 = "";
+//                tagId2 = "";
+//                lat = 31.23;//维度
+//                lng = 121.47;//经度
+//                publishTime=0;
+//                goodReview=0;
+//                price=0;
+                tagId3="";
+                if (distanceArrays[position].equalsIgnoreCase("500m")) {
                     distance = "500";
-                }else if (distanceArrays[position].equalsIgnoreCase("1km")){
+                } else if (distanceArrays[position].equalsIgnoreCase("1km")) {
                     distance = "1000";
-                }else if (distanceArrays[position].equalsIgnoreCase("3km")){
+                } else if (distanceArrays[position].equalsIgnoreCase("3km")) {
                     distance = "3000";
-                }
-                else if (distanceArrays[position].equalsIgnoreCase("5km")){
+                } else if (distanceArrays[position].equalsIgnoreCase("5km")) {
                     distance = "5000";
-                }
-                else if (distanceArrays[position].equalsIgnoreCase("10km")){
+                } else if (distanceArrays[position].equalsIgnoreCase("10km")) {
                     distance = "10000";
                 }
                 distanceListViewAdapter.setCheckItem(position);
@@ -232,7 +253,7 @@ public class CourseFilterActivity extends BaseActivity {
                 if (hotCourseList != null && hotCourseList.size() > 0) {
                     hotCourseList.clear();
                 }
-                initData();
+                lrecyclerview.forceToRefresh();
             }
         });
         //组合排序
@@ -245,12 +266,19 @@ public class CourseFilterActivity extends BaseActivity {
 //                lat = 0.00;//维度
 //                lng = 0.00;//经度
 //                distance = "";
-                if (combinationArrays[position].equalsIgnoreCase("最新发布")){
-                    publishTime=-1;
-                }else if (combinationArrays[position].equalsIgnoreCase("好评优先")){
-                    goodReview=-1;
-                }else if (combinationArrays[position].equalsIgnoreCase("价格实惠")){
-                    price=1;
+                tagId3="";
+                if (combinationArrays[position].equalsIgnoreCase("最新发布")) {
+                    publishTime = -1;
+                    goodReview=0;
+                    price=0;
+                } else if (combinationArrays[position].equalsIgnoreCase("好评优先")) {
+                    goodReview = -1;
+                    publishTime = 0;
+                    price=0;
+                } else if (combinationArrays[position].equalsIgnoreCase("价格实惠")) {
+                    goodReview = 0;
+                    publishTime = 0;
+                    price = 1;
                 }
                 combinationAdapter.setCheckItem(position);
                 mDropDownMenu.setTabText(combinationArrays[position]);
@@ -261,7 +289,7 @@ public class CourseFilterActivity extends BaseActivity {
                 if (hotCourseList != null && hotCourseList.size() > 0) {
                     hotCourseList.clear();
                 }
-                initData();
+                lrecyclerview.forceToRefresh();
             }
         });
         //init dropdownview
@@ -287,6 +315,7 @@ public class CourseFilterActivity extends BaseActivity {
     String parentId = "";
     ArrayList<TagsListBean.DataBean> dataBeans = new ArrayList<>();
     ArrayList<TagsListBean.DataBean> childDataList = new ArrayList<>();
+
     //获取一级分类列表
     public void getTags() {
         SimpleryoNetwork.tags(CourseFilterActivity.this, new MyBaseProgressCallbackImpl() {
@@ -300,10 +329,10 @@ public class CourseFilterActivity extends BaseActivity {
                         if (dataBeans != null && dataBeans.size() > 0) {
                             dataBeans.clear();
                         }
-                        TagsListBean.DataBean mDataBean=new TagsListBean.DataBean();
+                        TagsListBean.DataBean mDataBean = new TagsListBean.DataBean();
                         mDataBean.setName("全部行业");
                         dataBeans.add(mDataBean);
-                        for (TagsListBean.DataBean dataBean:tagsListBean.getData()){
+                        for (TagsListBean.DataBean dataBean : tagsListBean.getData()) {
                             dataBeans.add(dataBean);
                         }
                         cityAdapter = new GirdDropDownAdapter(CourseFilterActivity.this, dataBeans, 0);
@@ -314,6 +343,7 @@ public class CourseFilterActivity extends BaseActivity {
             }
         }, "COURSE_TYPE", parentId);
     }
+
     //根据一级分类获取二级分类列表
     public void getChildTags(String parentId, final int position) {
         SimpleryoNetwork.tags(CourseFilterActivity.this, new MyBaseProgressCallbackImpl() {
@@ -335,14 +365,14 @@ public class CourseFilterActivity extends BaseActivity {
                         pop_listview_center.setVisibility(View.INVISIBLE);
                         mDropDownMenu.setTabText(dataBeans.get(position).getName());
                         mDropDownMenu.closeMenu();
-                        tagId3 = "";
-                        tagId2 = "";
-                        lat = 0.00;//维度
-                        lng = 0.00;//经度
-                        distance = "";
-                        publishTime=0;
-                        goodReview=0;
-                        price=0;
+//                        tagId3 = "";
+//                        tagId2 = "";
+//                        lat = 0.00;//维度
+//                        lng = 0.00;//经度
+//                        distance = "";
+//                        publishTime=0;
+//                        goodReview=0;
+//                        price=0;
                         tagId1 = dataBeans.get(position).getId();
                         if (mItemModels != null && mItemModels.size() > 0) {
                             mItemModels.clear();
@@ -350,7 +380,7 @@ public class CourseFilterActivity extends BaseActivity {
                         if (hotCourseList != null && hotCourseList.size() > 0) {
                             hotCourseList.clear();
                         }
-                        initData();
+                        lrecyclerview.forceToRefresh();
                     }
                 }
             }
@@ -359,10 +389,10 @@ public class CourseFilterActivity extends BaseActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updateCollect(BusEntity bus) {
-        if (bus.getType() == 33) {
+        if (bus.getType() == 1315) {
             if (isLogin) {
-                String courseId = bus.getContent();
-                boolean isCollect = bus.isCollect();
+                CourseListBean.DataBeanX dataBeanX = bus.getCourseListBean();
+                boolean isCollect = dataBeanX.isHasCollect();
                 if (isCollect) {//取消收藏
                     SimpleryoNetwork.disCollectCourse(CourseFilterActivity.this, new MyBaseProgressCallbackImpl(CourseFilterActivity.this) {
                         @Override
@@ -383,7 +413,7 @@ public class CourseFilterActivity extends BaseActivity {
                             super.onFailure(info);
                             loadingDialog.dismiss();
                         }
-                    }, courseId);
+                    }, dataBeanX.getId());
                 } else {//收藏
                     SimpleryoNetwork.collectCourse(CourseFilterActivity.this, new MyBaseProgressCallbackImpl(CourseFilterActivity.this) {
                         @Override
@@ -398,7 +428,7 @@ public class CourseFilterActivity extends BaseActivity {
                                 Toast.makeText(CourseFilterActivity.this, createOrderBean.getMsg(), Toast.LENGTH_SHORT).show();
                             }
                         }
-                    }, courseId);
+                    }, dataBeanX.getId());
                 }
             } else {
                 startActivity(new Intent(CourseFilterActivity.this, LoginActivity.class));
@@ -411,6 +441,7 @@ public class CourseFilterActivity extends BaseActivity {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
+
     int offset = 0;
     int limit = 9;
     private OnRefreshListener onRefreshListener = new OnRefreshListener() {
@@ -422,6 +453,7 @@ public class CourseFilterActivity extends BaseActivity {
             if (hotCourseList != null && hotCourseList.size() > 0) {
                 hotCourseList.clear();
             }
+            courseListTypeAdapter.clear();
             offset = 0;
             limit = 9;
             initData();
@@ -440,9 +472,10 @@ public class CourseFilterActivity extends BaseActivity {
     double lat = 0.00;//维度
     double lng = 0.00;//经度
     String distance = "";//距离
-    int publishTime=0;
-    int goodReview=0;
-    int price =0;
+    int publishTime = 0;
+    int goodReview = 0;
+    int price = 0;
+
     //获取课程列表
     public void initData() {
         SimpleryoNetwork.getCourseBy(CourseFilterActivity.this, new MyBaseProgressCallbackImpl() {
@@ -453,20 +486,26 @@ public class CourseFilterActivity extends BaseActivity {
                 CourseListBean courseListBean = info.getRetDetail(CourseListBean.class);
                 if (courseListBean.getCode().equalsIgnoreCase("0")) {
                     if (courseListBean.getData() != null && courseListBean.getData().size() > 0) {
-                        hotCourseList.addAll(courseListBean.getData());
-                        for (CourseListBean.DataBeanX dataBean : hotCourseList) {
-                            multipleItem = new MultipleItem(MultipleItem.HOMEHOTCOURSE);
-                            multipleItem.setCourseListBean(dataBean);
-                            mItemModels.add(multipleItem);
-                        }
-                        courseListTypeAdapter.setDataList(mItemModels);
-                        lRecyclerViewAdapter.notifyDataSetChanged();
-                        lRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
-                            @Override
-                            public void onItemClick(View view, int position) {
-                                startActivity(new Intent(CourseFilterActivity.this, CourseDetailActivity.class).putExtra("courseId", hotCourseList.get(position).getId()));
+                        if (courseListTypeAdapter.getDataList().size()==courseListBean.getCount()){
+                            lrecyclerview.setNoMore(true);
+                            lrecyclerview.refreshComplete(hotCourseList.size());
+                            courseListTypeAdapter.notifyDataSetChanged();
+                            lRecyclerViewAdapter.notifyDataSetChanged();
+                        }else{
+                            hotCourseList.addAll(courseListBean.getData());
+                            for (CourseListBean.DataBeanX dataBean : hotCourseList) {
+                                multipleItem = new MultipleItem(MultipleItem.HOMEHOTCOURSE);
+                                multipleItem.setCourseListBean(dataBean);
+                                mItemModels.add(multipleItem);
                             }
-                        });
+                            courseListTypeAdapter.setDataList(mItemModels);
+                            lRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
+                                @Override
+                                public void onItemClick(View view, int position) {
+                                    startActivity(new Intent(CourseFilterActivity.this, CourseDetailActivity.class).putExtra("courseId", hotCourseList.get(position).getId()));
+                                }
+                            });
+                        }
                     } else {
                         if (hotCourseList.size() > 0) {
                             lrecyclerview.setNoMore(true);
@@ -484,8 +523,11 @@ public class CourseFilterActivity extends BaseActivity {
                         }
                     }
                     lrecyclerview.refreshComplete(hotCourseList.size());
+                    courseListTypeAdapter.notifyDataSetChanged();
+                    lRecyclerViewAdapter.notifyDataSetChanged();
                 }
             }
+
             @Override
             public void onFailure(HttpInfo info) {
                 super.onFailure(info);
@@ -493,7 +535,7 @@ public class CourseFilterActivity extends BaseActivity {
                 textView.setText("数据一不小心走丢了，请稍后回来");
                 lrecyclerview.setEmptyView(mEmptyView);
             }
-        }, offset,limit,"", "", tagId1, tagId2, tagId3, "", lat, lng, distance,publishTime,goodReview,price);
+        }, offset, limit, "", "", tagId1, tagId2, tagId3, "", lat, lng, distance, publishTime, goodReview, price);
     }
 
     @Event(value = {R.id.iv_back, R.id.iv_msg}, type = View.OnClickListener.class)

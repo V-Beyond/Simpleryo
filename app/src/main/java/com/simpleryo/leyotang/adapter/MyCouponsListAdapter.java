@@ -124,8 +124,10 @@ public class MyCouponsListAdapter extends BaseAdapter<MyCouponListBean.DataBean>
                 Picasso.with(mContext).load(dataBean.getType().getImageUri()).transform(raduisTransformation).error(R.mipmap.iv_app_logo).into(((CouponsItemViewHolder) holder).iv_coupons_img);
             }
             if (dataBean.getType().getCategory().equalsIgnoreCase("DISCOUNT")) {
+                ((CouponsItemViewHolder) holder).tv_dolloar.setVisibility(View.GONE);
                 ((CouponsItemViewHolder) holder).tv_content.setText(new DecimalFormat("0.00").format(Double.valueOf(dataBean.getType().getDiscount()) * 0.1) + "折");
             } else if (dataBean.getType().getCategory().equalsIgnoreCase("CASH")) {
+                ((CouponsItemViewHolder) holder).tv_dolloar.setVisibility(View.VISIBLE);
                 ((CouponsItemViewHolder) holder).tv_content.setText(new DecimalFormat("0.00").format(dataBean.getType().getSubtractAmount() * 0.01) + "");
             }
             if (dataBean.getType().getLimitAmount() > 0) {

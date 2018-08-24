@@ -34,6 +34,7 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.xutils.view.annotation.ContentView;
@@ -76,6 +77,7 @@ public class BusinessHomeActivty extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         tv_name.setText(getResources().getString(R.string.business_home));
         iv_msg.setVisibility(View.GONE);
         tv_share.setVisibility(View.VISIBLE);
@@ -99,6 +101,13 @@ public class BusinessHomeActivty extends BaseActivity {
         getStoreDetail();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    String storeName;
     /**
      * 获取商家详情
      */
@@ -110,7 +119,8 @@ public class BusinessHomeActivty extends BaseActivity {
                 loadingDialog.dismiss();
                 StoreDetailBean storeDetailBean=info.getRetDetail(StoreDetailBean.class);
                 if (storeDetailBean.getCode().equalsIgnoreCase("0")){
-                    tv_store_name.setText(storeDetailBean.getData().getStoreInfo().getName());
+                    storeName=storeDetailBean.getData().getStoreInfo().getName();
+                    tv_store_name.setText(storeName);
                     if (storeDetailBean.getData().getStoreInfo().getStatus().equalsIgnoreCase("AUDIT_OK")){
                         tv_store_status.setText(getResources().getString(R.string.certified));
                     }else if(storeDetailBean.getData().getStoreInfo().getStatus().equalsIgnoreCase("AUDITING")){
@@ -166,7 +176,10 @@ public class BusinessHomeActivty extends BaseActivity {
                 startActivity(new Intent(BusinessHomeActivty.this,MyMsgActivity.class));
                 break;
             case R.id.tv_share://分享
+                Bundle bundle=new Bundle();
+                bundle.putString("type","store");
                 ShareDialogFragment shareDialogFragment = new ShareDialogFragment();
+                shareDialogFragment.setArguments(bundle);
                 shareDialogFragment.show(getSupportFragmentManager(), "shareDialogFragment");
                 break;
         }
@@ -230,51 +243,51 @@ public class BusinessHomeActivty extends BaseActivity {
      * @param shareMedia
      */
     public void share(SHARE_MEDIA shareMedia) {
-        UMWeb web = new UMWeb(SimpleryoNetwork.h5Url+"Main/CourseDetail?id="+storeId);
-        web.setTitle(courseName);//标题
+        UMWeb web = new UMWeb(SimpleryoNetwork.h5Url+"Main/Business?id="+storeId);
+        web.setTitle(storeName);//标题
         web.setThumb(new UMImage(this, coverUrl));  //缩略图
-        web.setDescription(getResources().getString(R.string.share_title));//描述
+//        web.setDescription(getResources().getString(R.string.share_title));//描述
+        web.setDescription("这个机构的课程和教练都很棒，快来围观~");
         new ShareAction(BusinessHomeActivty.this)
                 .withMedia(web)
                 .setPlatform(shareMedia)
                 .setCallback(shareListener)
                 .share();
     }
-
     /**
      * Facebook分享
      * @param shareMedia
      */
     public void shareFaceBook(SHARE_MEDIA shareMedia) {
         UMImage imagelocal = new UMImage(this, coverUrl);
-        new ShareAction(BusinessHomeActivty.this).withText(courseName)
+        new ShareAction(BusinessHomeActivty.this).withText(storeName)
                 .withMedia(imagelocal)
                 .setPlatform(shareMedia)
                 .setCallback(shareListener).share();
     }
 
-    String courseName="这个机构的课程和教练都很棒，快来围观~";
     String coverUrl;
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updateCollect(BusEntity bus) {
-        if (bus.getType() == 701) {//微信
+        if (bus.getType() == 705) {//微信
+            Log.w("cc","微信分享");
             if (umShareAPI.isInstall(BusinessHomeActivty.this,SHARE_MEDIA.WEIXIN)) {
                 share(SHARE_MEDIA.WEIXIN);
             } else {
                 Toast.makeText(BusinessHomeActivty.this, "请安装微信客户端", Toast.LENGTH_SHORT).show();
             }
         }
-        if (bus.getType() == 702) {//朋友圈
+        if (bus.getType() == 706) {//朋友圈
             if (umShareAPI.isInstall(BusinessHomeActivty.this,SHARE_MEDIA.WEIXIN)) {
                 share(SHARE_MEDIA.WEIXIN_CIRCLE);
             } else {
                 Toast.makeText(BusinessHomeActivty.this, "请安装微信客户端", Toast.LENGTH_SHORT).show();
             }
         }
-        if (bus.getType() == 703) {//支付宝
+        if (bus.getType() == 707) {//支付宝
             share(SHARE_MEDIA.ALIPAY);
         }
-        if (bus.getType() == 704) {//Facebook
+        if (bus.getType() == 708) {//Facebook
             shareFaceBook(SHARE_MEDIA.FACEBOOK);
         }
     }

@@ -2,12 +2,14 @@ package com.simpleryo.leyotang.activity;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.simpleryo.leyotang.R;
 import com.simpleryo.leyotang.adapter.FragMentAdapter;
@@ -16,6 +18,7 @@ import com.simpleryo.leyotang.base.XLibraryLazyFragment;
 import com.simpleryo.leyotang.fragment.CourseFragment;
 import com.simpleryo.leyotang.fragment.HomeFragment;
 import com.simpleryo.leyotang.fragment.MyFragment;
+import com.simpleryo.leyotang.utils.SharedPreferencesUtils;
 import com.simpleryo.leyotang.utils.XActivityUtils;
 import com.umeng.analytics.MobclickAgent;
 
@@ -27,6 +30,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnNeverAskAgain;
+import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.RuntimePermissions;
 
 /**
@@ -124,7 +129,16 @@ public class MainActivity extends BaseActivity {
     @NeedsPermission({ Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.READ_PHONE_STATE,Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR})
     void getMultiPermission() {
     }
+    @OnPermissionDenied({ Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.READ_PHONE_STATE,Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR})//一旦用户拒绝了
+    void denied() {
+        SharedPreferencesUtils.saveKeyBoolean("deny",true);
+    }
+    @OnNeverAskAgain({ Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.READ_PHONE_STATE,Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR})//用户选择的不再询问
+    void notAsk() {
 
+    }
+    //定义请求
+    private static final int READ_CONTACTS_REQUEST =1;
     /**
      * 权限获取结果
      * @param requestCode
@@ -133,6 +147,22 @@ public class MainActivity extends BaseActivity {
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        //确保是我们的请求
+        if (requestCode == READ_CONTACTS_REQUEST) {
+            if (grantResults.length == 3 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "读取联系人权限获得", Toast.LENGTH_SHORT).show();
+
+            } else if (grantResults.length == 3 && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "读取联系人失败", Toast.LENGTH_SHORT).show();
+            } else if (grantResults.length == 3 && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "获取摄像头权限成功", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "获得摄像头权限失败",Toast.LENGTH_SHORT).show();
+            }
+
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         MainActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }

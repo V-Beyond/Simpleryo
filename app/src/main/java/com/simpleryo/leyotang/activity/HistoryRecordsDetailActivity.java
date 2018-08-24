@@ -125,7 +125,16 @@ public class HistoryRecordsDetailActivity extends BaseActivity {
                 super.onSuccess(info);
                 ComplaintDetailBean complaintDetailBean = info.getRetDetail(ComplaintDetailBean.class);
                 if (complaintDetailBean.getCode().equalsIgnoreCase("0")) {
-                    Picasso.with(HistoryRecordsDetailActivity.this).load(complaintDetailBean.getData().getCreator().getAvatarUrl()).transform(transformation).into(iv_coach_img);
+                    if (complaintDetailBean.getData().getCreator()!=null){
+                        if (complaintDetailBean.getData().getCreator().getAvatarUrl()!=null){
+                            Picasso.with(HistoryRecordsDetailActivity.this).load(complaintDetailBean.getData().getCreator().getAvatarUrl()).transform(transformation).into(iv_coach_img);
+                        }   else {
+                            Picasso.with(HistoryRecordsDetailActivity.this).load(R.mipmap.iv_app_logo).transform(transformation).into(iv_coach_img);
+                        }
+                    }else{
+                        Picasso.with(HistoryRecordsDetailActivity.this).load(R.mipmap.iv_app_logo).transform(transformation).into(iv_coach_img);
+                    }
+
                     tv_title.setText(complaintDetailBean.getData().getCreator().getNickName());
                     tv_content.setText(complaintDetailBean.getData().getBody());
                     tv_time.setText(XStringPars.getCouponTime(complaintDetailBean.getData().getCreationTime()+""));

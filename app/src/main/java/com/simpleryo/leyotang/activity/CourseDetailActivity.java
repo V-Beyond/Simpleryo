@@ -634,7 +634,10 @@ public class CourseDetailActivity extends BaseActivity    {
                 startActivity(businessIntent);
                 break;
             case R.id.tv_share://分享
+                Bundle bundle=new Bundle();
+                bundle.putString("type","course");
                 ShareDialogFragment shareDialogFragment = new ShareDialogFragment();
+                shareDialogFragment.setArguments(bundle);
                 shareDialogFragment.show(getSupportFragmentManager(), "shareDialogFragment");
                 break;
         }

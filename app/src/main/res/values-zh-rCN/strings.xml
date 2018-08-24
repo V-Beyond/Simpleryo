@@ -36,10 +36,10 @@
     <string name="mailbox_account">邮箱账号</string>
     <string name="register">注 册</string>
     <string name="change_pwd">修改密码</string>
-    <string name="login_name">登录名</string>
+    <string name="login_name">请输入邮箱</string>
     <!-- 登录-->
     <string name="welcome_tips">您好，欢迎登陆新普乐优</string>
-    <string name="edit_account">请输入账号</string>
+    <string name="edit_account">请输入手机号或邮箱</string>
     <string name="edit_pwd">请输入密码</string>
     <string name="sign_in">登录</string>
     <string name="no_register_click" ><u>未注册用户请点击</u></string>

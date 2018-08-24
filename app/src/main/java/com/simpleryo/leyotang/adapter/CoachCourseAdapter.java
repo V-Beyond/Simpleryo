@@ -31,10 +31,10 @@ import java.text.NumberFormat;
  * @date 2017/11/10 18:55
  */
 
-public class CourseListTypeAdapter extends BaseMultiAdapter<MultipleItem> {
+public class CoachCourseAdapter extends BaseMultiAdapter<MultipleItem> {
     Context context;
 
-    public CourseListTypeAdapter(Context context) {
+    public CoachCourseAdapter(Context context) {
         super(context);
         this.context = context;
         EventBus.getDefault().register(this);
@@ -84,8 +84,14 @@ public class CourseListTypeAdapter extends BaseMultiAdapter<MultipleItem> {
                     ((HotCourseItemViewHolder) holder).tv_price.setText("免费预约");
                 }
             }
+
             ((HotCourseItemViewHolder) holder).tv_popular.setText(classCount+" people");
             ((HotCourseItemViewHolder) holder).tv_collection_count.setText(bean.getCourseListBean().getCollectCount()+"人收藏");
+            if (hasCollect){
+                ((HotCourseItemViewHolder) holder).iv_collection_star.setImageResource(R.mipmap.iv_collection_star);
+            }else{
+                ((HotCourseItemViewHolder) holder).iv_collection_star.setImageResource(R.mipmap.iv_collection_white_star);
+            }
             if (hasCollect){
                 ((HotCourseItemViewHolder) holder).iv_collection_course.setImageResource(R.mipmap.iv_course_item_collected);
             }else{
@@ -94,7 +100,7 @@ public class CourseListTypeAdapter extends BaseMultiAdapter<MultipleItem> {
             ((HotCourseItemViewHolder) holder).iv_collection_course.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    EventBus.getDefault().post(new BusEntity(1315,bean.getCourseListBean()));//收藏or取消收藏
+                    EventBus.getDefault().post(new BusEntity(1314,bean.getCourseListBean()));//收藏or取消收藏
                 }
             });
             ((HotCourseItemViewHolder) holder).horizontal_progressbar.setProgress((int) percent);

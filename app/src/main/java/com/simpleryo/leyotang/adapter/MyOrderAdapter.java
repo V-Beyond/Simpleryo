@@ -171,10 +171,12 @@ public class MyOrderAdapter extends BaseMultiAdapter<MultipleItem> {
                 if(dataBean.getPrice()!=0){
                     ((MyCollectionViewHolder) holder).tv_price.setText(XStringPars.foramtPrice(dataBean.getPrice())+"$/"+course_price);
                 }else{
-                    if (dataBean.getType().equalsIgnoreCase("series")){
-                        ((MyCollectionViewHolder) holder).tv_price.setText(context.getResources().getString(R.string.free_trail));
-                    }else if(dataBean.getType().equalsIgnoreCase("single")){
-                        ((MyCollectionViewHolder) holder).tv_price.setText(context.getResources().getString(R.string.free_trail_booking));
+                    if (dataBean.getType()!=null){
+                        if (dataBean.getType().equalsIgnoreCase("series")){
+                            ((MyCollectionViewHolder) holder).tv_price.setText(context.getResources().getString(R.string.free_trail));
+                        }else if(dataBean.getType().equalsIgnoreCase("single")){
+                            ((MyCollectionViewHolder) holder).tv_price.setText(context.getResources().getString(R.string.free_trail_booking));
+                        }
                     }
                 }
                 int collectCount= Integer.parseInt(dataBean.getCollectCount());

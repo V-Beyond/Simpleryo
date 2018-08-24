@@ -5,6 +5,7 @@ import android.widget.ImageView;
 
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.simpleryo.leyotang.R;
+import com.zhy.autolayout.utils.AutoUtils;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -22,5 +23,6 @@ public class CourseTypeViewHolder extends SuperViewHolder {
     public CourseTypeViewHolder(View itemView) {
         super(itemView);
         x.view().inject(this, itemView);
+        AutoUtils.auto(itemView);
     }
 }

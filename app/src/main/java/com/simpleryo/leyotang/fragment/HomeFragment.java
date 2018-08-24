@@ -116,33 +116,49 @@ public class HomeFragment extends XLibraryLazyFragment {
         lrecyclerview.setHasFixedSize(true);
         lrecyclerview.setLoadMoreEnabled(false);
         lrecyclerview.setOnRefreshListener(onRefreshListener);
-        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
-        @SuppressLint("MissingPermission") Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
-        locationResult.addOnCompleteListener(getActivity(), new OnCompleteListener<Location>() {
-            @Override
-            public void onComplete(@NonNull Task<Location> task) {
-                if (task.isSuccessful()) {
-                    mLastKnownLocation = task.getResult();
-                    if (mLastKnownLocation != null) {
-                        //获取当前位置信息
-                        SimpleryoNetwork.getAddressInfo(getActivity(), new MyBaseProgressCallbackImpl() {
-                            @Override
-                            public void onSuccess(HttpInfo info) {
-                                super.onSuccess(info);
-                                CurrentAddressInfo currentAddressInfo = info.getRetDetail(CurrentAddressInfo.class);
-                                if (currentAddressInfo.getStatus().equalsIgnoreCase("OK")) {
-                                    tv_address.setText(currentAddressInfo.getResults().get(0).getFormatted_address().split(" ")[0]);
-                                }
-                            }
-                        }, mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude());
+        if (SharedPreferencesUtils.getKeyBoolean("deny")){
+            lat=-41.095977;
+            lng=175.093335;
+        }else{
+            mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
+            @SuppressLint("MissingPermission") Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
+            locationResult.addOnCompleteListener(getActivity(), new OnCompleteListener<Location>() {
+                @Override
+                public void onComplete(@NonNull Task<Location> task) {
+                    if (task.isSuccessful()) {
+                        mLastKnownLocation = task.getResult();
+                        if (mLastKnownLocation != null) {
+                           lat=mLastKnownLocation.getLatitude();
+                           lng=mLastKnownLocation.getLongitude();
+                        } else {
+                            lat=-41.095977;
+                            lng=175.093335;
+//                            tv_address.setText("暂无地址");
+                        }
                     } else {
-                        tv_address.setText("暂无地址");
+                        lat=-41.095977;
+                        lng=175.093335;
+//                        tv_address.setText("暂无地址");
                     }
-                } else {
-                    tv_address.setText("暂无地址");
+                }
+            });
+        }
+        getUserCurrentLocation();
+    }
+    double lat;
+    double lng;
+    public void getUserCurrentLocation(){
+        //获取当前位置信息
+        SimpleryoNetwork.getAddressInfo(getActivity(), new MyBaseProgressCallbackImpl() {
+            @Override
+            public void onSuccess(HttpInfo info) {
+                super.onSuccess(info);
+                CurrentAddressInfo currentAddressInfo = info.getRetDetail(CurrentAddressInfo.class);
+                if (currentAddressInfo.getStatus().equalsIgnoreCase("OK")) {
+                    tv_address.setText(currentAddressInfo.getResults().get(0).getFormatted_address().split(" ")[0]);
                 }
             }
-        });
+        }, lat, lng);
     }
     SimpleryoNetwork simpleryoNetwork;
     private FusedLocationProviderClient mFusedLocationProviderClient;
@@ -336,9 +352,7 @@ public class HomeFragment extends XLibraryLazyFragment {
 
         }
     }
-
     String mPageName = "HomeFragment";
-
     @Override
     public void onPause() {
         super.onPause();
@@ -354,17 +368,7 @@ public class HomeFragment extends XLibraryLazyFragment {
         MobclickAgent.onPageStart(mPageName);
         EventBus.getDefault().post(new BusEntity(555));//通知banner开始轮播
     }
-
-    public List<String> mockData() {
-        List<String> datas = new ArrayList<>();
-        datas.add("http://p1.so.qhimgs1.com/bdr/_240_/t01ded39fec3bb5b85d.jpg");
-        datas.add("http://p0.so.qhmsg.com/bdr/_240_/t01e33175042a193d75.jpg");
-        datas.add("http://p3.so.qhimgs1.com/bdr/_240_/t01d4060a32f79916b3.jpg");
-        datas.add("http://p5.so.qhimgs1.com/bdr/_240_/t0198b4fbdeae2d484b.jpg");
-        return datas;
-    }
-
-    @Event(value = {R.id.iv_msg, R.id.rl_search}, type = View.OnClickListener.class)
+    @Event(value = {R.id.iv_msg, R.id.rl_search,R.id.tv_address}, type = View.OnClickListener.class)
     private void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_msg:
@@ -372,6 +376,33 @@ public class HomeFragment extends XLibraryLazyFragment {
                 break;
             case R.id.rl_search:
                 startActivity(new Intent(getActivity(), CourseSearchActivity.class));
+                break;
+            case R.id.tv_address:
+                if (SharedPreferencesUtils.getKeyBoolean("deny")){
+                    mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
+                    @SuppressLint("MissingPermission") Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
+                    locationResult.addOnCompleteListener(getActivity(), new OnCompleteListener<Location>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Location> task) {
+                            if (task.isSuccessful()) {
+                                mLastKnownLocation = task.getResult();
+                                if (mLastKnownLocation != null) {
+                                    lat=mLastKnownLocation.getLatitude();
+                                    lng=mLastKnownLocation.getLongitude();
+                                    getUserCurrentLocation();
+                                } else {
+                                    lat=-41.095977;
+                                    lng=175.093335;
+//                            tv_address.setText("暂无地址");
+                                }
+                            } else {
+                                lat=-41.095977;
+                                lng=175.093335;
+//                        tv_address.setText("暂无地址");
+                            }
+                        }
+                    });
+                }
                 break;
         }
     }

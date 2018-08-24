@@ -333,7 +333,7 @@ public class CouponsActivity extends BaseActivity {
                     category = "CASH";
                 }
                 if (categoryName.equalsIgnoreCase("折扣券")) {
-                    category = "DISCOUN";
+                    category = "DISCOUNT";
                 }
                 if (dataBeanArrayList != null && dataBeanArrayList.size() > 0) {
                     dataBeanArrayList.clear();

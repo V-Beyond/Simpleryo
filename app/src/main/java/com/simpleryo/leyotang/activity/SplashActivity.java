@@ -2,6 +2,8 @@ package com.simpleryo.leyotang.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.gyf.barlibrary.ImmersionBar;
@@ -34,6 +36,8 @@ public class SplashActivity extends AutoLayoutActivity {
                 .fullScreen(false)
                 .init();
 //        Picasso.with(SplashActivity.this).load("http://p0.so.qhimgs1.com/bdr/_240_/t01a43386419b27c414.jpg").into(iv_splash);
+        AlphaAnimation alphaAnimation = (AlphaAnimation) AnimationUtils.loadAnimation(SplashActivity.this, R.anim.splash_img_alpha_anim);
+        iv_splash.startAnimation(alphaAnimation);
         new Thread(new Runnable() {
             @Override
             public void run() {

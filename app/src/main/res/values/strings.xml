@@ -29,9 +29,9 @@
     <string name="mailbox_account">Mailbox account</string>
     <string name="register">Register</string>
     <string name="change_pwd">Change Password</string>
-    <string name="login_name">Login name</string>
+    <string name="login_name">Please enter E-mail</string>
     <string name="welcome_tips">Hello, welcome to Simpleryo</string>
-    <string name="edit_account">Please enter the account number</string>
+    <string name="edit_account">Please enter the phone/E-mail</string>
     <string name="edit_pwd">Please input a password</string>
     <string name="sign_in">Log in</string>
     <string name="no_register_click" ><u>Non-registered users please click</u></string>

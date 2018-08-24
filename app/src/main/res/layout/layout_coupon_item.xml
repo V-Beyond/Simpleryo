@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:id="@+id/rl_item"
     android:background="@mipmap/iv_coupon_red_bg"
-    android:layout_height="584px">
+    android:layout_height="292px">
     <ImageView
         android:id="@+id/iv_coupons_img"
         android:layout_width="56dp"
@@ -18,7 +18,7 @@
         android:layout_toRightOf="@+id/iv_coupons_img"
         android:layout_marginTop="41px"
         android:layout_marginLeft="13px"
-        android:layout_height="56dp">
+        android:layout_height="wrap_content">
         <TextView
             android:id="@+id/tv_store_name"
             android:layout_width="wrap_content"
@@ -43,6 +43,17 @@
             android:layout_marginTop="24px"
             android:layout_height="wrap_content" />
     </LinearLayout>
+    <TextView
+        android:id="@+id/tv_dolloar"
+        android:layout_width="wrap_content"
+        android:visibility="gone"
+        android:text="$"
+        android:textColor="@color/white"
+        android:layout_marginRight="10px"
+        android:layout_marginTop="30px"
+        android:textSize="30px"
+        android:layout_toLeftOf="@+id/tv_content"
+        android:layout_height="wrap_content" />
     <TextView
         android:id="@+id/tv_content"
         android:layout_width="wrap_content"

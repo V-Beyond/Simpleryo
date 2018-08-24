@@ -40,8 +40,14 @@ public class ComplaintListAdapter extends BaseAdapter<ComplainListBean.DataBean>
     public void onBindItemHolder(SuperViewHolder holder, int position) {
         final ComplainListBean.DataBean bean = listData.get(position);
         if (holder instanceof  ComplaintItemViewHolder){
-            if (bean.getCreator().getAvatarUrl()!=null){
-                Picasso.with(mContext).load(bean.getCreator().getAvatarUrl()).transform(transformation).into(((ComplaintItemViewHolder) holder).iv_coach_img);
+            if (bean.getCreator()!=null){
+                if (bean.getCreator().getAvatarUrl()!=null){
+                    Picasso.with(mContext).load(bean.getCreator().getAvatarUrl()).transform(transformation).into(((ComplaintItemViewHolder) holder).iv_coach_img);
+                }else{
+                    Picasso.with(mContext).load(R.mipmap.iv_app_logo).transform(transformation).into(((ComplaintItemViewHolder) holder).iv_coach_img);
+                }
+            }else{
+                Picasso.with(mContext).load(R.mipmap.iv_app_logo).transform(transformation).into(((ComplaintItemViewHolder) holder).iv_coach_img);
             }
             ((ComplaintItemViewHolder) holder).tv_time.setText(XStringPars.getCouponTime(bean.getCreationTime()+""));
             ((ComplaintItemViewHolder) holder).tv_content.setText(bean.getTitle());
