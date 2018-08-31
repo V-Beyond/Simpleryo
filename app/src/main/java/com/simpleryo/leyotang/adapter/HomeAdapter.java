@@ -162,7 +162,7 @@ public class HomeAdapter extends BaseMultiAdapter<MultipleItem> {
             ((IntroductoryCourseViewHolder) holder).item_more_rihgt_more.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    context.startActivity(new Intent(mContext, CourseFilterActivity.class).putExtra("tagId1", "").putExtra("tagId3",introductoryListBeans.getTag().getId()));
+                    context.startActivity(new Intent(mContext, CourseFilterActivity.class).putExtra("tagId1", "").putExtra("tagId3",""));
                 }
             });
 
@@ -195,7 +195,7 @@ public class HomeAdapter extends BaseMultiAdapter<MultipleItem> {
             ((HotCourseViewHolder) holder).item_more_rihgt_more.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    context.startActivity(new Intent(mContext, CourseFilterActivity.class).putExtra("tagId1", "").putExtra("tagId3",orderListBeans.getTag().getId()));
+                    context.startActivity(new Intent(mContext, CourseFilterActivity.class).putExtra("tagId1", "").putExtra("tagId3",""));
                 }
             });
         } else if (holder instanceof ExcellentCourseViewHolder) {//精选课程
@@ -221,7 +221,7 @@ public class HomeAdapter extends BaseMultiAdapter<MultipleItem> {
             ((ExcellentCourseViewHolder) holder).item_more_rihgt_more.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    context.startActivity(new Intent(mContext, CourseFilterActivity.class).putExtra("tagId1", "").putExtra("tagId3",excellentListBeans.getTag().getId()));
+                    context.startActivity(new Intent(mContext, CourseFilterActivity.class).putExtra("tagId1", "").putExtra("tagId3",""));
                 }
             });
             lRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {

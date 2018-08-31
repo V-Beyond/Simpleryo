@@ -416,6 +416,7 @@
             </LinearLayout>
 
             <RelativeLayout
+                android:id="@+id/rl_coupon"
                 android:layout_width="match_parent"
                 android:layout_height="103px"
                 android:layout_marginTop="39px"

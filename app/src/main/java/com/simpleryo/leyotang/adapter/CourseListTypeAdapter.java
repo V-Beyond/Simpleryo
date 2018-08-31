@@ -19,6 +19,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 
@@ -106,7 +107,7 @@ public class CourseListTypeAdapter extends BaseMultiAdapter<MultipleItem> {
             }
             if (bean.getCourseListBean().getDistance()!=null){
                 ((HotCourseItemViewHolder) holder).tv_distance.setVisibility(View.VISIBLE);
-                ((HotCourseItemViewHolder) holder).tv_distance.setText(bean.getCourseListBean().getDistance());
+                ((HotCourseItemViewHolder) holder).tv_distance.setText(new DecimalFormat("0.00").format(Double.valueOf(bean.getCourseListBean().getDistance())/1000)+"/km");
             }
         }
         if (holder instanceof ExcellentCourseItemViewHolder){//精品

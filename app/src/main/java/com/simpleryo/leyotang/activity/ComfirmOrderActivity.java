@@ -31,6 +31,7 @@ import com.simpleryo.leyotang.bean.CreateOrderBean;
 import com.simpleryo.leyotang.bean.MyCouponListBean;
 import com.simpleryo.leyotang.network.SimpleryoNetwork;
 import com.simpleryo.leyotang.push.NotificationBroadcast;
+import com.simpleryo.leyotang.utils.CalendarEventUtils;
 import com.simpleryo.leyotang.utils.XActivityUtils;
 import com.simpleryo.leyotang.utils.XStringPars;
 import com.squareup.picasso.Picasso;
@@ -92,6 +93,8 @@ public class ComfirmOrderActivity extends BaseActivity {
     TextView tv_coupon_count;
     @ViewInject(R.id.rl_available)
     RelativeLayout rl_available;
+    @ViewInject(R.id.rl_coupon)
+    RelativeLayout rl_coupon;
     String name;
     String phone;
     String remark;
@@ -137,17 +140,18 @@ public class ComfirmOrderActivity extends BaseActivity {
     String arrangeTime;
     boolean isSingle = false;
     MyCouponListBean myCouponListBean;
+
     //获取优惠券列表
-    public void getCoupon(){
+    public void getCoupon() {
         SimpleryoNetwork.availableTickets(ComfirmOrderActivity.this, new MyBaseProgressCallbackImpl() {
             @Override
             public void onSuccess(HttpInfo info) {
                 super.onSuccess(info);
-                 myCouponListBean = info.getRetDetail(MyCouponListBean.class);
+                myCouponListBean = info.getRetDetail(MyCouponListBean.class);
                 if (myCouponListBean.getCode().equalsIgnoreCase("0")) {
                     if (myCouponListBean.getData() != null && myCouponListBean.getData().size() > 0) {
-                        tv_coupon_count.setText(myCouponListBean.getCount()+"张优惠券可用");
-                    }else{
+                        tv_coupon_count.setText(myCouponListBean.getCount() + "张优惠券可用");
+                    } else {
                         rl_available.setClickable(false);
                     }
                 }
@@ -157,8 +161,11 @@ public class ComfirmOrderActivity extends BaseActivity {
             public void onFailure(HttpInfo info) {
                 super.onFailure(info);
             }
-        }, storeId,courseId,count);
+        }, storeId, courseId, count);
     }
+
+    String courseAddress;
+
     /**
      * 获取课程详情
      */
@@ -194,8 +201,8 @@ public class ComfirmOrderActivity extends BaseActivity {
                     CourdeDetailBean.DataBeanX.AddressBean addressBean = courdeDetailBean.getData().getAddress();
                     if (addressBean != null) {
 //                    String address=addressBean.getProvice()+addressBean.getCity()+addressBean.getDistrict()+addressBean.getDetail();
-                        String address = addressBean.getDetail();
-                        tv_course_address.setText(getResources().getString(R.string.offline_training_training_address) +address);
+                        courseAddress = addressBean.getDetail();
+                        tv_course_address.setText(getResources().getString(R.string.offline_training_training_address) + courseAddress);
                     }
                     if (courdeDetailBean.getData().getCoach() != null) {
                         coachId = courdeDetailBean.getData().getCoach().getId();
@@ -207,10 +214,19 @@ public class ComfirmOrderActivity extends BaseActivity {
                         tv_course_category.setText(courseName);
                     }
                     if (courdeDetailBean.getData().getCoach() != null) {
-                        tv_coach_name.setText(getResources().getString(R.string.Tutor_name) +"：" + courdeDetailBean.getData().getCoach().getNickName() + "   " + courdeDetailBean.getData().getCoach().getWorkLife() + getResources().getString(R.string.experience) );
+                        tv_coach_name.setText(getResources().getString(R.string.Tutor_name) + "：" + courdeDetailBean.getData().getCoach().getNickName() + "   " + courdeDetailBean.getData().getCoach().getWorkLife() + getResources().getString(R.string.experience));
 
                     }
                     price = courdeDetailBean.getData().getPrice();
+                    if(price!=0){
+                        rl_coupon.setVisibility(View.VISIBLE);
+                    }else{
+                        if (courdeDetailBean.getData().getType().equalsIgnoreCase("series")){
+                            rl_coupon.setVisibility(View.GONE);
+                        }else if(courdeDetailBean.getData().getType().equalsIgnoreCase("single")){
+                            rl_coupon.setVisibility(View.GONE);
+                        }
+                    }
                     total_price = count * price;
                     tv_price.setText(getResources().getString(R.string.course_of_price) + XStringPars.foramtPrice(total_price) + "$");
                     tv_total_price.setText(getResources().getString(R.string.total_course) + XStringPars.foramtPrice(total_price) + "$");
@@ -219,16 +235,16 @@ public class ComfirmOrderActivity extends BaseActivity {
                     } else {
                         tv_store_name.setText("暂无机构名称");
                     }
+                    if (courdeDetailBean.getData().getArranges() != null && courdeDetailBean.getData().getArranges().size() > 0) {
+                        arrangeArrayList.addAll(courdeDetailBean.getData().getArranges());
+                        for (int i = 0; i < arrangeArrayList.size(); i++) {
+                            arrangeTimes.add(arrangeArrayList.get(i).getDateDetail());
+                            arrayMap.put(arrangeArrayList.get(i).getDateDetail(), arrangeArrayList.get(i));
+                        }
+                    }
                     if (courdeDetailBean.getData().getType().equalsIgnoreCase("single")) {
                         isSingle = true;
                         ll_course_time.setVisibility(View.VISIBLE);
-                        if (courdeDetailBean.getData().getArranges() != null && courdeDetailBean.getData().getArranges().size() > 0) {
-                            arrangeArrayList.addAll(courdeDetailBean.getData().getArranges());
-                            for (int i = 0; i < arrangeArrayList.size(); i++) {
-                                arrangeTimes.add(arrangeArrayList.get(i).getDateDetail());
-                                arrayMap.put(arrangeArrayList.get(i).getDateDetail(), arrangeArrayList.get(i));
-                            }
-                        }
                     }
                     getCoupon();//获取课程优惠券
                 }
@@ -243,6 +259,8 @@ public class ComfirmOrderActivity extends BaseActivity {
 
     private OptionsPickerView pvCustomOptions;
     String time;
+    String startTime;
+    String endTime;
 
     private void initCustomOptionPicker() {//条件选择器初始化，自定义布局
 
@@ -259,6 +277,8 @@ public class ComfirmOrderActivity extends BaseActivity {
                 //返回的分别是三个级别的选中位置
                 arrangeTime = arrangeTimes.get(options1);
                 aboutArrangeId = arrayMap.get(arrangeTime).getId();
+                startTime = arrayMap.get(arrangeTime).getStartTime();
+                endTime = arrayMap.get(arrangeTime).getEndTime();
             }
         })
                 .setLayoutRes(R.layout.dialog_course_time, new CustomListener() {
@@ -289,18 +309,18 @@ public class ComfirmOrderActivity extends BaseActivity {
         pvCustomOptions.show();
     }
 
-    @Event(value = {R.id.iv_back, R.id.iv_msg, R.id.rl_available,R.id.iv_count_reduce, R.id.iv_count_increase, R.id.rl_pay, R.id.ll_course_time}, type = View.OnClickListener.class)
+    @Event(value = {R.id.iv_back, R.id.iv_msg, R.id.rl_available, R.id.iv_count_reduce, R.id.iv_count_increase, R.id.rl_pay, R.id.ll_course_time}, type = View.OnClickListener.class)
     private void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
                 XActivityUtils.getInstance().popActivity(ComfirmOrderActivity.this);
                 break;
             case R.id.rl_available:
-                Intent intent=new Intent(ComfirmOrderActivity.this, MyCouponsActivity.class);
-                intent.putExtra("type","order");
-                intent.putExtra("storeId",storeId);
-                intent.putExtra("courseId",courseId);
-                intent.putExtra("count",count);
+                Intent intent = new Intent(ComfirmOrderActivity.this, MyCouponsActivity.class);
+                intent.putExtra("type", "order");
+                intent.putExtra("storeId", storeId);
+                intent.putExtra("courseId", courseId);
+                intent.putExtra("count", count);
                 startActivity(intent);
 //                Bundle bundle=new Bundle();
 //                bundle.putSerializable("couponlist",myCouponListBean);
@@ -309,9 +329,9 @@ public class ComfirmOrderActivity extends BaseActivity {
 //                customBottomSheetDialog.show(getSupportFragmentManager(),"customBottomSheetDialog");
                 break;
             case R.id.ll_course_time:
-                if (arrangeTimes!=null&&arrangeTimes.size()>0){
+                if (arrangeTimes != null && arrangeTimes.size() > 0) {
                     initCustomOptionPicker();
-                }else{
+                } else {
                     Toast.makeText(ComfirmOrderActivity.this, "暂无可预约时间", Toast.LENGTH_SHORT).show();
                 }
 
@@ -327,13 +347,13 @@ public class ComfirmOrderActivity extends BaseActivity {
                 } else {
                     Toast.makeText(ComfirmOrderActivity.this, "订单数量不能小于1", Toast.LENGTH_SHORT).show();
                 }
-                if (isUseCoupon){
-                    if (couponType==1){
-                        total_price = count * price-cashCoupon;
-                    }else if (couponType==2){
-                        total_price = (int) (count * price*discount);
+                if (isUseCoupon) {
+                    if (couponType == 1) {
+                        total_price = count * price - cashCoupon;
+                    } else if (couponType == 2) {
+                        total_price = (int) (count * price * discount);
                     }
-                }else{
+                } else {
                     total_price = count * price;
                 }
                 tv_total_price.setText(getResources().getString(R.string.total_course) + XStringPars.foramtPrice(total_price * 1) + "$");
@@ -341,17 +361,17 @@ public class ComfirmOrderActivity extends BaseActivity {
             case R.id.iv_count_increase://增加
                 count += 1;
                 et_count.setText(count + "");
-                if (isUseCoupon){
-                    if (couponType==1){
-                        total_price = count * price-cashCoupon;
-                    }else if (couponType==2){
-                        total_price = (int) (count * price*discount);
+                if (isUseCoupon) {
+                    if (couponType == 1) {
+                        total_price = count * price - cashCoupon;
+                    } else if (couponType == 2) {
+                        total_price = (int) (count * price * discount);
                     }
-                }else{
+                } else {
                     total_price = count * price;
                 }
                 getCoupon();
-                tv_total_price.setText(getResources().getString(R.string.total_course)  + XStringPars.foramtPrice(total_price * 1) + "$");
+                tv_total_price.setText(getResources().getString(R.string.total_course) + XStringPars.foramtPrice(total_price * 1) + "$");
                 break;
             case R.id.rl_pay://支付
                 name = edittext_name.getText().toString().trim();
@@ -380,6 +400,7 @@ public class ComfirmOrderActivity extends BaseActivity {
                         if (createOrderBean.getCode().equalsIgnoreCase("0")) {
                             if (isSingle == true) {
                                 if (price == 0) {
+                                    CalendarEventUtils.addCalendarEvent(ComfirmOrderActivity.this, courseName, courseAddress, startTime, endTime);
                                     startActivity(new Intent(ComfirmOrderActivity.this, MyOrderActivity.class).putExtra("status", "PAYED"));
                                 } else {
                                     recordOrder(createOrderBean.getData().getId(), createOrderBean.getData().getPayAmt() + "", createOrderBean.getData().getNo(), createOrderBean.getData().getCourseName(), payType);
@@ -413,7 +434,7 @@ public class ComfirmOrderActivity extends BaseActivity {
                         super.onFailure(info);
                         loadingDialog.dismiss();
                     }
-                }, coachId, storeId, courseId, courseName, payType, count, price, total_price, total_price, name, phone, remark, aboutArrangeId,ticketId,discountAmt);
+                }, coachId, storeId, courseId, courseName, payType, count, price, total_price, total_price, name, phone, remark, aboutArrangeId, ticketId, discountAmt);
                 break;
         }
     }
@@ -496,21 +517,30 @@ public class ComfirmOrderActivity extends BaseActivity {
 
         LatipayAPI.sendRequest(req);
     }
+
     //是否使用优惠券
-    boolean isUseCoupon=false;
-    String ticketId="";//优惠券id
-    String discountAmt="";//优惠价格
+    boolean isUseCoupon = false;
+    String ticketId = "";//优惠券id
+    String discountAmt = "";//优惠价格
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updateCollect(BusEntity bus) {
         if (bus.getType() == 0222) {
             String state = bus.getContent();
             if (state.equalsIgnoreCase("PAID")) {
-                Toast.makeText(ComfirmOrderActivity.this,  getResources().getString(R.string.Payment_successful), Toast.LENGTH_SHORT).show();
+                if (isSingle) {
+                    CalendarEventUtils.addCalendarEvent(ComfirmOrderActivity.this, courseName, courseAddress, startTime, endTime);
+                } else {
+                    for (CourdeDetailBean.DataBeanX.Arrange arrange : arrangeArrayList) {
+                        CalendarEventUtils.addCalendarEvent(ComfirmOrderActivity.this, courseName, courseAddress, arrange.getStartTime(), arrange.getEndTime());
+                    }
+                }
+                Toast.makeText(ComfirmOrderActivity.this, getResources().getString(R.string.Payment_successful), Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(ComfirmOrderActivity.this, MyOrderActivity.class).putExtra("status", "PAYED"));
                 XActivityUtils.getInstance().popActivity(ComfirmOrderActivity.this);
             }
             if (state.equalsIgnoreCase("UNPAID")) {
-                Toast.makeText(ComfirmOrderActivity.this,  getResources().getString(R.string.Payment_cancle), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ComfirmOrderActivity.this, getResources().getString(R.string.Payment_cancle), Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(ComfirmOrderActivity.this, MyOrderActivity.class).putExtra("status", "NEW"));
                 XActivityUtils.getInstance().popActivity(ComfirmOrderActivity.this);
             }
@@ -520,27 +550,28 @@ public class ComfirmOrderActivity extends BaseActivity {
                 XActivityUtils.getInstance().popActivity(ComfirmOrderActivity.this);
             }
         }
-        if (bus.getType()==SELECTCOUPON){
-            isUseCoupon=true;//使用优惠券
-            String coupon=bus.getCoupon().split("-")[0];
-            ticketId=bus.getCoupon().split("-")[1];
-            if (bus.getContent().equalsIgnoreCase("CASH")){//现金券
-                couponType=1;
-                cashCoupon=Integer.parseInt(coupon);
-                total_price=(price*count-cashCoupon);
-                discountAmt=coupon;
-                tv_coupon_count.setText("-"+new DecimalFormat("0.00").format(cashCoupon*0.01)+"$");//减多少现金
-            }  else if (bus.getContent().equalsIgnoreCase("DISCOUNT")){//折扣券
-                couponType=2;
-                discount=Double.valueOf(coupon)/100;
-                tv_coupon_count.setText("-"+new DecimalFormat("0.00").format((price-(int) (price*count*discount))*0.01)+"$");//减多少现金
-                total_price= (int) (price*count*discount);
-                cashCoupon=Integer.parseInt(coupon);
-                discountAmt=(price*count- (int) (price*count*(Double.valueOf(coupon))/100))+"";
+        if (bus.getType() == SELECTCOUPON) {
+            isUseCoupon = true;//使用优惠券
+            String coupon = bus.getCoupon().split("-")[0];
+            ticketId = bus.getCoupon().split("-")[1];
+            if (bus.getContent().equalsIgnoreCase("CASH")) {//现金券
+                couponType = 1;
+                cashCoupon = Integer.parseInt(coupon);
+                total_price = (price * count - cashCoupon);
+                discountAmt = coupon;
+                tv_coupon_count.setText("-" + new DecimalFormat("0.00").format(cashCoupon * 0.01) + "$");//减多少现金
+            } else if (bus.getContent().equalsIgnoreCase("DISCOUNT")) {//折扣券
+                couponType = 2;
+                discount = Double.valueOf(coupon) / 100;
+                tv_coupon_count.setText("-" + new DecimalFormat("0.00").format((price - (int) (price * count * discount)) * 0.01) + "$");//减多少现金
+                total_price = (int) (price * count * discount);
+                cashCoupon = Integer.parseInt(coupon);
+                discountAmt = (price * count - (int) (price * count * (Double.valueOf(coupon)) / 100)) + "";
             }
-            tv_total_price.setText( getResources().getString(R.string.total_course)+XStringPars.foramtPrice(total_price * 1) + "$");
+            tv_total_price.setText(getResources().getString(R.string.total_course) + XStringPars.foramtPrice(total_price * 1) + "$");
         }
     }
+
     int couponType;//优惠券类型 1：现金券 2：折扣券
     int cashCoupon;//现金券金额
     double discount;//折扣券折扣
@@ -579,11 +610,11 @@ public class ComfirmOrderActivity extends BaseActivity {
             @Override
             public void onPaymentCompleted(int result) {
                 if (result == PaymentStatus.PAID) {
-                    Toast.makeText(ComfirmOrderActivity.this,  getResources().getString(R.string.Payment_successful), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ComfirmOrderActivity.this, getResources().getString(R.string.Payment_successful), Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(ComfirmOrderActivity.this, MyOrderActivity.class).putExtra("status", "PAYED"));
                     XActivityUtils.getInstance().popActivity(ComfirmOrderActivity.this);
                 } else if (result == PaymentStatus.UNPAID) {
-                    Toast.makeText(ComfirmOrderActivity.this,  getResources().getString(R.string.Payment_cancle), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ComfirmOrderActivity.this, getResources().getString(R.string.Payment_cancle), Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(ComfirmOrderActivity.this, MyOrderActivity.class).putExtra("status", "NEW"));
                     XActivityUtils.getInstance().popActivity(ComfirmOrderActivity.this);
                 } else { //PaymentStatus.UNKNOWN

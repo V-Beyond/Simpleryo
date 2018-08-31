@@ -11,7 +11,7 @@ public class BusEntity {
     private int type;//什么类型
     private String content;//使用到的参数
     CollectionListBean.DataBean dataBean;
-    OrderListBean.DataBean orderDataBean;
+    OrderListBean.DataBeanX orderDataBean;
     HomeDataBean.DataBeanX.CoursesBeanX.CoursesBean coursesBean;
     CourseListBean.DataBeanX courseListBean;
     boolean isCollect;
@@ -62,7 +62,7 @@ public class BusEntity {
         this.dataBean = dataBean;
     }
 
-    public BusEntity(int type, OrderListBean.DataBean orderDataBean) {
+    public BusEntity(int type, OrderListBean.DataBeanX orderDataBean) {
         this.type = type;
         this.orderDataBean = orderDataBean;
     }
@@ -100,11 +100,11 @@ public class BusEntity {
         this.dataBean = dataBean;
     }
 
-    public OrderListBean.DataBean getOrderDataBean() {
+    public OrderListBean.DataBeanX getOrderDataBean() {
         return orderDataBean;
     }
 
-    public void setOrderDataBean(OrderListBean.DataBean orderDataBean) {
+    public void setOrderDataBean(OrderListBean.DataBeanX orderDataBean) {
         this.orderDataBean = orderDataBean;
     }
 

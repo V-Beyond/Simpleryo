@@ -1,11 +1,14 @@
 package com.simpleryo.leyotang.fragment;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +20,6 @@ import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.okhttplib.HttpInfo;
 import com.simpleryo.leyotang.R;
 import com.simpleryo.leyotang.activity.CourseSearchActivity;
@@ -35,6 +35,7 @@ import com.simpleryo.leyotang.bean.HomeDataBean;
 import com.simpleryo.leyotang.bean.MultipleItem;
 import com.simpleryo.leyotang.network.SimpleryoNetwork;
 import com.simpleryo.leyotang.push.NotificationBroadcast;
+import com.simpleryo.leyotang.utils.LocationUtils;
 import com.simpleryo.leyotang.utils.SharedPreferencesUtils;
 import com.umeng.analytics.MobclickAgent;
 
@@ -46,7 +47,11 @@ import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.RuntimePermissions;
 
 /**
  * @author huanglei
@@ -55,7 +60,8 @@ import java.util.List;
  * @time 2018/3/19 11:10
  */
 
-public class HomeFragment extends XLibraryLazyFragment {
+@RuntimePermissions
+public class HomeFragment extends XLibraryLazyFragment{
     @ViewInject(R.id.lrecyclerview)
     LRecyclerView lrecyclerview;
     @ViewInject(R.id.tv_address)
@@ -93,7 +99,7 @@ public class HomeFragment extends XLibraryLazyFragment {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
-
+    @SuppressLint("MissingPermission")
     @Override
     protected void lazyLoad() {
         if (!isPrepared || !isVisible || mHasLoadedOnce) {
@@ -116,50 +122,56 @@ public class HomeFragment extends XLibraryLazyFragment {
         lrecyclerview.setHasFixedSize(true);
         lrecyclerview.setLoadMoreEnabled(false);
         lrecyclerview.setOnRefreshListener(onRefreshListener);
-        if (SharedPreferencesUtils.getKeyBoolean("deny")){
-            lat=-41.095977;
-            lng=175.093335;
-        }else{
-            mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
-            @SuppressLint("MissingPermission") Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
-            locationResult.addOnCompleteListener(getActivity(), new OnCompleteListener<Location>() {
-                @Override
-                public void onComplete(@NonNull Task<Location> task) {
-                    if (task.isSuccessful()) {
-                        mLastKnownLocation = task.getResult();
-                        if (mLastKnownLocation != null) {
-                           lat=mLastKnownLocation.getLatitude();
-                           lng=mLastKnownLocation.getLongitude();
-                        } else {
-                            lat=-41.095977;
-                            lng=175.093335;
-//                            tv_address.setText("暂无地址");
-                        }
-                    } else {
-                        lat=-41.095977;
-                        lng=175.093335;
-//                        tv_address.setText("暂无地址");
-                    }
-                }
-            });
+        if (SharedPreferencesUtils.getKeyBoolean("deny")) {
+            lat = -41.095977;
+            lng = 175.093335;
+            getUserCurrentLocation();
+        } else {
+            getUserLocation();
         }
-        getUserCurrentLocation();
+    }
+
+    public void getUserLocation(){
+        Location location = LocationUtils.getInstance(getActivity()).showLocation();
+        if (location != null) {
+            lat = location.getLatitude();
+            lng = location.getLongitude();
+            getUserCurrentLocation();
+        }
     }
     double lat;
     double lng;
-    public void getUserCurrentLocation(){
+
+    public void getUserCurrentLocation() {
         //获取当前位置信息
-        SimpleryoNetwork.getAddressInfo(getActivity(), new MyBaseProgressCallbackImpl() {
+        SimpleryoNetwork.getAddressInfo(getActivity(), new MyBaseProgressCallbackImpl(getActivity()) {
             @Override
             public void onSuccess(HttpInfo info) {
                 super.onSuccess(info);
+                loadingDialog.dismiss();
                 CurrentAddressInfo currentAddressInfo = info.getRetDetail(CurrentAddressInfo.class);
                 if (currentAddressInfo.getStatus().equalsIgnoreCase("OK")) {
-                    tv_address.setText(currentAddressInfo.getResults().get(0).getFormatted_address().split(" ")[0]);
+                    StringBuilder address = new StringBuilder();
+                    List<CurrentAddressInfo.ResultsBean.AddressComponentsBean> addressComponentsBeans = currentAddressInfo.getResults().get(0).getAddress_components();
+                    Collections.reverse(addressComponentsBeans);
+                    for (int i = 0; i < addressComponentsBeans.size(); i++) {
+                        if (i == 3 || i == 4) {
+                            address.append(addressComponentsBeans.get(i).getLong_name()+" ");
+                        }
+                    }
+                    tv_address.setText(address.toString());
                 }
+            }
+
+            @Override
+            public void onFailure(HttpInfo info) {
+                super.onFailure(info);
+                loadingDialog.dismiss();
+                tv_address.setText("Upper Hutt");
             }
         }, lat, lng);
     }
+
     SimpleryoNetwork simpleryoNetwork;
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private OnRefreshListener onRefreshListener = new OnRefreshListener() {
@@ -170,7 +182,6 @@ public class HomeFragment extends XLibraryLazyFragment {
     };
 
 
-
     private Location mLastKnownLocation;
 
     public void getCourseType() {
@@ -178,14 +189,14 @@ public class HomeFragment extends XLibraryLazyFragment {
             @Override
             public void onSuccess(HttpInfo info) {
                 super.onSuccess(info);
-                mHasLoadedOnce=true;
+                mHasLoadedOnce = true;
                 HomeDataBean homeDataBean = info.getRetDetail(HomeDataBean.class);
                 if (homeDataBean.getCode().equalsIgnoreCase("0")) {
                     MultipleItem item;
                     if (mItemModels != null && mItemModels.size() > 0) {
                         mItemModels.clear();
                     }
-                    if (homeDataBean.getData().getBanners() != null&&homeDataBean.getData().getBanners().size()>0) {
+                    if (homeDataBean.getData().getBanners() != null && homeDataBean.getData().getBanners().size() > 0) {
                         if (bannerListBeans != null && bannerListBeans.size() > 0) {
                             bannerListBeans.clear();
                         }
@@ -195,7 +206,7 @@ public class HomeFragment extends XLibraryLazyFragment {
                         homeAdapter.setImages(bannerListBeans);//设置banner
 
                     }
-                    if (homeDataBean.getData().getCourseTypes() != null&&homeDataBean.getData().getCourseTypes().size()>0) {
+                    if (homeDataBean.getData().getCourseTypes() != null && homeDataBean.getData().getCourseTypes().size() > 0) {
                         if (courseTypetBeans != null && courseTypetBeans.size() > 0) {
                             courseTypetBeans.clear();
                         }
@@ -218,48 +229,65 @@ public class HomeFragment extends XLibraryLazyFragment {
                         if (excellentListBeans != null && excellentListBeans.size() > 0) {
                             excellentListBeans.clear();
                         }
-                        for (HomeDataBean.DataBeanX.CoursesBeanX coursesBeanList : homeDataBean.getData().getCourses()) {
-//                            if (coursesBeanList.getTag().getSpaceCode().equalsIgnoreCase("HOT")) {
+                        int count=homeDataBean.getData().getCourses().size();
+                        if (count>0){
+                            item = new MultipleItem(MultipleItem.HOMEEXCELLENT);
+                            mItemModels.add(item);
+                            excellentListBeans.add(homeDataBean.getData().getCourses().get(0));
+                            homeAdapter.setExcellentListBeans(homeDataBean.getData().getCourses().get(0));
+                        }
+                        if(count>1){
+                            item = new MultipleItem(MultipleItem.HOMEINTRODUCTORYCOURSE);
+                            mItemModels.add(item);
+                            introductoryListBeans.add(homeDataBean.getData().getCourses().get(1));
+                            homeAdapter.setIntroductoryListBeans(homeDataBean.getData().getCourses().get(1));
+                        }
+                        if(count>2){
+                            item = new MultipleItem(MultipleItem.HOMEHOTCOURSE);
+                            mItemModels.add(item);
+                            hotCourseList.add(homeDataBean.getData().getCourses().get(2));
+                            homeAdapter.setOrderListBeans(homeDataBean.getData().getCourses().get(2));
+                        }
+//                        for (HomeDataBean.DataBeanX.CoursesBeanX coursesBeanList : homeDataBean.getData().getCourses()) {
+////                            if (coursesBeanList.getTag().getSpaceCode().equalsIgnoreCase("HOT")) {
+////                                item = new MultipleItem(MultipleItem.HOMEHOTCOURSE);
+////                                mItemModels.add(item);
+////                                hotCourseList.add(coursesBeanList);
+////                                homeAdapter.setOrderListBeans(coursesBeanList);
+////                            }
+////                            if (coursesBeanList.getTag().getSpaceCode().equalsIgnoreCase("RECOMMEND")) {
+////                                item = new MultipleItem(MultipleItem.HOMEEXCELLENT);
+////                                mItemModels.add(item);
+////                                excellentListBeans.add(coursesBeanList);
+////                                homeAdapter.setExcellentListBeans(coursesBeanList);
+////                            }
+////                            if (coursesBeanList.getTag().getSpaceCode().equalsIgnoreCase("OFFCIAL")) {
+////                                item = new MultipleItem(MultipleItem.HOMEINTRODUCTORYCOURSE);
+////                                mItemModels.add(item);
+////                                introductoryListBeans.add(coursesBeanList);
+////                                homeAdapter.setIntroductoryListBeans(coursesBeanList);
+////                            }
+//                            if (coursesBeanList.getTag().getName().equalsIgnoreCase("热门课程")) {
 //                                item = new MultipleItem(MultipleItem.HOMEHOTCOURSE);
 //                                mItemModels.add(item);
 //                                hotCourseList.add(coursesBeanList);
 //                                homeAdapter.setOrderListBeans(coursesBeanList);
-//                            }
-//                            if (coursesBeanList.getTag().getSpaceCode().equalsIgnoreCase("RECOMMEND")) {
+//                            } else if (coursesBeanList.getTag().getName().equalsIgnoreCase("官方推荐")) {
+//                                item = new MultipleItem(MultipleItem.HOMEINTRODUCTORYCOURSE);
+//                                mItemModels.add(item);
+//                                introductoryListBeans.add(coursesBeanList);
+//                                homeAdapter.setIntroductoryListBeans(coursesBeanList);
+//                            }else{
 //                                item = new MultipleItem(MultipleItem.HOMEEXCELLENT);
 //                                mItemModels.add(item);
 //                                excellentListBeans.add(coursesBeanList);
 //                                homeAdapter.setExcellentListBeans(coursesBeanList);
 //                            }
-//                            if (coursesBeanList.getTag().getSpaceCode().equalsIgnoreCase("OFFCIAL")) {
-//                                item = new MultipleItem(MultipleItem.HOMEINTRODUCTORYCOURSE);
-//                                mItemModels.add(item);
-//                                introductoryListBeans.add(coursesBeanList);
-//                                homeAdapter.setIntroductoryListBeans(coursesBeanList);
-//                            }
-                            if (coursesBeanList.getTag().getName().equalsIgnoreCase("热门课程")) {
-                                item = new MultipleItem(MultipleItem.HOMEHOTCOURSE);
-                                mItemModels.add(item);
-                                hotCourseList.add(coursesBeanList);
-                                homeAdapter.setOrderListBeans(coursesBeanList);
-                            }
-                            if (coursesBeanList.getTag().getName().equalsIgnoreCase("精品课程")) {
-                                item = new MultipleItem(MultipleItem.HOMEEXCELLENT);
-                                mItemModels.add(item);
-                                excellentListBeans.add(coursesBeanList);
-                                homeAdapter.setExcellentListBeans(coursesBeanList);
-                            }
-                            if (coursesBeanList.getTag().getName().equalsIgnoreCase("官方推荐")) {
-                                item = new MultipleItem(MultipleItem.HOMEINTRODUCTORYCOURSE);
-                                mItemModels.add(item);
-                                introductoryListBeans.add(coursesBeanList);
-                                homeAdapter.setIntroductoryListBeans(coursesBeanList);
-                            }
-                        }
+//                        }
                     }
                     homeAdapter.setDataList(mItemModels);
                 } else if (homeDataBean.getCode().equalsIgnoreCase("401")) {
-                    Intent intent=new Intent();
+                    Intent intent = new Intent();
                     intent.setClass(getActivity(), NotificationBroadcast.class);
                     intent.setAction(NotificationBroadcast.ACTION_REFRESHTOKEN);
                     getActivity().sendBroadcast(intent);
@@ -274,10 +302,10 @@ public class HomeFragment extends XLibraryLazyFragment {
             @Override
             public void onFailure(HttpInfo info) {
                 super.onFailure(info);
-                if (mItemModels!=null&&mItemModels.size()>0){
+                if (mItemModels != null && mItemModels.size() > 0) {
                     lrecyclerview.refreshComplete(mItemModels.size());
                     lrecyclerview.setEmptyView(empty_view);
-                }else {
+                } else {
                     lrecyclerview.setEmptyView(empty_view);
                 }
                 Toast.makeText(getActivity(), info.getRetDetail(), Toast.LENGTH_SHORT).show();
@@ -295,7 +323,7 @@ public class HomeFragment extends XLibraryLazyFragment {
         if (bus.getType() == 021) {
             getCourseType();
         }
-        if(bus.getType()==022){
+        if (bus.getType() == 022) {
             startActivity(new Intent(getActivity(), LoginActivity.class));
         }
         if (bus.getType() == 122) {
@@ -352,7 +380,9 @@ public class HomeFragment extends XLibraryLazyFragment {
 
         }
     }
+
     String mPageName = "HomeFragment";
+
     @Override
     public void onPause() {
         super.onPause();
@@ -368,7 +398,9 @@ public class HomeFragment extends XLibraryLazyFragment {
         MobclickAgent.onPageStart(mPageName);
         EventBus.getDefault().post(new BusEntity(555));//通知banner开始轮播
     }
-    @Event(value = {R.id.iv_msg, R.id.rl_search,R.id.tv_address}, type = View.OnClickListener.class)
+
+    @SuppressLint("MissingPermission")
+    @Event(value = {R.id.iv_msg, R.id.rl_search, R.id.tv_address}, type = View.OnClickListener.class)
     private void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_msg:
@@ -378,34 +410,40 @@ public class HomeFragment extends XLibraryLazyFragment {
                 startActivity(new Intent(getActivity(), CourseSearchActivity.class));
                 break;
             case R.id.tv_address:
-                if (SharedPreferencesUtils.getKeyBoolean("deny")){
-                    mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
-                    @SuppressLint("MissingPermission") Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
-                    locationResult.addOnCompleteListener(getActivity(), new OnCompleteListener<Location>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Location> task) {
-                            if (task.isSuccessful()) {
-                                mLastKnownLocation = task.getResult();
-                                if (mLastKnownLocation != null) {
-                                    lat=mLastKnownLocation.getLatitude();
-                                    lng=mLastKnownLocation.getLongitude();
-                                    getUserCurrentLocation();
-                                } else {
-                                    lat=-41.095977;
-                                    lng=175.093335;
-//                            tv_address.setText("暂无地址");
-                                }
-                            } else {
-                                lat=-41.095977;
-                                lng=175.093335;
-//                        tv_address.setText("暂无地址");
-                            }
-                        }
-                    });
+                if (SharedPreferencesUtils.getKeyBoolean("deny")) {
+                    HomeFragmentPermissionsDispatcher.getLocationPermissionWithCheck(this);
+                } else {
+                    getUserLocation();
                 }
                 break;
         }
     }
 
+    //定义请求
+    private static final int READ_CONTACTS_REQUEST = 1;
+
+    @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+    void getLocationPermission() {
+    }
+
+    @SuppressLint("MissingPermission")
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        //确保是我们的请求
+        if (requestCode == READ_CONTACTS_REQUEST) {
+            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                Log.w("cc", "位置权限拒绝");
+                SharedPreferencesUtils.saveKeyBoolean("deny", true);
+            } else if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.w("cc", "位置权限获取成功");
+                SharedPreferencesUtils.saveKeyBoolean("deny", false);
+                getUserLocation();
+            }
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        HomeFragmentPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
 
 }

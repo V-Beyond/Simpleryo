@@ -68,9 +68,6 @@
         android:roundIcon="@mipmap/iv_app_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <meta-data android:name="android.max_aspect"
-            android:value="2.1"/>
-        <meta-data android:name="android.notch_support" android:value="true"/>
         <activity
             android:name="com.simpleryo.leyotang.activity.SplashActivity"
             android:theme="@style/AppTheme.Splash"
@@ -431,6 +428,9 @@
             android:value="@string/facebook_app_id"
             tools:ignore="ManifestResource"
             />
+        <meta-data android:name="android.max_aspect"
+            android:value="2.1"/>
+        <meta-data android:name="android.notch_support" android:value="true"/>
     </application>
 
 </manifest>

@@ -1,5 +1,6 @@
 package com.simpleryo.leyotang.utils;
 
+import android.annotation.SuppressLint;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
@@ -9,8 +10,12 @@ import android.net.Uri;
 import android.provider.CalendarContract;
 import android.text.TextUtils;
 
-
-import java.util.Calendar;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.TimeZone;
 
 /**
@@ -18,13 +23,14 @@ import java.util.TimeZone;
  */
 
 public class CalendarEventUtils {
-    private static String CALENDARS_NAME = "二楼后座";
+    private static String CALENDARS_NAME = "Leyotown";
     private static String CALENDARS_ACCOUNT_NAME = "wongleoi@gmail.com";
     private static String CALENDARS_ACCOUNT_TYPE = "com.android.exchange";
-    private static String CALENDARS_DISPLAY_NAME = "测试账户";
+    private static String CALENDARS_DISPLAY_NAME = "Leyotown";
     private static String CALANDER_URL = "content://com.android.calendar/calendars";
     private static String CALANDER_EVENT_URL = "content://com.android.calendar/events";
     private static String CALANDER_REMIDER_URL = "content://com.android.calendar/reminders";
+
     private static long addCalendarAccount(Context context) {
         TimeZone timeZone = TimeZone.getDefault();
         ContentValues value = new ContentValues();
@@ -50,7 +56,37 @@ public class CalendarEventUtils {
         long id = result == null ? -1 : ContentUris.parseId(result);
         return id;
     }
-    public static void addCalendarEvent(Context context, String title, String description, long beginTime){
+
+    // 获得某天最大时间 2017-10-15 23:59:59
+    @SuppressLint("NewApi")
+    public static Date getEndOfDay(Date date) {
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(date.getTime()), ZoneId.systemDefault());
+        LocalDateTime endOfDay = localDateTime.with(LocalTime.MAX);
+        return Date.from(endOfDay.atZone(ZoneId.systemDefault()).toInstant());
+    }
+    /**
+     * 掉此方法输入所要转换的时间输入例如（"2014年06月14日16时09分00秒"）返回时间戳
+     *
+     * @param time
+     * @return
+     */
+    public static String stringFromDate(String time) {
+        SimpleDateFormat sdr = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date;
+        String times = null;
+        try {
+            date = sdr.parse(time);
+            long l = date.getTime();
+            String stf = String.valueOf(l);
+            times = stf.substring(0, 10);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return times;
+    }
+
+    @SuppressLint("NewApi")
+    public static void addCalendarEvent(Context context, String title, String description, String beginTime,String endTime) {
         // 获取日历账户的id
         int calId = checkAndAddCalendarAccount(context);
         if (calId < 0) {
@@ -62,13 +98,8 @@ public class CalendarEventUtils {
         event.put("description", description);
         // 插入账户的id
         event.put("calendar_id", calId);
-        Calendar mCalendar = Calendar.getInstance();
-        mCalendar.setTimeInMillis(beginTime);//设置开始时间
-        long start = mCalendar.getTime().getTime();
-        mCalendar.setTimeInMillis(start + 1000*60*60);//设置终止时间
-        long end = mCalendar.getTime().getTime();
-        event.put(CalendarContract.Events.DTSTART, start);
-        event.put(CalendarContract.Events.DTEND, end);
+        event.put(CalendarContract.Events.DTSTART, Long.valueOf(stringFromDate(beginTime))*1000);
+        event.put(CalendarContract.Events.DTEND, Long.valueOf(stringFromDate(endTime))*1000);
         event.put(CalendarContract.Events.HAS_ALARM, 1);//设置有闹钟提醒
         event.put(CalendarContract.Events.EVENT_TIMEZONE, "Asia/Shanghai");  //这个是时区，必须有，
         //添加事件
@@ -84,13 +115,13 @@ public class CalendarEventUtils {
         values.put(CalendarContract.Reminders.MINUTES, 10);
         values.put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT);
         Uri uri = context.getContentResolver().insert(Uri.parse(CALANDER_REMIDER_URL), values);
-        if(uri == null) {
+        if (uri == null) {
             // 添加闹钟提醒失败直接返回
             return;
         }
     }
 
-    public static void deleteCalendarEvent(Context context,String title){
+    public static void deleteCalendarEvent(Context context, String title) {
         Cursor eventCursor = context.getContentResolver().query(Uri.parse(CALANDER_EVENT_URL), null, null, null, null);
         try {
             if (eventCursor == null)//查询返回空值
@@ -135,12 +166,13 @@ public class CalendarEventUtils {
             }
         }
     }
+
     //检查是否已经添加了日历账户，如果没有添加先添加一个日历账户再查询
-    private static int checkAndAddCalendarAccount(Context context){
+    private static int checkAndAddCalendarAccount(Context context) {
         int oldId = checkCalendarAccount(context);
-        if( oldId >= 0 ){
+        if (oldId >= 0) {
             return oldId;
-        }else{
+        } else {
             long addId = addCalendarAccount(context);
             if (addId >= 0) {
                 return checkCalendarAccount(context);

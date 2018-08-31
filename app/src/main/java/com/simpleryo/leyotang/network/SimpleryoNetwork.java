@@ -138,8 +138,7 @@ public class SimpleryoNetwork {
             jsonObject.put("phone", phone);//手机号
             jsonObject.put("msgAuthCode", code);//验证码
             jsonObject.put("password", password);//密码
-            jsonObject.put("loginName", phone);//登录名
-            jsonObject.put("loginName", phone);//登录名
+            jsonObject.put("loginName", email);//登录名
             jsonObject.put("role", "NORMAL");//用户角色  ROOT 为超级管理员，ADMIN为管理员，STORE_ADMIN为商家管理员,NORMAL 为APP用户 ,
         } catch (JSONException e) {
             e.printStackTrace();
@@ -495,6 +494,7 @@ public class SimpleryoNetwork {
     public static void updatePwd(Context context, MyBaseProgressCallbackImpl callback, String loginName,String password,String msgAuthCode,String phone) {
         JSONObject jsonObject = new JSONObject();
         try {
+            jsonObject.put("email", loginName);
             jsonObject.put("loginName", loginName);
             jsonObject.put("password", password);
             jsonObject.put("phone",phone);
@@ -884,6 +884,8 @@ public class SimpleryoNetwork {
      * @param lng
      */
     public static void getAddressInfo(Context context, MyBaseProgressCallbackImpl callback, double lat, double lng) {
+        Log.w("cc","lat："+lat);
+        Log.w("cc","lng："+lng);
         doHttpAsync(context, HttpInfo.Builder()
                 .setUrl("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&result_type=street_address&key=" + SimpleryoApplication.GOOGLEAPIKEY + "&language=zh-CN")
                 .setRequestType(RequestType.GET)//设置请求方式

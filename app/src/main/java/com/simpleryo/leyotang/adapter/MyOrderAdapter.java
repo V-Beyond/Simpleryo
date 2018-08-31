@@ -65,7 +65,7 @@ public class MyOrderAdapter extends BaseMultiAdapter<MultipleItem> {
         final MultipleItem bean;
         bean = mDataList.get(position);
         if (holder instanceof MyOrderViewHolder) {//我的订单
-            final OrderListBean.DataBean dataBean = bean.getOrderListBean();
+            final OrderListBean.DataBeanX dataBean = bean.getOrderListBean();
             if (dataBean.getImageUrl()!=null){
                 Picasso.with(context).load(dataBean.getImageUrl()).transform(raduisTransformation).into(((MyOrderViewHolder) holder).iv_order_img);
             }else{

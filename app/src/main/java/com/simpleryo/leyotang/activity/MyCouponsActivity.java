@@ -53,6 +53,8 @@ public class MyCouponsActivity extends BaseActivity {
     ImageView iv_msg;
     @ViewInject(R.id.view_pager_main)
     ViewPager view_pager_main;
+    @ViewInject(R.id.radio_group_main)
+    RadioGroup radio_group_main;
     FragMentAdapter<XLibraryLazyFragment> mAdapter;
     List<XLibraryLazyFragment> fragments = new ArrayList<XLibraryLazyFragment>();
     @ViewInject(R.id.lrecyclerview)
@@ -74,10 +76,16 @@ public class MyCouponsActivity extends BaseActivity {
         EventBus.getDefault().register(this);
         iv_msg.setVisibility(View.GONE);
         tv_name.setText(getResources().getString(R.string.coupon));
+
         category = getIntent().getStringExtra("type");
         storeId = getIntent().getStringExtra("storeId");
         courseId = getIntent().getStringExtra("courseId");
         count=getIntent().getIntExtra("count",0);
+        if (category.equalsIgnoreCase("my")) {//个人中心进入我的优惠券
+            radio_group_main.setVisibility(View.VISIBLE);
+        }else if(category.equalsIgnoreCase("order")){
+            radio_group_main.setVisibility(View.GONE);
+        }
         Bundle bundle = new Bundle();
         bundle.putString("type", "UNUSED");
         CouponFragment couponFragment = new CouponFragment();

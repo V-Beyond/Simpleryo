@@ -16,6 +16,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 
@@ -68,7 +69,7 @@ public class IntroductoryCourseAdapter extends BaseAdapter<HomeDataBean.DataBean
         }
         if (bean.getDistance()!=null){
             ((IntroductoryCourseItemViewHolder) holder).tv_distance.setVisibility(View.VISIBLE);
-            ((IntroductoryCourseItemViewHolder) holder).tv_distance.setText(bean.getDistance());
+            ((IntroductoryCourseItemViewHolder) holder).tv_distance.setText(new DecimalFormat("0.00").format(Double.valueOf(bean.getDistance())/1000)+"/km");
         }
         ((IntroductoryCourseItemViewHolder) holder).tv_popular.setText(collectCount+" people");
         ((IntroductoryCourseItemViewHolder) holder).tv_collection_count.setText(collectCount+"人收藏");

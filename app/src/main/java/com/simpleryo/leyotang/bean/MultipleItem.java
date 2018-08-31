@@ -25,13 +25,13 @@ public class MultipleItem   implements MultiItemEntity{
         return itemType;
     }
 
-   OrderListBean.DataBean orderListBean;
+   OrderListBean.DataBeanX orderListBean;
 
-    public OrderListBean.DataBean getOrderListBean() {
+    public OrderListBean.DataBeanX getOrderListBean() {
         return orderListBean;
     }
 
-    public void setOrderListBean(OrderListBean.DataBean orderListBean) {
+    public void setOrderListBean(OrderListBean.DataBeanX orderListBean) {
         this.orderListBean = orderListBean;
     }
     CourseListBean.DataBeanX courseListBean;

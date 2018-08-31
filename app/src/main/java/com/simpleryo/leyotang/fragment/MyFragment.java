@@ -412,7 +412,11 @@ public class MyFragment extends XLibraryLazyFragment {
                 }
                 break;
             case R.id.ll_complaint://投诉建议
-                startActivity(new Intent(getActivity(), ComplaintProposalActivity.class));
+                if (isLogin) {
+                    startActivity(new Intent(getActivity(), ComplaintProposalActivity.class));
+                } else {
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                }
                 break;
             case R.id.ll_login://登录
                 if (!isLogin) {

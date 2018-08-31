@@ -24,6 +24,7 @@ import com.simpleryo.leyotang.bean.BusEntity;
 import com.simpleryo.leyotang.bean.MultipleItem;
 import com.simpleryo.leyotang.bean.OrderListBean;
 import com.simpleryo.leyotang.network.SimpleryoNetwork;
+import com.simpleryo.leyotang.utils.CalendarEventUtils;
 import com.simpleryo.leyotang.utils.XStringPars;
 
 import net.latipay.mobile.AlipayRequest;
@@ -55,7 +56,7 @@ public class OrderNewFragment extends XLibraryLazyFragment {
     LRecyclerViewAdapter lRecyclerViewAdapter;
     MyOrderAdapter myOrderAdapter;
     private List<MultipleItem> mItemModels = new ArrayList<>();
-    ArrayList<OrderListBean.DataBean> orderListBeans = new ArrayList<>();
+    ArrayList<OrderListBean.DataBeanX> orderListBeans = new ArrayList<>();
     @ViewInject(R.id.empty_view)
     private View mEmptyView;
     private ProgressDialog dialog;
@@ -84,6 +85,7 @@ public class OrderNewFragment extends XLibraryLazyFragment {
             return;
         }
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -151,6 +153,7 @@ public class OrderNewFragment extends XLibraryLazyFragment {
         });
         LatipayAPI.sendRequest(req);
     }
+
     /**
      * 微信支付
      *
@@ -186,6 +189,13 @@ public class OrderNewFragment extends XLibraryLazyFragment {
             @Override
             public void onPaymentCompleted(int result) {
                 if (result == PaymentStatus.PAID) {
+                    if (orderDataBean.getCourse().getType().equalsIgnoreCase("single")) {
+//                        CalendarEventUtils.addCalendarEvent(getActivity(), orderDataBean.getCourseName(), courseAddress, orderDataBean.get, endTime);
+                    } else if (orderDataBean.getCourse().getType().equalsIgnoreCase("series")) {
+                        for (OrderListBean.DataBeanX.CourseBean.ArrangesBean arrange : arrangeArrayList) {
+                            CalendarEventUtils.addCalendarEvent(getActivity(), orderDataBean.getCourseName(), courseAddress, arrange.getStartTime(), arrange.getEndTime());
+                        }
+                    }
                     Toast.makeText(activity, getResources().getString(R.string.Payment_successful), Toast.LENGTH_SHORT).show();
                 } else if (result == PaymentStatus.UNPAID) {
                     Toast.makeText(activity, getResources().getString(R.string.Payment_cancle), Toast.LENGTH_SHORT).show();
@@ -214,7 +224,7 @@ public class OrderNewFragment extends XLibraryLazyFragment {
                 if (orderListBean.getCode().equalsIgnoreCase("0")) {
                     if (orderListBean.getData() != null && orderListBean.getData().size() > 0) {
                         orderListBeans.addAll(orderListBean.getData());
-                        for (OrderListBean.DataBean dataBean : orderListBeans) {
+                        for (OrderListBean.DataBeanX dataBean : orderListBeans) {
                             item = new MultipleItem(MultipleItem.ORDER);
                             item.setOrderListBean(dataBean);
                             mItemModels.add(item);
@@ -265,15 +275,24 @@ public class OrderNewFragment extends XLibraryLazyFragment {
             initData();
         }
     };
-    OrderListBean.DataBean orderDataBean;
+    OrderListBean.DataBeanX orderDataBean;
+    String courseAddress;
+    ArrayList<OrderListBean.DataBeanX.CourseBean.ArrangesBean> arrangeArrayList = new ArrayList<>();
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updateCollect(BusEntity bus) {
         if (bus.getType() == 111) {
             orderDataBean = bus.getOrderDataBean();
+            if (orderDataBean.getCourse().getAddress() != null) {
+                courseAddress = orderDataBean.getCourse().getAddress().getDetail();
+            }
+            if (orderDataBean.getCourse().getArranges() != null && orderDataBean.getCourse().getArranges().size() > 0) {
+                arrangeArrayList.addAll(orderDataBean.getCourse().getArranges());
+            }
             recordOrder(orderDataBean.getId(), orderDataBean.getPayAmt() + "", orderDataBean.getNo(), orderDataBean.getCourseName(), orderDataBean.getPayType());
-            if (orderDataBean.getPayType().equalsIgnoreCase("ALIPAY")){
+            if (orderDataBean.getPayType().equalsIgnoreCase("ALIPAY")) {
                 orderAlipay(getActivity(), XStringPars.foramtPrice(orderDataBean.getPayAmt()), orderDataBean.getNo(), orderDataBean.getCourseName());
-            }else{
+            } else {
                 orderWechat(getActivity(), XStringPars.foramtPrice(orderDataBean.getPayAmt()), orderDataBean.getNo(), orderDataBean.getCourseName());
             }
         }

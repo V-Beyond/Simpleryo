@@ -44,7 +44,7 @@ public class OrderPayedFragment extends XLibraryLazyFragment {
     LRecyclerViewAdapter lRecyclerViewAdapter;
     MyOrderAdapter myOrderAdapter;
     private List<MultipleItem> mItemModels = new ArrayList<>();
-    ArrayList<OrderListBean.DataBean> orderListBeans=new ArrayList<>();
+    ArrayList<OrderListBean.DataBeanX> orderListBeans=new ArrayList<>();
     @ViewInject(R.id.empty_view)
     private View mEmptyView;
     private ProgressDialog dialog;
@@ -100,7 +100,7 @@ public class OrderPayedFragment extends XLibraryLazyFragment {
                 if (orderListBean.getCode().equalsIgnoreCase("0")){
                     if(orderListBean.getData()!=null&&orderListBean.getData().size()>0){
                         orderListBeans.addAll(orderListBean.getData());
-                        for (OrderListBean.DataBean dataBean:orderListBeans){
+                        for (OrderListBean.DataBeanX dataBean:orderListBeans){
                             item = new MultipleItem(MultipleItem.ORDER);
                             item.setOrderListBean(dataBean);
                             mItemModels.add(item);

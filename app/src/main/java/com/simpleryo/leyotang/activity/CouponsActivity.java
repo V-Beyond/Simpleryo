@@ -275,16 +275,19 @@ public class CouponsActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 cityAdapter.setCheckItem(position);
                 if (position==0){
-                    pop_listview_center.setVisibility(View.VISIBLE);
-                    if (childDataList != null && childDataList.size() > 0) {
-                        childDataList.clear();
-                    }
-                    TagsListBean.DataBean mDataBean=new TagsListBean.DataBean();
-                    mDataBean.setName("全部课程");
-                    childDataList.add(mDataBean);
-                    girdDropDownAdapter = new GirdDropDownAdapter(CouponsActivity.this, childDataList, 1);
-                    pop_listview_center.setDividerHeight(0);
-                    pop_listview_center.setAdapter(girdDropDownAdapter);
+//                    pop_listview_center.setVisibility(View.VISIBLE);
+//                    if (childDataList != null && childDataList.size() > 0) {
+//                        childDataList.clear();
+//                    }
+//                    TagsListBean.DataBean mDataBean=new TagsListBean.DataBean();
+//                    mDataBean.setName("全部课程");
+//                    childDataList.add(mDataBean);
+//                    girdDropDownAdapter = new GirdDropDownAdapter(CouponsActivity.this, childDataList, 1);
+//                    pop_listview_center.setDividerHeight(0);
+//                    pop_listview_center.setAdapter(girdDropDownAdapter);
+                    mDropDownMenu.setTabText("全部");
+                    mDropDownMenu.closeMenu();
+                    lrecyclerview.forceToRefresh();
                 }else{
                     getChildTags(dataBeans.get(position).getId(), position);
                 }
@@ -312,7 +315,7 @@ public class CouponsActivity extends BaseActivity {
                 }
                 offset=0;
                 limit=9;
-                tickets();
+                lrecyclerview.forceToRefresh();
             }
         });
 
@@ -340,7 +343,7 @@ public class CouponsActivity extends BaseActivity {
                 }
                 offset=0;
                 limit=9;
-                tickets();
+                lrecyclerview.forceToRefresh();
             }
         });
 
@@ -368,7 +371,7 @@ public class CouponsActivity extends BaseActivity {
                 }
                 offset=0;
                 limit=9;
-                tickets();
+                lrecyclerview.forceToRefresh();
             }
         });
         //init dropdownview
@@ -439,7 +442,7 @@ public class CouponsActivity extends BaseActivity {
                         }
                         offset=0;
                         limit=9;
-                        tickets();
+                        lrecyclerview.forceToRefresh();
                     }
                 }
             }

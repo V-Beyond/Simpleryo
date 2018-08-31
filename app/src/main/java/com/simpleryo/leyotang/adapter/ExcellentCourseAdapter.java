@@ -14,6 +14,7 @@ import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 
@@ -62,7 +63,7 @@ public class ExcellentCourseAdapter extends BaseAdapter<HomeDataBean.DataBeanX.C
         }
         if (bean.getDistance()!=null){
             ((ExcellentCourseItemViewHolder) holder).tv_distance.setVisibility(View.VISIBLE);
-            ((ExcellentCourseItemViewHolder) holder).tv_distance.setText(bean.getDistance());
+            ((ExcellentCourseItemViewHolder) holder).tv_distance.setText(new DecimalFormat("0.00").format(Double.valueOf(bean.getDistance())/1000)+"/km");
         }
         ((ExcellentCourseItemViewHolder) holder).tv_popular.setText(collectCount+" people");
         ((ExcellentCourseItemViewHolder) holder).tv_collection_count.setText(collectCount+"人收藏");
